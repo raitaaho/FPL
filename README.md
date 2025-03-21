@@ -1,9 +1,9 @@
 
-  ## Predicted_Points_ALL_Players Notebook
+  ## Predicted_Points_All_Players Notebook
 
   ### Overview
 
-  The `Predicted_Points_ALL_Players` notebook is a comprehensive tool designed to predict player points for the next gameweek(s). This project leverages data from various sources to provide accurate and insightful predictions, helping users make informed decisions for their FPL teams.
+  The `Predicted_Points_All_Players` notebook is a comprehensive tool designed to predict player points for the next gameweek(s). This project leverages data from various sources to provide accurate and insightful predictions, helping users make informed decisions for their FPL teams.
 
   ### Features
 
@@ -26,7 +26,7 @@
 
   ### Installation
 
-  To use the `Predicted_Points_ALL_Players` notebook, follow these steps:
+  To use the `Predicted_Points_All_Players` notebook, follow these steps:
 
   1. Clone the repository:
      ```bash
