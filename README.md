@@ -3,7 +3,9 @@
 
   ### Overview
 
-  The `Predicted_Points_All_Players` notebook is a comprehensive tool designed to predict player points for the next gameweek(s). This project leverages data from various sources to provide accurate and insightful predictions, helping users make informed decisions for their FPL teams.
+  Fantasy Premier League game is open to the public and is contested annually by millions worldwide. Participants must select a team based on real-life Premier League footballers who scored fantasy points based on those players' real-life statistical performances. Points accumulate across the season in order to declare a champion. As well as the overall global leaderboard, there are smaller automatic public leaderboards categorised by home country and Premier League club supported.
+
+  The `Predicted_Points_All_Players` notebook is a comprehensive tool designed to predict player points for the next gameweek(s) In Fantasy Premier League. This project leverages data from various sources to provide accurate and insightful predictions, helping users make informed decisions for their FPL teams.
 
   ### Features
 
