@@ -46,11 +46,19 @@
 
   ## Running the Notebook
 
-  1. Run the notebook in Jupyter:
+  1. Open the notebook in Jupyter:
      ```bash
-     jupyter nbconvert --to notebook --execute Predicted_Points_All_Players.ipynb
+     !jupyter notebook Predicted_Points_All_Players.ipynb
      ```
-
+  2. Run the notebook in Jupyter:
+     ```bash
+     !jupyter execute Predicted_Points_All_Players.ipynb
+     ```
+     or
+     ```bash
+     Ctrl + Enter
+     ```
+     
   ## Notes
 
 - Assisting and goalscoring odds for players are usually available a couple of days before the game, so this script is very likely to return an empty file or a file containing a lot of missing values if there are still several days until the first game of the gameweek.
