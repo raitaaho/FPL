@@ -32,7 +32,7 @@
 
   1. Clone the repository:
      ```bash
-     git clone https://github.com/raitaaho/FPL.git
+     !git clone https://github.com/raitaaho/FPL.git
      ```
   2. Navigate to the project directory:
      ```bash
@@ -40,15 +40,15 @@
      ```
   3. Install the required dependencies:
      ```bash
-     pip install -r requirements.txt
+     !pip install -r requirements.txt
      ```
   4. Ensure that the Chrome browser is installed on your system. The `chromedriver-autoinstaller` package will automatically download and install the appropriate   version of ChromeDriver.
 
   ## Running the Notebook
 
-  1. Open the notebook in Jupyter:
+  1. Run the notebook in Jupyter:
      ```bash
-     jupyter notebook Predicted_Points_All_Players.ipynb
+     jupyter nbconvert --to notebook --execute Predicted_Points_All_Players.ipynb
      ```
 
   ## Notes
