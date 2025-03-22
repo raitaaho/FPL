@@ -56,9 +56,9 @@
      ```
      or
      ```bash
-     Ctrl + Enter
+     Cell -> Run All
      ```
-     
+
   ## Notes
 
 - Assisting and goalscoring odds for players are usually available a couple of days before the game, so this script is very likely to return an empty file or a file containing a lot of missing values if there are still several days until the first game of the gameweek.
