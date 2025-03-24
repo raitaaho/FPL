@@ -23,9 +23,11 @@ jobs:
         python -m pip install --upgrade pip
         pip install -r requirements.txt
 
-    - name: Upload to S3
+    - name: Upload all Excel files to S3
       env:
         AWS_ACCESS_KEY_ID: ${{ secrets.AKIA34AMCXKIOIK43F4N }}
         AWS_SECRET_ACCESS_KEY: ${{ secrets.0c8BRq1bDwbH5a27m8vQWnsDKb1avf7FCBPsKBc4 }}
       run: |
-        aws s3 cp data.xlsx s3://your-bucket-name/all_odds.xlsx
+        for file in *.xlsx; do
+          aws s3 cp "$file" s3://your-bucket-name/"$file"
+        done
