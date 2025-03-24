@@ -29,5 +29,5 @@ jobs:
         AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
       run: |
         for file in *.xlsx; do
-          aws s3 cp "$file" s3://your-bucket-name/"$file"
+          aws s3 cp "$file" s3://fplodds/"$file"
         done
