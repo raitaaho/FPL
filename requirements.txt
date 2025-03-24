@@ -5,3 +5,4 @@ selenium
 undetected-chromedriver
 chromedriver-autoinstaller
 secrets
+json
