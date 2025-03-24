@@ -25,8 +25,8 @@ jobs:
 
     - name: Upload all Excel files to S3
       env:
-        AWS_ACCESS_KEY_ID: ${{ secrets.AKIA34AMCXKIOIK43F4N }}
-        AWS_SECRET_ACCESS_KEY: ${{ secrets.0c8BRq1bDwbH5a27m8vQWnsDKb1avf7FCBPsKBc4 }}
+        AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
       run: |
         for file in *.xlsx; do
           aws s3 cp "$file" s3://your-bucket-name/"$file"
