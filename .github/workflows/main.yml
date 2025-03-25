@@ -30,7 +30,7 @@ jobs:
         new_files=$(git diff --name-only HEAD^ HEAD | grep -E '\.(xlsx|json)$' || true)
         echo "new_files=\"$(echo $new_files | tr '\n' ' ')\"" >> $GITHUB_ENV
     - name: Upload new Excel and JSON files to S3
-      if: env.new_files != ''
+      if: env.new_files != ' '
       env:
         AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
         AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
