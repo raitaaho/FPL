@@ -4,7 +4,7 @@
     "Underdog Bonus": "Home",
     "Gameweek": 30,
     "Link": "https://www.oddschecker.com/football/english/premier-league/southampton-v-crystal-palace/winner",
-    "Win Market Crystal Palace Odds": [
+    "Away Win Odds": [
         "4/6",
         "8/13",
         "8/13",
@@ -32,7 +32,7 @@
         "4/6",
         "4/6"
     ],
-    "Win Market Draw Odds": [
+    "Draw Odds": [
         "27/10",
         "29/10",
         "14/5",
@@ -60,7 +60,7 @@
         "14/5",
         "14/5"
     ],
-    "Win Market Southampton Odds": [
+    "Home Win Odds": [
         "9/2",
         "4/1",
         "4/1",
@@ -502,79 +502,5 @@
         "150/1",
         "150/1",
         "33/1"
-    ],
-    "To Win To Nil Crystal Palace Odds": [
-        "7/4",
-        "15/8",
-        "15/8",
-        "19/10",
-        "15/8",
-        "19/10",
-        "31/20",
-        "7/4",
-        "7/4",
-        "31/20",
-        "15/8",
-        "15/8",
-        "19/10",
-        "19/10",
-        "7/4",
-        "31/20",
-        "9/5",
-        "17/11",
-        "19/10"
-    ],
-    "To Win To Nil Southampton Odds": [
-        "9/1",
-        "8/1",
-        "8/1",
-        "8/1",
-        "17/2",
-        "17/2",
-        "6/1",
-        "7/1",
-        "17/2",
-        "6/1",
-        "15/2",
-        "7/1",
-        "15/2",
-        "15/2",
-        "7/1",
-        "6/1",
-        "7/1",
-        "39/10",
-        "15/2"
-    ],
-    "Total Home Goals Exact 0 Odds": [
-        "11/8",
-        "11/8",
-        "11/8",
-        "11/8",
-        "11/8",
-        "27/20"
-    ],
-    "Total Home Goals Exact 1 Odds": [
-        "7/5",
-        "29/20",
-        "7/5",
-        "7/4",
-        "6/4",
-        "6/4",
-        "7/5",
-        "11/8",
-        "6/4"
-    ],
-    "Total Home Goals Exact 2 Odds": [
-        "4/1",
-        "4/1",
-        "15/4",
-        "15/4",
-        "15/4",
-        "15/4",
-        "37/10",
-        "15/4"
-    ],
-    "Total Home Goals Exact Total Goals 3 Or More Odds": [
-        "10/1"
     ]
 }

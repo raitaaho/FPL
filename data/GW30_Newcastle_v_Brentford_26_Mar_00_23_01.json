@@ -4,7 +4,7 @@
     "Underdog Bonus": "Away",
     "Gameweek": 30,
     "Link": "https://www.oddschecker.com/football/english/premier-league/newcastle-v-brentford/winner",
-    "Win Market Newcastle Odds": [
+    "Home Win Odds": [
         "4/6",
         "7/10",
         "4/6",
@@ -32,7 +32,7 @@
         "8/11",
         "8/11"
     ],
-    "Win Market Brentford Odds": [
+    "Away Win Odds": [
         "3/1",
         "16/5",
         "16/5",
@@ -60,7 +60,7 @@
         "3/1",
         "10/3"
     ],
-    "Win Market Draw Odds": [
+    "Draw Odds": [
         "15/4",
         "3/1",
         "10/3",
@@ -533,47 +533,5 @@
         "33/1",
         "33/1",
         "25/1"
-    ],
-    "To Win To Nil Newcastle Odds": [
-        "11/4",
-        "11/4",
-        "13/5",
-        "13/5",
-        "11/4",
-        "14/5",
-        "11/5",
-        "11/4",
-        "13/5",
-        "11/5",
-        "13/5",
-        "51/20",
-        "11/4",
-        "11/4",
-        "11/4",
-        "11/5",
-        "13/5",
-        "13/8",
-        "11/4"
-    ],
-    "To Win To Nil Brentford Odds": [
-        "8/1",
-        "9/1",
-        "10/1",
-        "17/2",
-        "10/1",
-        "19/2",
-        "13/2",
-        "8/1",
-        "17/2",
-        "13/2",
-        "8/1",
-        "8/1",
-        "8/1",
-        "8/1",
-        "8/1",
-        "13/2",
-        "15/2",
-        "13/2",
-        "8/1"
     ]
 }

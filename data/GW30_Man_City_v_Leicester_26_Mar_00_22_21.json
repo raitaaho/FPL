@@ -4,7 +4,7 @@
     "Underdog Bonus": "Away",
     "Gameweek": 30,
     "Link": "https://www.oddschecker.com/football/english/premier-league/man-city-v-leicester/winner",
-    "Win Market Man City Odds": [
+    "Home Win Odds": [
         "2/11",
         "1/6",
         "1/7",
@@ -32,7 +32,7 @@
         "2/13",
         "2/11"
     ],
-    "Win Market Draw Odds": [
+    "Draw Odds": [
         "11/2",
         "6/1",
         "7/1",
@@ -60,7 +60,7 @@
         "7/1",
         "196/ 25"
     ],
-    "Win Market Leicester Odds": [
+    "Away Win Odds": [
         "14/1",
         "12/1",
         "15/1",
@@ -336,16 +336,13 @@
         "10/23",
         "3/7"
     ],
-    "Total Home Goals Under 3 Odds": [
-        "7/10"
-    ],
     "Total Home Goals Over 2.5 Odds": [
         "4/6",
         "8/13",
         "7/10",
         "7/10",
         "4/6",
-        "8/13",
+        "13/20",
         "4/6",
         "8/13",
         "4/6",
@@ -361,6 +358,9 @@
         "4/6",
         "5/8"
     ],
+    "Total Home Goals Under 3 Odds": [
+        "7/10"
+    ],
     "Total Home Goals Over 3 Odds": [
         "21/20"
     ],
@@ -370,7 +370,7 @@
         "11/10",
         "11/10",
         "11/10",
-        "23/20",
+        "11/10",
         "11/10",
         "23/20",
         "11/10",
@@ -483,66 +483,5 @@
     ],
     "Total Home Goals Over 7.5 Odds": [
         "40/1"
-    ],
-    "To Win To Nil Man City Odds": [
-        "1/1",
-        "1/1",
-        "1/1",
-        "1/1",
-        "1/1",
-        "21/20",
-        "19/20",
-        "1/1",
-        "10/11",
-        "19/20",
-        "10/11",
-        "21/20",
-        "1/1",
-        "19/20",
-        "1/1",
-        "5/7"
-    ],
-    "To Win To Nil Leicester Odds": [
-        "22/1",
-        "25/1",
-        "35/1",
-        "25/1",
-        "30/1",
-        "35/1",
-        "22/1",
-        "22/1",
-        "28/1",
-        "22/1",
-        "22/1",
-        "20/1",
-        "22/1",
-        "22/1",
-        "36/5"
-    ],
-    "Total Home Goals Exact Total Goals 3 Or More Odds": [
-        "4/6"
-    ],
-    "Total Home Goals Exact 2 Odds": [
-        "11/4",
-        "27/10",
-        "27/10",
-        "27/10",
-        "51/19"
-    ],
-    "Total Home Goals Exact 1 Odds": [
-        "9/2",
-        "4/1",
-        "17/4",
-        "4/1",
-        "17/4",
-        "23/5"
-    ],
-    "Total Home Goals Exact 0 Odds": [
-        "14/1",
-        "12/1",
-        "11/1",
-        "53/20",
-        "11/1",
-        "83/10"
     ]
 }

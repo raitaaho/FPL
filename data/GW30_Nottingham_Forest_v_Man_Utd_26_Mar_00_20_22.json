@@ -4,7 +4,7 @@
     "Underdog Bonus": "Away",
     "Gameweek": 30,
     "Link": "https://www.oddschecker.com/football/english/premier-league/nottingham-forest-v-man-utd/winner",
-    "Win Market Nottingham Forest Odds": [
+    "Home Win Odds": [
         "11/10",
         "23/20",
         "23/20",
@@ -33,7 +33,7 @@
         "5/4",
         "5/4"
     ],
-    "Win Market Man Utd Odds": [
+    "Away Win Odds": [
         "11/5",
         "23/10",
         "9/4",
@@ -62,7 +62,7 @@
         "23/10",
         "23/10"
     ],
-    "Win Market Draw Odds": [
+    "Draw Odds": [
         "13/5",
         "23/10",
         "12/5",
@@ -195,7 +195,7 @@
         "7/4",
         "13/8",
         "9/5",
-        "9/5",
+        "7/4",
         "7/4",
         "7/4",
         "17/10",
@@ -220,7 +220,7 @@
         "2/1",
         "2/1",
         "19/10",
-        "19/10",
+        "2/1",
         "2/1",
         "19/10",
         "37/20",
@@ -292,7 +292,7 @@
     "Total Away Goals Over 5.5 Odds": [
         "33/1",
         "150/1",
-        "150/1",
+        "125/1",
         "33/1"
     ],
     "Total Home Goals Under 5.5 Odds": [
