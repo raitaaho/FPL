@@ -25,7 +25,7 @@ jobs:
     - name: Check for new Excel and JSON files
       id: check_files
       run: |
-        new_files=$(git diff --name-only HEAD^ HEAD | grep -E '\.(xlsx|json)$' || true)
+        new_files=$(git diff --name-only HEAD~1 HEAD | grep -E '\.(xlsx|json)$' || true)
         echo "new_files=$new_files" >> $GITHUB_ENV
     - name: Upload new Excel and JSON files to S3
       if: env.new_files != ''
