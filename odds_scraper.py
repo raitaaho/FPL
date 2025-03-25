@@ -159,8 +159,8 @@ def fetch_all_odds(match, driver):
     Fetches the odds for odd_type and returns an array containing the odds
     '''
     link = match.get('Link', 'Link not found')
-    home_team = match.get('Home Team', 'Unknown')
-    away_team = match.get('Away Team', 'Unknown')
+    odds_dict = {}
+    i = 0
 
     try:
         driver.get(link)
@@ -175,7 +175,6 @@ def fetch_all_odds(match, driver):
     except TimeoutException:
         print('Ad did not pop up')
     try:
-        odds_dict = {}
         # Find the section
         headers = driver.find_elements(By.XPATH, "//h2")
         # Expand the section if it's collapsed
@@ -186,82 +185,79 @@ def fetch_all_odds(match, driver):
             else:
                 if header.get_attribute("aria-expanded") == "false":
                     header.click()
-                time.sleep(3)
+                    time.sleep(3)
                 try:
-                    compare_odds = header.find_element(By.XPATH, "./following-sibling::*[1]/*[1]/button[contains(text(), 'Compare All Odds')]")
+                    compare_odds = header.find_element(By.XPATH, "./following-sibling::*[1]/*[1]/button[text()='Compare All Odds']")
                     # Expand the section if it's collapsed
                     if compare_odds.get_attribute("aria-expanded") == "false":
                         compare_odds.click()
                         time.sleep(3)  # Wait for the section to expand
                     try:
+                        time.sleep(3)
                         if header_text == 'Win Market':
-                            outcomes = header.find_elements(By.XPATH, "./following::h4[contains(text(), 'Win Market')]/following::a[position()<4]")
-                            odds_columns = header.find_elements(By.XPATH, "./following::h4[contains(text(), 'Win Market')]/following::div[@class='oddsAreaWrapper_o17xb9rs RowLayout_refg9ta']")
-                            for outcome in outcomes:
-                                outcome_string = outcome.get_attribute("innerText")
-                                if outcome_string == 'Draw':
-                                    odds_dict[f"{outcome_string} Odds"] = []
-                                else:
-                                    if outcome_string == home_team:
-                                        odds_dict[f"Home Win Odds"] = []
-                                    else:
-                                        odds_dict[f"Away Win Odds"] = []
+                            outcomes = header.find_elements(By.XPATH, "./following::h4[text()='Win Market']/following::a[position()<4]")
+                            odds_columns = header.find_elements(By.XPATH, f"./following::h4[text()='{header_text}']/following::div[@class='oddsAreaWrapper_o17xb9rs RowLayout_refg9ta'][position()<4]")  
                         else:
-                            outcomes = header.find_elements(By.XPATH, "./following::h4[(text() ='" + header_text + "')]/following::span[@class='BetRowLeftBetName_b1m53rgx']")
-                            odds_columns = header.find_elements(By.XPATH, "./following::h4[(text() ='" + header_text + "')]/following::div[@class='oddsAreaWrapper_o17xb9rs RowLayout_refg9ta']")
+                            outcomes = header.find_elements(By.XPATH, f"./following::h4[text()='{header_text}']/following::span[@class='BetRowLeftBetName_b1m53rgx']")
+                            odds_columns = header.find_elements(By.XPATH, f"./following::h4[text()='{header_text}']/following::div[@class='oddsAreaWrapper_o17xb9rs RowLayout_refg9ta']")
+                        try:
                             for outcome in outcomes:
                                 outcome_string = outcome.get_attribute("innerText")
                                 odds_dict[f"{header_text} {outcome_string} Odds"] = []
-                        try:
-                            i = 0
+                            
                             for column in odds_columns:
                                 odd_buttons = column.find_elements(By.XPATH, "./child::button")
                                 odds_list = []
                                 for odd_button in odd_buttons:
                                     odd_text = odd_button.get_attribute("innerText")
-                                    if odd_text.find(' ') != -1:
-                                        odd_text = odd_text.replace(' ', '')
-                                    odd_fraction = Fraction(odd_text)
-                                    odds_list.append(float(odd_fraction + 1))
-                                #if len(odds_list) > 4:
-                                    # Include only odds that do not deviate from the mean more than the mean 
-                                    #odds_list = [i for i in odds_list if abs(i - (sum(odds_list)/len(odds_list))) < sum(odds_list)/len(odds_list)]
-                                #if len(odds_list) > 7:
-                                    # Include only odds that do not deviate from the mean more than half of the mean mean
-                                    #odds_list = [i for i in odds_list if abs(i - (sum(odds_list)/len(odds_list))) < (sum(odds_list)/len(odds_list))/2]
+                                    odds_list.append(odd_text)
+
                                 odds_dict[list(odds_dict)[i]] = odds_list
                                 i += 1
-                            header.click()
-                            time.sleep(3)
                             print(f"Found odds for {header_text}")
                         except Exception as e:
-                            print("Couldn't get odds for ", list(odds_dict)[i])              
+                            print("Couldn't find odds for ", list(odds_dict)[i])              
                     except Exception as e:
-                        print(f"Couldn't find {header_text} All Odds Section", e)
+                        print(f"Couldn't find {header_text} odds", e)
                 except Exception as e:
-                    header.click()
-                    time.sleep(3)
                     print(f"Couldn't click Compare All Odds on {header_text}")
+                header.click()
+                time.sleep(3)
     except Exception as e:
         print(f"Couldn't find or expand section: {header_text}")
 
     return odds_dict
+        
 
 def scrape_all_matches(match_dict, driver, counter=0):
-    updated_match_dict = match_dict.copy()
+    cur_dir = os.getcwd()
+    json_dir = os.path.join(cur_dir, "data", "json")
+    
     for match, details in match_dict.items():
+        home_team = details.get('Home Team', 'Unknown')
+        away_team = details.get('Away Team', 'Unknown')
+        underdog_bonus = details.get('Underdog Bonus', 'Unknown')
+        gw = details.get('Gameweek', 'Unknown')
+        link = details.get('Link', 'Unknown')
+        match_odds_dict = {}
+        match_odds_dict = {'Home Team': home_team, 'Away Team': away_team, 'Underdog Bonus': underdog_bonus, 'Gameweek': gw, 'Link': link}
         counter += 1
 
         print('')
         print(f"{counter}/{len(match_dict)} Fetching odds for {match}")
 
-        odds_dict = fetch_all_odds(details, driver)
-        for odd_type, odd_list in odds_dict.items():
-            updated_match_dict[match].update({odd_type: odd_list})
+        match_odds = fetch_all_odds(details, driver)
 
-    return updated_match_dict
-    
-
+        for odd_type, odd_list in match_odds.items():
+            match_odds_dict.update({odd_type: odd_list})
+        match_odds_json = json.dumps(match_odds_dict, indent=4)
+        current_time = datetime.now()
+        try:
+            with open(f"{json_dir}\\GW{gw}_{home_team}_v_{away_team}_{current_time.strftime('%d')}_{current_time.strftime('%b')}_{current_time.strftime('%H')}_{current_time.strftime('%M')}_{current_time.strftime('%S')}.json", "w") as outfile:
+                outfile.write(match_odds_json)
+                print(f"Match {match} odds successfully written to GW{gw}_{home_team}_v_{away_team}_{current_time.strftime('%d')}_{current_time.strftime('%b')}_{current_time.strftime('%H')}_{current_time.strftime('%M')}_{current_time.strftime('%S')}.json")
+        except Exception as e:
+            print(f"Couldn't write fixture {match} odds to file ", e)
 def main():
     teams_data, team_id_to_name = fetch_fpl_data()
     fixtures = get_all_fixtures()
@@ -271,24 +267,7 @@ def main():
     driver = uc.Chrome() # Replace with the path to your WebDriver if needed
 
     match_dict = fetch_all_match_links(next_fixtures, team_id_to_name, teams_positions_map, driver)
-    all_odds_dict = scrape_all_matches(match_dict, driver)
-    all_odds_json = json.dumps(match_dict, indent=4) 
-
-    # Get the current time to append to the file name
-    current_time = datetime.now()
-    cur_dir = os.getcwd()
-    # Folders where the data is stored
-    excel_dir = os.path.join(cur_dir, "data", "excel")
-    json_dir = os.path.join(cur_dir, "data", "json")
-    with open(f"{json_dir}\\GW{next_gw}_output_{current_time.strftime('%d')}_{current_time.strftime('%b')}_{current_time.strftime('%H')}_{current_time.strftime('%M')}_{current_time.strftime('%S')}.json", "w") as outfile:
-        outfile.write(all_odds_json)
-
-    all_odds_df = pd.DataFrame.from_dict(all_odds_dict, orient='index')
-    all_odds_df.index.name = 'match_title'
-
-    # Create an Excel with the DataFrame
-    with pd.ExcelWriter(f"{excel_dir}\\GW{next_gw}_output_{current_time.strftime('%d')}_{current_time.strftime('%b')}_{current_time.strftime('%H')}_{current_time.strftime('%M')}_{current_time.strftime('%S')}.xlsx") as writer:
-        all_odds_df.to_excel(writer, sheet_name='Data')
+    scrape_all_matches(match_dict, driver)
     
 if __name__=="__main__":
     main()
