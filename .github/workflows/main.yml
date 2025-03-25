@@ -24,6 +24,7 @@ jobs:
       run: |
         python -m pip install --upgrade pip
         pip install boto3
+
     - name: Check for new Excel and JSON files
       id: check_files
       run: |
@@ -32,6 +33,7 @@ jobs:
           echo "No new or modified files found."
         else
           echo "Detected new or modified files: $new_files"
+          new_files=$(echo "$new_files" | tr '\n' ' ')
           echo "new_files=\"$new_files\"" >> $GITHUB_ENV
         fi
   
