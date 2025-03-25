@@ -34,7 +34,7 @@ jobs:
         else
           echo "Detected new or modified files: $new_files"
           new_files=$(echo "$new_files")
-          echo "new_files=\"$new_files\"" >> $GITHUB_ENV
+          echo "new_files=\$new_files\" >> $GITHUB_ENV
         fi
   
     - name: Debug new_files
