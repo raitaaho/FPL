@@ -27,8 +27,9 @@ jobs:
     - name: Check for new Excel and JSON files
       id: check_files
       run: |
-        new_files=$(find data/json -type f -name '*.json' -o -name '*.xlsx')
-        echo "new_files=\"$new_files\"" >> $GITHUB_ENV
+        new_files_json=$(find data/json -type f -name '*.json' -o -name '*.xlsx' | tr '\n' ' ')
+        new_files_excel=$(find data/excel -type f -name '*.xlsx' | tr '\n' ' ')
+        echo "new_files=\"$new_files_json $new_files_excel\"" >> $GITHUB_ENV
     - name: Upload new Excel and JSON files to S3
       if: env.new_files != ''
       env:
