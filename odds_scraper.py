@@ -175,7 +175,6 @@ def fetch_all_odds(match, driver):
     except TimeoutException:
         print('Ad did not pop up')
     try:
-        odds_dict = {}
         # Find the section
         headers = driver.find_elements(By.XPATH, "//h2")
         # Expand the section if it's collapsed
@@ -193,6 +192,7 @@ def fetch_all_odds(match, driver):
                     if compare_odds.get_attribute("aria-expanded") == "false":
                         compare_odds.click()
                         time.sleep(3)  # Wait for the section to expand
+                    odds_dict = {}
                     try:
                         if header_text == 'Win Market':
                             outcomes = header.find_elements(By.XPATH, "./following::h4[contains(text(), 'Win Market')]/following::a[position()<4]")
@@ -223,12 +223,6 @@ def fetch_all_odds(match, driver):
                                         odd_text = odd_text.replace(' ', '')
                                     odd_fraction = Fraction(odd_text)
                                     odds_list.append(float(odd_fraction + 1))
-                                #if len(odds_list) > 4:
-                                    # Include only odds that do not deviate from the mean more than the mean 
-                                    #odds_list = [i for i in odds_list if abs(i - (sum(odds_list)/len(odds_list))) < sum(odds_list)/len(odds_list)]
-                                #if len(odds_list) > 7:
-                                    # Include only odds that do not deviate from the mean more than half of the mean mean
-                                    #odds_list = [i for i in odds_list if abs(i - (sum(odds_list)/len(odds_list))) < (sum(odds_list)/len(odds_list))/2]
                                 odds_dict[list(odds_dict)[i]] = odds_list
                                 i += 1
                             header.click()
@@ -244,7 +238,6 @@ def fetch_all_odds(match, driver):
                     print(f"Couldn't click Compare All Odds on {header_text}")
     except Exception as e:
         print(f"Couldn't find or expand section: {header_text}")
-
     return odds_dict
 
 def scrape_all_matches(match_dict, driver, counter=0):
@@ -255,8 +248,8 @@ def scrape_all_matches(match_dict, driver, counter=0):
         print('')
         print(f"{counter}/{len(match_dict)} Fetching odds for {match}")
 
-        odds_dict = fetch_all_odds(details, driver)
-        for odd_type, odd_list in odds_dict.items():
+        fixtures_odds_dict = fetch_all_odds(details, driver)
+        for odd_type, odd_list in fixtures_odds_dict.items():
             updated_match_dict[match].update({odd_type: odd_list})
 
     return updated_match_dict
