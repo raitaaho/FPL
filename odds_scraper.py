@@ -195,6 +195,7 @@ def fetch_all_odds(match, driver):
                     if compare_odds.get_attribute("aria-expanded") == "false":
                         compare_odds.click()
                         time.sleep(3)  # Wait for the section to expand
+                    odds_dict = {}
                     try:
                         time.sleep(3)
                         if header_text == 'Win Market':
@@ -220,10 +221,20 @@ def fetch_all_odds(match, driver):
                                 odds_list = []
                                 for odd_button in odd_buttons:
                                     odd_text = odd_button.get_attribute("innerText")
+<<<<<<< HEAD
                                     if odd_text.find(' ') != -1:
                                         odd_text = odd_text.replace(' ', '')
+=======
+<<<<<<< HEAD
+                                    if odd_text.find(' ') != -1:
+                                        odd_text = odd_text.replace(' ', '')
+                                    odd_fraction = Fraction(odd_text)
+                                    odds_list.append(float(odd_fraction + 1))
+=======
+>>>>>>> 5da2cf13816b1561ab89d8b3b7adb7211ae924a1
                                     odds_list.append(odd_text)
 
+>>>>>>> 9b73ef7a722e9ecc15dc0d308464d222e9544e53
                                 odds_dict[list(odds_dict)[i]] = odds_list
                                 i += 1
                             print(f"Found odds for {header_text}")
@@ -237,7 +248,6 @@ def fetch_all_odds(match, driver):
                 time.sleep(3)
     except Exception as e:
         print(f"Couldn't find or expand section: {header_text}")
-
     return odds_dict
         
 
@@ -256,7 +266,16 @@ def scrape_all_matches(match_dict, driver, data_dir, counter=0):
         print('')
         print(f"{counter}/{len(match_dict)} Fetching odds for {match}")
 
+<<<<<<< HEAD
+        fixtures_odds_dict = fetch_all_odds(details, driver)
+        for odd_type, odd_list in fixtures_odds_dict.items():
+            updated_match_dict[match].update({odd_type: odd_list})
+
+    return updated_match_dict
+    
+=======
         match_odds = fetch_all_odds(details, driver)
+>>>>>>> 9b73ef7a722e9ecc15dc0d308464d222e9544e53
 
         for odd_type, odd_list in match_odds.items():
             match_odds_dict.update({odd_type: odd_list})
