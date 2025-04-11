@@ -27,7 +27,7 @@ TEAM_NAMES_ODDSCHECKER = {
     "Spurs": "Tottenham",
     }
 
-odd_types = ['Win Market', 'Player Assists', 'To Score A Hat-Trick', 'Anytime Goalscorer', 'To Score 2 Or More Goals', 'Goalkeeper Saves',  'Total Home Goals', 'Total Away Goals', 'To Win To Nil', 'Total Home Goals Exact', 'Total Away Goals Exact']
+odd_types = ['Win Market', 'Player Assists', 'To Score A Hat-Trick', 'Anytime Goalscorer', 'To Score 2 Or More Goals', 'Goalkeeper Saves',  'Total Home Goals', 'Total Away Goals']
 
 def get_all_fixtures():
     url = "https://fantasy.premierleague.com/api/fixtures/"
@@ -59,12 +59,13 @@ def fetch_fpl_data():
     if response.status_code != 200:
         raise Exception(f"Failed to fetch teams: {response.status_code}")
     data = response.json()
-    # Get team data from FPL API
+    # Get team and player data from FPL API
     teams_data = data['teams']
+    players_data = data['elements']
     # A dictionary containing the team name corresponding to each team id
-    team_id_to_name = {team['id']: team['name'] for team in teams_data}
+    team_id_to_name = {team['id']: team['name'] for team in data['teams']}
 
-    return teams_data, team_id_to_name
+    return teams_data, players_data, team_id_to_name
 
 def get_next_fixtures(fixtures, next_gw, team_id_to_name):
     
@@ -159,6 +160,8 @@ def fetch_all_odds(match, driver):
     Fetches the odds for odd_type and returns an array containing the odds
     '''
     link = match.get('Link', 'Link not found')
+    home_team = match.get('Home Team', 'Home Team not found')
+    away_team = match.get('Away Team', 'Away Team not found')
     odds_dict = {}
     i = 0
 
@@ -198,14 +201,21 @@ def fetch_all_odds(match, driver):
                         if header_text == 'Win Market':
                             outcomes = header.find_elements(By.XPATH, "./following::h4[text()='Win Market']/following::a[position()<4]")
                             odds_columns = header.find_elements(By.XPATH, f"./following::h4[text()='{header_text}']/following::div[@class='oddsAreaWrapper_o17xb9rs RowLayout_refg9ta'][position()<4]")  
+                            for outcome in outcomes:
+                                outcome_string = outcome.get_attribute("innerText")
+                                if outcome_string == home_team:
+                                    odds_dict["Home Win Odds"] = []
+                                elif outcome_string == away_team:
+                                    odds_dict["Away Win Odds"] = []
+                                else:
+                                    odds_dict["Draw Odds"] = []
                         else:
                             outcomes = header.find_elements(By.XPATH, f"./following::h4[text()='{header_text}']/following::span[@class='BetRowLeftBetName_b1m53rgx']")
                             odds_columns = header.find_elements(By.XPATH, f"./following::h4[text()='{header_text}']/following::div[@class='oddsAreaWrapper_o17xb9rs RowLayout_refg9ta']")
-                        try:
                             for outcome in outcomes:
                                 outcome_string = outcome.get_attribute("innerText")
                                 odds_dict[f"{header_text} {outcome_string} Odds"] = []
-                            
+                        try:
                             for column in odds_columns:
                                 odd_buttons = column.find_elements(By.XPATH, "./child::button")
                                 odds_list = []
@@ -214,9 +224,14 @@ def fetch_all_odds(match, driver):
 <<<<<<< HEAD
                                     if odd_text.find(' ') != -1:
                                         odd_text = odd_text.replace(' ', '')
+=======
+<<<<<<< HEAD
+                                    if odd_text.find(' ') != -1:
+                                        odd_text = odd_text.replace(' ', '')
                                     odd_fraction = Fraction(odd_text)
                                     odds_list.append(float(odd_fraction + 1))
 =======
+>>>>>>> 5da2cf13816b1561ab89d8b3b7adb7211ae924a1
                                     odds_list.append(odd_text)
 
 >>>>>>> 9b73ef7a722e9ecc15dc0d308464d222e9544e53
@@ -236,10 +251,7 @@ def fetch_all_odds(match, driver):
     return odds_dict
         
 
-def scrape_all_matches(match_dict, driver, counter=0):
-    cur_dir = os.getcwd()
-    json_dir = os.path.join(cur_dir, "data", "json")
-    
+def scrape_all_matches(match_dict, driver, data_dir, counter=0):
     for match, details in match_dict.items():
         home_team = details.get('Home Team', 'Unknown')
         away_team = details.get('Away Team', 'Unknown')
@@ -249,6 +261,7 @@ def scrape_all_matches(match_dict, driver, counter=0):
         match_odds_dict = {}
         match_odds_dict = {'Home Team': home_team, 'Away Team': away_team, 'Underdog Bonus': underdog_bonus, 'Gameweek': gw, 'Link': link}
         counter += 1
+        match_string_for_filename = "_".join(str(word) for word in match.split())
 
         print('')
         print(f"{counter}/{len(match_dict)} Fetching odds for {match}")
@@ -268,22 +281,69 @@ def scrape_all_matches(match_dict, driver, counter=0):
             match_odds_dict.update({odd_type: odd_list})
         match_odds_json = json.dumps(match_odds_dict, indent=4)
         current_time = datetime.now()
+        new_filename = f"{data_dir}\\GW{gw}_{match_string_for_filename}_odds_{current_time.strftime('%d')}_{current_time.strftime('%b')}_{current_time.strftime('%H')}_{current_time.strftime('%M')}_{current_time.strftime('%S')}.json"
         try:
-            with open(f"{json_dir}\\GW{gw}_{home_team}_v_{away_team}_{current_time.strftime('%d')}_{current_time.strftime('%b')}_{current_time.strftime('%H')}_{current_time.strftime('%M')}_{current_time.strftime('%S')}.json", "w") as outfile:
+            with open(new_filename, "w") as outfile:
                 outfile.write(match_odds_json)
-                print(f"Match {match} odds successfully written to GW{gw}_{home_team}_v_{away_team}_{current_time.strftime('%d')}_{current_time.strftime('%b')}_{current_time.strftime('%H')}_{current_time.strftime('%M')}_{current_time.strftime('%S')}.json")
+                print(f"Match {match} odds successfully written to {new_filename}")
+            file_prefix = f"GW{gw}_{match_string_for_filename}_odds_"
+            for filename in os.listdir(data_dir):
+                if filename.startswith(file_prefix) and filename != os.path.basename(new_filename):
+                    os.remove(os.path.join(data_dir, filename))
         except Exception as e:
-            print(f"Couldn't write fixture {match} odds to file ", e)
+            print(f"Couldn't create or delete previous fixture {match} odds file ", e)
 def main():
-    teams_data, team_id_to_name = fetch_fpl_data()
+    teams_data, players_data, team_id_to_name = fetch_fpl_data()
     fixtures = get_all_fixtures()
+    teams_data_json = json.dumps(teams_data, indent=4)
+    players_data_json = json.dumps(players_data, indent=4)
+    fixtures_json = json.dumps(fixtures, indent=4)
+    current_time = datetime.now()
+    cur_dir = os.getcwd()
+    api_data_dir = os.path.join(cur_dir, "data", "api_data")
+    fixture_data_dir = os.path.join(cur_dir, "data", "fixture_data")
+    file_suffix = f"{current_time.strftime('%d')}_{current_time.strftime('%b')}_{current_time.strftime('%H')}_{current_time.strftime('%M')}_{current_time.strftime('%S')}.json"
+    filename1 = f"{api_data_dir}\\fixtures_data_{file_suffix}"
+    filename2 = f"{api_data_dir}\\players_data_{file_suffix}"
+    filename3 = f"{api_data_dir}\\teams_data_{file_suffix}"
+    try:
+        with open(filename3, "w") as outfile:
+            outfile.write(teams_data_json)
+            print(f"Teams data fetched from FPL API successfully written to {filename3}")
+        file_prefix = f"teams_data_"
+        for filename in os.listdir(api_data_dir):
+            if filename.startswith(file_prefix) and filename != os.path.basename(filename3):
+                os.remove(os.path.join(api_data_dir, filename))
+    except Exception as e:
+        print(f"Couldn't create or delete previous teams data file", e)
+    try:
+        with open(filename2, "w") as outfile:
+            outfile.write(players_data_json)
+            print(f"Players data fetched from FPL API successfully written to {filename2}")
+        file_prefix = f"players_data_"
+        for filename in os.listdir(api_data_dir):
+            if filename.startswith(file_prefix) and filename != os.path.basename(filename2):
+                os.remove(os.path.join(api_data_dir, filename))
+    except Exception as e:
+        print(f"Couldn't create or delete previous players data file", e)
+    try:
+        with open(filename1, "w") as outfile:
+            outfile.write(fixtures_json)
+            print(f"Fixtures data fetched from FPL API successfully written to {filename1}")
+        file_prefix = f"fixtures_data_"
+        for filename in os.listdir(api_data_dir):
+            if filename.startswith(file_prefix) and filename != os.path.basename(filename1):
+                os.remove(os.path.join(api_data_dir, filename))
+    except Exception as e:
+        print(f"Couldn't create or delete previous fixtures data file", e)
+
     next_gw = get_next_gw(fixtures)
     next_fixtures = get_next_fixtures(fixtures, next_gw, team_id_to_name)
     teams_positions_map = teams_league_positions_mapping(teams_data)
     driver = uc.Chrome() # Replace with the path to your WebDriver if needed
 
     match_dict = fetch_all_match_links(next_fixtures, team_id_to_name, teams_positions_map, driver)
-    scrape_all_matches(match_dict, driver)
+    scrape_all_matches(match_dict, driver, fixture_data_dir)
     
 if __name__=="__main__":
     main()
