@@ -88,6 +88,7 @@ def fetch_all_match_links(next_fixtures, team_id_to_name, teams_positions_map, d
     Returns a dictionary containing details for every game of the next gameweek
     '''
     driver.get("https://www.oddschecker.com/football/english/premier-league/")
+    driver.execute_script("document.body.style.zoom='33%'")
     wait = WebDriverWait(driver, 10)
     try:
         span_element = wait.until(EC.element_to_be_clickable((By.XPATH, '/html/body/div[1]/div/section/h2/span[2]')))
@@ -123,7 +124,7 @@ def fetch_all_match_links(next_fixtures, team_id_to_name, teams_positions_map, d
     except Exception as e:
         print("Couldn't click Matches tab ", e)
 
-    matches_details = defaultdict(lambda: defaultdict(list))
+    matches_details = defaultdict(lambda: defaultdict(str))
     for fixture in next_fixtures:
         home_team_id = fixture['team_h']
         away_team_id = fixture['team_a']
@@ -163,10 +164,10 @@ def fetch_all_odds(match, driver):
     home_team = match.get('Home Team', 'Home Team not found')
     away_team = match.get('Away Team', 'Away Team not found')
     odds_dict = {}
-    i = 0
 
     try:
         driver.get(link)
+        driver.execute_script("document.body.style.zoom='33%'")
     except Exception as e:
         print("Couldn't open link ", link, " ", e)
     wait = WebDriverWait(driver, 5)
@@ -186,6 +187,8 @@ def fetch_all_odds(match, driver):
             if header_text not in odd_types:
                 continue
             else:
+                if odds_dict.get(header_text, 'None') == 'None':
+                    odds_dict[header_text] = {}
                 if header.get_attribute("aria-expanded") == "false":
                     header.click()
                     time.sleep(3)
@@ -195,7 +198,6 @@ def fetch_all_odds(match, driver):
                     if compare_odds.get_attribute("aria-expanded") == "false":
                         compare_odds.click()
                         time.sleep(3)  # Wait for the section to expand
-                    odds_dict = {}
                     try:
                         time.sleep(3)
                         if header_text == 'Win Market':
@@ -204,42 +206,46 @@ def fetch_all_odds(match, driver):
                             for outcome in outcomes:
                                 outcome_string = outcome.get_attribute("innerText")
                                 if outcome_string == home_team:
-                                    odds_dict["Home Win Odds"] = []
+                                    odds_dict[header_text][f"{home_team} Win"] = []         
                                 elif outcome_string == away_team:
-                                    odds_dict["Away Win Odds"] = []
+                                    odds_dict[header_text][f"{away_team} Win"] = []
                                 else:
-                                    odds_dict["Draw Odds"] = []
+                                    odds_dict[header_text][f"{home_team} {away_team} Draw"] = []
+                            
+                        elif header_text == 'Total Home Goals':
+                            outcomes = header.find_elements(By.XPATH, f"./following::h4[text()='{header_text}']/following::span[@class='BetRowLeftBetName_b1m53rgx']")
+                            odds_columns = header.find_elements(By.XPATH, f"./following::h4[text()='{header_text}']/following::div[@class='oddsAreaWrapper_o17xb9rs RowLayout_refg9ta']")
+                            for outcome in outcomes:
+                                outcome_string = outcome.get_attribute("innerText")
+                                odds_dict[header_text][f"{home_team} {outcome_string}"] = []
+                        elif header_text == 'Total Away Goals':
+                            outcomes = header.find_elements(By.XPATH, f"./following::h4[text()='{header_text}']/following::span[@class='BetRowLeftBetName_b1m53rgx']")
+                            odds_columns = header.find_elements(By.XPATH, f"./following::h4[text()='{header_text}']/following::div[@class='oddsAreaWrapper_o17xb9rs RowLayout_refg9ta']")
+                            for outcome in outcomes:
+                                outcome_string = outcome.get_attribute("innerText")
+                                odds_dict[header_text][f"{away_team} {outcome_string}"] = []
                         else:
                             outcomes = header.find_elements(By.XPATH, f"./following::h4[text()='{header_text}']/following::span[@class='BetRowLeftBetName_b1m53rgx']")
                             odds_columns = header.find_elements(By.XPATH, f"./following::h4[text()='{header_text}']/following::div[@class='oddsAreaWrapper_o17xb9rs RowLayout_refg9ta']")
                             for outcome in outcomes:
                                 outcome_string = outcome.get_attribute("innerText")
-                                odds_dict[f"{header_text} {outcome_string} Odds"] = []
+                                odds_dict[header_text][outcome_string] = []
                         try:
+                            i = 0
                             for column in odds_columns:
                                 odd_buttons = column.find_elements(By.XPATH, "./child::button")
                                 odds_list = []
                                 for odd_button in odd_buttons:
                                     odd_text = odd_button.get_attribute("innerText")
-<<<<<<< HEAD
-                                    if odd_text.find(' ') != -1:
-                                        odd_text = odd_text.replace(' ', '')
-=======
-<<<<<<< HEAD
                                     if odd_text.find(' ') != -1:
                                         odd_text = odd_text.replace(' ', '')
                                     odd_fraction = Fraction(odd_text)
-                                    odds_list.append(float(odd_fraction + 1))
-=======
->>>>>>> 5da2cf13816b1561ab89d8b3b7adb7211ae924a1
-                                    odds_list.append(odd_text)
-
->>>>>>> 9b73ef7a722e9ecc15dc0d308464d222e9544e53
-                                odds_dict[list(odds_dict)[i]] = odds_list
+                                    odds_list.append(float(1/(odd_fraction + 1)))
+                                odds_dict[header_text][list(odds_dict[header_text])[i]] = odds_list
                                 i += 1
                             print(f"Found odds for {header_text}")
                         except Exception as e:
-                            print("Couldn't find odds for ", list(odds_dict)[i])              
+                            print("Couldn't find odds for ", list(odds_dict[header_text])[i])              
                     except Exception as e:
                         print(f"Couldn't find {header_text} odds", e)
                 except Exception as e:
@@ -252,6 +258,7 @@ def fetch_all_odds(match, driver):
         
 
 def scrape_all_matches(match_dict, driver, data_dir, counter=0):
+    all_probs_dict = {}
     for match, details in match_dict.items():
         home_team = details.get('Home Team', 'Unknown')
         away_team = details.get('Away Team', 'Unknown')
@@ -265,33 +272,77 @@ def scrape_all_matches(match_dict, driver, data_dir, counter=0):
 
         print('')
         print(f"{counter}/{len(match_dict)} Fetching odds for {match}")
-
-<<<<<<< HEAD
-        fixtures_odds_dict = fetch_all_odds(details, driver)
-        for odd_type, odd_list in fixtures_odds_dict.items():
-            updated_match_dict[match].update({odd_type: odd_list})
-
-    return updated_match_dict
     
-=======
         match_odds = fetch_all_odds(details, driver)
->>>>>>> 9b73ef7a722e9ecc15dc0d308464d222e9544e53
 
-        for odd_type, odd_list in match_odds.items():
-            match_odds_dict.update({odd_type: odd_list})
-        match_odds_json = json.dumps(match_odds_dict, indent=4)
+        for odd_type, probs in match_odds.items():
+            if all_probs_dict.get(odd_type, 'None') == 'None':
+                all_probs_dict[odd_type] = {}
+            for key, prob in probs.items():
+                if odd_type == 'Win Market':
+                    if all_probs_dict[odd_type].get(home_team, 'None') == 'None':
+                        all_probs_dict[odd_type][home_team] = {}
+                    if all_probs_dict[odd_type].get(away_team, 'None') == 'None':
+                        all_probs_dict[odd_type][away_team] = {}
+                    if key == f"{home_team} {away_team} Draw":
+                        match_odds_dict.update({odd_type: {home_team: {'Draw': prob}}})
+                        match_odds_dict.update({odd_type: {away_team: {'Draw': prob}}})
+                        all_probs_dict[odd_type][home_team]['Draw'] = prob
+                        all_probs_dict[odd_type][away_team]['Draw'] = prob
+                    elif key == f"{home_team} Win":
+                        all_probs_dict[odd_type][home_team]['Win'] = prob
+                        match_odds_dict.update({odd_type: {home_team: {'Win': prob}}})
+                    else:
+                        all_probs_dict[odd_type][away_team]['Win'] = prob
+                        match_odds_dict.update({odd_type: {away_team: {'Win': prob}}})
+            
+                else:
+                    index = key.find('Over')
+                    index2 = key.find('Under')
+                    if index != -1:
+                        key1 = key[:index-1]
+                        key2 = key[index:]
+                        if all_probs_dict[odd_type].get(key1, 'None') == 'None':
+                            all_probs_dict[odd_type][key1] = {}
+                        all_probs_dict[odd_type][key1][key2] = prob
+                        match_odds_dict.update({odd_type: {key1: {key2: prob}}})
+                    elif index2 != -1:
+                        key1 = key[:index2-1]
+                        key2 = key[index2:]
+                        if all_probs_dict[odd_type].get(key1, 'None') == 'None':
+                            all_probs_dict[odd_type][key1] = {}
+                        all_probs_dict[odd_type][key1][key2] = prob
+                        match_odds_dict.update({odd_type: {key1: {key2: prob}}})
+                    else:
+                        all_probs_dict[odd_type][key] = prob
+                        match_odds_dict.update({odd_type: {key: prob}})
+         
         current_time = datetime.now()
-        new_filename = f"{data_dir}\\GW{gw}_{match_string_for_filename}_odds_{current_time.strftime('%d')}_{current_time.strftime('%b')}_{current_time.strftime('%H')}_{current_time.strftime('%M')}_{current_time.strftime('%S')}.json"
+        new_filename = f"{data_dir}\\GW{gw}_{match_string_for_filename}_odds_{current_time.strftime('%d')}_{current_time.strftime('%b')}_{current_time.strftime('%H')}_{current_time.strftime('%M')}_{current_time.strftime('%S')}"
         try:
-            with open(new_filename, "w") as outfile:
-                outfile.write(match_odds_json)
-                print(f"Match {match} odds successfully written to {new_filename}")
-            file_prefix = f"GW{gw}_{match_string_for_filename}_odds_"
+            match_odds_df = pd.DataFrame.from_dict(match_odds_dict, orient='index')
+            with pd.ExcelWriter(f"{new_filename}.xlsx") as writer:
+                match_odds_df.to_excel(writer, sheet_name='Odds')
             for filename in os.listdir(data_dir):
-                if filename.startswith(file_prefix) and filename != os.path.basename(new_filename):
+                file_prefix = f"GW{gw}_{match_string_for_filename}_odds_"
+                # Remove the file if it exists and is not the current one
+                if filename.startswith(file_prefix) and filename != os.path.basename(f"{new_filename}.xlsx"):
                     os.remove(os.path.join(data_dir, filename))
         except Exception as e:
             print(f"Couldn't create or delete previous fixture {match} odds file ", e)
+
+    new_filename2 = f"{data_dir}\\GW{gw}_all_probs_{current_time.strftime('%d')}_{current_time.strftime('%b')}_{current_time.strftime('%H')}_{current_time.strftime('%M')}_{current_time.strftime('%S')}"
+    try:
+        all_probs_df = pd.DataFrame.from_dict(all_probs_dict, orient='index')
+        with pd.ExcelWriter(f"{new_filename2}.xlsx") as writer:
+            all_probs_df.to_excel(writer, sheet_name='All Odds')
+        for filename in os.listdir(data_dir):
+            file_prefix2 = f"GW{gw}_all_probs_"
+            if filename.startswith(file_prefix2) and filename != os.path.basename(f"{new_filename2}.xlsx"):
+                os.remove(os.path.join(data_dir, filename))
+    except Exception as e:
+        print(f"Couldn't create or delete previous GW{gw} all probabilities file ", e)
+    
 def main():
     teams_data, players_data, team_id_to_name = fetch_fpl_data()
     fixtures = get_all_fixtures()
