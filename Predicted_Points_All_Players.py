@@ -29,6 +29,8 @@ import matplotlib.pyplot as plt
 import typing
 import statistics
 from IPython.display import display
+import json
+import sys
 
 def get_all_fixtures() -> list:
     """
@@ -114,7 +116,7 @@ PLAYER_NAMES_ODDSCHECKER = {
 
 def get_next_fixtures(fixtures: list, next_gws: list) -> list:
     # Return fixtures for the next full gameweek(s) that have not started yet.
-    return [fixture for fixture in fixtures if (fixture['event'] in next_gws) and (fixture['started'] == False)]
+    return [fixture for fixture in fixtures if (fixture['event'] in next_gws)] # and (fixture['started'] == False)]
 
 def get_pos_range(position: int) -> str:
     """
@@ -403,6 +405,42 @@ def construct_team_and_player_data(
 
     fixtures = [fixture for fixture in fixtures if (fixture['finished'] == True)]
 
+    # --- Error handling for CSV loading ---
+    try:
+        fixtures_22_23_df = pd.read_csv("https://raw.githubusercontent.com/vaastav/Fantasy-Premier-League/master/data/2022-23/fixtures.csv")
+        fixtures_23_24_df = pd.read_csv("https://raw.githubusercontent.com/vaastav/Fantasy-Premier-League/master/data/2023-24/fixtures.csv")
+        teams_22_23_df = pd.read_csv("https://raw.githubusercontent.com/vaastav/Fantasy-Premier-League/master/data/2022-23/teams.csv")
+        teams_23_24_df = pd.read_csv("https://raw.githubusercontent.com/vaastav/Fantasy-Premier-League/master/data/2023-24/teams.csv")
+        player_idlist_22_23_df = pd.read_csv("https://raw.githubusercontent.com/vaastav/Fantasy-Premier-League/master/data/2022-23/player_idlist.csv")
+        player_idlist_23_24_df = pd.read_csv("https://raw.githubusercontent.com/vaastav/Fantasy-Premier-League/master/data/2023-24/player_idlist.csv")
+
+        # Convert DataFrames to lists of dictionaries
+        fixtures_22_23 = fixtures_22_23_df.to_dict(orient='records')
+        fixtures_23_24 = fixtures_23_24_df.to_dict(orient='records')
+        teams_22_23 = teams_22_23_df.to_dict(orient='records')
+        teams_23_24 = teams_23_24_df.to_dict(orient='records')
+        player_idlist_22_23 = player_idlist_22_23_df.to_dict(orient='records')
+        player_idlist_23_24 = player_idlist_23_24_df.to_dict(orient='records')
+    except Exception as e:
+        print(f"Error loading CSV data: {e}", file=sys.stderr)
+        fixtures_22_23 = []
+        fixtures_23_24 = []
+        teams_22_23 = []
+        teams_23_24 = []
+        player_idlist_22_23 = []
+        player_idlist_23_24 = []
+
+    for row in fixtures_22_23:
+        # Convert the 'stats' field from a string to a Python object (list of dictionaries)
+        if 'stats' in row:
+            row['stats'] = ast.literal_eval(row['stats'])
+    for row in fixtures_23_24:
+        # Convert the 'stats' field from a string to a Python object (list of dictionaries)
+        if 'stats' in row:
+            row['stats'] = ast.literal_eval(row['stats'])
+    
+
+    '''
     fixtures_23_24 = []
     with open('fixtures.csv', newline='') as csvfile:
         reader = csv.DictReader(csvfile)
@@ -447,6 +485,7 @@ def construct_team_and_player_data(
             reader6 = csv.DictReader(csvfile6)
             player_idlist_23_24 = [row for row in reader6]
 
+    '''
     team_id_to_name_22_23 = {int(team['id']): TEAM_NAMES_ODDSCHECKER.get(team['name'], team['name']) for team in teams_22_23}
     team_id_to_name_23_24 = {int(team['id']): TEAM_NAMES_ODDSCHECKER.get(team['name'], team['name']) for team in teams_23_24}
 
@@ -526,8 +565,14 @@ def construct_team_and_player_data(
     for fixture in fixtures_22_23:
         home_team_id = int(fixture['team_h'])
         away_team_id = int(fixture['team_a'])
-        home_team_name = TEAM_NAMES_ODDSCHECKER.get(team_id_to_name_22_23[home_team_id], team_id_to_name_22_23[home_team_id])
-        away_team_name = TEAM_NAMES_ODDSCHECKER.get(team_id_to_name_22_23[away_team_id], team_id_to_name_22_23[away_team_id])
+        if home_team_id is None or away_team_id is None:
+            continue
+        home_team_lookup = team_id_to_name_22_23.get(home_team_id, "Unknown")
+        away_team_lookup = team_id_to_name_22_23.get(away_team_id, "Unknown")
+        home_team_key = home_team_lookup if home_team_lookup is not None else ""
+        away_team_key = away_team_lookup if away_team_lookup is not None else ""
+        home_team_name = TEAM_NAMES_ODDSCHECKER.get(home_team_key, home_team_key)
+        away_team_name = TEAM_NAMES_ODDSCHECKER.get(away_team_key, away_team_key)
         home_pos_22_23 = season_22_23_team_positions.get(home_team_name, 21)
         away_pos_22_23 = season_22_23_team_positions.get(away_team_name, 21)
         home_pos_23_24 = season_23_24_team_positions.get(home_team_name, 21)
@@ -697,8 +742,14 @@ def construct_team_and_player_data(
     for fixture in fixtures_23_24:
         home_team_id = int(fixture['team_h'])
         away_team_id = int(fixture['team_a'])
-        home_team_name = TEAM_NAMES_ODDSCHECKER.get(team_id_to_name_23_24[home_team_id], team_id_to_name_23_24[home_team_id])
-        away_team_name = TEAM_NAMES_ODDSCHECKER.get(team_id_to_name_23_24[away_team_id], team_id_to_name_23_24[away_team_id])
+        if home_team_id is None or away_team_id is None:
+            continue
+        home_team_lookup = team_id_to_name_23_24.get(home_team_id, "Unknown")
+        away_team_lookup = team_id_to_name_23_24.get(away_team_id, "Unknown")
+        home_team_key = home_team_lookup if home_team_lookup is not None else ""
+        away_team_key = away_team_lookup if away_team_lookup is not None else ""
+        home_team_name = TEAM_NAMES_ODDSCHECKER.get(home_team_key, home_team_key)
+        away_team_name = TEAM_NAMES_ODDSCHECKER.get(away_team_key, away_team_key)
         home_pos_22_23 = season_22_23_team_positions.get(home_team_name, 21)
         away_pos_22_23 = season_22_23_team_positions.get(away_team_name, 21)
         home_pos_23_24 = season_23_24_team_positions.get(home_team_name, 21)
@@ -1543,7 +1594,7 @@ def fetch_all_match_links(
 
     return matches_details
 
-def fetch_odds(odd_type: str, driver: "webdriver.Chrome") -> typing.Optional[dict]:
+def fetch_odds(match_name: str, odd_type: str, driver: "webdriver.Chrome") -> typing.Optional[dict]:
     """
     Fetch odds for a specific market (e.g., Player Assists, Goalkeeper Saves) from Oddschecker.
 
@@ -1554,7 +1605,23 @@ def fetch_odds(odd_type: str, driver: "webdriver.Chrome") -> typing.Optional[dic
     Returns:
         dict: Mapping from outcome to list of odds, or None if not found.
     """
+    odds_dict = {}
     wait = WebDriverWait(driver, 2)
+    try:
+        # Find the section
+        header = wait.until(EC.element_to_be_clickable((By.XPATH, "//h2[text() ='" + odd_type + "']")))
+        # Expand the section if it's collapsed
+        if header.get_attribute("aria-expanded") == "false":
+            header.click()
+            time.sleep(3)
+    except Exception as e:
+        wait = WebDriverWait(driver, 3)
+        try:
+            close_ad = wait.until(EC.element_to_be_clickable((By.CLASS_NAME, 'webpush-swal2-close')))
+            # Click close ad button
+            close_ad.click()
+        except TimeoutException:
+            print('Ad did not pop up')
     try:
         # Find the section
         header = wait.until(EC.element_to_be_clickable((By.XPATH, "//h2[text() ='" + odd_type + "']")))
@@ -1570,7 +1637,6 @@ def fetch_odds(odd_type: str, driver: "webdriver.Chrome") -> typing.Optional[dic
                 compare_odds.click()
                 time.sleep(3)  # Wait for the section to expand
             try:
-                odds_dict = {}
                 outcomes = driver.find_elements(By.XPATH, "//h4[(text() ='" + odd_type + "')]/following::span[@class='BetRowLeftBetName_b1m53rgx']")
                 odds_columns = driver.find_elements(By.XPATH, "//h4[(text() ='" + odd_type + "')]/following::div[@class='oddsAreaWrapper_o17xb9rs RowLayout_refg9ta']")
                 try:
@@ -1588,18 +1654,20 @@ def fetch_odds(odd_type: str, driver: "webdriver.Chrome") -> typing.Optional[dic
                                     odd_text = odd_text.replace(' ', '')
                                 if odd_text and odd_text.find('/') != -1:
                                     odd_fraction = Fraction(odd_text)
-                                    odds_list.append(odd_fraction)
+                                    # Convert fractional odds to decimal odds
+                                    odd_decimal = float(odd_fraction + 1) if odd_fraction else 0
+                                    odds_list.append(odd_decimal)
                             if len(odds_list) > 2:
-                                # Include only odds that do not deviate from the mean by more than 3 standard deviations
                                 mean = sum(odds_list) / len(odds_list)
                                 std = statistics.stdev(odds_list)
-                                odds_list = [odd for odd in odds_list if abs(odd - mean) <= 3 * std]
+                                # Filter out odds that are more than 2 standard deviations away from the mean
+                                odds_list = [odd for odd in odds_list if abs(odd - mean) <= 2 * std]
                             odds_dict[list(odds_dict)[i]] = odds_list
                             i += 1
-                        header.click()
-                        time.sleep(1)
                         print("Found odds for", odd_type)
-                        return odds_dict
+                        if header.get_attribute("aria-expanded") == "true":
+                            header.click()
+                            time.sleep(2)
                     except Exception as e:
                         print("Couldn't get odds for", odd_type, " ", e)
                 except Exception as e:
@@ -1607,18 +1675,20 @@ def fetch_odds(odd_type: str, driver: "webdriver.Chrome") -> typing.Optional[dic
             except Exception as e:
                 print("Couldn't find", odd_type, " All Odds Section", e)
         except Exception as e:
-            print("Couldn't click Compare All Odds on", odd_type)
-        header.click()
-        time.sleep(1)
+            print("Couldn't click Compare All Odds on", odd_type, " ", e)
+        if header.get_attribute("aria-expanded") == "true":
+            header.click()
+            time.sleep(2)
     except Exception as e:
         print("Couldn't find or expand section:", odd_type)
+    return odds_dict
 
 def fetch_win_market_odds(
     match_dict: dict,
     driver: "webdriver.Chrome",
     player_dict: dict,
     team_stats_dict: dict
-) -> None:
+) -> dict:
     """
     Fetch win/draw odds for a match, calculate probabilities, and update manager entries in player_dict.
 
@@ -1627,12 +1697,16 @@ def fetch_win_market_odds(
         driver (webdriver.Chrome): Selenium WebDriver instance.
         player_dict (dict): Player details dictionary.
         team_stats_dict (dict): Team statistics dictionary.
+
+    Returns:
+        dict: odds_dict with win/draw probabilities for the match.
     """
     home_team = match_dict.get('home_team', 'Unknown')
     away_team = match_dict.get('away_team', 'Unknown')
     Underdog_Bonus = match_dict.get('Underdog Bonus', 'None')
     link = match_dict.get('Link', 'Link not found')
     elo_win_probs = calculate_match_probabilities_with_draw(team_stats_dict[home_team]['ELO'], team_stats_dict[away_team]['ELO'], team_stats_dict[home_team]['HFA'])
+    odds_dict = {}
     
     if link != "Link not found":
         try:
@@ -1662,7 +1736,6 @@ def fetch_win_market_odds(
                     compare_odds.click()
                     time.sleep(3)  # Wait for the section to expand
                 try:
-                    odds_dict = {}
                     outcomes = driver.find_elements(By.XPATH, "//h4[contains(text(), 'Win Market')]/following::a[position()<4]")
                     odds_columns = driver.find_elements(By.XPATH, "//h4[contains(text(), 'Win Market')]/following::div[@class='oddsAreaWrapper_o17xb9rs RowLayout_refg9ta']")
                     for outcome in outcomes:
@@ -1679,25 +1752,30 @@ def fetch_win_market_odds(
                                     odd_text = odd_text.replace(' ', '')
                                 if odd_text and odd_text.find('/') != -1:
                                     odd_fraction = Fraction(odd_text)
-                                    odds_list.append(odd_fraction)
+                                    # Convert fractional odds to decimal odds
+                                    odd_decimal = float(odd_fraction + 1) if odd_fraction else 0
+                                    odds_list.append(odd_decimal)
                             if len(odds_list) > 2:
-                                # Include only odds that do not deviate from the mean by more than 3 standard deviations
+                                # Include only odds that do not deviate from the mean by more than 2 standard deviations
                                 mean = sum(odds_list) / len(odds_list)
                                 std = statistics.stdev(odds_list)
-                                odds_list = [odd for odd in odds_list if abs(odd - mean) <= 3 * std]
+                                odds_list = [odd for odd in odds_list if abs(odd - mean) <= 2 * std]
                             odds_dict[list(odds_dict)[i]] = odds_list
                             i += 1
                         print("Found odds for Win Market")
-                        win_market_header.click()
-
+                        headers = driver.find_elements(By.XPATH, "//h2")
+                        for header in headers:
+                            if header.get_attribute("aria-expanded") == "true":
+                                header.click()
+                                time.sleep(1)
                         try:
                             home_win_odd = sum(odds_dict[home_team])/len(odds_dict[home_team])
                             away_win_odd = sum(odds_dict[away_team])/len(odds_dict[away_team])
                             draw_odd = sum(odds_dict['Draw'])/len(odds_dict['Draw'])
 
-                            home_win_prob = 1/float(home_win_odd + 1) if home_win_odd else 0
-                            away_win_prob = 1/float(away_win_odd + 1) if away_win_odd else 0
-                            draw_prob = 1/float(draw_odd + 1) if draw_odd else 0
+                            home_win_prob = 1/float(home_win_odd) if home_win_odd else 0
+                            away_win_prob = 1/float(away_win_odd) if away_win_odd else 0
+                            draw_prob = 1/float(draw_odd) if draw_odd else 0
 
                             win_market_margin = home_win_prob + away_win_prob + draw_prob
                             if win_market_margin > 1:
@@ -1764,6 +1842,7 @@ def fetch_win_market_odds(
                     player_dict[player]['Manager Bonus'].append('False')
         else:
             continue
+    return odds_dict
     
 def get_player_over_probs(
     odd_type: str,
@@ -1800,7 +1879,7 @@ def get_player_over_probs(
                     odd_for = odd_for.replace("Saves", '').strip()
                 else:
                     name = player_odd[:index].strip()
-                probability = (1/(float(Fraction(odd)) + 1)) if odd != 0 else 0
+                probability = 1/float(odd) if odd != 0 else 0
             else:
                 continue
             try:
@@ -1882,12 +1961,12 @@ def get_total_goals_over_probs(odds_dict: dict, team: str) -> typing.Optional[di
                 team_over_55_odd = ave_odd
 
         try:
-            team_over_05_prob = (1/(float(Fraction(team_over_05_odd + 1)))) if team_over_05_odd != 0 else 0
-            team_over_15_prob = (1/(float(Fraction(team_over_15_odd + 1)))) if team_over_15_odd != 0 else 0
-            team_over_25_prob = (1/(float(Fraction(team_over_25_odd + 1)))) if team_over_25_odd != 0 else 0
-            team_over_35_prob = (1/(float(Fraction(team_over_35_odd + 1)))) if team_over_35_odd != 0 else 0
-            team_over_45_prob = (1/(float(Fraction(team_over_45_odd + 1)))) if team_over_45_odd != 0 else 0
-            team_over_55_prob = (1/(float(Fraction(team_over_55_odd + 1)))) if team_over_55_odd != 0 else 0
+            team_over_05_prob = 1/float(team_over_05_odd) if team_over_05_odd != 0 else 0
+            team_over_15_prob = 1/float(team_over_15_odd) if team_over_15_odd != 0 else 0
+            team_over_25_prob = 1/float(team_over_25_odd) if team_over_25_odd != 0 else 0
+            team_over_35_prob = 1/float(team_over_35_odd) if team_over_35_odd != 0 else 0
+            team_over_45_prob = 1/float(team_over_45_odd) if team_over_45_odd != 0 else 0
+            team_over_55_prob = 1/float(team_over_55_odd) if team_over_55_odd != 0 else 0
 
             try:
                 team_0_goal_prob = 1 - team_over_05_prob if team_over_05_prob != 0 else 0
@@ -1962,7 +2041,7 @@ def add_probs_to_dict(
                 odd = sum(odds_list)/len(odds_list)
             else:
                 odd = 0
-            probability = (1/(float(Fraction(odd)) + 1)) if odd != 0 else 0
+            probability = 1/float(odd) if odd != 0 else 0
             matched_name = None  # Ensure matched_name is always defined
             for p in player_dict:
                 # Prepare the player name for comparison
@@ -2014,20 +2093,23 @@ def scrape_all_matches(match_dict, player_dict, driver, team_stats_dict, counter
         away_team = TEAM_NAMES_ODDSCHECKER.get(away_team_name, away_team_name)
         link = details.get('Link', 'Link not found')
 
-        fetch_win_market_odds(details, driver, player_dict, team_stats_dict)
+        win_market_odds = fetch_win_market_odds(details, driver, player_dict, team_stats_dict)
+        match_dict[match]['Win Market Odds'] = win_market_odds
+
+        if home_team is not None and away_team is not None:
+            calc_team_xgs(home_team, away_team, team_stats_dict, player_dict)
+        else:
+            # Handle the case where home_team or away_team is None
+            print("Error calculating xG by Teams: home_team or away_team is None")
 
         if link == 'Link not found':
             print(f"Link not found for {match}. Skipping.")
-            if home_team is not None and away_team is not None:
-                calc_team_xgs(home_team, away_team, team_stats_dict, player_dict)
-            else:
-                # Handle the case where home_team or away_team is None
-                print("Error calculating xG for teams: home_team or away_team is None")
             continue
 
         odd_type = 'Player Assists'
-        ass_odds_dict = fetch_odds(odd_type, driver)
+        ass_odds_dict = fetch_odds(match, odd_type, driver)
         if ass_odds_dict:
+            match_dict[match][odd_type] = ass_odds_dict
             if home_team is not None and away_team is not None:
                 get_player_over_probs(odd_type, ass_odds_dict, player_dict, home_team, away_team)
             else:
@@ -2035,8 +2117,9 @@ def scrape_all_matches(match_dict, player_dict, driver, team_stats_dict, counter
                 print("Error adding Player Assists: home_team or away_team is None")
 
         odd_type = 'Goalkeeper Saves'
-        saves_odds_dict = fetch_odds(odd_type, driver)
+        saves_odds_dict = fetch_odds(match, odd_type, driver)
         if saves_odds_dict:
+            match_dict[match][odd_type] = saves_odds_dict
             if home_team is not None and away_team is not None:
                 get_player_over_probs(odd_type, saves_odds_dict, player_dict, home_team, away_team)
             else:
@@ -2044,8 +2127,9 @@ def scrape_all_matches(match_dict, player_dict, driver, team_stats_dict, counter
                 print("Error adding Goalkeeper Saves: home_team or away_team is None")
 
         odd_type = 'To Score A Hat-Trick'
-        hattrick_odds_dict = fetch_odds(odd_type, driver)
+        hattrick_odds_dict = fetch_odds(match, odd_type, driver)
         if hattrick_odds_dict:
+            match_dict[match][odd_type] = hattrick_odds_dict
             if home_team is not None and away_team is not None:
                 add_probs_to_dict(odd_type, hattrick_odds_dict, player_dict, home_team, away_team)
             else:
@@ -2053,11 +2137,17 @@ def scrape_all_matches(match_dict, player_dict, driver, team_stats_dict, counter
                 print("Error adding To Score A Hat-Trick: home_team or away_team is None")
 
         odd_type = 'Total Home Goals'
-        total_home_goals_dict = fetch_odds(odd_type, driver)
+        total_home_goals_dict = fetch_odds(match, odd_type, driver)
+        if total_home_goals_dict:
+            match_dict[match][odd_type] = total_home_goals_dict
+            
         total_home_goals_probs = get_total_goals_over_probs(total_home_goals_dict, "home") if total_home_goals_dict else None
 
         odd_type = 'Total Away Goals'
-        total_away_goals_dict = fetch_odds(odd_type, driver)
+        total_away_goals_dict = fetch_odds(match, odd_type, driver)
+        if total_away_goals_dict:
+            match_dict[match][odd_type] = total_away_goals_dict
+
         total_away_goals_probs = get_total_goals_over_probs(total_away_goals_dict, "away") if total_away_goals_dict else None
         
         total_combined_goals_dict = total_home_goals_probs | total_away_goals_probs if total_home_goals_probs and total_away_goals_probs else None
@@ -2067,16 +2157,11 @@ def scrape_all_matches(match_dict, player_dict, driver, team_stats_dict, counter
             else:
                 # Handle the case where home_team or away_team is None
                 print("Error adding Total Goals: home_team or away_team is None")
-        else:
-            if home_team is not None and away_team is not None:
-                calc_team_xgs(home_team, away_team, team_stats_dict, player_dict)
-            else:
-                # Handle the case where home_team or away_team is None
-                print("Error calculating xG for teams: home_team or away_team is None")
 
         odd_type = 'Anytime Goalscorer'
-        anytime_scorer_odds_dict = fetch_odds(odd_type, driver)
+        anytime_scorer_odds_dict = fetch_odds(match, odd_type, driver)
         if anytime_scorer_odds_dict:
+            match_dict[match][odd_type] = anytime_scorer_odds_dict
             if home_team is not None and away_team is not None:
                 add_probs_to_dict(odd_type, anytime_scorer_odds_dict, player_dict, home_team, away_team)
             else:
@@ -2084,15 +2169,14 @@ def scrape_all_matches(match_dict, player_dict, driver, team_stats_dict, counter
                 print("Error adding Anytime Goalscorer: home_team or away_team is None")
 
         odd_type = 'To Score 2 Or More Goals'
-        to_score_2_or_more_dict = fetch_odds(odd_type, driver)
+        to_score_2_or_more_dict = fetch_odds(match, odd_type, driver)
         if to_score_2_or_more_dict:
+            match_dict[match][odd_type] = to_score_2_or_more_dict
             if home_team is not None and away_team is not None:
                 add_probs_to_dict(odd_type, to_score_2_or_more_dict, player_dict, home_team, away_team)
             else:
                 # Handle the case where home_team or away_team is None
-                print("Error adding To Score 2 Or More Goals: home_team or away_team is None")
-            
-    driver.quit()
+                print("Error adding To Score 2 Or More Goals: home_team or away_team is None") 
 
 def calc_specific_probs(
     player_dict: dict
@@ -2315,11 +2399,19 @@ def calc_points(player_dict: dict) -> None:
             position = odds.get("Position", ["Unknown"])[0]
             saves_average1 = odds.get("xSaves by Bookmaker Odds", [])
             saves_average2 = odds.get("xSaves by Historical Data", [])
-            goals_scored_team_average = odds.get("Goals Scored by Team on Average", [])
-            goals_conceded_team_average = odds.get("Goals Conceded by Team on Average", [])
+
+            goals_scored_team_bookmaker = odds.get('Goals Scored by Team on Average', [])
+            goals_scored_team_historical = odds.get('Team xG by Historical Data', [])
+            total_goals_scored_team_average = goals_scored_team_bookmaker if goals_scored_team_bookmaker != [] else goals_scored_team_historical
+
+            goals_conceded_team_bookmaker = odds.get('Goals Conceded by Team on Average', [])
+            goals_conceded_team_historical = odds.get('Team xGC by Historical Data', [])
+            total_goals_conceded_team_average = goals_conceded_team_bookmaker if goals_conceded_team_bookmaker != [] else goals_conceded_team_historical
 
             win_probability =  odds.get('Win Probability', [])
+            elo_win_probability =  odds.get('ELO Win Probability', [])
             draw_probability =  odds.get('Draw Probability', [])
+            elo_draw_probability =  odds.get('ELO Draw Probability', [])
             MGR_Bonus = odds.get('Manager Bonus', [])
             chance_of_playing = odds.get("Chance of Playing", [1])[0] if team != 'Unknown' else 1
             avg_bonus_points = odds.get("Average Bonus Points per Game", [])
@@ -2330,6 +2422,9 @@ def calc_points(player_dict: dict) -> None:
                 continue
             points = 0
             points2 = 0
+            ass_average1 = odds.get("Expected Assists per Game", []) if len(ass_average1) == 0 else ass_average1
+            goals_average1 = odds.get("Expected Goals per Game", []) if len(goals_average1) == 0 else goals_average1
+            saves_average1 = odds.get("xSaves by Historical Data", []) if len(saves_average1) == 0 else saves_average1
             # Calculate points
             if position in ('MID'):
                 points = chance_of_playing * (
@@ -2343,20 +2438,20 @@ def calc_points(player_dict: dict) -> None:
                 points = chance_of_playing * (
                 sum(avg_bonus_points) + number_of_games * 2 + sum(goals_average1) * 6 +
                 sum(ass_average1) * 3 + sum(cs_odds1) * 4
-                - (sum(goals_conceded_team_average)/2))
+                - (sum(total_goals_conceded_team_average)/2))
 
                 points2 = chance_of_playing * min((avg_min_per_game/90), 1) * (
                 sum(avg_bonus_points) + number_of_games * 2 + sum(goals_average2) * 6 +
                 sum(ass_average2) * 3 + sum(cs_odds2) * 4
-                - (sum(goals_conceded_team_average)/2))
+                - (sum(total_goals_conceded_team_average)/2))
             if position in ('GKP'):
                 points = chance_of_playing * (
                 sum(avg_bonus_points) + number_of_games * 2 + sum(saves_average1)/3
-                + sum(cs_odds1) * 4 - (sum(goals_conceded_team_average)/2))
+                + sum(cs_odds1) * 4 - (sum(total_goals_conceded_team_average)/2))
 
                 points2 = chance_of_playing * min((avg_min_per_game/90), 1) * (
                 sum(avg_bonus_points) + number_of_games * 2 + sum(saves_average2)/3
-                + sum(cs_odds2) * 4 - (sum(goals_conceded_team_average)/2))
+                + sum(cs_odds2) * 4 - (sum(total_goals_conceded_team_average)/2))
             if position in ('FWD'):
                 points = chance_of_playing * (
                 sum(avg_bonus_points) + number_of_games * 2 + sum(goals_average1) * 4 +
@@ -2375,15 +2470,15 @@ def calc_points(player_dict: dict) -> None:
                 points = 0
                 points2 = 0
                 if len(win_probability) > 0:
-                    for w, d, b in zip_longest(win_probability, draw_probability, MGR_Bonus, fillvalue=0):
+                    for w, elo_w, d, elo_d, b in zip_longest(win_probability, elo_win_probability, draw_probability, elo_draw_probability, MGR_Bonus, fillvalue=0):
                         points += w * 6 + d * 3
-                        points2 += w * 6 + d * 3
+                        points2 += elo_w * 6 + elo_d * 3
                         # If Manager Bonus is True
                         if b == 'True':
                             points += w * 10 + d * 5
-                            points2 += w * 10 + d * 5
-                    points += sum(cs_odds1) * 2 + sum(goals_scored_team_average)
-                    points2 += sum(cs_odds2) * 2 + sum(goals_scored_team_average)
+                            points2 += elo_w * 10 + elo_d * 5
+                    points += sum(cs_odds1) * 2 + sum(total_goals_scored_team_average)
+                    points2 += sum(cs_odds2) * 2 + sum(goals_scored_team_historical)
 
             player_dict[player]['xP by Bookmaker Odds'] = round(points, 3)
             player_dict[player]['xP by Historical Data'] = round(points2, 3)
@@ -2394,8 +2489,9 @@ def main():
     # --- Main execution: Fetch data, prepare structures, and start scraping ---
     data, teams_data, players_data, team_id_to_name, player_id_to_name = fetch_fpl_data()
     fixtures = get_all_fixtures()
-    next_gws = get_next_gws(fixtures, extra_gw = 'False')
-    next_fixtures = get_next_fixtures(fixtures, next_gws)
+    #next_gws = get_next_gws(fixtures, extra_gw = 'False')
+    next_gws = [1, 2, 3] # For testing purposes
+    next_fixtures = get_next_fixtures(fixtures, next_gws) # The function returns finished fixtures for testing purposes during pre-season
     teams_playing = print_and_store_next_fixtures(next_fixtures, team_id_to_name)
     element_types = position_mapping(data)
     teams_positions_map = teams_league_positions_mapping(teams_data)
@@ -2405,8 +2501,18 @@ def main():
     match_dict = fetch_all_match_links(next_fixtures, team_id_to_name, teams_positions_map, driver)
 
     scrape_all_matches(match_dict, player_dict, driver, team_stats_dict, counter=0)
-
     driver.quit()
+
+    # Prepare filename using gameweeks.
+    gws_for_filename = "_".join(str(gw) for gw in next_gws)
+    cur_dir = os.getcwd()
+    json_dir = os.path.join(cur_dir, "data", "json")
+    for match, details in match_dict.items():
+        match_json = json.dumps(details, indent=4)
+        filename = os.path.join(json_dir, f"gw{gws_for_filename}_{match.replace(' ', '_')}_odds.json")
+        with open(filename, 'w') as f:
+            f.write(match_json)
+            print("Saved odds for", gws_for_filename, "match", match, "to", filename)
 
     calc_avg_bonus_points(player_dict, match_dict)
     calc_specific_probs(player_dict)
@@ -2419,17 +2525,20 @@ def main():
     for col in player_data_df.columns:
         player_data_df[col] = player_data_df[col].apply(lambda x: x[0] if isinstance(x, list) and len(x) == 1 else x)
 
-    # Sort players by predicted points and games played.
-    sorted_player_data_df = player_data_df.sort_values(by=['xP by Bookmaker Odds', 'xP by Historical Data'], ascending=[False, False])
+    # Sort players by predicted points
+    sorted_player_data_df = player_data_df.sort_values(by=['xP by Historical Data'], ascending=[False])
 
     # Create a summary DataFrame for quick comparison.
     player_points_df = sorted_player_data_df[['Position', 'Team', 'xP by Bookmaker Odds', 'xP by Historical Data']]
 
-    # Prepare filename using gameweeks.
-    gws_for_filename = "_".join(str(gw) for gw in next_gws)
+    filename2 = os.path.join(json_dir, f"gw{gws_for_filename}_all_odds.json")
+    json_data = json.dumps(match_dict, indent=4)
+    with open(filename2, 'w') as f2:
+        f2.write(json_data)
+        print("Saved odds for gameweek(s)", gws_for_filename, "fixtures to", filename2)
 
     # Save results to Excel.
-    with pd.ExcelWriter(f"gw_{gws_for_filename}_output.xlsx") as writer:
+    with pd.ExcelWriter(f"gw{gws_for_filename}_output.xlsx") as writer:
         sorted_player_data_df.to_excel(writer, sheet_name='Data')
         player_points_df.to_excel(writer, sheet_name='Expected Points')
 
