@@ -1,4 +1,6 @@
 
+  ## THE SEASON 25/26 BROUGHT NEW RULES THAT AFFECT PREDICTED POINTS DRAMATICALLY. THE CURRENT CODE IS **NOT** UP-TO-DATE 
+  
   ## Predicted_Points_All_Players Notebook
 
   ### Overview
