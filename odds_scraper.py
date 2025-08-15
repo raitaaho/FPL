@@ -42,6 +42,7 @@ def get_next_gw(fixtures):
     return the next gameweek
     '''
     game_weeks = defaultdict(list)
+    next_gameweek = None
     for fixture in fixtures:
         game_weeks[fixture["event"]].append(fixture)
     for event in sorted(game_weeks.keys()):
@@ -142,6 +143,10 @@ def fetch_all_match_links(next_fixtures, team_id_to_name, teams_positions_map, d
 
         home_team = TEAM_NAMES_ODDSCHECKER.get(home_team_name, home_team_name)
         away_team = TEAM_NAMES_ODDSCHECKER.get(away_team_name, away_team_name)
+        if home_team == None:
+            home_team = home_team_name
+        if away_team == None:
+            away_team = away_team_name
         match_title = home_team + " v " + away_team
 
         # Find match link
@@ -240,7 +245,7 @@ def fetch_all_odds(match, driver):
                                     if odd_text.find(' ') != -1:
                                         odd_text = odd_text.replace(' ', '')
                                     odd_fraction = Fraction(odd_text)
-                                    odds_list.append(float(1/(odd_fraction + 1)))
+                                    odds_list.append(odd_fraction)
                                 odds_dict[header_text][list(odds_dict[header_text])[i]] = odds_list
                                 i += 1
                             print(f"Found odds for {header_text}")
@@ -321,6 +326,7 @@ def scrape_all_matches(match_dict, driver, data_dir, counter=0):
         new_filename = f"{data_dir}\\GW{gw}_{match_string_for_filename}_odds_{current_time.strftime('%d')}_{current_time.strftime('%b')}_{current_time.strftime('%H')}_{current_time.strftime('%M')}_{current_time.strftime('%S')}"
         try:
             match_odds_df = pd.DataFrame.from_dict(match_odds_dict, orient='index')
+            json_data = json.dumps(match_odds_dict, indent=4)
             with pd.ExcelWriter(f"{new_filename}.xlsx") as writer:
                 match_odds_df.to_excel(writer, sheet_name='Odds')
             for filename in os.listdir(data_dir):
