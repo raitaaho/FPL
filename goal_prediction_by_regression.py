@@ -88,7 +88,7 @@ league_ids = ['PL', 'BL1', 'SA', 'PD', 'FL1']  # Premier League, Bundesliga, Ser
 for league_id in league_ids:
     for year in range(2024, 2022, -1):
         uri = f"https://api.football-data.org/v4/competitions/{league_id}/matches?season={str(year)}&status=FINISHED"
-        headers = { 'X-Auth-Token': '6d7a6d4fd79f4791b7bc8395b8fe618f', 'Accept-Encoding': '' }
+        #headers = { 'xxxxxx', 'Accept-Encoding': '' }
         response = requests.get(uri, headers=headers)
         data = response.json()['matches']
         standings_dict = {}
