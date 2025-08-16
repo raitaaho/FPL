@@ -32,6 +32,8 @@ from IPython.display import display
 import json
 import sys
 import random
+import scipy.stats as stats
+from scipy.stats import norm
 
 def get_all_fixtures() -> list:
     """
@@ -117,7 +119,7 @@ PLAYER_NAMES_ODDSCHECKER = {
 
 def get_next_fixtures(fixtures: list, next_gws: list) -> list:
     # Return fixtures for the next full gameweek(s) that have not started yet.
-    return [fixture for fixture in fixtures if (fixture['event'] in next_gws)] # and (fixture['started'] == False)]
+    return [fixture for fixture in fixtures if (fixture['event'] in next_gws) and (fixture['started'] == False)]
 
 def get_pos_range(position: int) -> str:
     """
@@ -1886,27 +1888,30 @@ def player_dict_constructor(
         player_dict[player_name]['Nickname2'] = [nickname2.strip()] if nickname2 != None else ["Unknown"]
         player_dict[player_name]['Position'] = [element_types[player["element_type"]]]
         player_dict[player_name]['Team'] = [team]
+        player_dict[player_name]['Price'] = [player['now_cost'] / 10]
         player_dict[player_name]['Chance of Playing'] = [player['chance_of_playing_next_round'] / 100] if player['chance_of_playing_next_round'] else [1] if player['status'] in ('a', 'd') else [0]
-        games_played_of_total_home_games_ratio = float(team_stats_dict[team]['Home Games Played']/player_stats_dict[player_name]['Home Games Played for Current Team']) if player_stats_dict[player_name]['Home Games Played for Current Team'] > 0 else 1
-        games_played_of_total_away_games_ratio = float(team_stats_dict[team]['Away Games Played']/player_stats_dict[player_name]['Away Games Played for Current Team']) if player_stats_dict[player_name]['Away Games Played for Current Team'] > 0 else 1
-        games_played_of_total_games_ratio = float((team_stats_dict[team]['Home Games Played'] + team_stats_dict[team]['Away Games Played'])/(player_stats_dict[player_name]['Home Games Played for Current Team'] + player_stats_dict[player_name]['Away Games Played for Current Team'])) if (player_stats_dict[player_name]['Home Games Played for Current Team'] + player_stats_dict[player_name]['Away Games Played for Current Team']) != 0 else 1
-        player_dict[player_name]['Games'] = [player_stats_dict[player_name]['Home Games Played for Current Team'] + player_stats_dict[player_name]['Away Games Played for Current Team']] if (player_stats_dict[player_name]['Home Games Played for Current Team'] + player_stats_dict[player_name]['Away Games Played for Current Team']) >= player['starts'] else [player['starts']]
+        games_played_of_total_home_games_ratio = float(team_stats_dict[team]['24/25 Home Games Played']/player_stats_dict[player_name]['24/25 Home Games Played for Current Team']) if player_stats_dict[player_name]['24/25 Home Games Played for Current Team'] > 0 else 1
+        games_played_of_total_away_games_ratio = float(team_stats_dict[team]['24/25 Away Games Played']/player_stats_dict[player_name]['24/25 Away Games Played for Current Team']) if player_stats_dict[player_name]['24/25 Away Games Played for Current Team'] > 0 else 1
+        games_played_of_total_games_ratio = float((team_stats_dict[team]['24/25 Home Games Played'] + team_stats_dict[team]['24/25 Away Games Played'])/(player_stats_dict[player_name]['24/25 Home Games Played for Current Team'] + player_stats_dict[player_name]['24/25 Away Games Played for Current Team'])) if (player_stats_dict[player_name]['24/25 Home Games Played for Current Team'] + player_stats_dict[player_name]['24/25 Away Games Played for Current Team']) != 0 else 1
+        games = [player_stats_dict[player_name]['Home Games Played for Current Team'] + player_stats_dict[player_name]['Away Games Played for Current Team']] if (player_stats_dict[player_name]['Home Games Played for Current Team'] + player_stats_dict[player_name]['Away Games Played for Current Team']) >= player['starts'] else [player['starts']]
+        player_dict[player_name]['Games'] = games
         player_dict[player_name]['Average Minutes per Game'] = [player_stats_dict[player_name].get('Minutes per Game', 90)]
-        player_dict[player_name]['Average BPS per Game'] = [player_stats_dict[player_name].get('Average BPS per Game', 0)]
+        player_dict[player_name]['Average BPS per Game'] = [player_stats_dict[player_name].get('24/25 Average BPS per Game', 0)]
         # How many goals has the player scored out of the total goals scored by his team 
-        player_dict[player_name]['Share of Goals by The Team'] = [float((player_stats_dict[player_name]["Home Goals for Current Team"] + player_stats_dict[player_name]["Away Goals for Current Team"])/(team_stats_dict[team]['Home Goals'] + team_stats_dict[team]['Away Goals'])) * games_played_of_total_games_ratio] if (team_stats_dict[team]['Home Goals'] + team_stats_dict[team]['Away Goals']) > 0 and games_played_of_total_games_ratio < 3 else [float((player_stats_dict[player_name]["Home Goals for Current Team"] + player_stats_dict[player_name]["Away Goals for Current Team"])/(team_stats_dict[team]['Home Goals'] + team_stats_dict[team]['Away Goals']))] if (team_stats_dict[team]['Home Goals'] + team_stats_dict[team]['Away Goals']) > 0 else [0]
-        player_dict[player_name]['Share of Home Goals by The Team'] = [float(player_stats_dict[player_name]["Home Goals for Current Team"]/team_stats_dict[team]['Home Goals']) * games_played_of_total_home_games_ratio] if team_stats_dict[team]['Home Goals'] > 0 and games_played_of_total_home_games_ratio < 3 else [float(player_stats_dict[player_name]["Home Goals for Current Team"]/team_stats_dict[team]['Home Goals'])] if team_stats_dict[team]['Home Goals'] > 0 else [0]
-        player_dict[player_name]['Share of Away Goals by The Team'] = [float(player_stats_dict[player_name]["Away Goals for Current Team"]/team_stats_dict[team]['Away Goals']) * games_played_of_total_away_games_ratio] if team_stats_dict[team]['Away Goals'] > 0 and games_played_of_total_away_games_ratio < 3 else [float(player_stats_dict[player_name]["Away Goals for Current Team"]/team_stats_dict[team]['Away Goals'])] if team_stats_dict[team]['Away Goals'] > 0 else [0]
-        player_dict[player_name]['Expected Goals per Game'] = [float(float(player['expected_goals']) / int(player['starts']))] if player['starts'] != 0 else [0]
+        player_dict[player_name]['Share of Goals by The Team'] = [float((player_stats_dict[player_name]["24/25 Home Goals for Current Team"] + player_stats_dict[player_name]["24/25 Away Goals for Current Team"])/(team_stats_dict[team]['24/25 Home Goals'] + team_stats_dict[team]['24/25 Away Goals'])) * games_played_of_total_games_ratio] if (team_stats_dict[team]['24/25 Home Goals'] + team_stats_dict[team]['24/25 Away Goals']) > 0 and games_played_of_total_games_ratio < 3 else [float((player_stats_dict[player_name]["24/25 Home Goals for Current Team"] + player_stats_dict[player_name]["24/25 Away Goals for Current Team"])/(team_stats_dict[team]['24/25 Home Goals'] + team_stats_dict[team]['24/25 Away Goals']))] if (team_stats_dict[team]['24/25 Home Goals'] + team_stats_dict[team]['24/25 Away Goals']) > 0 else [0]
+        player_dict[player_name]['Share of Home Goals by The Team'] = [float(player_stats_dict[player_name]["24/25 Home Goals for Current Team"]/team_stats_dict[team]['24/25 Home Goals']) * games_played_of_total_home_games_ratio] if team_stats_dict[team]['24/25 Home Goals'] > 0 and games_played_of_total_home_games_ratio < 3 else [float(player_stats_dict[player_name]["24/25 Home Goals for Current Team"]/team_stats_dict[team]['24/25 Home Goals'])] if team_stats_dict[team]['24/25 Home Goals'] > 0 else [0]
+        player_dict[player_name]['Share of Away Goals by The Team'] = [float(player_stats_dict[player_name]["24/25 Away Goals for Current Team"]/team_stats_dict[team]['24/25 Away Goals']) * games_played_of_total_away_games_ratio] if team_stats_dict[team]['24/25 Away Goals'] > 0 and games_played_of_total_away_games_ratio < 3 else [float(player_stats_dict[player_name]["24/25 Away Goals for Current Team"]/team_stats_dict[team]['24/25 Away Goals'])] if team_stats_dict[team]['24/25 Away Goals'] > 0 else [0]
+        player_dict[player_name]['Expected Goals per Game'] = [float(float(player['expected_goals']) / games[0])] if games[0] != 0 else [0]
         # How many assists has the player assisted out of the total assists assisted by his team 
-        player_dict[player_name]['Share of Assists by The Team'] = [float((player_stats_dict[player_name]["Home Assists for Current Team"] + player_stats_dict[player_name]["Away Assists for Current Team"])/(team_stats_dict[team]['Home Goals'] + team_stats_dict[team]['Away Goals'])) * games_played_of_total_games_ratio] if (team_stats_dict[team]['Home Goals'] + team_stats_dict[team]['Away Goals']) > 0 and games_played_of_total_games_ratio < 3 else [float((player_stats_dict[player_name]["Home Assists for Current Team"] + player_stats_dict[player_name]["Away Assists for Current Team"])/(team_stats_dict[team]['Home Goals'] + team_stats_dict[team]['Away Goals']))] if (team_stats_dict[team]['Home Goals'] + team_stats_dict[team]['Away Goals']) > 0 else [0]  
-        player_dict[player_name]['Share of Home Assists by The Team'] = [float(player_stats_dict[player_name]["Home Assists for Current Team"]/team_stats_dict[team]['Home Goals']) * games_played_of_total_home_games_ratio] if team_stats_dict[team]['Home Goals'] > 0 and games_played_of_total_home_games_ratio < 3 else [float(player_stats_dict[player_name]["Home Assists for Current Team"]/team_stats_dict[team]['Home Goals'])] if team_stats_dict[team]['Home Goals'] > 0 else [0] 
-        player_dict[player_name]['Share of Away Assists by The Team'] = [float(player_stats_dict[player_name]["Away Assists for Current Team"]/team_stats_dict[team]['Away Goals']) * games_played_of_total_away_games_ratio] if team_stats_dict[team]['Away Goals'] > 0 and games_played_of_total_away_games_ratio < 3 else [float(player_stats_dict[player_name]["Away Assists for Current Team"]/team_stats_dict[team]['Away Goals'])] if team_stats_dict[team]['Away Goals'] > 0 else [0]
-        player_dict[player_name]['Expected Assists per Game'] = [float(float(player['expected_assists']) / int(player['starts']))] if player['starts'] != 0 else [0]
+        player_dict[player_name]['Share of Assists by The Team'] = [float((player_stats_dict[player_name]["24/25 Home Assists for Current Team"] + player_stats_dict[player_name]["24/25 Away Assists for Current Team"])/(team_stats_dict[team]['24/25 Home Goals'] + team_stats_dict[team]['24/25 Away Goals'])) * games_played_of_total_games_ratio] if (team_stats_dict[team]['24/25 Home Goals'] + team_stats_dict[team]['24/25 Away Goals']) > 0 and games_played_of_total_games_ratio < 3 else [float((player_stats_dict[player_name]["24/25 Home Assists for Current Team"] + player_stats_dict[player_name]["24/25 Away Assists for Current Team"])/(team_stats_dict[team]['24/25 Home Goals'] + team_stats_dict[team]['24/25 Away Goals']))] if (team_stats_dict[team]['24/25 Home Goals'] + team_stats_dict[team]['24/25 Away Goals']) > 0 else [0]  
+        player_dict[player_name]['Share of Home Assists by The Team'] = [float(player_stats_dict[player_name]["24/25 Home Assists for Current Team"]/team_stats_dict[team]['24/25 Home Goals']) * games_played_of_total_home_games_ratio] if team_stats_dict[team]['24/25 Home Goals'] > 0 and games_played_of_total_home_games_ratio < 3 else [float(player_stats_dict[player_name]["24/25 Home Assists for Current Team"]/team_stats_dict[team]['24/25 Home Goals'])] if team_stats_dict[team]['24/25 Home Goals'] > 0 else [0] 
+        player_dict[player_name]['Share of Away Assists by The Team'] = [float(player_stats_dict[player_name]["24/25 Away Assists for Current Team"]/team_stats_dict[team]['24/25 Away Goals']) * games_played_of_total_away_games_ratio] if team_stats_dict[team]['24/25 Away Goals'] > 0 and games_played_of_total_away_games_ratio < 3 else [float(player_stats_dict[player_name]["24/25 Away Assists for Current Team"]/team_stats_dict[team]['24/25 Away Goals'])] if team_stats_dict[team]['24/25 Away Goals'] > 0 else [0]
+        player_dict[player_name]['Expected Assists per Game'] = [float(float(player['expected_assists']) / games[0])] if games[0] != 0 else [0]
         if element_types[player["element_type"]] == 'GKP':
-            player_dict[player_name]['Share of Goalkeeper Saves by The Team'] = [float((player_stats_dict[player_name]["Goalkeeper Saves for Current Team"]/(team_stats_dict[team]['Home Goalkeeper Saves'] + team_stats_dict[team]['Away Goalkeeper Saves'])) * games_played_of_total_games_ratio)] if (team_stats_dict[team]['Home Goalkeeper Saves'] + team_stats_dict[team]['Away Goalkeeper Saves']) > 0 and games_played_of_total_games_ratio < 3 else [float(player_stats_dict[player_name]["Goalkeeper Saves for Current Team"]/(team_stats_dict[team]['Home Goalkeeper Saves'] + team_stats_dict[team]['Away Goalkeeper Saves']))] if (team_stats_dict[team]['Home Goalkeeper Saves'] + team_stats_dict[team]['Away Goalkeeper Saves']) > 0 else [0]
-            player_dict[player_name]['Team Goalkeeper Saves per Home Game'] = [team_stats_dict[team]['Goalkeeper Saves per Home Game']]
-            player_dict[player_name]['Team Goalkeeper Saves per Away Game'] = [team_stats_dict[team]['Goalkeeper Saves per Away Game']]
+            player_dict[player_name]['Share of Goalkeeper Saves by The Team'] = [float((player_stats_dict[player_name]["24/25 Goalkeeper Saves for Current Team"]/(team_stats_dict[team]['24/25 Home Goalkeeper Saves'] + team_stats_dict[team]['24/25 Away Goalkeeper Saves'])) * games_played_of_total_games_ratio)] if (team_stats_dict[team]['24/25 Home Goalkeeper Saves'] + team_stats_dict[team]['24/25 Away Goalkeeper Saves']) > 0 and games_played_of_total_games_ratio < 3 else [float(player_stats_dict[player_name]["24/25 Goalkeeper Saves for Current Team"]/(team_stats_dict[team]['24/25 Home Goalkeeper Saves'] + team_stats_dict[team]['24/25 Away Goalkeeper Saves']))] if (team_stats_dict[team]['24/25 Home Goalkeeper Saves'] + team_stats_dict[team]['24/25 Away Goalkeeper Saves']) > 0 else [0]
+            player_dict[player_name]['Team Goalkeeper Saves per Home Game'] = [team_stats_dict[team]['24/25 Goalkeeper Saves per Home Game']]
+            player_dict[player_name]['Team Goalkeeper Saves per Away Game'] = [team_stats_dict[team]['24/25 Goalkeeper Saves per Away Game']]
+        player_dict[player_name]['Defensive Contributions P90'] = [player["defensive_contribution_per_90"]]
         
     return player_dict
 
@@ -2070,8 +2075,8 @@ def fetch_odds(match_name: str, odd_type: str, driver: "webdriver.Chrome") -> ty
                             if len(odds_list) > 2:
                                 mean = sum(odds_list) / len(odds_list)
                                 std = statistics.stdev(odds_list)
-                                # Filter out odds that are more than 2 standard deviations away from the mean
-                                odds_list = [odd for odd in odds_list if abs(odd - mean) <= 2 * std]
+                                # Filter out odds that are more than 3 standard deviations away from the mean
+                                odds_list = [odd for odd in odds_list if abs(odd - mean) <= 3 * std]
                             odds_dict[list(odds_dict)[i]] = odds_list
                             i += 1
                         print("Found odds for", odd_type)
@@ -2198,10 +2203,10 @@ def fetch_win_market_odds(
                                     odd_decimal = float(odd_fraction + 1) if odd_fraction else 0
                                     odds_list.append(odd_decimal)
                             if len(odds_list) > 2:
-                                # Include only odds that do not deviate from the mean by more than 2 standard deviations
+                                # Include only odds that do not deviate from the mean by more than 3 standard deviations
                                 mean = sum(odds_list) / len(odds_list)
                                 std = statistics.stdev(odds_list)
-                                odds_list = [odd for odd in odds_list if abs(odd - mean) <= 2 * std]
+                                odds_list = [odd for odd in odds_list if abs(odd - mean) <= 3 * std]
                             odds_dict[list(odds_dict)[i]] = odds_list
                             i += 1
                         print("Found odds for Win Market")
@@ -2801,18 +2806,18 @@ def calc_team_xgs(
     """
     home_pos_range = get_pos_range(team_stats_dict[home_team]['League Position'])
     away_pos_range = get_pos_range(team_stats_dict[away_team]['League Position'])
-    home_total_goals_p90 = team_stats_dict[home_team]['Goals per Game']
-    away_total_goals_p90 = team_stats_dict[away_team]['Goals per Game']
-    home_goals_p90 = team_stats_dict[home_team]['Goals per Home Game']
-    away_goals_p90 = team_stats_dict[away_team]['Goals per Away Game']
-    home_goals_conceded_p90 = team_stats_dict[home_team]['Goals Conceded per Home Game']
-    away_goals_conceded_p90 = team_stats_dict[away_team]['Goals Conceded per Away Game']
-    home_total_goals_conceded_p90 = team_stats_dict[home_team]['Goals Conceded per Game']
-    away_total_goals_conceded_p90 = team_stats_dict[away_team]['Goals Conceded per Game']
-    home_conceded_against_string = f"Goals Conceded per Home Game Against {away_pos_range}"
-    away_conceded_against_string = f"Goals Conceded per Away Game Against {home_pos_range}"
-    home_scored_against_string = f"Goals per Home Game Against {away_pos_range}"
-    away_scored_against_string = f"Goals per Away Game Against {home_pos_range}"
+    home_total_goals_p90 = team_stats_dict[home_team]['24/25 Goals per Game']
+    away_total_goals_p90 = team_stats_dict[away_team]['24/25 Goals per Game']
+    home_goals_p90 = team_stats_dict[home_team]['24/25 Goals per Home Game']
+    away_goals_p90 = team_stats_dict[away_team]['24/25 Goals per Away Game']
+    home_goals_conceded_p90 = team_stats_dict[home_team]['24/25 Goals Conceded per Home Game']
+    away_goals_conceded_p90 = team_stats_dict[away_team]['24/25 Goals Conceded per Away Game']
+    home_total_goals_conceded_p90 = team_stats_dict[home_team]['24/25 Goals Conceded per Game']
+    away_total_goals_conceded_p90 = team_stats_dict[away_team]['24/25 Goals Conceded per Game']
+    home_conceded_against_string = f"24/25 Goals Conceded per Home Game Against {away_pos_range}"
+    away_conceded_against_string = f"24/25 Goals Conceded per Away Game Against {home_pos_range}"
+    home_scored_against_string = f"24/25 Goals per Home Game Against {away_pos_range}"
+    away_scored_against_string = f"24/25 Goals per Away Game Against {home_pos_range}"
     home_xg = (team_stats_dict[home_team]['ELO'] / team_stats_dict[away_team]['ELO']) * ((home_goals_p90 + home_total_goals_p90 + away_goals_conceded_p90 + away_total_goals_conceded_p90 + 0.5 * team_stats_dict[home_team][home_scored_against_string] + 0.5 * team_stats_dict[away_team][away_conceded_against_string]) / 5)
     away_xg = (team_stats_dict[away_team]['ELO'] / team_stats_dict[home_team]['ELO']) * ((away_goals_p90 + away_total_goals_p90 + home_goals_conceded_p90 + home_total_goals_conceded_p90 + 0.5 * team_stats_dict[away_team][away_scored_against_string] + 0.5 * team_stats_dict[home_team][home_conceded_against_string]) / 5)
     
@@ -2868,6 +2873,10 @@ def calc_points(player_dict: dict) -> None:
             chance_of_playing = odds.get("Chance of Playing", [1])[0] if team != 'Unknown' else 1
             avg_bonus_points = odds.get("Average Bonus Points per Game", [])
 
+            def_contr_p90 = odds.get("Defensive Contributions P90", [0])[0]
+            threshold = 10 if position == 'DEF' else 12
+            dc_points_avg = max(float(2 * (norm.cdf(2 * def_contr_p90, loc=def_contr_p90, scale=def_contr_p90/2) - norm.cdf(threshold, loc=def_contr_p90, scale=def_contr_p90/2)) / (norm.cdf(2 * def_contr_p90, loc=def_contr_p90, scale=def_contr_p90/2) - norm.cdf(0, loc=def_contr_p90, scale=def_contr_p90/2))), 0) if def_contr_p90 > 0 else 0
+
             # If there are more probability/average entries than number of games in the gameweek for a player, skip the player
             if len(goals_average1) > number_of_games or len(ass_average1) > number_of_games or len(saves_average1) > number_of_games:
                 print(f"{player} skipped due to data entries being higher than number of games the player is playing")
@@ -2881,21 +2890,21 @@ def calc_points(player_dict: dict) -> None:
             if position in ('MID'):
                 points = chance_of_playing * (
                 sum(avg_bonus_points) + number_of_games * 2 + sum(goals_average1) * 5 +
-                sum(ass_average1) * 3 + sum(cs_odds1))
+                sum(ass_average1) * 3 + sum(cs_odds1) + dc_points_avg)
 
                 points2 = chance_of_playing * min((avg_min_per_game/90), 1) * (
                 sum(avg_bonus_points) + number_of_games * 2 + sum(goals_average2) * 5 +
-                sum(ass_average2) * 3 + sum(cs_odds2))
+                sum(ass_average2) * 3 + sum(cs_odds2) + dc_points_avg)
             if position in ('DEF'):
                 points = chance_of_playing * (
                 sum(avg_bonus_points) + number_of_games * 2 + sum(goals_average1) * 6 +
                 sum(ass_average1) * 3 + sum(cs_odds1) * 4
-                - (sum(total_goals_conceded_team_average)/2))
+                - (sum(total_goals_conceded_team_average)/2) + dc_points_avg)
 
                 points2 = chance_of_playing * min((avg_min_per_game/90), 1) * (
                 sum(avg_bonus_points) + number_of_games * 2 + sum(goals_average2) * 6 +
                 sum(ass_average2) * 3 + sum(cs_odds2) * 4
-                - (sum(total_goals_conceded_team_average)/2))
+                - (sum(total_goals_conceded_team_average)/2) + dc_points_avg)
             if position in ('GKP'):
                 points = chance_of_playing * (
                 sum(avg_bonus_points) + number_of_games * 2 + sum(saves_average1)/3
@@ -2934,6 +2943,7 @@ def calc_points(player_dict: dict) -> None:
 
             player_dict[player]['xP by Bookmaker Odds'] = round(points, 3)
             player_dict[player]['xP by Historical Data'] = round(points2, 3)
+            player_dict[player]['Average DC points'] = round(min(dc_points_avg, 2), 3)
         except Exception as e:
             print(f"Could not calculate points for {player}: {e}")
 
