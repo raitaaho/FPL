@@ -15,6 +15,6 @@ st.markdown(
     It scrapes odds for Total Home and Away Goals, Player Assists, Goalkeeper Saves and Player Goals for Premier League matches.
     The odds are saved to a match specific JSON files and a single JSON file containing odds for every match.
 
-    **👈 Select to scrape odds or view Fantasy Premier League predicted points according to the bookmaker odds**
+    **👈 Select to scrape odds or view Fantasy Premier League predicted points according to the scraped bookmaker odds**
 """
 )

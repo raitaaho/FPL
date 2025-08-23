@@ -108,8 +108,11 @@ def get_next_gws(fixtures: list, extra_gw: str = 'False') -> list:
         game_weeks[fixture["event"]].append(fixture)
     next_gameweek = None
     for event in sorted(game_weeks.keys()):
-        if all(not fixture['finished_provisional'] for fixture in game_weeks[event]):
-            next_gameweek = event - 1
+        #if all(not fixture['finished'] for fixture in game_weeks[event]):
+            #next_gameweek = event
+            #break
+        if any(fixture['finished'] == False for fixture in game_weeks[event]):
+            next_gameweek = event
             break
     if next_gameweek is None:
         raise Exception("No upcoming gameweek found.")
@@ -237,13 +240,53 @@ def player_dict_constructor(
         nickname1, nickname2 = prepare_nickname(nickname)
         team = TEAM_NAMES_ODDSCHECKER.get(team_id_to_name[player["team"]], team_id_to_name[player["team"]])
 
+        response = requests.get(f"https://fantasy.premierleague.com/api/element-summary/{player['id']}/")
+        history_data = response.json()
+        prev_seasons_data = history_data.get('history_past', [])
+        prev_fixtures_data = history_data.get('history', [])
+        games = 0
+        for fixture in prev_fixtures_data:
+            if fixture.get('minutes', 0) > 0:
+                games += 1
+
+        minutes_24_25 = 0
+        def_contributions_24_25 = 0
+        saves_24_25 = 0
+        bps_24_25 = 0
+        for season in prev_seasons_data:
+            if season['season_name'] != '2024/25':
+                continue
+            else:
+                minutes_24_25 = season.get('minutes', 0)
+                def_contributions_24_25 = season.get('defensive_contribution', 0) if minutes_24_25 > 900 else 0
+                saves_24_25 = season.get('saves', 0) if minutes_24_25 > 900 else 0
+                bps_24_25 = season.get('bps', 0) if minutes_24_25 > 900 else 0
+                break
+
         player_dict[player_name]['Nickname'] = [nickname1.strip()] if nickname1 != None else ["Unknown"] 
         player_dict[player_name]['Nickname2'] = [nickname2.strip()] if nickname2 != None else ["Unknown"]
         player_dict[player_name]['Position'] = [element_types[player["element_type"]]]
         player_dict[player_name]['Team'] = [team]
         player_dict[player_name]['Price'] = [player['now_cost'] / 10]
+        player_dict[player_name]['Minutes'] = [player['minutes']]
+        player_dict[player_name]['Games'] = [games]
+        player_dict[player_name]['Minutes per Game'] = [player['minutes'] / games] if games > 0 else [0]
         player_dict[player_name]['Chance of Playing'] = [player['chance_of_playing_next_round'] / 100] if player['chance_of_playing_next_round'] else [1] if player['status'] in ('a', 'd') else [0]
-        player_dict[player_name]['Defensive Contributions P90'] = [player["defensive_contribution_per_90"]]
+        player_dict[player_name]['Defensive Contributions per Game'] = [player["defensive_contribution"] / games] if games > 0 else [0]
+        player_dict[player_name]['CBI per Game'] = [player["clearances_blocks_interceptions"] / games] if games > 0 else [0]
+        player_dict[player_name]['Recoveries per Game'] = [player["recoveries"] / games] if games > 0 else [0]
+        player_dict[player_name]['Tackles per Game'] = [player["tackles"] / games] if games > 0 else [0]
+        player_dict[player_name]['BPS per Game'] = [player['bps'] / games] if games > 0 else [0]
+
+        player_dict[player_name]['24/25 Defensive Contributions P90'] = [def_contributions_24_25 / (minutes_24_25 / 90)] if minutes_24_25 > 0 else [0]
+        player_dict[player_name]['24/25 BPS P90'] = [bps_24_25 / (minutes_24_25 / 90)] if minutes_24_25 > 0 else [0]
+
+        if element_types[player["element_type"]] == 'GKP':
+            player_dict[player_name]['Saves per Game'] = [player["saves"] / games] if games > 0 else [0]
+            player_dict[player_name]['24/25 Saves P90'] = [saves_24_25 / (minutes_24_25 / 90)] if minutes_24_25 > 0 else [0]
+
+        player_dict[player_name]['Estimated BPS'] = []
+        player_dict[player_name]['Estimated Bonus Points'] = []
         
     return player_dict
 
@@ -264,6 +307,7 @@ def get_player_over_probs(
         home_team (str): Home team name.
         away_team (str): Away team name.
     """
+    bookmaker_margin = 0.05
     if odd_type == "Player Assists":
         odds_for = ['Over 0.5', 'Over 1.5', 'Over 2.5']
     else:
@@ -274,7 +318,7 @@ def get_player_over_probs(
             odd_for = player_odd[index:].strip()
             if odd_for in odds_for:
                 if len(odds_list) > 0:
-                    odd = sum(odds_list)/len(odds_list)
+                    odd = (sum(odds_list)/len(odds_list)) / (1 - bookmaker_margin)
                 else:
                     odd = 0
                 if odd_type == "Goalkeeper Saves":
@@ -343,11 +387,12 @@ def get_total_goals_over_probs(odds_dict: dict, team: str) -> typing.Optional[di
     Returns:
         dict: Probabilities for 0-6+ goals scored by the team.
     """
+    bookmaker_margin = 0.05
     try:
         team_over_05_odd, team_over_15_odd, team_over_25_odd, team_over_35_odd, team_over_45_odd, team_over_55_odd = 0,0,0,0,0,0
         for team_odd, odds_list in odds_dict.items():
             if len(odds_list) != 0:
-                ave_odd = sum(odds_list)/len(odds_list)
+                ave_odd = (sum(odds_list)/len(odds_list)) / (1 - bookmaker_margin)
             else:
                 ave_odd = 0
             if team_odd == "Over 0.5":
@@ -551,7 +596,72 @@ def calc_specific_probs(
                 if saves_average != 0:
                     player_dict[player]["xSaves by Bookmaker Odds"].append(saves_average)
 
-def calc_points(player_dict: dict) -> None:
+def calc_avg_bonus_points(
+    player_dict: dict,
+    match_dict: dict
+) -> None:
+    """
+    Calculate and add predicted bonus points per game for each player.
+
+    Args:
+        player_dict (dict): Player details dictionary.
+        match_dict (dict): Match details dictionary.
+    """
+    for player, odds in player_dict.items():
+        bps = 0
+        try:
+            # Get probabilities
+            team = odds.get("Team", ["Unknown"])[0]
+            goals_average1 = odds.get("xG by Bookmaker Odds", [])
+            ass_average1 = odds.get("xA by Bookmaker Odds", [])        
+            cs_odds1 = odds.get("Clean Sheet Probability by Bookmaker Odds", [])
+            position = odds.get("Position", ["Unknown"])[0]
+            saves_average1 = odds.get("xSaves by Bookmaker Odds", [])
+
+            goals_conceded_team_bookmaker = odds.get('Goals Conceded by Team on Average', [])
+
+            minutes_per_game = odds.get("Minutes per Game", [0])[0]
+
+            saves_per_game = odds.get('Saves per Game', [0])[0]
+            saves_p90_24_25 = odds.get('24/25 Saves P90', [0])[0]
+            combined_saves_per_game = (saves_per_game + 2 * saves_p90_24_25) / 3 if saves_p90_24_25 > 0 else saves_per_game
+
+            cbi_per_game = odds.get("CBI per Game", [0])[0]
+            recoveries_per_game = odds.get("Recoveries per Game", [0])[0]
+            tackles_per_game = odds.get("Tackles per Game", [0])[0]
+
+            bps += sum(ass_average1) * 9
+            bps += cbi_per_game / 2
+            bps += recoveries_per_game / 3
+            bps += tackles_per_game * 2
+
+            if minutes_per_game > 60:
+                bps += 6
+
+            if position == 'GKP':
+                if saves_average1 != []:
+                    bps += sum(saves_average1) * 2.5
+                else:
+                    bps += combined_saves_per_game * 2.5
+            
+            if position == 'DEF' or position == 'GKP':
+                bps += sum(cs_odds1) * 12
+                bps += sum(goals_conceded_team_bookmaker) * - 4
+                bps += sum(goals_average1) * 12
+
+            if position == 'MID':
+                bps += sum(goals_average1) * 18
+
+            if position == 'FWD':
+                bps += sum(goals_average1) * 24
+
+
+        except Exception as e:
+            print(f"Could not calculate points for {player}: {e}")
+
+        player_dict[player]['Estimated BPS'].append(bps)
+
+def calc_points(player_dict: dict, next_gws: list) -> None:
     """
     Calculate predicted FPL points for each player using all available probabilities and averages.
 
@@ -575,11 +685,23 @@ def calc_points(player_dict: dict) -> None:
             goals_conceded_team_bookmaker = odds.get('Goals Conceded by Team on Average', [])
 
             chance_of_playing = odds.get("Chance of Playing", [1])[0] if team != 'Unknown' else 1
+            minutes_per_game = odds.get("Minutes per Game", [0])[0]
 
-            def_contr_p90 = odds.get("Defensive Contributions P90", [0])[0]
+            def_contr_per_game = odds.get("Defensive Contributions per Game", [0])[0]
+            def_contr_p90_24_25 = odds.get("24/25 Defensive Contributions P90", [0])[0]
             threshold = 10 if position == 'DEF' else 12
-            dc_points_avg = max(float(2 * (norm.cdf(2 * def_contr_p90, loc=def_contr_p90, scale=def_contr_p90/2) - norm.cdf(threshold, loc=def_contr_p90, scale=def_contr_p90/2)) / (norm.cdf(2 * def_contr_p90, loc=def_contr_p90, scale=def_contr_p90/2) - norm.cdf(0, loc=def_contr_p90, scale=def_contr_p90/2))), 0.0) if def_contr_p90 > 0 else 0
+            dc_points_avg = max(float(2 * (norm.cdf(2 * def_contr_per_game, loc=def_contr_per_game, scale=def_contr_per_game/2) - norm.cdf(threshold, loc=def_contr_per_game, scale=def_contr_per_game/2)) / (norm.cdf(2 * def_contr_per_game, loc=def_contr_per_game, scale=def_contr_per_game/2) - norm.cdf(0, loc=def_contr_per_game, scale=def_contr_per_game/2))), 0.0) if def_contr_per_game > 0 else 0
+            dc_points_avg_24_25 = max(float(2 * (norm.cdf(2 * def_contr_p90_24_25, loc=def_contr_p90_24_25, scale=def_contr_p90_24_25/2) - norm.cdf(threshold, loc=def_contr_p90_24_25, scale=def_contr_p90_24_25/2)) / (norm.cdf(2 * def_contr_p90_24_25, loc=def_contr_p90_24_25, scale=def_contr_p90_24_25/2) - norm.cdf(0, loc=def_contr_p90_24_25, scale=def_contr_p90_24_25/2))), 0.0) if def_contr_p90_24_25 > 0 else 0
+            dc_points = (dc_points_avg + 2 * ((minutes_per_game/90) * dc_points_avg_24_25) ) / 3 if dc_points_avg_24_25 > 0 else dc_points_avg
 
+            saves_per_game = odds.get('Saves per Game', [0])[0]
+            saves_p90_24_25 = odds.get('24/25 Saves P90', [0])[0]
+            saves_points_avg = (saves_per_game / 3) 
+            saves_points_avg_24_25 = (saves_p90_24_25 / 3)
+            saves_points = (saves_points_avg + 2 * saves_points_avg_24_25) / 3 if saves_points_avg_24_25 > 0 else saves_points_avg
+
+            bonus_points = odds.get('Estimated Bonus Points', [0])
+            
             # If there are more probability/average entries than number of games in the gameweek for a player, skip the player
             if len(goals_average1) > number_of_games or len(ass_average1) > number_of_games or len(saves_average1) > number_of_games:
                 print(f"{player} skipped due to data entries being higher than number of games the player is playing")
@@ -590,23 +712,29 @@ def calc_points(player_dict: dict) -> None:
             if position in ('MID'):
                 points = chance_of_playing * (
                 number_of_games * 2 + sum(goals_average1) * 5 +
-                sum(ass_average1) * 3 + sum(cs_odds1) + dc_points_avg)
+                sum(ass_average1) * 3 + sum(cs_odds1) + 
+                sum(bonus_points) + dc_points)
 
             if position in ('DEF'):
                 points = chance_of_playing * (
                 number_of_games * 2 + sum(goals_average1) * 6 +
                 sum(ass_average1) * 3 + sum(cs_odds1) * 4
-                - (sum(goals_conceded_team_bookmaker)/2) + dc_points_avg)
+                - (sum(goals_conceded_team_bookmaker)/2) +
+                sum(bonus_points) + dc_points)
 
             if position in ('GKP'):
                 points = chance_of_playing * (
                 number_of_games * 2 + sum(saves_average1)/3
-                + sum(cs_odds1) * 4 - (sum(goals_conceded_team_bookmaker)/2))
+                + sum(cs_odds1) * 4 - (sum(goals_conceded_team_bookmaker)/2) +
+                sum(bonus_points) + dc_points)
+
+                if saves_average1 == []:
+                    points += number_of_games * saves_points
 
             if position in ('FWD'):
                 points = chance_of_playing * (
                 number_of_games * 2 + sum(goals_average1) * 4 +
-                sum(ass_average1) * 3)
+                sum(ass_average1) * 3 + sum(bonus_points) + dc_points)
 
             if position in ('Unknown'):
                 points = chance_of_playing * (
@@ -614,7 +742,8 @@ def calc_points(player_dict: dict) -> None:
                 sum(ass_average1) * 3)
 
             player_dict[player]['xP by Bookmaker Odds'] = round(points, 3)
-            player_dict[player]['Average DC points'] = round(dc_points_avg, 3)
+            player_dict[player]['Average DC points'] = round(dc_points, 3)
+            player_dict[player]['Average Save points'] = round(saves_points, 3)
         except Exception as e:
             print(f"Could not calculate points for {player}: {e}")
 
@@ -632,14 +761,12 @@ def initialize_predicted_points_df():
 
     if json_files:
         latest_file = max(json_files, key=os.path.getctime)
-
         try:
             with open(latest_file, 'r') as file:
                 all_odds_dict = json.load(file)
         except IOError:
             st.write("Could not open all odds file.")
             all_odds_dict = {}
-
     else:
         st.write("JSON file not found")
         all_odds_dict = {}
@@ -657,9 +784,9 @@ def initialize_predicted_points_df():
         total_away_goals_probs = None
 
         for player in player_dict:
-            if player_dict[player]['Team'][0] == home_team:
+            if player_dict[player].get('Team', ['Unknown'])[0] == home_team:
                 player_dict[player]['Opponent'].append(away_team)
-            elif player_dict[player]['Team'][0] == away_team:
+            if player_dict[player].get('Team', ['Unknown'])[0] == away_team:
                 player_dict[player]['Opponent'].append(home_team)
 
         for odd_type, odds in details.items():
@@ -713,7 +840,8 @@ def initialize_predicted_points_df():
                 print("Error adding Total Goals: home_team or away_team is None")
     
     calc_specific_probs(player_dict)
-    calc_points(player_dict)
+    calc_avg_bonus_points(player_dict, all_odds_dict)
+    calc_points(player_dict, next_gws)
 
     # Create and save DataFrames with all player data and a summary of expected points.
     player_data_df = pd.DataFrame.from_dict(player_dict, orient='index')
