@@ -157,35 +157,38 @@ def fetch_all_match_links(
         cookiebutton = wait.until(EC.element_to_be_clickable((By.XPATH, "//button[contains(text(), 'Accept') or contains(text(), 'Hyväksy')]")))
         # Click on the accept cookies button
         cookiebutton.click()
+        time.sleep(random.uniform(1, 2))
     except TimeoutException:
         print("Prompt for accepting Cookies did not pop up")
-
-    wait = WebDriverWait(driver, 3)
-    try:
-        span_element = wait.until(EC.element_to_be_clickable((By.XPATH, '/html/body/div[1]/div/section/h2/span[2]')))
-        # Click on the <span> element (Accessing outside UK pop-up)
-        span_element.click()
-
-    except TimeoutException:
-        print("Prompt for accessing outside UK did not pop up")
-
-    wait = WebDriverWait(driver, 3)
-    try:
-        close_ad = wait.until(EC.element_to_be_clickable((By.CLASS_NAME, 'webpush-swal2-close')))
-        # Click close ad button
-        close_ad.click()
-    except TimeoutException:
-        print('Ad did not pop up')
-        
-    driver.execute_script("document.body.style.zoom='65%'")
-    time.sleep(random.uniform(1, 2))
 
     try:
         wait = WebDriverWait(driver, 3)
         matches_button = wait.until(EC.element_to_be_clickable((By.XPATH, "//button[contains(text(), 'Matches')]")))
         matches_button.click()
+        time.sleep(random.uniform(1, 2))
     except Exception as e:
-        print("Couldn't click Matches tab ", e)
+        wait = WebDriverWait(driver, 3)
+        try:
+            close_ad = wait.until(EC.element_to_be_clickable((By.CLASS_NAME, 'webpush-swal2-close')))
+            # Click close ad button
+            close_ad.click()
+            time.sleep(random.uniform(1, 2))
+        except TimeoutException:
+            print('Ad did not pop up')
+            wait = WebDriverWait(driver, 3)
+            try:
+                span_element = wait.until(EC.element_to_be_clickable((By.XPATH, "//span[starts-with(@class, 'PopupCloseIcon')]")))
+                # Click on the <span> element (Accessing outside UK pop-up)
+                span_element.click()
+                time.sleep(random.uniform(1, 2))
+            except TimeoutException:
+                print("Prompt for accessing outside UK did not pop up")
+        try:    
+            wait = WebDriverWait(driver, 3)
+            matches_button = wait.until(EC.element_to_be_clickable((By.XPATH, "//button[contains(text(), 'Matches')]")))
+            matches_button.click()
+        except Exception as e:  
+            print("Couldn't click Matches tab ", e)
 
     matches_details = {}
     for fixture in next_fixtures:
@@ -231,6 +234,7 @@ def fetch_odds(match_name: str, odd_type: str, driver: "webdriver.Chrome") -> ty
     Returns:
         dict: Mapping from outcome to list of odds, or None if not found.
     """
+
     odds_dict = {}
 
     wait = WebDriverWait(driver, 2)
@@ -241,14 +245,12 @@ def fetch_odds(match_name: str, odd_type: str, driver: "webdriver.Chrome") -> ty
         if header.get_attribute("aria-expanded") == "false":
             try:
                 header.click()
-                time.sleep(random.uniform(2, 3))  # Wait for the section to expand
             except Exception as e:
                 try:
                     header.send_keys(Keys.PAGE_DOWN)
                     time.sleep(random.uniform(1, 2))
                     header.click()
                     print("Successfully expanded section after scrolling down")
-                    time.sleep(random.uniform(2, 3))
                 except Exception as e:
                     try:
                         header = driver.find_element(By.XPATH, "//h2[text() ='" + odd_type + "']")
@@ -256,13 +258,11 @@ def fetch_odds(match_name: str, odd_type: str, driver: "webdriver.Chrome") -> ty
                         time.sleep(random.uniform(1, 2))
                         header.click()
                         print("Successfully expanded section after scrolling into view")
-                        time.sleep(random.uniform(2, 3))
                     except Exception as e:
                         driver.execute_script("window.scrollBy(0,-100)")
                         time.sleep(random.uniform(1, 2))
                         header.click()
                         print("Successfully expanded section after scrolling into view and 100 pixels up")
-                        time.sleep(random.uniform(2, 3))
                     
         wait = WebDriverWait(driver, 5)
         try:
@@ -271,7 +271,7 @@ def fetch_odds(match_name: str, odd_type: str, driver: "webdriver.Chrome") -> ty
             if compare_odds.get_attribute("aria-expanded") == "false":
                 try:
                     compare_odds.click()
-                    time.sleep(random.uniform(2, 3))  # Wait for the section to expand
+                    time.sleep(random.uniform(1, 2))  # Wait for the section to expand
                 except Exception as e:
                     try:
                         compare_odds.send_keys(Keys.PAGE_DOWN)
@@ -322,7 +322,7 @@ def fetch_odds(match_name: str, odd_type: str, driver: "webdriver.Chrome") -> ty
                                 odds_list = [odd for odd in odds_list if abs(odd - mean) <= 3 * std]
                                 new_len = len(odds_list)
                                 if old_len > new_len:
-                                    print(f"Deleted {old_len - new_len} {list(odds_dict)[i]} odd(s) from total of {old_len} odds due to differing over 3 standard deviations from the mean")
+                                    print(f"Deleted {old_len - new_len} {odd_type} {list(odds_dict)[i]} odd(s) from total of {old_len} odds due to differing over 3 standard deviations from the mean")
                             odds_dict[list(odds_dict)[i]] = odds_list
                             i += 1
                         print("Found odds for", odd_type)
@@ -332,23 +332,14 @@ def fetch_odds(match_name: str, odd_type: str, driver: "webdriver.Chrome") -> ty
                     print("Couldn't get odds for", odd_type, e)                  
             except Exception as e:
                 print("Couldn't find", odd_type, " All Odds Section", e)
-
-            try:
-                if compare_odds.get_attribute("aria-expanded") == "true":
-                    compare_odds.click()
-                    time.sleep(random.uniform(1, 2))
-            except Exception as e:
-                print("Couldn't collapse Compare All Odds on", header)
         except Exception as e:
             print("Couldn't click Compare All Odds on", odd_type, e)
-
         try:
             if header.get_attribute("aria-expanded") == "true":
                 header.click()
                 time.sleep(random.uniform(1, 2))
         except Exception as e:
             print("Couldn't collapse", header)
-
     except Exception as e:
         print("Couldn't find or expand section:", odd_type)
 
@@ -356,31 +347,32 @@ def fetch_odds(match_name: str, odd_type: str, driver: "webdriver.Chrome") -> ty
 
 def scrape_all_matches(match_dict, driver):
     start0 = time.perf_counter()
-    elapsed_time_text = st.empty()
     match_progress_text = st.empty()
+    elapsed_time_text = st.empty()
     match_progress_bar = st.progress(0)
-    odd_progress_text = st.empty()
-    odd_progress_bar = st.progress(0)
+
     # Loop through each match, fetch odds, calculate probabilities, and update player_dict.
     match_counter = 0
     total_matches = len(match_dict)
-    total_odds = 7
 
-    wait = WebDriverWait(driver, 5)
-    try:
-        span_element = wait.until(EC.element_to_be_clickable((By.XPATH, '/html/body/div[1]/div/section/h2/span[2]')))
-        # Click on the <span> element (Accessing outside UK pop-up)
-        span_element.click()
-        time.sleep(random.uniform(1, 2))
-    except TimeoutException:
-        print("Prompt for accessing outside UK did not pop up")
+    odd_types = ['Player Assists', 'Goalkeeper Saves', 'To Score A Hat-Trick', 'Anytime Goalscorer', 'Total Home Goals', 'Total Away Goals', 'To Score 2 Or More Goals']
+    total_odds= len(odd_types)
+
     for match, details in match_dict.items():
+        odd_counter = 0
+        match_counter += 1
+
+        match_progress_text.markdown(f"## Scraping match {match_counter} of {total_matches}")
+
+        match_text = st.empty()
+        match_text.markdown(f"### Scraping odds for {match}")
+       
+        odd_progress_text = st.empty()
+        odd_progress_bar = st.progress(0)
+
         elapsed = time.perf_counter() - start0
         elapsed_time_text.text(f"Total time elapsed: {round(elapsed/60, 2)} minutes")
 
-        odd_counter = 0
-        match_counter += 1
-        match_progress_text.text(f"Scraping match {match_counter} of {total_matches} - {match}")
         home_team_name = details.get('home_team', 'Unknown')
         away_team_name = details.get('away_team', 'Unknown')
         home_team = TEAM_NAMES_ODDSCHECKER.get(home_team_name, home_team_name)
@@ -394,6 +386,16 @@ def scrape_all_matches(match_dict, driver):
         try:
             driver.get(link)
             time.sleep(random.uniform(2, 4))
+            if match_counter == 1:
+                wait = WebDriverWait(driver, 5)
+                try:
+                    span_element = wait.until(EC.element_to_be_clickable((By.XPATH, "//span[starts-with(@class, 'PopupCloseIcon')]")))
+                    # Click on the <span> element (Accessing outside UK pop-up)
+                    span_element.click()
+                    time.sleep(random.uniform(1, 2))
+                except TimeoutException:
+                    print("Prompt for accessing outside UK did not pop up")
+            
             wait = WebDriverWait(driver, 3)
             try:
                 close_ad = wait.until(EC.element_to_be_clickable((By.CLASS_NAME, 'webpush-swal2-close')))
@@ -406,7 +408,7 @@ def scrape_all_matches(match_dict, driver):
             print("Couldn't open link ", link, " ", e)
             match_progress_bar.progress(int((match_counter / total_matches) * 100))
             continue
-        driver.execute_script("document.body.style.zoom='65%'")
+        driver.execute_script("document.body.style.zoom='60%'")
         time.sleep(random.uniform(1, 2))
 
         headers = driver.find_elements(By.XPATH, "//h2")
@@ -426,114 +428,99 @@ def scrape_all_matches(match_dict, driver):
         elapsed = time.perf_counter() - start0
         elapsed_time_text.text(f"Total time elapsed: {round(elapsed/60, 2)} minutes")
 
-        odd_type = 'Player Assists'
-        odd_counter += 1
-        odd_progress_text.text(f"Scraping odd type {odd_counter} of {total_odds} - {odd_type}")
-        ass_odds_dict = fetch_odds(match, odd_type, driver)
-        if ass_odds_dict:
-            match_dict[match][odd_type] = ass_odds_dict
-        odd_progress_bar.progress(int((odd_counter / total_odds) * 100))
+        for odd_type in odd_types:
 
-        elapsed = time.perf_counter() - start0
-        elapsed_time_text.text(f"Total time elapsed: {round(elapsed/60, 2)} minutes")
+            odd_counter += 1
+            odd_progress_text.text(f"Scraping odd type {odd_counter} of {total_odds} - {odd_type}")
+            ass_odds_dict = fetch_odds(match, odd_type, driver)
+            if ass_odds_dict:
+                st.success(f'Found odds for {odd_type}', icon="✅")
+                match_dict[match][odd_type] = ass_odds_dict
+            else:
+                st.warning(f'Could not find odds for {odd_type}', icon="⚠️")
+            
+            odd_progress_bar.progress(int((odd_counter / total_odds) * 100))
 
-        odd_type = 'Goalkeeper Saves'
-        odd_counter += 1
-        odd_progress_text.text(f"Scraping odd type {odd_counter} of {total_odds} - {odd_type}")
-        saves_odds_dict = fetch_odds(match, odd_type, driver)
-        if saves_odds_dict:
-            match_dict[match][odd_type] = saves_odds_dict
-        odd_progress_bar.progress(int((odd_counter / total_odds) * 100))
-
-        elapsed = time.perf_counter() - start0
-        elapsed_time_text.text(f"Total time elapsed: {round(elapsed/60, 2)} minutes")
-
-        odd_type = 'To Score A Hat-Trick'
-        odd_counter += 1
-        odd_progress_text.text(f"Scraping odd type {odd_counter} of {total_odds} - {odd_type}")
-        hattrick_odds_dict = fetch_odds(match, odd_type, driver)
-        if hattrick_odds_dict:
-            match_dict[match][odd_type] = hattrick_odds_dict
-        odd_progress_bar.progress(int((odd_counter / total_odds) * 100))
-
-        elapsed = time.perf_counter() - start0
-        elapsed_time_text.text(f"Total time elapsed: {round(elapsed/60, 2)} minutes")
-
-        odd_type = 'Total Home Goals'
-        odd_counter += 1
-        odd_progress_text.text(f"Scraping odd type {odd_counter} of {total_odds} - {odd_type}")
-        total_home_goals_dict = fetch_odds(match, odd_type, driver)
-        if total_home_goals_dict:
-            match_dict[match][odd_type] = total_home_goals_dict
-        odd_progress_bar.progress(int((odd_counter / total_odds) * 100)) 
-
-        elapsed = time.perf_counter() - start0
-        elapsed_time_text.text(f"Total time elapsed: {round(elapsed/60, 2)} minutes")
-
-        odd_type = 'Total Away Goals'
-        odd_counter += 1
-        odd_progress_text.text(f"Scraping odd type {odd_counter} of {total_odds} - {odd_type}")
-        total_away_goals_dict = fetch_odds(match, odd_type, driver)
-        if total_away_goals_dict:
-            match_dict[match][odd_type] = total_away_goals_dict
-        odd_progress_bar.progress(int((odd_counter / total_odds) * 100)) 
-
-        elapsed = time.perf_counter() - start0
-        elapsed_time_text.text(f"Total time elapsed: {round(elapsed/60, 2)} minutes")
-
-        odd_type = 'Anytime Goalscorer'
-        odd_counter += 1
-        odd_progress_text.text(f"Scraping odd type {odd_counter} of {total_odds} - {odd_type}")
-        anytime_scorer_odds_dict = fetch_odds(match, odd_type, driver)
-        if anytime_scorer_odds_dict:
-            match_dict[match][odd_type] = anytime_scorer_odds_dict
-        odd_progress_bar.progress(int((odd_counter / total_odds) * 100)) 
-
-        elapsed = time.perf_counter() - start0
-        elapsed_time_text.text(f"Total time elapsed: {round(elapsed/60, 2)} minutes")
-
-        odd_type = 'To Score 2 Or More Goals'
-        odd_counter += 1
-        odd_progress_text.text(f"Scraping odd type {odd_counter} of {total_odds} - {odd_type}")
-        to_score_2_or_more_dict = fetch_odds(match, odd_type, driver)
-        if to_score_2_or_more_dict:
-            match_dict[match][odd_type] = to_score_2_or_more_dict
-        odd_progress_bar.progress(int((odd_counter / total_odds) * 100)) 
+            elapsed = time.perf_counter() - start0
+            elapsed_time_text.text(f"Total time elapsed: {round(elapsed/60, 2)} minutes")
 
         elapsed = time.perf_counter() - start0
         elapsed_time_text.text(f"Total time elapsed: {round(elapsed/60, 2)} minutes")
         match_progress_bar.progress(int((match_counter / total_matches) * 100))
-        odd_progress_text.text(f"Scraped all of {total_odds} odd types")
+        odd_progress_text.text(f"Scraped all of {total_odds} odd types in match {match}")
 
-    match_progress_text.text(f"Scraped all of {total_matches} matches")    
+    match_text.markdown(f"## Scraped all of {total_matches} in {round(elapsed/60, 2)} minutes") 
     driver.quit()
 
 st.set_page_config(page_title="Oddschecker.com Odds Scraper", page_icon="📈")
 
 st.markdown("# Oddschecker.com Odds Scraper")
 st.write(
-    """This is a web scraper that scrapes odds from Oddschecker.com for Total Home and Away Goals, Player Assists, Goalkeeper Saves and Player Goals for Premier League matches.
-    The odds are saved to a match specific JSON files and a single JSON file containing odds for every match."""
+    """This is a web scraper that scrapes odds from Oddschecker.com for Player Assists, Goalkeeper Saves, Anytime Goalscorer, To Score 2 Or More Goals, To Score A Hat-Trick, Total Home Goals and Total Away Goals markets for the next gameweek of the Premier League.
+    The odds are saved to a JSON file containing odds for every match of the next gameweek. These odds can be used to calculate probabilities for each player and team based on the odds provided by Oddschecker.com and these probabilities can be used to make predictions about the outcomes of matches."""
 )
+
+fixtures = get_all_fixtures()
+next_gws = get_next_gws(fixtures, extra_gw = 'False')
+
+gws_for_filename = "-".join(str(gw) for gw in next_gws)
+cur_dir = os.getcwd()
+fixtures_dir = os.path.join(cur_dir, "data", "fixture_data")
+
+old_filename = os.path.join(fixtures_dir, f"gw{gws_for_filename}_all_odds_")
+json_files = glob.glob(f"{old_filename}*.json")
+
+if json_files:
+    latest_file = max(json_files, key=os.path.getctime)
+    st.info(f"Latest scraped odds file is {latest_file.replace(fixtures_dir, '')}")
+else:
+    st.info("Latest scraped odds file not found")
 
 if st.button("Start scraping"):
 
     data, teams_data, players_data, team_id_to_name, player_id_to_name = fetch_fpl_data()
-    fixtures = get_all_fixtures()
     next_gws = get_next_gws(fixtures, extra_gw = 'False')
     next_fixtures = get_next_fixtures(fixtures, next_gws)
     teams_positions_map = teams_league_positions_mapping(teams_data)
 
-    driver = uc.Chrome() # Replace with the path to your WebDriver if needed
+    user_agents = [
+    "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36",
+    "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.0 Safari/605.1.15",
+    "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/123.0.0.0 Safari/537.36",
+    "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:125.0) Gecko/20100101 Firefox/125.0",
+    "Mozilla/5.0 (iPhone; CPU iPhone OS 17_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.0 Mobile/15E148 Safari/604.1",
+    "Mozilla/5.0 (Linux; Android 14; SM-G991B) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Mobile Safari/537.36",
+    "Mozilla/5.0 (iPad; CPU OS 17_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.0 Mobile/15E148 Safari/604.1",
+    "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Edge/124.0.2478.80",
+    "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/125.0.0.0 Safari/537.36",
+    "Mozilla/5.0 (Macintosh; Intel Mac OS X 13_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/125.0.0.0 Safari/537.36",
+    "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/125.0.0.0 Safari/537.36",
+    "Mozilla/5.0 (Linux; Android 13; Pixel 6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/125.0.0.0 Mobile Safari/537.36",
+    "Mozilla/5.0 (Linux; Android 14; Samsung Galaxy S22) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Mobile Safari/537.36",
+    "Mozilla/5.0 (Windows NT 11.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36",
+    "Mozilla/5.0 (Macintosh; Intel Mac OS X 14_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36",
+    "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/127.0.0.0 Safari/537.36",
+    "Mozilla/5.0 (Linux; Android 13; Xiaomi Mi 11) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/127.0.0.0 Mobile Safari/537.36",
+    "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/127.0.0.0 Safari/537.36"
+    ]
+
+    user_agent = random.choice(user_agents)
+
+    options = uc.ChromeOptions()
+    options.add_argument(f'--user-agent={user_agent}')
+    options.add_argument("--start-maximized")
+    options.add_argument("--headless")
+
+    driver = uc.Chrome(options=options)
+    time.sleep(random.uniform(1, 2))
+    time.sleep(random.uniform(0.5, 1))
+    
     match_dict = fetch_all_match_links(next_fixtures, team_id_to_name, teams_positions_map, driver)
     scrape_all_matches(match_dict, driver)
 
-    gws_for_filename = "-".join(str(gw) for gw in next_gws)
-    cur_dir = os.getcwd()
-    fixtures_dir = os.path.join(cur_dir, "data", "fixture_data")
     current_time = datetime.now()
     filename = os.path.join(fixtures_dir, f"gw{gws_for_filename}_all_odds_{current_time.strftime('%d')}-{current_time.strftime('%m')}_{current_time.strftime('%H')}-{current_time.strftime('%M')}.json")
     json_data = json.dumps(match_dict, indent=4)
     with open(filename, 'w') as f:
         f.write(json_data)
-        print("Saved odds for GW(s)", gws_for_filename, "fixtures to", filename)
+        st.info(f"Saved odds for GW(s) {gws_for_filename} fixtures to {filename.replace(fixtures_dir, '')}")
