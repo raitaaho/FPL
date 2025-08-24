@@ -347,9 +347,10 @@ def fetch_odds(match_name: str, odd_type: str, driver: "webdriver.Chrome") -> ty
 
 def scrape_all_matches(match_dict, driver):
     start0 = time.perf_counter()
-    match_progress_text = st.empty()
     elapsed_time_text = st.empty()
+    match_progress_text = st.empty()
     match_progress_bar = st.progress(0)
+    match_text = st.empty()
 
     # Loop through each match, fetch odds, calculate probabilities, and update player_dict.
     match_counter = 0
@@ -358,6 +359,7 @@ def scrape_all_matches(match_dict, driver):
     odd_types = ['Player Assists', 'Goalkeeper Saves', 'To Score A Hat-Trick', 'Anytime Goalscorer', 'Total Home Goals', 'Total Away Goals', 'To Score 2 Or More Goals']
     total_odds= len(odd_types)
 
+    elapsed = time.perf_counter() - start0
     for match, details in match_dict.items():
         odd_counter = 0
         match_counter += 1
