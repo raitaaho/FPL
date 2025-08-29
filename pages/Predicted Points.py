@@ -1656,7 +1656,7 @@ def calc_points(player_dict: dict, saves_button: bool) -> None:
             print(f"Could not calculate points for {player}: {e}")
 
 def initialize_predicted_points_df(saves_button: bool, bps_button: bool):
-    extra_gws = 0
+    extra_gws = 4
 
     fixtures = get_all_fixtures()
     next_gw = get_next_gw(fixtures)
