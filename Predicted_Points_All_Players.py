@@ -2643,8 +2643,6 @@ def calc_specific_probs(
 
     Args:
         player_dict (dict): Player details dictionary.
-        team_stats_dict (dict): Team statistics dictionary.
-        player_stats_dict (dict): Player statistics dictionary.
     """     
     for player, odds in player_dict.items():
         position = odds.get("Position", ["Unknown"])[0]

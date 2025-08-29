@@ -237,7 +237,7 @@ def fetch_odds(match_name: str, odd_type: str, driver: "webdriver.Chrome") -> ty
 
     odds_dict = {}
 
-    wait = WebDriverWait(driver, 2)
+    wait = WebDriverWait(driver, 4)
     try:
         # Find the section
         header = wait.until(EC.element_to_be_clickable((By.XPATH, "//h2[text() ='" + odd_type + "']")))
@@ -322,14 +322,16 @@ def fetch_odds(match_name: str, odd_type: str, driver: "webdriver.Chrome") -> ty
                                 odds_list = [odd for odd in odds_list if abs(odd - mean) <= 3 * std]
                                 new_len = len(odds_list)
                                 if old_len > new_len:
-                                    print(f"Deleted {old_len - new_len} {odd_type} {list(odds_dict)[i]} odd(s) from total of {old_len} odds due to differing over 3 standard deviations from the mean")
-                            odds_dict[list(odds_dict)[i]] = odds_list
+                                    print(f"Deleted {old_len - new_len} {list(odds_dict)[i]} {odd_type} odd(s) from total of {old_len} odds due to differing over 3 standard deviations from the mean")
+                                odds_dict[list(odds_dict)[i]] = odds_list
+                            else:
+                                print(f"Skipped {list(odds_dict)[i]} {odd_type} since less than 3 odds available")
                             i += 1
                         print("Found odds for", odd_type)
                     except Exception as e:
                         print("Couldn't get odds for", odd_type, e)
                 except Exception as e:
-                    print("Couldn't get odds for", odd_type, e)                  
+                    print("Couldn't get innerText-attribute for", odd_type, "outcome", e)                  
             except Exception as e:
                 print("Couldn't find", odd_type, " All Odds Section", e)
         except Exception as e:
@@ -431,15 +433,14 @@ def scrape_all_matches(match_dict, driver):
         elapsed_time_text.text(f"Total time elapsed: {round(elapsed/60, 2)} minutes")
 
         for odd_type in odd_types:
-
             odd_counter += 1
             odd_progress_text.text(f"Scraping odd type {odd_counter} of {total_odds} - {odd_type}")
-            ass_odds_dict = fetch_odds(match, odd_type, driver)
-            if ass_odds_dict:
-                st.success(f'Found odds for {odd_type}', icon="✅")
-                match_dict[match][odd_type] = ass_odds_dict
+            odds_dict = fetch_odds(match, odd_type, driver)
+            if odds_dict:
+                st.success(f'Scraped odds for {odd_type}', icon="✅")
+                match_dict[match][odd_type] = odds_dict
             else:
-                st.warning(f'Could not find odds for {odd_type}', icon="⚠️")
+                st.warning(f'Could not scrape odds for {odd_type}', icon="⚠️")
             
             odd_progress_bar.progress(int((odd_counter / total_odds) * 100))
 
@@ -451,7 +452,7 @@ def scrape_all_matches(match_dict, driver):
         match_progress_bar.progress(int((match_counter / total_matches) * 100))
         odd_progress_text.text(f"Scraped all of {total_odds} odd types in match {match}")
 
-    match_text.markdown(f"## Scraped all of {total_matches} in {round(elapsed/60, 2)} minutes") 
+    match_progress_text.markdown(f"## Scraped all of {total_matches} matches in {round(elapsed/60, 2)} minutes") 
     driver.quit()
 
 st.set_page_config(page_title="Oddschecker.com Odds Scraper", page_icon="📈")
@@ -514,7 +515,6 @@ if st.button("Start scraping"):
     options.add_argument("--headless")
 
     driver = uc.Chrome(options=options)
-    time.sleep(random.uniform(1, 2))
     time.sleep(random.uniform(0.5, 1))
     
     match_dict = fetch_all_match_links(next_fixtures, team_id_to_name, teams_positions_map, driver)
