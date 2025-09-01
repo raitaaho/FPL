@@ -7,6 +7,7 @@ import ast
 import sys
 from collections import defaultdict
 import streamlit as st
+from itertools import combinations
 
 def get_team_template():
     team_template = {                                                         
@@ -188,7 +189,6 @@ def value_to_strength(value, min_val, max_val, type):
             return 5
         elif max_val - 2 * interval_len <= value <= max_val - interval_len:
             return 4   
-        #elif min_val + interval_len <= value <= min_val + 2 * interval_len:
         else:
             return 3
         
@@ -199,7 +199,6 @@ def value_to_strength(value, min_val, max_val, type):
             return 2
         elif min_val + interval_len <= value <= min_val + 2 * interval_len:
             return 4
-        #elif min_val + 2 * interval_len <= value <= min_val + 3 * interval_len:
         else:
             return 3
     
@@ -487,33 +486,161 @@ def color_fdr(val, fdr):
     opp = val.split('|')[0]
     return f'background-color: {color}; color: black'
 
-st.set_page_config(page_title="Oddschecker.com Odds Scraper", page_icon="📈")
+def get_best_rotation(all_gws_fdr: dict, gws: int):
+    best_attack_pair = None
+    best_defense_pair = None
+    min_attack_sum = float('inf')
+    min_defense_sum = float('inf')
 
-st.markdown("# Fixture Difficulty Ratings (FDR) Visualization")
-st.write(
-    """This app fetches and visualizes the Fixture Difficulty Ratings (FDR) for Premier League teams based on their performance in the current season and previous season."""
-)
+    team_ids = list(all_gws_fdr.keys())
 
-# Take user input for number of gameweeks to show
+    for team1, team2 in combinations(team_ids, 2):
+        attack_sum = 0
+        defense_sum = 0
+
+        fixtures1 = all_gws_fdr[team1][:gws]
+        fixtures2 = all_gws_fdr[team2][:gws]
+
+        for gw in range(gws):
+            attack_sum += min(fixtures1[gw]['Attack FDR'], fixtures2[gw]['Attack FDR'])
+            defense_sum += min(fixtures1[gw]['Defense FDR'], fixtures2[gw]['Defense FDR'])
+
+        if attack_sum < min_attack_sum:
+            min_attack_sum = attack_sum
+            best_attack_pair = (team1, team2)
+
+        if defense_sum < min_defense_sum:
+            min_defense_sum = defense_sum
+            best_defense_pair = (team1, team2)
+
+    return {
+        'best_attack_rotation': best_attack_pair,
+        'attack_fdr_sum': min_attack_sum,
+        'best_defense_rotation': best_defense_pair,
+        'defense_fdr_sum': min_defense_sum
+    }
+
+def get_best_rotation_three_teams(all_gws_fdr: dict, gws: int):
+    best_attack_triplet = None
+    best_defense_triplet = None
+    min_attack_sum = float('inf')
+    min_defense_sum = float('inf')
+
+    team_ids = list(all_gws_fdr.keys())
+
+    for team1, team2, team3 in combinations(team_ids, 3):
+        attack_sum = 0
+        defense_sum = 0
+
+        fixtures1 = all_gws_fdr[team1][:gws]
+        fixtures2 = all_gws_fdr[team2][:gws]
+        fixtures3 = all_gws_fdr[team3][:gws]
+
+        for gw in range(gws):
+            attack_sum += min(fixtures1[gw]['Attack FDR'], fixtures2[gw]['Attack FDR'], fixtures3[gw]['Attack FDR'])
+            defense_sum += min(fixtures1[gw]['Defense FDR'], fixtures2[gw]['Defense FDR'], fixtures3[gw]['Defense FDR'])
+
+        if attack_sum < min_attack_sum:
+            min_attack_sum = attack_sum
+            best_attack_triplet = (team1, team2, team3)
+
+        if defense_sum < min_defense_sum:
+            min_defense_sum = defense_sum
+            best_defense_triplet = (team1, team2, team3)
+
+    return {
+        'best_attack_rotation': best_attack_triplet,
+        'attack_fdr_sum': min_attack_sum,
+        'best_defense_rotation': best_defense_triplet,
+        'defense_fdr_sum': min_defense_sum
+    }
+
+def get_best_partner_for_two_teams(all_gws_fdr: dict, gws: int, team1_name: str, team2_name: str, team_id_to_name: dict):
+    name_to_team_id = {v: k for k, v in team_id_to_name.items()}
+    team1_id = name_to_team_id.get(team1_name)
+    team2_id = name_to_team_id.get(team2_name)
+
+    if team1_id is None or team2_id is None:
+        return f"One or both team names not found: '{team1_name}', '{team2_name}'"
+
+    min_attack_sum = float('inf')
+    min_defense_sum = float('inf')
+    best_attack_partner = None
+    best_defense_partner = None
+
+    for other_team_id in all_gws_fdr:
+        if other_team_id in [team1_id, team2_id]:
+            continue
+
+        fixtures1 = all_gws_fdr[team1_id][:gws]
+        fixtures2 = all_gws_fdr[team2_id][:gws]
+        fixtures3 = all_gws_fdr[other_team_id][:gws]
+
+        attack_sum = 0
+        defense_sum = 0
+
+        for gw in range(gws):
+            attack_sum += min(fixtures1[gw]['Attack FDR'], fixtures2[gw]['Attack FDR'], fixtures3[gw]['Attack FDR'])
+            defense_sum += min(fixtures1[gw]['Defense FDR'], fixtures2[gw]['Defense FDR'], fixtures3[gw]['Defense FDR'])
+
+        if attack_sum < min_attack_sum:
+            min_attack_sum = attack_sum
+            best_attack_partner = other_team_id
+
+        if defense_sum < min_defense_sum:
+            min_defense_sum = defense_sum
+            best_defense_partner = other_team_id
+
+    return {
+        'team1': team1_name,
+        'team2': team2_name,
+        'best_attack_partner': team_id_to_name[best_attack_partner],
+        'attack_fdr_sum': min_attack_sum,
+        'best_defense_partner': team_id_to_name[best_defense_partner],
+        'defense_fdr_sum': min_defense_sum
+    }
+
+import streamlit as st
+import pandas as pd
+
+# --- Initialize session state ---
+if "team_id_to_name" not in st.session_state:
+    st.session_state.team_id_to_name = {}
+
+if "team_id_to_short_name" not in st.session_state:
+    st.session_state.team_id_to_short_name = {}
+
+if "all_gws_fdr" not in st.session_state:
+    st.session_state.all_gws_fdr = {}
+
+if "styled_attack_df" not in st.session_state:
+    st.session_state.styled_attack_df = None
+
+if "styled_defense_df" not in st.session_state:
+    st.session_state.styled_defense_df = None
+
+# --- Page Config ---
+st.set_page_config(page_title="FPL Fixture Difficulty Ratings", page_icon="📈")
+
+st.title("📊 Fixture Difficulty Ratings (FDR) Visualization")
+st.write("This app fetches and visualizes the Fixture Difficulty Ratings (FDR) for Premier League teams based on their performance.")
+
+# --- Gameweek Input ---
 num_gws = st.number_input("How many gameweeks to show?", min_value=1, max_value=10, value=5, step=1)
 
+# --- Fetch and Visualize Button ---
 if st.button("Fetch and Visualize FDR Data"):
     teams_api_data, fixtures_data, finished_fixtures, next_gws, team_id_to_name, team_id_to_short_name = fetch_data_from_fpl_api()
     teams_data = load_previous_seasons_csv_data(teams_api_data, finished_fixtures, team_id_to_name)
     combined_fdr, all_gws_fdr = calc_team_strengths(teams_data, fixtures_data, next_gws, team_id_to_name, team_id_to_short_name)
 
-    #visualize_data(combined_fdr, team_id_to_name)
-    #visualize_fixture_ticker(all_gws_fdr, team_id_to_name, team_id_to_short_name)
+    # Store in session state
+    st.session_state.team_id_to_name = team_id_to_name
+    st.session_state.team_id_to_short_name = team_id_to_short_name
+    st.session_state.all_gws_fdr = all_gws_fdr
 
-    # Limit the number of gameweeks shown
-    def filter_gws(df, num_gws):
-        gw_cols = [col for col in df.columns if col.startswith("GW ")]
-        gw_cols = gw_cols[:num_gws]
-        other_cols = [col for col in df.columns if not col.startswith("GW ")]
-        return df[gw_cols + other_cols]
-    
+    # --- FDR Table Logic ---
     df_attack = create_fixture_ticker_df(all_gws_fdr, team_id_to_short_name)
-    # Build a DataFrame of FDR values for styling
     fdr_attack_df = pd.DataFrame.from_dict({
         team_id_to_short_name[team_id]: {
             f"GW {fixture['Gameweek']}": fixture['Attack FDR']
@@ -523,15 +650,11 @@ if st.button("Fetch and Visualize FDR Data"):
     }, orient='index')
 
     df_attack = df_attack.iloc[:, :num_gws]
-    # Add a column for sum of gameweek FDR's
     df_attack['FDR Sum'] = fdr_attack_df.sum(axis=1)
-
-    # Sort by FDR Sum (lowest first)
     sorted_idx = df_attack['FDR Sum'].sort_values().index
     df_attack = df_attack.loc[sorted_idx]
     fdr_attack_df = fdr_attack_df.loc[sorted_idx]
 
-    # Use apply to pass both value and FDR to the color function
     def color_fdr_with_sum(val, fdr, col_name):
         if col_name == 'FDR Sum':
             return 'background-color: #FFF9C4; font-weight: bold; color: black'
@@ -568,13 +691,62 @@ if st.button("Fetch and Visualize FDR Data"):
         color_def_fdr_with_sum(val, fdr_defense_df.loc[df_defense.index[i], col.name] if col.name != 'FDR Sum' else None, col.name)
         for i, val in enumerate(col)
     ], axis=0)
-    
-    col1, col2 = st.columns(2)
 
+    # Store styled tables
+    st.session_state.styled_attack_df = styled_attack_df
+    st.session_state.styled_defense_df = styled_defense_df
+
+# --- Always Show Tables if Available ---
+if st.session_state.styled_attack_df is not None and st.session_state.styled_defense_df is not None:
+    col1, col2 = st.columns(2)
     with col1:
         st.markdown("## Attack FDR Table")
-        st.markdown(styled_attack_df.to_html(), unsafe_allow_html=True)
-
+        st.markdown(st.session_state.styled_attack_df.to_html(), unsafe_allow_html=True)
     with col2:
         st.markdown("## Defense FDR Table")
-        st.markdown(styled_defense_df.to_html(), unsafe_allow_html=True)
+        st.markdown(st.session_state.styled_defense_df.to_html(), unsafe_allow_html=True)
+
+    # --- Rotation Analysis Button Below Tables ---
+    if st.button("Run Rotation Analysis"):
+        st.markdown("## 🔄 Rotation Analysis")
+        rotation_gws = st.number_input("Number of gameweeks for rotation analysis", min_value=1, max_value=10, value=5, key="rotation_gws")
+
+        rotation_result = get_best_rotation(st.session_state.all_gws_fdr, rotation_gws)
+        st.markdown("### 🔝 Best Rotation Pair (All Teams)")
+        st.write(f"**Attack Rotation:** {st.session_state.team_id_to_name[rotation_result['best_attack_rotation'][0]]} + {st.session_state.team_id_to_name[rotation_result['best_attack_rotation'][1]]} → Total FDR: {rotation_result['attack_fdr_sum']}")
+        st.write(f"**Defense Rotation:** {st.session_state.team_id_to_name[rotation_result['best_defense_rotation'][0]]} + {st.session_state.team_id_to_name[rotation_result['best_defense_rotation'][1]]} → Total FDR: {rotation_result['defense_fdr_sum']}")
+
+        # --- Extended Rotation ---
+        st.markdown("## 🔄 Extended Rotation Analysis")
+        enable_three_team_rotation = st.checkbox("Find best rotation among three teams")
+
+        team_names = list(st.session_state.team_id_to_name.values())
+        team1_input = st.selectbox("Select first team", options=team_names)
+
+        if not enable_three_team_rotation:
+            team2_input = st.selectbox("Select second team", options=[name for name in team_names if name != team1_input])
+        else:
+            team2_input = None
+
+        if enable_three_team_rotation:
+            rotation_three_result = get_best_rotation_three_teams(st.session_state.all_gws_fdr, rotation_gws)
+            st.markdown("### 🔝 Best Rotation Trio (All Teams)")
+            st.write(f"**Attack Rotation:** {', '.join([st.session_state.team_id_to_name[t] for t in rotation_three_result['best_attack_rotation']])} → Total FDR: {rotation_three_result['attack_fdr_sum']}")
+            st.write(f"**Defense Rotation:** {', '.join([st.session_state.team_id_to_name[t] for t in rotation_three_result['best_defense_rotation']])} → Total FDR: {rotation_three_result['defense_fdr_sum']}")
+
+        if team1_input and team2_input:
+            specific_two_team_result = get_best_partner_for_two_teams(
+                st.session_state.all_gws_fdr,
+                rotation_gws,
+                team1_input,
+                team2_input,
+                st.session_state.team_id_to_name
+            )
+
+            if isinstance(specific_two_team_result, str):
+                st.error(specific_two_team_result)
+            else:
+                st.markdown(f"### 🔍 Best Rotation Partner for **{team1_input} + {team2_input}**")
+                st.write(f"**Attack Partner:** {specific_two_team_result['best_attack_partner']} → Total FDR: {specific_two_team_result['attack_fdr_sum']}")
+                st.write(f"**Defense Partner:** {specific_two_team_result['best_defense_partner']} → Total FDR: {specific_two_team_result['defense_fdr_sum']}")
+
