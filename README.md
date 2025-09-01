@@ -1,13 +1,10 @@
-
-  ## THE SEASON 25/26 BROUGHT NEW RULES THAT AFFECT PREDICTED POINTS DRAMATICALLY. THE CURRENT CODE IS **NOT** UP-TO-DATE 
-  
-  ## Predicted_Points_All_Players Notebook
+  ## Streamlit app for Fantasy Premier League 
 
   ### Overview
 
   Fantasy Premier League game is open to the public and is contested annually by millions worldwide. Participants must select a team based on real-life Premier League footballers who scored fantasy points based on those players' real-life statistical performances. Points accumulate across the season in order to declare a champion. As well as the overall global leaderboard, there are smaller automatic public leaderboards categorised by home country and Premier League club supported.
 
-  The `Predicted_Points_All_Players` notebook is a comprehensive tool designed to predict player points for the next gameweek(s) In Fantasy Premier League. This project leverages data from various sources to provide accurate and insightful predictions, helping users make informed decisions for their FPL teams.
+  This Streamlit app is a simple, yet comprehensive tool designed to predict player points for the next gameweek(s) In Fantasy Premier League. This project leverages data from various sources to provide accurate and insightful predictions, helping users make informed decisions for their FPL teams.
 
   ### Features
 
@@ -15,13 +12,15 @@
   - **Data Cleaning**: Ensures data integrity by preventing erroneous values such as 'Unknown' for Team and Position.
   - **Name Matching**: Compares and matches player names from different data sources to ensure consistency.
   - **Prediction Model**: Utilizes advanced algorithms to predict player points based on historical data and current performance metrics.
+  - **Fixture Difficulty Ratings tool**: Visualizes Fixture Difficulty Ratings calculated according to current season and previous season for Premier League teams.
 
   ### Usage
 
-  1. **Data Fetching**: Run the notebook to fetch the latest player data from the FPL API and Oddschecker.
-  2. **Data Cleaning**: The notebook automatically cleans the data to remove any inconsistencies.
+  1. **Odds Scraping**: Select `Odds Scraper` from the sidebar to fetch the latest bookmakers' odds from Oddschecker.com for next Premier League matches.
+  2. **Data Cleaning**: The app automatically cleans the data to remove any inconsistencies.
   3. **Name Matching**: Ensures that player names from different sources are correctly matched.
-  4. **Prediction**: Executes the prediction model to generate point predictions for all players.
+  4. **Points Prediction**: Select `Predicted Points` from the sidebar to get predicted points for player.
+  5. **Fixture DIfficulty Ratings**: Select `Fixture Difficulty Ratings` from the sidebar to visualize Fixture Difficulty Ratings.
 
   ## Prerequisites
 
@@ -30,11 +29,11 @@
 
   ### Installation
 
-  To use the `Predicted_Points_All_Players` notebook, follow these steps:
+  In order to use this `Streamlit app`, follow these steps:
 
   1. Clone the repository:
      ```bash
-     !git clone https://github.com/raitaaho/FPL.git
+     git clone https://github.com/raitaaho/FPL.git
      ```
   2. Navigate to the project directory:
      ```bash
@@ -42,27 +41,19 @@
      ```
   3. Install the required dependencies:
      ```bash
-     !pip install -r requirements.txt
+     pip install -r requirements.txt
      ```
   4. Ensure that the Chrome browser is installed on your system. The `chromedriver-autoinstaller` package will automatically download and install the appropriate   version of ChromeDriver.
 
-  ## Running the Notebook
+  ## Running the App
 
-  1. Open the notebook in Jupyter:
+  1. Open the app in browser:
      ```bash
-     !jupyter notebook Predicted_Points_All_Players.ipynb
+     streamlit run Home.py
      ```
-  2. Run the notebook in Jupyter:
-     ```bash
-     !jupyter execute Predicted_Points_All_Players.ipynb
-     ```
-     or
-     ```bash
-     Cell -> Run All
-     ```
+  2. Select a functionality from the sidebar
 
   ## Notes
 
 - Assisting and goalscoring odds for players are usually available a couple of days before the game, so this script is very likely to return an empty file or a file containing a lot of missing values if there are still several days until the first game of the gameweek.
-- The script has been improved to handle game weeks where a team may play more than one match.
 - Webdrivers run or drive a browser from inside your code. The version of the webdriver must match the version of your browser. The `chromedriver-autoinstaller` package will handle the installation of the appropriate ChromeDriver version automatically.
