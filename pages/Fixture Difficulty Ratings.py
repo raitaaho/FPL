@@ -621,6 +621,12 @@ if "team1_input" not in st.session_state:
 if "team2_input" not in st.session_state:
     st.session_state.team2_input = None
 
+if "enable_three_team_rotation" not in st.session_state:
+    st.session_state.enable_three_team_rotation = None
+
+if "all_gws_fdr" not in st.session_state:
+    st.session_state.all_gws_fdr = {}
+
 # --- Page Config ---
 st.set_page_config(page_title="FPL Fixture Difficulty Ratings", page_icon="📈")
 
@@ -634,21 +640,21 @@ num_gws = st.number_input("How many gameweeks to show?", min_value=1, max_value=
 if st.button("Fetch and Visualize FDR Data"):
     teams_api_data, fixtures_data, finished_fixtures, next_gws, team_id_to_name, team_id_to_short_name = fetch_data_from_fpl_api()
     teams_data = load_previous_seasons_csv_data(teams_api_data, finished_fixtures, team_id_to_name)
-    combined_fdr, all_gws_fdr = calc_team_strengths(teams_data, fixtures_data, next_gws, team_id_to_name, team_id_to_short_name)
+    combined_fdr, st.session_state.all_gws_fdr = calc_team_strengths(teams_data, fixtures_data, next_gws, team_id_to_name, team_id_to_short_name)
 
     # Store in session state
     st.session_state.team_id_to_name = team_id_to_name
     st.session_state.team_id_to_short_name = team_id_to_short_name
-    st.session_state.all_gws_fdr = all_gws_fdr
+    st.session_state.all_gws_fdr = st.session_state.all_gws_fdr
 
     # --- FDR Table Logic ---
-    df_attack = create_fixture_ticker_df(all_gws_fdr, team_id_to_short_name)
+    df_attack = create_fixture_ticker_df(st.session_state.all_gws_fdr, team_id_to_short_name)
     fdr_attack_df = pd.DataFrame.from_dict({
         team_id_to_short_name[team_id]: {
             f"GW {fixture['Gameweek']}": fixture['Attack FDR']
             for fixture in fixtures[:num_gws]
         }
-        for team_id, fixtures in all_gws_fdr.items()
+        for team_id, fixtures in st.session_state.all_gws_fdr.items()
     }, orient='index')
 
     df_attack = df_attack.iloc[:, :num_gws]
@@ -667,13 +673,13 @@ if st.button("Fetch and Visualize FDR Data"):
         for i, val in enumerate(col)
     ], axis=0)
 
-    df_defense = create_fixture_ticker_df(all_gws_fdr, team_id_to_short_name)
+    df_defense = create_fixture_ticker_df(st.session_state.all_gws_fdr, team_id_to_short_name)
     fdr_defense_df = pd.DataFrame.from_dict({
         team_id_to_short_name[team_id]: {
             f"GW {fixture['Gameweek']}": fixture['Defense FDR']
             for fixture in fixtures[:num_gws]
         }
-        for team_id, fixtures in all_gws_fdr.items()
+        for team_id, fixtures in st.session_state.all_gws_fdr.items()
     }, orient='index')
 
     df_defense = df_defense.iloc[:, :num_gws]
@@ -719,17 +725,17 @@ if st.session_state.styled_attack_df is not None and st.session_state.styled_def
 
         # --- Extended Rotation ---
         st.markdown("## 🔄 Extended Rotation Analysis")
-        enable_three_team_rotation = st.checkbox("Find best rotation among three teams")
+        st.session_state.enable_three_team_rotation = st.checkbox("Find best rotation among three teams")
 
         team_names = list(st.session_state.team_id_to_name.values())
         st.session_state.team1_input = st.selectbox("Select first team", options=team_names)
 
-        if enable_three_team_rotation:
+        if st.session_state.enable_three_team_rotation:
             st.session_state.team2_input = st.selectbox("Select second team", options=[name for name in team_names if name != st.session_state.team1_input])
         else:
             st.session_state.team2_input = None
 
-        if enable_three_team_rotation:
+        if st.session_state.enable_three_team_rotation:
             rotation_three_result = get_best_rotation_three_teams(st.session_state.all_gws_fdr, num_gws)
             st.markdown("### 🔝 Best Rotation Trio (All Teams)")
             st.write(f"**Attack Rotation:** {', '.join([st.session_state.team_id_to_name[t] for t in rotation_three_result['best_attack_rotation']])} → Total FDR: {rotation_three_result['attack_fdr_sum']}")
