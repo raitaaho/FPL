@@ -546,8 +546,9 @@ if st.button("Start scraping"):
         options = get_webdriver_options()
         service = get_webdriver_service(logpath=logpath)
         chrome_version = get_chromium_version()
+        main_version = int(chrome_version.split(".")[0])
 
-        driver = uc.Chrome(options=options, service=service, version_main=chrome_version)
+        driver = uc.Chrome(options=options, service=service, version_main=main_version)
         time.sleep(random.uniform(10, 12))
     except Exception as e: 
         logpath=get_logpath()
