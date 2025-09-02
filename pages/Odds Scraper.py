@@ -553,7 +553,7 @@ else:
 
 if json_data:
     current_time = datetime.now()
-    filename =f"gw{gws_for_filename}_all_odds_{current_time.strftime('%d')}-{current_time.strftime('%m')}_{current_time.strftime('%H')}-{current_time.strftime('%M')}.json"
+    filename =f"gw{gws_for_filename}_all_odds_{current_time.strftime('%m')}{current_time.strftime('%d')}_{current_time.strftime('%H')}{current_time.strftime('%M')}.json"
 
     st.download_button(
     label="Download odds as JSON file",
