@@ -486,8 +486,8 @@ def color_fdr(val, fdr):
     return f'background-color: {color}; color: black'
 
 def get_best_rotation(all_gws_fdr: dict, gws: int):
-    best_attack_pair = None
-    best_defense_pair = None
+    best_attack_pair = "Unknown"
+    best_defense_pair = "Unknown"
     min_attack_sum = float('inf')
     min_defense_sum = float('inf')
 
@@ -520,8 +520,8 @@ def get_best_rotation(all_gws_fdr: dict, gws: int):
     }
 
 def get_best_rotation_three_teams(all_gws_fdr: dict, gws: int):
-    best_attack_triplet = None
-    best_defense_triplet = None
+    best_attack_triplet = "Unknown"
+    best_defense_triplet = "Unknown"
     min_attack_sum = float('inf')
     min_defense_sum = float('inf')
 
@@ -564,8 +564,8 @@ def get_best_partner_for_two_teams(all_gws_fdr: dict, gws: int, team1_name: str,
 
     min_attack_sum = float('inf')
     min_defense_sum = float('inf')
-    best_attack_partner = None
-    best_defense_partner = None
+    best_attack_partner = "Unknown"
+    best_defense_partner = "Unknown"
 
     for other_team_id in all_gws_fdr:
         if other_team_id in [team1_id, team2_id]:
@@ -599,6 +599,47 @@ def get_best_partner_for_two_teams(all_gws_fdr: dict, gws: int, team1_name: str,
         'defense_fdr_sum': min_defense_sum
     }
 
+def get_best_partner_for_one_team(all_gws_fdr: dict, gws: int, team1_name: str, team_id_to_name: dict):
+    name_to_team_id = {v: k for k, v in team_id_to_name.items()}
+    team1_id = name_to_team_id.get(team1_name)
+
+    if team1_id is None:
+        return f"Team name not found: '{team1_name}'"
+
+    min_attack_sum = float('inf')
+    min_defense_sum = float('inf')
+    best_attack_partner = "Unknown"
+    best_defense_partner = "Unknown"
+    for other_team_id in all_gws_fdr:
+        if other_team_id == team1_id:
+            continue
+
+        fixtures1 = all_gws_fdr[team1_id][:gws]
+        fixtures2 = all_gws_fdr[other_team_id][:gws]
+
+        attack_sum = 0
+        defense_sum = 0
+
+        for gw in range(gws):
+            attack_sum += min(fixtures1[gw]['Attack FDR'], fixtures2[gw]['Attack FDR'])
+            defense_sum += min(fixtures1[gw]['Defense FDR'], fixtures2[gw]['Defense FDR'])
+
+        if attack_sum < min_attack_sum:
+            min_attack_sum = attack_sum
+            best_attack_partner = other_team_id
+
+        if defense_sum < min_defense_sum:
+            min_defense_sum = defense_sum
+            best_defense_partner = other_team_id
+
+    return {
+        'team1': team1_name,
+        'best_attack_partner': team_id_to_name[best_attack_partner],
+        'attack_fdr_sum': min_attack_sum,
+        'best_defense_partner': team_id_to_name[best_defense_partner],
+        'defense_fdr_sum': min_defense_sum
+    }
+
 # --- Initialize session state ---
 if "team_id_to_name" not in st.session_state:
     st.session_state.team_id_to_name = {}
@@ -616,10 +657,10 @@ if "styled_defense_df" not in st.session_state:
     st.session_state.styled_defense_df = None
 
 if "team1_input" not in st.session_state:
-    st.session_state.team1_input = None
+    st.session_state.team1_input = "Unknown"
 
 if "team2_input" not in st.session_state:
-    st.session_state.team2_input = None
+    st.session_state.team2_input = "Unknown"
 
 if "enable_three_team_rotation" not in st.session_state:
     st.session_state.enable_three_team_rotation = None
@@ -725,7 +766,7 @@ st.session_state.team1_input = st.selectbox("Select first team", options=team_na
 if st.session_state.enable_three_team_rotation:
     st.session_state.team2_input = st.selectbox("Select second team", options=[name for name in team_names if name != st.session_state.team1_input])
 else:
-    st.session_state.team2_input = None
+    st.session_state.team2_input = "Unknown"
 # --- Rotation Analysis Button Below Tables ---
 if st.button("Run Rotation Analysis"):
     st.markdown("## 🔄 Rotation Analysis")
@@ -743,6 +784,11 @@ if st.button("Run Rotation Analysis"):
         st.markdown("### 🔝 Best Rotation Trio (All Teams)")
         st.write(f"**Attack Rotation:** {', '.join([st.session_state.team_id_to_name[t] for t in rotation_three_result['best_attack_rotation']])} → Total FDR: {rotation_three_result['attack_fdr_sum']}")
         st.write(f"**Defense Rotation:** {', '.join([st.session_state.team_id_to_name[t] for t in rotation_three_result['best_defense_rotation']])} → Total FDR: {rotation_three_result['defense_fdr_sum']}")
+    else:
+        rotation_two_result = get_best_partner_for_one_team(st.session_state.all_gws_fdr, num_gws, st.session_state.team1_input, st.session_state.team_id_to_name)
+        st.markdown("### 🔝 Best Rotation Trio (All Teams)")
+        st.write(f"**Attack Rotation:** {', '.join([st.session_state.team_id_to_name[t] for t in rotation_two_result['best_attack_rotation']])} → Total FDR: {rotation_two_result['attack_fdr_sum']}")
+        st.write(f"**Defense Rotation:** {', '.join([st.session_state.team_id_to_name[t] for t in rotation_two_result['best_defense_rotation']])} → Total FDR: {rotation_two_result['defense_fdr_sum']}")
 
     if st.session_state.team1_input and st.session_state.team2_input:
         specific_two_team_result = get_best_partner_for_two_teams(
