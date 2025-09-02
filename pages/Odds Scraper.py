@@ -388,7 +388,7 @@ def scrape_all_matches(match_dict, driver):
             continue
         try:
             driver.get(link)
-            time.sleep(random.uniform(1, 2))
+            time.sleep(random.uniform(4, 6))
             if match_counter == 1:
                 wait = WebDriverWait(driver, 5)
                 try:
@@ -412,7 +412,7 @@ def scrape_all_matches(match_dict, driver):
             match_progress_bar.progress(int((match_counter / total_matches) * 100))
             continue
 
-        driver.execute_script("document.body.style.zoom='60%'")
+        #driver.execute_script("document.body.style.zoom='60%'")
         time.sleep(random.uniform(1, 2))
 
         headers = driver.find_elements(By.XPATH, "//h2")
