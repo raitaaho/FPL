@@ -1640,7 +1640,7 @@ def construct_team_and_player_data(
         player_data[player]['24/25 Goals per Home Game Against 9-12'] = float(player_data[player]['24/25 Home Goals Against 9-12']/player_data[player]['24/25 Home Games Against 9-12']) if player_data[player]['24/25 Home Games Against 9-12'] != 0 else 0
         player_data[player]['24/25 Assists per Home Game Against 9-12'] = float(player_data[player]['24/25 Home Assists Against 9-12']/player_data[player]['24/25 Home Games Against 9-12']) if player_data[player]['24/25 Home Games Against 9-12'] != 0 else 0
         player_data[player]['24/25 Goals per Home Game Against 13-16'] = float(player_data[player]['24/25 Home Goals Against 13-16']/player_data[player]['24/25 Home Games Against 13-16']) if player_data[player]['24/25 Home Games Against 13-16'] != 0 else 0
-        player_data[player]['24/25 Assists pe Homer Game Against 13-16'] = float(player_data[player]['24/25 Home Assists Against 13-16']/player_data[player]['24/25 Home Games Against 13-16']) if player_data[player]['24/25 Home Games Against 13-16'] != 0 else 0
+        player_data[player]['24/25 Assists per Homer Game Against 13-16'] = float(player_data[player]['24/25 Home Assists Against 13-16']/player_data[player]['24/25 Home Games Against 13-16']) if player_data[player]['24/25 Home Games Against 13-16'] != 0 else 0
         player_data[player]['24/25 Goals per Home Game Against 17-20'] = float(player_data[player]['24/25 Home Goals Against 17-20']/player_data[player]['24/25 Home Games Against 17-20']) if player_data[player]['24/25 Home Games Against 17-20'] != 0 else 0
         player_data[player]['24/25 Assists per Home Game Against 17-20'] = float(player_data[player]['24/25 Home Assists Against 17-20']/player_data[player]['24/25 Home Games Against 17-20']) if player_data[player]['24/25 Home Games Against 17-20'] != 0 else 0
         player_data[player]['24/25 Goals per Away Game'] = float(player_data[player]['24/25 Away Goals for Current Team']/player_data[player]['24/25 Away Games Played for Current Team']) if player_data[player]['24/25 Away Games Played for Current Team'] != 0 else 0
@@ -2643,8 +2643,6 @@ def calc_specific_probs(
 
     Args:
         player_dict (dict): Player details dictionary.
-        team_stats_dict (dict): Team statistics dictionary.
-        player_stats_dict (dict): Player statistics dictionary.
     """     
     for player, odds in player_dict.items():
         position = odds.get("Position", ["Unknown"])[0]
@@ -2952,8 +2950,7 @@ def main():
     data, teams_data, players_data, team_id_to_name, player_id_to_name = fetch_fpl_data()
     fixtures = get_all_fixtures()
     next_gws = get_next_gws(fixtures, extra_gw = 'False')
-    #next_gws = [1, 2, 3] # For testing purposes
-    next_fixtures = get_next_fixtures(fixtures, next_gws) # The function returns finished fixtures for testing purposes during pre-season
+    next_fixtures = get_next_fixtures(fixtures, next_gws) 
     teams_playing = print_and_store_next_fixtures(next_fixtures, team_id_to_name)
     element_types = position_mapping(data)
     teams_positions_map = teams_league_positions_mapping(teams_data)

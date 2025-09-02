@@ -1,0 +1,65 @@
+{
+    "Aston Villa v Newcastle": {
+        "home_team": "Aston Villa",
+        "away_team": "Newcastle",
+        "home_position": 3,
+        "away_position": 14,
+        "Link": "https://www.oddschecker.com/football/english/premier-league/aston-villa-v-newcastle/winner"
+    },
+    "Brighton v Fulham": {
+        "home_team": "Brighton",
+        "away_team": "Fulham",
+        "home_position": 5,
+        "away_position": 10,
+        "Link": "https://www.oddschecker.com/football/english/premier-league/brighton-v-fulham/winner"
+    },
+    "Tottenham v Burnley": {
+        "home_team": "Tottenham",
+        "away_team": "Burnley",
+        "home_position": 17,
+        "away_position": 6,
+        "Link": "https://www.oddschecker.com/football/english/premier-league/tottenham-v-burnley/winner"
+    },
+    "Sunderland v West Ham": {
+        "home_team": "Sunderland",
+        "away_team": "West Ham",
+        "home_position": 16,
+        "away_position": 18,
+        "Link": "https://www.oddschecker.com/football/english/premier-league/sunderland-v-west-ham/winner"
+    },
+    "Wolverhampton v Man City": {
+        "home_team": "Wolverhampton",
+        "away_team": "Man City",
+        "home_position": 19,
+        "away_position": 12,
+        "Link": "https://www.oddschecker.com/football/english/premier-league/wolverhampton-v-man-city/winner"
+    },
+    "Chelsea v Crystal Palace": {
+        "home_team": "Chelsea",
+        "away_team": "Crystal Palace",
+        "home_position": 7,
+        "away_position": 8,
+        "Link": "https://www.oddschecker.com/football/english/premier-league/chelsea-v-crystal-palace/winner"
+    },
+    "Nottingham Forest v Brentford": {
+        "home_team": "Nottingham Forest",
+        "away_team": "Brentford",
+        "home_position": 15,
+        "away_position": 4,
+        "Link": "https://www.oddschecker.com/football/english/premier-league/nottingham-forest-v-brentford/winner"
+    },
+    "Man Utd v Arsenal": {
+        "home_team": "Man Utd",
+        "away_team": "Arsenal",
+        "home_position": 13,
+        "away_position": 2,
+        "Link": "https://www.oddschecker.com/football/english/premier-league/man-utd-v-arsenal/winner"
+    },
+    "Leeds v Everton": {
+        "home_team": "Leeds",
+        "away_team": "Everton",
+        "home_position": 11,
+        "away_position": 9,
+        "Link": "https://www.oddschecker.com/football/english/premier-league/leeds-v-everton/winner"
+    }
+}
