@@ -367,7 +367,7 @@ def scrape_all_matches(match_dict, driver):
         match_progress_text.markdown(f"## Scraping match {match_counter} of {total_matches}")
 
         match_text = st.empty()
-        match_text.markdown(f"### {match_counter}/{total_matches} Scraping odds for {match}")
+        match_text.markdown(f"### Scraping odds for {match}")
        
         odd_progress_text = st.empty()
         odd_progress_bar = st.progress(0)
