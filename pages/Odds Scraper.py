@@ -230,7 +230,7 @@ def fetch_odds(match_name: str, odd_type: str, driver: "webdriver.Chrome") -> ty
     """
 
     odds_dict = {}
-
+    time.sleep(random.uniform(2,3))
     wait = WebDriverWait(driver, 4)
     try:
         # Find the section
@@ -417,7 +417,7 @@ def scrape_all_matches(match_dict, driver):
             print("Couldn't open link ", link, " ", e)
             match_progress_bar.progress(int((match_counter / total_matches) * 100))
             continue
-        driver.execute_script("document.body.style.zoom='60%'")
+        #driver.execute_script("document.body.style.zoom='60%'")
         time.sleep(random.uniform(1, 2))
 
         headers = driver.find_elements(By.XPATH, "//h2")
