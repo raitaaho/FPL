@@ -239,7 +239,6 @@ def fetch_odds(match_name: str, odd_type: str, driver: "webdriver.Chrome") -> ty
             try:
                 driver.execute_script('arguments[0].click()', header)
             except Exception as e:
-                st.write("Header not clickable", e)
                 try:
                     header.send_keys(Keys.PAGE_DOWN)
                     time.sleep(random.uniform(1, 2))
@@ -253,14 +252,13 @@ def fetch_odds(match_name: str, odd_type: str, driver: "webdriver.Chrome") -> ty
                         header.click()
                         print("Successfully expanded section after scrolling into view")
                     except Exception as e:
-                        st.write("Header not clickable after scrolling into view")
                         try:
                             driver.execute_script("window.scrollBy(0,-100)")
                             time.sleep(random.uniform(1, 2))
                             header.click()
                             print("Successfully expanded section after scrolling into view and 100 pixels up")
                         except Exception as e:
-                            st.write("Header not clickable after scrolling 100 pixels down")
+                            print("Header not clickable")
 
                     
         wait = WebDriverWait(driver, 5)
@@ -328,23 +326,21 @@ def fetch_odds(match_name: str, odd_type: str, driver: "webdriver.Chrome") -> ty
                             i += 1
                         print("Found odds for", odd_type)
                     except Exception as e:
-                        st.write("Couldn't get odds for", odd_type, e)
+                        print("Couldn't get odds for", odd_type, e)
                 except Exception as e:
-                    st.write("Couldn't get innerText-attribute for", odd_type, "outcome", e)                  
+                    print("Couldn't get innerText-attribute for", odd_type, "outcome", e)                  
             except Exception as e:
-                st.write("Couldn't find", odd_type, " All Odds Section", e)
+                print("Couldn't find", odd_type, " All Odds Section", e)
         except Exception as e:
-            st.write("Couldn't click Compare All Odds on", odd_type, e)
+            print("Couldn't click Compare All Odds on", odd_type, e)
         try:
             if header.get_attribute("aria-expanded") == "true":
-                header.click()
+                driver.execute_script('arguments[0].click()', header)
                 time.sleep(random.uniform(1, 2))
         except Exception as e:
             print("Couldn't collapse", header)
     except Exception as e:
-        st.write("Couldn't find or expand section:", odd_type)
-        driver.save_screenshot('screenshot.png')
-        st.image("screenshot.png", caption="Screen")
+        print("Couldn't find or expand section:", odd_type)
 
     return odds_dict
 
@@ -390,7 +386,7 @@ def scrape_all_matches(match_dict, driver):
             continue
         try:
             driver.get(link)
-            time.sleep(random.uniform(10, 12))
+            time.sleep(random.uniform(1, 2))
             if match_counter == 1:
                 wait = WebDriverWait(driver, 5)
                 try:
@@ -413,7 +409,8 @@ def scrape_all_matches(match_dict, driver):
             print("Couldn't open link ", link, " ", e)
             match_progress_bar.progress(int((match_counter / total_matches) * 100))
             continue
-        #driver.execute_script("document.body.style.zoom='60%'")
+
+        driver.execute_script("document.body.style.zoom='60%'")
         time.sleep(random.uniform(1, 2))
 
         headers = driver.find_elements(By.XPATH, "//h2")
@@ -462,23 +459,6 @@ def get_logpath() -> str:
 def get_chromedriver_path() -> str:
     return shutil.which('chromedriver')
 
-def get_chromedriver_version() -> str:
-    try:
-        result = subprocess.run(['chromedriver', '--version'], capture_output=True, text=True)
-        version = result.stdout.split()[1]
-        return version
-    except Exception as e:
-        return str(e)
-
-def get_chromium_version() -> str:
-    try:
-        result = subprocess.run(['chromium', '--version'], capture_output=True, text=True)
-        version = result.stdout.split()[1]
-        return version
-    except Exception as e:
-        return str(e)
-
-
 def get_webdriver_service(logpath) -> Service:
     service = Service(
     executable_path=get_chromedriver_path(),
@@ -486,9 +466,6 @@ def get_webdriver_service(logpath) -> Service:
     )
     return service
 
-def delete_selenium_log(logpath: str):
-    if os.path.exists(logpath):
-        os.remove(logpath)
 
 st.set_page_config(page_title="Oddschecker.com Odds Scraper", page_icon="📈")
 
@@ -515,14 +492,6 @@ else:
     st.info("Latest scraped odds file not found")
 
 if st.button("Start scraping"):
-    st.header('Versions')
-    st.write('This is only for debugging purposes.\n'
-            'Checking versions installed in environment:\n\n'
-            f'- Streamlit:     {st.__version__}\n'
-            f'- Selenium:      {webdriver.__version__}\n'
-            f'- Chromedriver:  {get_chromedriver_version()}\n'
-            f'- Chromium:      {get_chromium_version()}')
-
     data, teams_data, players_data, team_id_to_name, player_id_to_name = fetch_fpl_data()
     next_gws = get_next_gws(fixtures, extra_gw = 'False')
     next_fixtures = get_next_fixtures(fixtures, next_gws)
@@ -530,7 +499,6 @@ if st.button("Start scraping"):
 
     try: 
         logpath=get_logpath()
-        #delete_selenium_log(logpath=logpath)
 
         options = Options()
         options.binary_location = "/usr/bin/chromium"
@@ -558,7 +526,6 @@ if st.button("Start scraping"):
 
         user_agent = random.choice(user_agents)
 
-       
         options.add_argument("--headless=new") 
         options.add_argument("--no-sandbox")
         options.add_argument("--disable-dev-shm-usage")
@@ -566,18 +533,12 @@ if st.button("Start scraping"):
         options.add_argument("--remote-debugging-port=9222")
         options.add_argument("--start-maximized")
 
-
         service = get_webdriver_service(logpath=logpath)
-        
-        chrome_version = get_chromium_version()
-        main_version = int(chrome_version.split(".")[0])
-        st.write("Chromium version:", main_version)
 
         driver = webdriver.Chrome(options=options, service=service)
         time.sleep(random.uniform(10, 12))
     except Exception as e: 
-        
-        st.write(e)
+        st.write("Couldn't open Chrome")
     match_dict = fetch_all_match_links(next_fixtures, team_id_to_name, teams_positions_map, driver)
     scrape_all_matches(match_dict, driver)
 
