@@ -2,7 +2,6 @@ requests
 pandas
 beautifulsoup4
 selenium
-undetected-chromedriver
 streamlit
 chardet
 scipy
