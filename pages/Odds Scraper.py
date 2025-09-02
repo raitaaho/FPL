@@ -342,6 +342,8 @@ def fetch_odds(match_name: str, odd_type: str, driver: "webdriver.Chrome") -> ty
             print("Couldn't collapse", header)
     except Exception as e:
         st.write("Couldn't find or expand section:", odd_type)
+        driver.save_screenshot('screenshot.png')
+        st.image("screenshot.png", caption="Screen")
 
     return odds_dict
 
@@ -494,7 +496,7 @@ def get_webdriver_options() -> Options:
 
     options.add_argument(f'--user-agent={user_agent}')
     options.add_argument("--start-maximized")
-    options.add_argument("--headless")
+    #options.add_argument("--headless")
     options.add_argument('--no-sandbox')
     options.add_argument('--disable-dev-shm-usage')
     options.add_argument('--disable-gpu')
@@ -541,7 +543,7 @@ if st.button("Start scraping"):
         service = get_webdriver_service(logpath=logpath)
 
         driver = uc.Chrome(options=options, service=service)
-        time.sleep(random.uniform(0.5, 1))
+        time.sleep(random.uniform(10, 12))
     except Exception as e: 
         logpath=get_logpath()
         options = get_webdriver_options()
@@ -550,7 +552,7 @@ if st.button("Start scraping"):
         main_version_string = re.search(r"Current browser version is (\d+\.\d+\.\d+)", str(e)).group(1)
         main_version = int(main_version_string.split(".")[0])
         driver = uc.Chrome(options=options, service=service, version_main=main_version)
-    
+        time.sleep(random.uniform(10, 12))
     match_dict = fetch_all_match_links(next_fixtures, team_id_to_name, teams_positions_map, driver)
     scrape_all_matches(match_dict, driver)
 
