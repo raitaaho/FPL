@@ -6,3 +6,4 @@ undetected-chromedriver
 streamlit
 chardet
 scipy
+plotly

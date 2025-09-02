@@ -481,6 +481,10 @@ def get_webdriver_service(logpath) -> Service:
     )
     return service
 
+def delete_selenium_log(logpath: str):
+    if os.path.exists(logpath):
+        os.remove(logpath)
+
 st.set_page_config(page_title="Oddschecker.com Odds Scraper", page_icon="📈")
 
 st.markdown("# Oddschecker.com Odds Scraper")
@@ -520,6 +524,9 @@ if st.button("Start scraping"):
     teams_positions_map = teams_league_positions_mapping(teams_data)
 
     try: 
+        logpath=get_logpath()
+        delete_selenium_log(logpath=logpath)
+
         options = uc.ChromeOptions()
         user_agents = [
         "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36",
@@ -553,12 +560,14 @@ if st.button("Start scraping"):
         options.add_argument('--disable-extensions')
         options.add_argument('--disable-infobars')
         options.add_argument('--disable-blink-features=AutomationControlled')
+
+        service = get_webdriver_service(logpath=logpath)
         
         chrome_version = get_chromium_version()
         main_version = int(chrome_version.split(".")[0])
         st.write("Chromium version:", main_version)
 
-        driver = uc.Chrome(options=options, version_main=main_version)
+        driver = uc.Chrome(options=options, service=service, version_main=main_version)
         time.sleep(random.uniform(10, 12))
     except Exception as e: 
         
