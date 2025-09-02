@@ -545,8 +545,13 @@ if st.button("Start scraping"):
     scrape_all_matches(match_dict, driver)
 
     current_time = datetime.now()
-    filename = os.path.join(fixtures_dir, f"gw{gws_for_filename}_all_odds_{current_time.strftime('%d')}-{current_time.strftime('%m')}_{current_time.strftime('%H')}-{current_time.strftime('%M')}.json")
+    filename =f"gw{gws_for_filename}_all_odds_{current_time.strftime('%d')}-{current_time.strftime('%m')}_{current_time.strftime('%H')}-{current_time.strftime('%M')}.json"
     json_data = json.dumps(match_dict, indent=4)
-    with open(filename, 'w') as f:
-        f.write(json_data)
-        st.info(f"Saved odds for GW(s) {gws_for_filename} fixtures to {filename.replace(fixtures_dir, '')}")
+
+    st.download_button(
+    label="Download odds as JSON file",
+    data=json_data,
+    file_name=filename,
+    mime="text/json",
+    icon=":material/download:",
+    )
