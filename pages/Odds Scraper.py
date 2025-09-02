@@ -341,6 +341,8 @@ def fetch_odds(match_name: str, odd_type: str, driver: "webdriver.Chrome") -> ty
             print("Couldn't collapse", header)
     except Exception as e:
         print("Couldn't find or expand section:", odd_type)
+        driver.save_screenshot('screenshot.png')
+        st.image("screenshot.png", caption="Screen")
 
     return odds_dict
 
@@ -539,6 +541,7 @@ if st.button("Start scraping"):
         time.sleep(random.uniform(10, 12))
     except Exception as e: 
         st.write("Couldn't open Chrome")
+        quit()
     match_dict = fetch_all_match_links(next_fixtures, team_id_to_name, teams_positions_map, driver)
     scrape_all_matches(match_dict, driver)
 
