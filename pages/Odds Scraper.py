@@ -528,13 +528,18 @@ if st.button("Start scraping"):
     next_fixtures = get_next_fixtures(fixtures, next_gws)
     teams_positions_map = teams_league_positions_mapping(teams_data)
 
-    logpath=get_logpath()
-    options = get_webdriver_options()
-    service = get_webdriver_service(logpath=logpath)
     try: 
+        logpath=get_logpath()
+        options = get_webdriver_options()
+        service = get_webdriver_service(logpath=logpath)
+
         driver = uc.Chrome(options=options, service=service)
         time.sleep(random.uniform(0.5, 1))
     except Exception as e: 
+        logpath=get_logpath()
+        options = get_webdriver_options()
+        service = get_webdriver_service(logpath=logpath)
+        
         main_version_string = re.search(r"Current browser version is (\d+\.\d+\.\d+)", str(e)).group(1)
         main_version = int(main_version_string.split(".")[0])
         driver = uc.Chrome(options=options, service=service, version_main=main_version)
