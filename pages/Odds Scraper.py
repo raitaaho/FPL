@@ -340,8 +340,8 @@ def fetch_odds(match_name: str, odd_type: str, driver: "webdriver.Chrome") -> ty
             print("Couldn't collapse", header)
     except Exception as e:
         print("Couldn't find or expand section:", odd_type)
-        driver.save_screenshot('screenshot.png')
-        st.image("screenshot.png", caption="Screen")
+        #driver.save_screenshot('screenshot.png')
+        #st.image("screenshot.png", caption="Screen")
 
     return odds_dict
 
@@ -367,7 +367,7 @@ def scrape_all_matches(match_dict, driver):
         match_progress_text.markdown(f"## Scraping match {match_counter} of {total_matches}")
 
         match_text = st.empty()
-        match_text.markdown(f"### Scraping odds for {match}")
+        match_text.markdown(f"### {match_counter}/{total_matches} Scraping odds for {match}")
        
         odd_progress_text = st.empty()
         odd_progress_bar = st.progress(0)
@@ -453,6 +453,8 @@ def scrape_all_matches(match_dict, driver):
 
     match_progress_text.markdown(f"## Scraped all of {total_matches} matches in {round(elapsed/60, 2)} minutes") 
     driver.quit()
+
+    return match_dict
 
 def get_logpath() -> str:
     return os.path.join(os.getcwd(), 'selenium.log')
@@ -542,11 +544,13 @@ if st.button("Start scraping"):
         st.write("Couldn't open Chrome")
         quit()
     match_dict = fetch_all_match_links(next_fixtures, team_id_to_name, teams_positions_map, driver)
-    scrape_all_matches(match_dict, driver)
+    updated_match_dict = scrape_all_matches(match_dict, driver)
 
+    json_data = json.dumps(updated_match_dict, indent=4)
+
+if json_data:
     current_time = datetime.now()
     filename =f"gw{gws_for_filename}_all_odds_{current_time.strftime('%d')}-{current_time.strftime('%m')}_{current_time.strftime('%H')}-{current_time.strftime('%M')}.json"
-    json_data = json.dumps(match_dict, indent=4)
 
     st.download_button(
     label="Download odds as JSON file",
