@@ -9,14 +9,10 @@ from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.common.exceptions import NoSuchElementException
 from selenium.common.exceptions import TimeoutException
-from selenium.common.exceptions import ElementClickInterceptedException
-from selenium.webdriver.common.action_chains import ActionChains
 import undetected_chromedriver as uc
 import time
 from fractions import Fraction
 from collections import defaultdict
-from unicodedata import normalize
-from itertools import zip_longest
 import os
 import typing
 import statistics
@@ -26,11 +22,11 @@ from datetime import datetime
 from scipy.stats import norm
 import glob
 import streamlit as st
-from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.chrome.service import Service
 import shutil
 import re
+import subprocess
 
 # Mapping of team names from Oddschecker to FPL API team names for consistency.
 TEAM_NAMES_ODDSCHECKER = {
@@ -461,6 +457,14 @@ def get_logpath() -> str:
 def get_chromedriver_path() -> str:
     return shutil.which('chromedriver')
 
+def get_chromium_version() -> str:
+    try:
+        result = subprocess.run(['chromium', '--version'], capture_output=True, text=True)
+        version = result.stdout.split()[1]
+        return version
+    except Exception as e:
+        return str(e)
+
 
 def get_webdriver_service(logpath) -> Service:
     service = Service(
@@ -541,8 +545,9 @@ if st.button("Start scraping"):
         logpath=get_logpath()
         options = get_webdriver_options()
         service = get_webdriver_service(logpath=logpath)
+        chrome_version = get_chromium_version()
 
-        driver = uc.Chrome(options=options, service=service)
+        driver = uc.Chrome(options=options, service=service, version_main=chrome_version)
         time.sleep(random.uniform(10, 12))
     except Exception as e: 
         logpath=get_logpath()
