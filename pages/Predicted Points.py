@@ -1045,6 +1045,8 @@ def construct_team_and_player_data(
         player_data[player]['24/25 Goals per Away Game Against 17-20'] = float(player_data[player]['24/25 Away Goals Against 17-20']/player_data[player]['24/25 Away Games Against 17-20']) if player_data[player]['24/25 Away Games Against 17-20'] != 0 else 0
         player_data[player]['24/25 Assists per Away Game Against 17-20'] = float(player_data[player]['24/25 Away Assists Against 17-20']/player_data[player]['24/25 Away Games Against 17-20']) if player_data[player]['24/25 Away Games Against 17-20'] != 0 else 0
 
+
+    '''
     team_json_data = json.dumps(team_data, indent=4)
     with open('team_data.json', 'w') as f:
         f.write(team_json_data)
@@ -1061,7 +1063,8 @@ def construct_team_and_player_data(
     with pd.ExcelWriter(f"historical_data_output.xlsx") as writer:
         team_data_df.to_excel(writer, sheet_name='Teams')
         player_data_df.to_excel(writer, sheet_name='Players')
-
+    '''
+    
     return team_data, player_data
 
 def get_player_over_probs(
