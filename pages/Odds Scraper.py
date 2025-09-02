@@ -433,7 +433,7 @@ def scrape_all_matches(match_dict, driver):
                         header.click()
                         time.sleep(random.uniform(1, 2))
                     except Exception as e:
-                        print("Couldn't collapse", header)
+                        st.write("Couldn't collapse", header)
         elapsed = time.perf_counter() - start0
         elapsed_time_text.text(f"Total time elapsed: {round(elapsed/60, 2)} minutes")
 
