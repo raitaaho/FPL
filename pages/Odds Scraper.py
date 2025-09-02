@@ -457,6 +457,14 @@ def get_logpath() -> str:
 def get_chromedriver_path() -> str:
     return shutil.which('chromedriver')
 
+def get_chromedriver_version() -> str:
+    try:
+        result = subprocess.run(['chromedriver', '--version'], capture_output=True, text=True)
+        version = result.stdout.split()[1]
+        return version
+    except Exception as e:
+        return str(e)
+
 def get_chromium_version() -> str:
     try:
         result = subprocess.run(['chromium', '--version'], capture_output=True, text=True)
@@ -472,43 +480,6 @@ def get_webdriver_service(logpath) -> Service:
     log_output=logpath,
     )
     return service
-
-def get_webdriver_options() -> Options:
-    options = uc.ChromeOptions()
-    user_agents = [
-    "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36",
-    "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.0 Safari/605.1.15",
-    "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/123.0.0.0 Safari/537.36",
-    "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:125.0) Gecko/20100101 Firefox/125.0",
-    "Mozilla/5.0 (iPhone; CPU iPhone OS 17_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.0 Mobile/15E148 Safari/604.1",
-    "Mozilla/5.0 (Linux; Android 14; SM-G991B) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Mobile Safari/537.36",
-    "Mozilla/5.0 (iPad; CPU OS 17_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.0 Mobile/15E148 Safari/604.1",
-    "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Edge/124.0.2478.80",
-    "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/125.0.0.0 Safari/537.36",
-    "Mozilla/5.0 (Macintosh; Intel Mac OS X 13_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/125.0.0.0 Safari/537.36",
-    "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/125.0.0.0 Safari/537.36",
-    "Mozilla/5.0 (Linux; Android 13; Pixel 6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/125.0.0.0 Mobile Safari/537.36",
-    "Mozilla/5.0 (Linux; Android 14; Samsung Galaxy S22) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Mobile Safari/537.36",
-    "Mozilla/5.0 (Windows NT 11.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36",
-    "Mozilla/5.0 (Macintosh; Intel Mac OS X 14_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36",
-    "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/127.0.0.0 Safari/537.36",
-    "Mozilla/5.0 (Linux; Android 13; Xiaomi Mi 11) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/127.0.0.0 Mobile Safari/537.36",
-    "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/127.0.0.0 Safari/537.36"
-    ]
-
-    user_agent = random.choice(user_agents)
-
-    options.add_argument(f'--user-agent={user_agent}')
-    options.add_argument("--start-maximized")
-    #options.add_argument("--headless")
-    options.add_argument('--no-sandbox')
-    options.add_argument('--disable-dev-shm-usage')
-    options.add_argument('--disable-gpu')
-    options.add_argument('--disable-extensions')
-    options.add_argument('--disable-infobars')
-    options.add_argument('--disable-blink-features=AutomationControlled')
-
-    return options
 
 st.set_page_config(page_title="Oddschecker.com Odds Scraper", page_icon="📈")
 
@@ -535,6 +506,13 @@ else:
     st.info("Latest scraped odds file not found")
 
 if st.button("Start scraping"):
+    st.header('Versions')
+    st.write('This is only for debugging purposes.\n'
+            'Checking versions installed in environment:\n\n'
+            f'- Streamlit:     {st.__version__}\n'
+            f'- Selenium:      {webdriver.__version__}\n'
+            f'- Chromedriver:  {get_chromedriver_version()}\n'
+            f'- Chromium:      {get_chromium_version()}')
 
     data, teams_data, players_data, team_id_to_name, player_id_to_name = fetch_fpl_data()
     next_gws = get_next_gws(fixtures, extra_gw = 'False')
@@ -542,23 +520,48 @@ if st.button("Start scraping"):
     teams_positions_map = teams_league_positions_mapping(teams_data)
 
     try: 
-        logpath=get_logpath()
-        options = get_webdriver_options()
-        service = get_webdriver_service(logpath=logpath)
+        options = uc.ChromeOptions()
+        user_agents = [
+        "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36",
+        "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.0 Safari/605.1.15",
+        "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/123.0.0.0 Safari/537.36",
+        "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:125.0) Gecko/20100101 Firefox/125.0",
+        "Mozilla/5.0 (iPhone; CPU iPhone OS 17_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.0 Mobile/15E148 Safari/604.1",
+        "Mozilla/5.0 (Linux; Android 14; SM-G991B) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Mobile Safari/537.36",
+        "Mozilla/5.0 (iPad; CPU OS 17_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.0 Mobile/15E148 Safari/604.1",
+        "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Edge/124.0.2478.80",
+        "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/125.0.0.0 Safari/537.36",
+        "Mozilla/5.0 (Macintosh; Intel Mac OS X 13_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/125.0.0.0 Safari/537.36",
+        "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/125.0.0.0 Safari/537.36",
+        "Mozilla/5.0 (Linux; Android 13; Pixel 6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/125.0.0.0 Mobile Safari/537.36",
+        "Mozilla/5.0 (Linux; Android 14; Samsung Galaxy S22) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Mobile Safari/537.36",
+        "Mozilla/5.0 (Windows NT 11.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36",
+        "Mozilla/5.0 (Macintosh; Intel Mac OS X 14_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36",
+        "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/127.0.0.0 Safari/537.36",
+        "Mozilla/5.0 (Linux; Android 13; Xiaomi Mi 11) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/127.0.0.0 Mobile Safari/537.36",
+        "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/127.0.0.0 Safari/537.36"
+        ]
+
+        user_agent = random.choice(user_agents)
+
+        options.add_argument(f'--user-agent={user_agent}')
+        options.add_argument("--start-maximized")
+        #options.add_argument("--headless")
+        options.add_argument('--no-sandbox')
+        options.add_argument('--disable-dev-shm-usage')
+        options.add_argument('--disable-gpu')
+        options.add_argument('--disable-extensions')
+        options.add_argument('--disable-infobars')
+        options.add_argument('--disable-blink-features=AutomationControlled')
+        
         chrome_version = get_chromium_version()
         main_version = int(chrome_version.split(".")[0])
+        st.write("Chromium version:", main_version)
 
-        driver = uc.Chrome(options=options, service=service, version_main=main_version)
+        driver = uc.Chrome(options=options, version_main=main_version)
         time.sleep(random.uniform(10, 12))
     except Exception as e: 
-        logpath=get_logpath()
-        options = get_webdriver_options()
-        service = get_webdriver_service(logpath=logpath)
-
-        #main_version_string = re.search(r"Current browser version is (\d+\.\d+\.\d+)", str(e)).group(1)
-        #main_version = int(main_version_string.split(".")[0])
-        #driver = uc.Chrome(options=options, service=service, version_main=main_version)
-        #time.sleep(random.uniform(10, 12))
+        
         st.write(e)
     match_dict = fetch_all_match_links(next_fixtures, team_id_to_name, teams_positions_map, driver)
     scrape_all_matches(match_dict, driver)
