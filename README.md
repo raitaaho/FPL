@@ -1,5 +1,8 @@
   ## Streamlit app for Fantasy Premier League 
 
+  ## The application is now live
+  **`https://fplraita.streamlit.app/`**
+
   ### Overview
 
   Fantasy Premier League game is open to the public and is contested annually by millions worldwide. Participants must select a team based on real-life Premier League footballers who scored fantasy points based on those players' real-life statistical performances. Points accumulate across the season in order to declare a champion. As well as the overall global leaderboard, there are smaller automatic public leaderboards categorised by home country and Premier League club supported.
