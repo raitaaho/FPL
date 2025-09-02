@@ -1,6 +1,6 @@
   ## Streamlit app for Fantasy Premier League 
 
-  ## The application is now [**live**](https://fplraita.streamlit.app/)
+  ## The application can be accessed via this [**link**](https://fplraita.streamlit.app/)
 
   ### Overview
 
