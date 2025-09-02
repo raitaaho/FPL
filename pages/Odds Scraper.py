@@ -528,7 +528,7 @@ if st.button("Start scraping"):
         #delete_selenium_log(logpath=logpath)
 
         options = Options()
-        #options.add_argument("--no-sandbox")
+        options.binary_location = "/usr/bin/chromium"
 
         user_agents = [
         "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36",
@@ -553,8 +553,13 @@ if st.button("Start scraping"):
 
         user_agent = random.choice(user_agents)
 
-        #options.add_argument(f'--user-agent={user_agent}')
-        #options.add_argument("--headless")
+       
+        options.add_argument("--headless=new") 
+        options.add_argument("--no-sandbox")
+        options.add_argument("--disable-dev-shm-usage")
+        options.add_argument("--disable-gpu")
+        options.add_argument("--remote-debugging-port=9222")
+
 
         service = get_webdriver_service(logpath=logpath)
         
