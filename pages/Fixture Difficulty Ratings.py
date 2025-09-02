@@ -615,6 +615,12 @@ if "styled_attack_df" not in st.session_state:
 if "styled_defense_df" not in st.session_state:
     st.session_state.styled_defense_df = None
 
+if "team1_input" not in st.session_state:
+    st.session_state.team1_input = None
+
+if "team2_input" not in st.session_state:
+    st.session_state.team2_input = None
+
 # --- Page Config ---
 st.set_page_config(page_title="FPL Fixture Difficulty Ratings", page_icon="📈")
 
@@ -716,12 +722,12 @@ if st.session_state.styled_attack_df is not None and st.session_state.styled_def
         enable_three_team_rotation = st.checkbox("Find best rotation among three teams")
 
         team_names = list(st.session_state.team_id_to_name.values())
-        team1_input = st.selectbox("Select first team", options=team_names)
+        st.session_state.team1_input = st.selectbox("Select first team", options=team_names)
 
         if enable_three_team_rotation:
-            team2_input = st.selectbox("Select second team", options=[name for name in team_names if name != team1_input])
+            st.session_state.team2_input = st.selectbox("Select second team", options=[name for name in team_names if name != st.session_state.team1_input])
         else:
-            team2_input = None
+            st.session_state.team2_input = None
 
         if enable_three_team_rotation:
             rotation_three_result = get_best_rotation_three_teams(st.session_state.all_gws_fdr, num_gws)
@@ -729,19 +735,19 @@ if st.session_state.styled_attack_df is not None and st.session_state.styled_def
             st.write(f"**Attack Rotation:** {', '.join([st.session_state.team_id_to_name[t] for t in rotation_three_result['best_attack_rotation']])} → Total FDR: {rotation_three_result['attack_fdr_sum']}")
             st.write(f"**Defense Rotation:** {', '.join([st.session_state.team_id_to_name[t] for t in rotation_three_result['best_defense_rotation']])} → Total FDR: {rotation_three_result['defense_fdr_sum']}")
 
-        if team1_input and team2_input:
+        if st.session_state.team1_input and st.session_state.team2_input:
             specific_two_team_result = get_best_partner_for_two_teams(
                 st.session_state.all_gws_fdr,
                 num_gws,
-                team1_input,
-                team2_input,
+                st.session_state.team1_input,
+                st.session_state.team2_input,
                 st.session_state.team_id_to_name
             )
 
             if isinstance(specific_two_team_result, str):
                 st.error(specific_two_team_result)
             else:
-                st.markdown(f"### 🔍 Best Rotation Partner for **{team1_input} + {team2_input}**")
+                st.markdown(f"### 🔍 Best Rotation Partner for **{st.session_state.team1_input} + {st.session_state.team2_input}**")
                 st.write(f"**Attack Partner:** {specific_two_team_result['best_attack_partner']} → Total FDR: {specific_two_team_result['attack_fdr_sum']}")
                 st.write(f"**Defense Partner:** {specific_two_team_result['best_defense_partner']} → Total FDR: {specific_two_team_result['defense_fdr_sum']}")
 
