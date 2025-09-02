@@ -36,6 +36,7 @@ import streamlit as st
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.chrome.service import Service
+import shutil
 
 # Mapping of team names from Oddschecker to FPL API team names for consistency.
 TEAM_NAMES_ODDSCHECKER = {
@@ -458,6 +459,20 @@ def scrape_all_matches(match_dict, driver):
     match_progress_text.markdown(f"## Scraped all of {total_matches} matches in {round(elapsed/60, 2)} minutes") 
     driver.quit()
 
+def get_logpath() -> str:
+    return os.path.join(os.getcwd(), 'selenium.log')
+
+def get_chromedriver_path() -> str:
+    return shutil.which('chromedriver')
+
+
+def get_webdriver_service(logpath) -> Service:
+    service = Service(
+        executable_path=get_chromedriver_path(),
+        log_output=logpath,
+    )
+    return service
+
 st.set_page_config(page_title="Oddschecker.com Odds Scraper", page_icon="📈")
 
 st.markdown("# Oddschecker.com Odds Scraper")
@@ -489,6 +504,9 @@ if st.button("Start scraping"):
     next_fixtures = get_next_fixtures(fixtures, next_gws)
     teams_positions_map = teams_league_positions_mapping(teams_data)
 
+    logpath=get_logpath()
+    service = get_webdriver_service(logpath=logpath)
+
     user_agents = [
     "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36",
     "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.0 Safari/605.1.15",
@@ -517,7 +535,7 @@ if st.button("Start scraping"):
     options.add_argument("--start-maximized")
     options.add_argument("--headless")
 
-    driver = uc.Chrome(options=options)
+    driver = uc.Chrome(options=options, service=service)
     time.sleep(random.uniform(0.5, 1))
     
     match_dict = fetch_all_match_links(next_fixtures, team_id_to_name, teams_positions_map, driver)
