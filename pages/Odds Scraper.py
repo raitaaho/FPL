@@ -495,6 +495,13 @@ def get_webdriver_options() -> Options:
     options.add_argument(f'--user-agent={user_agent}')
     options.add_argument("--start-maximized")
     options.add_argument("--headless")
+    options.add_argument('--no-sandbox')
+    options.add_argument('--disable-dev-shm-usage')
+    options.add_argument('--disable-gpu')
+    options.add_argument('--disable-extensions')
+    options.add_argument('--disable-infobars')
+    options.add_argument('--disable-blink-features=AutomationControlled')
+
     return options
 
 st.set_page_config(page_title="Oddschecker.com Odds Scraper", page_icon="📈")
@@ -539,7 +546,7 @@ if st.button("Start scraping"):
         logpath=get_logpath()
         options = get_webdriver_options()
         service = get_webdriver_service(logpath=logpath)
-        
+
         main_version_string = re.search(r"Current browser version is (\d+\.\d+\.\d+)", str(e)).group(1)
         main_version = int(main_version_string.split(".")[0])
         driver = uc.Chrome(options=options, service=service, version_main=main_version)
