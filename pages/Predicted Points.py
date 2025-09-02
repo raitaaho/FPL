@@ -1064,7 +1064,7 @@ def construct_team_and_player_data(
         team_data_df.to_excel(writer, sheet_name='Teams')
         player_data_df.to_excel(writer, sheet_name='Players')
     '''
-    
+
     return team_data, player_data
 
 def get_player_over_probs(
@@ -1649,7 +1649,7 @@ def calc_points(player_dict: dict, saves_button: bool) -> None:
             print(f"Could not calculate points for {player}: {e}")
 
 def initialize_predicted_points_df(saves_button: bool, bps_button: bool):
-    extra_gws = 4
+    extra_gws = 0
 
     fixtures = get_all_fixtures()
     next_gw = get_next_gw(fixtures)
