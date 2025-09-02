@@ -708,7 +708,7 @@ if st.session_state.styled_attack_df is not None and st.session_state.styled_def
     # --- Rotation Analysis Button Below Tables ---
     if st.button("Run Rotation Analysis"):
         st.markdown("## 🔄 Rotation Analysis")
-        rotation_gws = st.number_input("Number of gameweeks for rotation analysis", min_value=1, max_value=10, value=5, key="rotation_gws")
+        rotation_gws = st.number_input("Number of gameweeks for rotation analysis", min_value=1, max_value=10, value=5, step=1)
         st.session_state.rotation_gws = rotation_gws
 
         rotation_result = get_best_rotation(st.session_state.all_gws_fdr, st.session_state.rotation_gws)
