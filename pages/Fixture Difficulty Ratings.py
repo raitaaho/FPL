@@ -2,7 +2,6 @@ import requests
 import pandas as pd
 import plotly.express as px
 import plotly.graph_objects as go
-import webbrowser
 import ast
 import sys
 from collections import defaultdict
