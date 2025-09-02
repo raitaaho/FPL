@@ -3,6 +3,5 @@ pandas
 beautifulsoup4
 selenium
 undetected-chromedriver
-secrets
 json
 streamlit
