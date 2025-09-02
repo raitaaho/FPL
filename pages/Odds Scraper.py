@@ -549,10 +549,11 @@ if st.button("Start scraping"):
         options = get_webdriver_options()
         service = get_webdriver_service(logpath=logpath)
 
-        main_version_string = re.search(r"Current browser version is (\d+\.\d+\.\d+)", str(e)).group(1)
-        main_version = int(main_version_string.split(".")[0])
-        driver = uc.Chrome(options=options, service=service, version_main=main_version)
-        time.sleep(random.uniform(10, 12))
+        #main_version_string = re.search(r"Current browser version is (\d+\.\d+\.\d+)", str(e)).group(1)
+        #main_version = int(main_version_string.split(".")[0])
+        #driver = uc.Chrome(options=options, service=service, version_main=main_version)
+        #time.sleep(random.uniform(10, 12))
+        st.write(e)
     match_dict = fetch_all_match_links(next_fixtures, team_id_to_name, teams_positions_map, driver)
     scrape_all_matches(match_dict, driver)
 
