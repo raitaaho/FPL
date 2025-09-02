@@ -30,6 +30,7 @@ from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.chrome.service import Service
 import shutil
+import re
 
 # Mapping of team names from Oddschecker to FPL API team names for consistency.
 TEAM_NAMES_ODDSCHECKER = {
@@ -461,13 +462,13 @@ def get_chromedriver_path() -> str:
 
 def get_webdriver_service(logpath) -> Service:
     service = Service(
-        executable_path=get_chromedriver_path(),
-        log_output=logpath,
+    executable_path=get_chromedriver_path(),
+    log_output=logpath,
     )
     return service
 
 def get_webdriver_options() -> Options:
-    options = Options()
+    options = uc.ChromeOptions()
     user_agents = [
     "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36",
     "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.0 Safari/605.1.15",
@@ -530,9 +531,13 @@ if st.button("Start scraping"):
     logpath=get_logpath()
     options = get_webdriver_options()
     service = get_webdriver_service(logpath=logpath)
-
-    driver = uc.Chrome(options=options, service=service)
-    time.sleep(random.uniform(0.5, 1))
+    try: 
+        driver = uc.Chrome(options=options, service=service)
+        time.sleep(random.uniform(0.5, 1))
+    except Exception as e: 
+        main_version_string = re.search(r"Current browser version is (\d+\.\d+\.\d+)", str(e)).group(1)
+        main_version = int(main_version_string.split(".")[0])
+        driver = uc.Chrome(options=options, service=service, version_main=main_version)
     
     match_dict = fetch_all_match_links(next_fixtures, team_id_to_name, teams_positions_map, driver)
     scrape_all_matches(match_dict, driver)
