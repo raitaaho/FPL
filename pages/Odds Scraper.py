@@ -527,7 +527,7 @@ if st.button("Start scraping"):
         logpath=get_logpath()
         delete_selenium_log(logpath=logpath)
 
-        options = uc.ChromeOptions()
+        options = Options()
         user_agents = [
         "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36",
         "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.0 Safari/605.1.15",
@@ -560,6 +560,10 @@ if st.button("Start scraping"):
         options.add_argument('--disable-extensions')
         options.add_argument('--disable-infobars')
         options.add_argument('--disable-blink-features=AutomationControlled')
+        options.add_argument("--disable-features=NetworkService")
+        options.add_argument("--disable-features=VizDisplayCompositor")
+        options.add_argument('--ignore-certificate-errors')
+        options.set_capability('goog:loggingPrefs', {'performance': 'ALL'})
 
         service = get_webdriver_service(logpath=logpath)
         
