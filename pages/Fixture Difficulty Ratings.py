@@ -722,7 +722,7 @@ if st.session_state.styled_attack_df is not None and st.session_state.styled_def
         team_names = list(st.session_state.team_id_to_name.values())
         team1_input = st.selectbox("Select first team", options=team_names)
 
-        if not enable_three_team_rotation:
+        if enable_three_team_rotation:
             team2_input = st.selectbox("Select second team", options=[name for name in team_names if name != team1_input])
         else:
             team2_input = None
