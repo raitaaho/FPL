@@ -627,6 +627,9 @@ if "enable_three_team_rotation" not in st.session_state:
 if "all_gws_fdr" not in st.session_state:
     st.session_state.all_gws_fdr = {}
 
+if "rotation_result" not in st.session_state:
+    st.session_state.rotation_result = {}
+
 # --- Page Config ---
 st.set_page_config(page_title="FPL Fixture Difficulty Ratings", page_icon="📈")
 
@@ -718,10 +721,10 @@ if st.session_state.styled_attack_df is not None and st.session_state.styled_def
     if st.button("Run Rotation Analysis"):
         st.markdown("## 🔄 Rotation Analysis")
 
-        rotation_result = get_best_rotation(st.session_state.all_gws_fdr, num_gws)
+        st.session_state.rotation_result = get_best_rotation(st.session_state.all_gws_fdr, num_gws)
         st.markdown("### 🔝 Best Rotation Pair (All Teams)")
-        st.write(f"**Attack Rotation:** {st.session_state.team_id_to_name[rotation_result['best_attack_rotation'][0]]} + {st.session_state.team_id_to_name[rotation_result['best_attack_rotation'][1]]} → Total FDR: {rotation_result['attack_fdr_sum']}")
-        st.write(f"**Defense Rotation:** {st.session_state.team_id_to_name[rotation_result['best_defense_rotation'][0]]} + {st.session_state.team_id_to_name[rotation_result['best_defense_rotation'][1]]} → Total FDR: {rotation_result['defense_fdr_sum']}")
+        st.write(f"**Attack Rotation:** {st.session_state.team_id_to_name[st.session_state.rotation_result['best_attack_rotation'][0]]} + {st.session_state.team_id_to_name[st.session_state.rotation_result['best_attack_rotation'][1]]} → Total FDR: {st.session_state.rotation_result['attack_fdr_sum']}")
+        st.write(f"**Defense Rotation:** {st.session_state.team_id_to_name[st.session_state.rotation_result['best_defense_rotation'][0]]} + {st.session_state.team_id_to_name[st.session_state.rotation_result['best_defense_rotation'][1]]} → Total FDR: {st.session_state.rotation_result['defense_fdr_sum']}")
 
         # --- Extended Rotation ---
         st.markdown("## 🔄 Extended Rotation Analysis")
