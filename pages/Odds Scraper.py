@@ -237,11 +237,13 @@ def fetch_odds(match_name: str, odd_type: str, driver: "webdriver.Chrome") -> ty
         header2 = wait.until(EC.element_to_be_clickable((By.XPATH, "//*[text() ='" + odd_type + "']")))
         st.write(header2.get_attribute('tagName'))
         header = wait.until(EC.element_to_be_clickable((By.XPATH, "//h2[text() ='" + odd_type + "']")))
+        st.write(header.get_attribute("outerHTML"))
         # Expand the section if it's collapsed
         if header.get_attribute("aria-expanded") == "false":
             try:
                 header.click()
             except Exception as e:
+                st.write("Header not clickable", e)
                 try:
                     header.send_keys(Keys.PAGE_DOWN)
                     time.sleep(random.uniform(1, 2))
