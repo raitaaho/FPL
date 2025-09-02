@@ -3,6 +3,6 @@ pandas
 beautifulsoup4
 selenium
 undetected-chromedriver
-chromedriver-autoinstaller
 secrets
 json
+streamlit

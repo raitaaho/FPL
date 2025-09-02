@@ -33,6 +33,9 @@ import scipy.stats as stats
 from scipy.stats import norm
 import glob
 import streamlit as st
+from selenium import webdriver
+from selenium.webdriver.chrome.options import Options
+from selenium.webdriver.chrome.service import Service
 
 # Mapping of team names from Oddschecker to FPL API team names for consistency.
 TEAM_NAMES_ODDSCHECKER = {

@@ -1,4 +1,7 @@
 import streamlit as st
+from selenium import webdriver
+from selenium.webdriver.chrome.options import Options
+from selenium.webdriver.chrome.service import Service
 
 st.set_page_config(
     page_title="Hello",
@@ -18,3 +21,4 @@ st.markdown(
     **👈 Select to scrape odds or view Fantasy Premier League predicted points according to the scraped bookmaker odds**
 """
 )
+
