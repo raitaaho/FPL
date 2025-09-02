@@ -234,6 +234,8 @@ def fetch_odds(match_name: str, odd_type: str, driver: "webdriver.Chrome") -> ty
     wait = WebDriverWait(driver, 4)
     try:
         # Find the section
+        header2 = wait.until(EC.element_to_be_clickable((By.XPATH, "//*[text() ='" + odd_type + "']")))
+        st.write(header2.get_attribute('tagName'))
         header = wait.until(EC.element_to_be_clickable((By.XPATH, "//h2[text() ='" + odd_type + "']")))
         # Expand the section if it's collapsed
         if header.get_attribute("aria-expanded") == "false":
@@ -253,10 +255,15 @@ def fetch_odds(match_name: str, odd_type: str, driver: "webdriver.Chrome") -> ty
                         header.click()
                         print("Successfully expanded section after scrolling into view")
                     except Exception as e:
-                        driver.execute_script("window.scrollBy(0,-100)")
-                        time.sleep(random.uniform(1, 2))
-                        header.click()
-                        print("Successfully expanded section after scrolling into view and 100 pixels up")
+                        st.write("Header not clickable after scrolling into view")
+                        try:
+                            driver.execute_script("window.scrollBy(0,-100)")
+                            time.sleep(random.uniform(1, 2))
+                            header.click()
+                            print("Successfully expanded section after scrolling into view and 100 pixels up")
+                        except Exception as e:
+                            st.write("Header not clickable after scrolling 100 pixels down")
+
                     
         wait = WebDriverWait(driver, 5)
         try:
@@ -559,6 +566,7 @@ if st.button("Start scraping"):
         options.add_argument("--disable-dev-shm-usage")
         options.add_argument("--disable-gpu")
         options.add_argument("--remote-debugging-port=9222")
+        options.add_argument("--start-maximized")
 
 
         service = get_webdriver_service(logpath=logpath)
