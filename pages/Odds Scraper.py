@@ -230,18 +230,14 @@ def fetch_odds(match_name: str, odd_type: str, driver: "webdriver.Chrome") -> ty
     """
 
     odds_dict = {}
-    time.sleep(random.uniform(2,3))
     wait = WebDriverWait(driver, 4)
     try:
         # Find the section
-        header2 = wait.until(EC.element_to_be_clickable((By.XPATH, "//*[text() ='" + odd_type + "']")))
-        st.write(header2.get_attribute('tagName'))
         header = wait.until(EC.element_to_be_clickable((By.XPATH, "//h2[text() ='" + odd_type + "']")))
-        st.write(header.get_attribute("outerHTML"))
         # Expand the section if it's collapsed
         if header.get_attribute("aria-expanded") == "false":
             try:
-                header.click()
+                driver.execute_script('arguments[0].click()', header)
             except Exception as e:
                 st.write("Header not clickable", e)
                 try:
@@ -424,7 +420,7 @@ def scrape_all_matches(match_dict, driver):
         for header in headers:
             if header.get_attribute("aria-expanded") == "true":
                 try:
-                    header.click()
+                    driver.execute_script('arguments[0].click()', header)
                     time.sleep(random.uniform(1, 2))  # Wait for the section to expand
                 except Exception as e:
                     try:
