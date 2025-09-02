@@ -327,13 +327,13 @@ def fetch_odds(match_name: str, odd_type: str, driver: "webdriver.Chrome") -> ty
                             i += 1
                         print("Found odds for", odd_type)
                     except Exception as e:
-                        print("Couldn't get odds for", odd_type, e)
+                        st.write("Couldn't get odds for", odd_type, e)
                 except Exception as e:
-                    print("Couldn't get innerText-attribute for", odd_type, "outcome", e)                  
+                    st.write("Couldn't get innerText-attribute for", odd_type, "outcome", e)                  
             except Exception as e:
-                print("Couldn't find", odd_type, " All Odds Section", e)
+                st.write("Couldn't find", odd_type, " All Odds Section", e)
         except Exception as e:
-            print("Couldn't click Compare All Odds on", odd_type, e)
+            st.write("Couldn't click Compare All Odds on", odd_type, e)
         try:
             if header.get_attribute("aria-expanded") == "true":
                 header.click()
@@ -341,7 +341,7 @@ def fetch_odds(match_name: str, odd_type: str, driver: "webdriver.Chrome") -> ty
         except Exception as e:
             print("Couldn't collapse", header)
     except Exception as e:
-        print("Couldn't find or expand section:", odd_type)
+        st.write("Couldn't find or expand section:", odd_type)
 
     return odds_dict
 
@@ -387,7 +387,7 @@ def scrape_all_matches(match_dict, driver):
             continue
         try:
             driver.get(link)
-            time.sleep(random.uniform(2, 4))
+            time.sleep(random.uniform(10, 12))
             if match_counter == 1:
                 wait = WebDriverWait(driver, 5)
                 try:
