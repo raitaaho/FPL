@@ -3,16 +3,6 @@ import requests
 import pandas as pd
 from bs4 import BeautifulSoup
 
-from selenium import webdriver
-from selenium.webdriver.common.by import By
-from selenium.webdriver.common.keys import Keys
-from selenium.webdriver.support.ui import WebDriverWait
-from selenium.webdriver.support import expected_conditions as EC
-from selenium.common.exceptions import NoSuchElementException
-from selenium.common.exceptions import TimeoutException
-from selenium.common.exceptions import ElementClickInterceptedException
-from selenium.webdriver.common.action_chains import ActionChains
-import undetected_chromedriver as uc
 import time
 from fractions import Fraction
 from collections import defaultdict
