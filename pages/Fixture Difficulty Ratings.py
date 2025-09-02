@@ -615,9 +615,6 @@ if "styled_attack_df" not in st.session_state:
 if "styled_defense_df" not in st.session_state:
     st.session_state.styled_defense_df = None
 
-if "rotation_gws" not in st.session_state:
-    st.session_state.rotation_gws = None
-
 # --- Page Config ---
 st.set_page_config(page_title="FPL Fixture Difficulty Ratings", page_icon="📈")
 
@@ -708,10 +705,8 @@ if st.session_state.styled_attack_df is not None and st.session_state.styled_def
     # --- Rotation Analysis Button Below Tables ---
     if st.button("Run Rotation Analysis"):
         st.markdown("## 🔄 Rotation Analysis")
-        rotation_gws = st.number_input("Number of gameweeks for rotation analysis", min_value=1, max_value=10, value=5, step=1)
-        st.session_state.rotation_gws = rotation_gws
 
-        rotation_result = get_best_rotation(st.session_state.all_gws_fdr, st.session_state.rotation_gws)
+        rotation_result = get_best_rotation(st.session_state.all_gws_fdr, num_gws)
         st.markdown("### 🔝 Best Rotation Pair (All Teams)")
         st.write(f"**Attack Rotation:** {st.session_state.team_id_to_name[rotation_result['best_attack_rotation'][0]]} + {st.session_state.team_id_to_name[rotation_result['best_attack_rotation'][1]]} → Total FDR: {rotation_result['attack_fdr_sum']}")
         st.write(f"**Defense Rotation:** {st.session_state.team_id_to_name[rotation_result['best_defense_rotation'][0]]} + {st.session_state.team_id_to_name[rotation_result['best_defense_rotation'][1]]} → Total FDR: {rotation_result['defense_fdr_sum']}")
@@ -729,7 +724,7 @@ if st.session_state.styled_attack_df is not None and st.session_state.styled_def
             team2_input = None
 
         if enable_three_team_rotation:
-            rotation_three_result = get_best_rotation_three_teams(st.session_state.all_gws_fdr, st.session_state.rotation_gws)
+            rotation_three_result = get_best_rotation_three_teams(st.session_state.all_gws_fdr, num_gws)
             st.markdown("### 🔝 Best Rotation Trio (All Teams)")
             st.write(f"**Attack Rotation:** {', '.join([st.session_state.team_id_to_name[t] for t in rotation_three_result['best_attack_rotation']])} → Total FDR: {rotation_three_result['attack_fdr_sum']}")
             st.write(f"**Defense Rotation:** {', '.join([st.session_state.team_id_to_name[t] for t in rotation_three_result['best_defense_rotation']])} → Total FDR: {rotation_three_result['defense_fdr_sum']}")
@@ -737,7 +732,7 @@ if st.session_state.styled_attack_df is not None and st.session_state.styled_def
         if team1_input and team2_input:
             specific_two_team_result = get_best_partner_for_two_teams(
                 st.session_state.all_gws_fdr,
-                st.session_state.rotation_gws,
+                num_gws,
                 team1_input,
                 team2_input,
                 st.session_state.team_id_to_name
