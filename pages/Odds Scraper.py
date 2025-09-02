@@ -525,7 +525,7 @@ if st.button("Start scraping"):
 
     try: 
         logpath=get_logpath()
-        delete_selenium_log(logpath=logpath)
+        #delete_selenium_log(logpath=logpath)
 
         options = Options()
         user_agents = [
