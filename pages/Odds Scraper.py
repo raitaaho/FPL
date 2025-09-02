@@ -389,7 +389,7 @@ def scrape_all_matches(match_dict, driver):
             if match_counter == 1:
                 wait = WebDriverWait(driver, 5)
                 try:
-                    span_element = wait.until(EC.element_to_be_clickable((By.XPATH, "//span[starts-with(@class, 'USA')]")))
+                    span_element = wait.until(EC.element_to_be_clickable((By.XPATH, "//span[starts-with(@class, 'UK')]")))
                     # Click on the <span> element (Accessing outside UK pop-up)
                     span_element.click()
                     time.sleep(random.uniform(1, 2))
