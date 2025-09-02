@@ -548,6 +548,9 @@ if st.button("Start scraping"):
 
     json_data = json.dumps(updated_match_dict, indent=4)
 
+else:
+    json_data = None
+
 if json_data:
     current_time = datetime.now()
     filename =f"gw{gws_for_filename}_all_odds_{current_time.strftime('%d')}-{current_time.strftime('%m')}_{current_time.strftime('%H')}-{current_time.strftime('%M')}.json"
