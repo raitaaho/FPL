@@ -567,7 +567,7 @@ if st.button("Start scraping"):
         main_version = int(chrome_version.split(".")[0])
         st.write("Chromium version:", main_version)
 
-        driver = uc.Chrome(options=options, service=service, version_main=main_version)
+        driver = webdriver.Chrome(options=options, service=service, version_main=main_version)
         time.sleep(random.uniform(10, 12))
     except Exception as e: 
         
