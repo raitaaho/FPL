@@ -9,7 +9,7 @@ from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.common.exceptions import NoSuchElementException
 from selenium.common.exceptions import TimeoutException
-import undetected_chromedriver as uc
+#import undetected_chromedriver as uc
 import time
 from fractions import Fraction
 from collections import defaultdict
@@ -528,6 +528,8 @@ if st.button("Start scraping"):
         #delete_selenium_log(logpath=logpath)
 
         options = Options()
+        options.add_argument("--no-sandbox")
+
         user_agents = [
         "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36",
         "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.0 Safari/605.1.15",
@@ -552,18 +554,10 @@ if st.button("Start scraping"):
         user_agent = random.choice(user_agents)
 
         options.add_argument(f'--user-agent={user_agent}')
-        options.add_argument("--start-maximized")
+        options.add_argument("--disable-dev-shm-usage")
+        options.add_argument("--crash-dumps-dir=/tmp")
+        options.add_argument('--remote-debugging-pipe')
         #options.add_argument("--headless")
-        options.add_argument('--no-sandbox')
-        options.add_argument('--disable-dev-shm-usage')
-        options.add_argument('--disable-gpu')
-        options.add_argument('--disable-extensions')
-        options.add_argument('--disable-infobars')
-        options.add_argument('--disable-blink-features=AutomationControlled')
-        options.add_argument("--disable-features=NetworkService")
-        options.add_argument("--disable-features=VizDisplayCompositor")
-        options.add_argument('--ignore-certificate-errors')
-        options.set_capability('goog:loggingPrefs', {'performance': 'ALL'})
 
         service = get_webdriver_service(logpath=logpath)
         
