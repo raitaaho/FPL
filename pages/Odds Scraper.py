@@ -9,7 +9,6 @@ from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.common.exceptions import NoSuchElementException
 from selenium.common.exceptions import TimeoutException
-#import undetected_chromedriver as uc
 import time
 from fractions import Fraction
 from collections import defaultdict
@@ -267,7 +266,7 @@ def fetch_odds(match_name: str, odd_type: str, driver: "webdriver.Chrome") -> ty
             # Expand the section if it's collapsed
             if compare_odds.get_attribute("aria-expanded") == "false":
                 try:
-                    compare_odds.click()
+                    driver.execute_script('arguments[0].click()', compare_odds)
                     time.sleep(random.uniform(1, 2))  # Wait for the section to expand
                 except Exception as e:
                     try:
