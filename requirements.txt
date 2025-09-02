@@ -6,4 +6,3 @@ streamlit
 chardet
 scipy
 plotly
-csv
