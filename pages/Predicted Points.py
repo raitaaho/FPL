@@ -1826,7 +1826,8 @@ if "gw_for_filename" not in st.session_state:
 
 # Step 2: Load data only after user confirms
 if st.button("Calculate Points Predictions"):
-    st.session_state.df, st.session_state.gw_for_filename = initialize_predicted_points_df(saves_button, bps_button)
+    with st.spinner("Calculating Points Predictions...", show_time=True):
+        st.session_state.df, st.session_state.gw_for_filename = initialize_predicted_points_df(saves_button, bps_button)
 
 # Step 3: Show filters and calculation only if data is loaded
 if "df" in st.session_state:
