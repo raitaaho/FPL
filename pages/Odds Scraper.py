@@ -84,16 +84,15 @@ def get_all_fixtures() -> list:
     # Get all fixtures from FPL API
     return response.json()
 
-def get_next_gws(fixtures: list, extra_gw: str = 'False') -> list:
+def get_next_gws(fixtures: list) -> list:
     """
     Find the next gameweek(s) that have not yet started.
 
     Args:
         fixtures (list): List of fixture dictionaries from the FPL API.
-        extra_gw (str): If 'True', return the next two gameweeks; otherwise, return only the next gameweek.
 
     Returns:
-        list: A list containing the next gameweek(s) as integers.
+        next_gameweek (int): The next gameweek as integer.
     """
     game_weeks = defaultdict(list)
     for fixture in fixtures:
@@ -105,14 +104,12 @@ def get_next_gws(fixtures: list, extra_gw: str = 'False') -> list:
             break
     if next_gameweek is None:
         raise Exception("No upcoming gameweek found.")
-    if extra_gw == 'True':
-        return [next_gameweek, next_gameweek + 1]
-    else:
-        return [next_gameweek]
     
-def get_next_fixtures(fixtures: list, next_gws: list) -> list:
+    return next_gameweek
+    
+def get_next_fixtures(fixtures: list, next_gw: int) -> list:
     # Return fixtures for the next full gameweek(s) that have not started yet.
-    return [fixture for fixture in fixtures if (fixture['event'] in next_gws) and (fixture['started'] == False)]
+    return [fixture for fixture in fixtures if (fixture['event'] == next_gw) and (fixture['started'] == False)]
 
 def teams_league_positions_mapping(teams: list) -> dict:
     """
@@ -479,25 +476,23 @@ st.write(
 )
 
 fixtures = get_all_fixtures()
-next_gws = get_next_gws(fixtures, extra_gw = 'False')
+next_gw = get_next_gws(fixtures)
 
-gws_for_filename = "-".join(str(gw) for gw in next_gws)
 cur_dir = os.getcwd()
 fixtures_dir = os.path.join(cur_dir, "data", "fixture_data")
 
-old_filename = os.path.join(fixtures_dir, f"gw{gws_for_filename}_all_odds_")
+old_filename = os.path.join(fixtures_dir, f"gw{next_gw}_all_odds_")
 json_files = glob.glob(f"{old_filename}*.json")
 
 if json_files:
     latest_file = max(json_files, key=os.path.getctime)
-    st.info(f"Latest scraped odds file is {latest_file.replace(fixtures_dir, '')}")
+    st.info(f"Latest scraped odds file in Github repository is {latest_file.replace(fixtures_dir, '')}")
 else:
-    st.info("Latest scraped odds file not found")
+    st.info("Latest scraped odds file not found in Github repository")
 
 if st.button("Start scraping"):
     data, teams_data, players_data, team_id_to_name, player_id_to_name = fetch_fpl_data()
-    next_gws = get_next_gws(fixtures, extra_gw = 'False')
-    next_fixtures = get_next_fixtures(fixtures, next_gws)
+    next_fixtures = get_next_fixtures(fixtures, next_gw)
     teams_positions_map = teams_league_positions_mapping(teams_data)
 
     try: 
@@ -553,7 +548,7 @@ else:
 
 if json_data:
     current_time = datetime.now()
-    filename =f"gw{gws_for_filename}_all_odds_{current_time.strftime('%m')}{current_time.strftime('%d')}_{current_time.strftime('%H')}{current_time.strftime('%M')}.json"
+    filename =f"gw{next_gw}_all_odds_{current_time.strftime('%m')}{current_time.strftime('%d')}_{current_time.strftime('%H')}{current_time.strftime('%M')}.json"
 
     st.download_button(
     label="Download odds as JSON file",
