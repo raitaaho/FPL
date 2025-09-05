@@ -488,7 +488,8 @@ if json_files:
     latest_file_path = max(json_files)
     latest_file = latest_file_path.replace(fixtures_dir, '')
     parts = latest_file.replace(".json", '').split('_')
-    st.info(f"Github repository's latest scraped odds file for next gameweek has a timestamp of {int(parts[3][2:])}.{int(parts[3][:2])} {int(parts[4][:2])}:{int(parts[4][2:])}")
+    st.write(parts)
+    st.info(f"Github repository's latest scraped odds file for next gameweek has a timestamp of {int(parts[3][0:])}.{int(parts[3][:2])} {int(parts[4][:2])}:{int(parts[4][2:])}")
 else:
     st.info("Latest scraped odds file for next gameweek not found in Github repository")
 
