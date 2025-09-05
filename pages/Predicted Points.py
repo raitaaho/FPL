@@ -1821,8 +1821,8 @@ json_files = glob.glob(f"{filename}*.json")
 
 if json_files:
     latest_file_path = max(json_files)
-    latest_file = latest_file_path.replace(fixtures_dir, '')
-    git_parts = latest_file.replace(filename, '').replace(".json", '').split('_')
+    latest_file_name = latest_file_path.replace(fixtures_dir, '')
+    git_parts = latest_file_name.replace(".json", '').split('_')
     git_timestamp = f"{git_parts[3][2:]}.{git_parts[3][:2]} {git_parts[4][:2]}:{git_parts[4][2:]}"
     st.info(f"Github repository's latest scraped odds file for next gameweek has a timestamp of {git_timestamp}")
     upload_new_file_button = st.toggle("Do you want to upload more recent odds file?",
@@ -1832,7 +1832,7 @@ if json_files:
         if uploaded_file:
             parts = uploaded_file.replace(filename, '').replace(".json", '').split('_')
             timestamp = f"{parts[0][2:]}.{parts[0][:2]} {parts[1][:2]}:{parts[1][2:]}"
-            latest_file = uploaded_file
+            latest_file_path = uploaded_file
             st.info(f"Using uploaded odds file with timestamp of {timestamp} instead of Github repository odds file with timestamp of {git_timestamp}")
 else:
     st.warning("Latest scraped odds file for next gameweek not found in Github repository, please upload odds file for the next gameweek.")
@@ -1840,11 +1840,11 @@ else:
     if uploaded_file:
         parts = uploaded_file.replace(filename, '').replace(".json", '').split('_')
         timestamp = f"{parts[0][2:]}.{parts[0][:2]} {parts[1][:2]}:{parts[1][2:]}"
-        latest_file = uploaded_file
+        latest_file_path = uploaded_file
         st.info(f"Using uploaded odds file with timestamp of {timestamp}")
 
 try:
-    with open(latest_file, 'r') as file:
+    with open(latest_file_path, 'r') as file:
         all_odds_dict = json.load(file)
 except IOError:
     st.warning("Could not open all odds file for the next gameweek.")
