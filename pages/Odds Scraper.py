@@ -448,8 +448,13 @@ def scrape_all_matches(match_dict, driver):
         match_progress_bar.progress(int((match_counter / total_matches) * 100))
         odd_progress_text.text(f"Scraped all of {total_odds} odd types in match {match}")
 
+    elapsed = time.perf_counter() - start0
     match_progress_text.markdown(f"## Scraped all of {total_matches} matches in {round(elapsed/60, 2)} minutes") 
     driver.quit()
+    
+    st.session_state.scraped_data = match_dict
+    st.session_state.scrape_time = round(elapsed / 60, 2)
+    st.session_state.scraping_done = True
 
     return match_dict
 
@@ -466,6 +471,12 @@ def get_webdriver_service(logpath) -> Service:
     )
     return service
 
+if "scraped_data" not in st.session_state:
+    st.session_state.scraped_data = None
+if "scrape_time" not in st.session_state:
+    st.session_state.scrape_time = None
+if "scraping_done" not in st.session_state:
+    st.session_state.scraping_done = False
 
 st.set_page_config(page_title="Oddschecker.com Odds Scraper", page_icon="📈")
 
@@ -492,7 +503,23 @@ if json_files:
 else:
     st.info("Latest scraped odds file for next gameweek not found in Github repository")
 
+# Show download button if scraping is done
+if st.session_state.scraping_done and st.session_state.scraped_data:
+    json_data = json.dumps(st.session_state.scraped_data, indent=4)
+    current_time = datetime.now()
+    filename = f"gw{next_gw}_all_odds_{current_time.strftime('%m')}{current_time.strftime('%d')}_{current_time.strftime('%H')}{current_time.strftime('%M')}.json"
+
+    st.success(f"✅ Scraping completed in {st.session_state.scrape_time} minutes.")
+    st.download_button(
+        label="Download odds as JSON file",
+        data=json_data,
+        file_name=filename,
+        mime="text/json",
+        icon=":material/download:",
+    )
+
 if st.button("Start scraping"):
+    
     data, teams_data, players_data, team_id_to_name, player_id_to_name = fetch_fpl_data()
     next_fixtures = get_next_fixtures(fixtures, next_gw)
     teams_positions_map = teams_league_positions_mapping(teams_data)
@@ -544,18 +571,3 @@ if st.button("Start scraping"):
     updated_match_dict = scrape_all_matches(match_dict, driver)
 
     json_data = json.dumps(updated_match_dict, indent=4)
-
-else:
-    json_data = None
-
-if json_data:
-    current_time = datetime.now()
-    filename =f"gw{next_gw}_all_odds_{current_time.strftime('%m')}{current_time.strftime('%d')}_{current_time.strftime('%H')}{current_time.strftime('%M')}.json"
-
-    st.download_button(
-    label="Download odds as JSON file",
-    data=json_data,
-    file_name=filename,
-    mime="text/json",
-    icon=":material/download:",
-    )
