@@ -1628,10 +1628,8 @@ def calc_points(player_dict: dict, saves_button: bool) -> None:
         except Exception as e:
             print(f"Could not calculate points for {player}: {e}")
 
-def initialize_predicted_points_df(odds_dict, saves_button: bool, bps_button: bool, extra_gws: int):
+def initialize_predicted_points_df(all_odds_dict, fixtures, next_gw, saves_button: bool, bps_button: bool, extra_gws: int):
 
-    fixtures = get_all_fixtures()
-    next_gw = get_next_gw(fixtures)
     gws_to_predict = [next_gw + i for i in range(1, extra_gws+1)]
     next_fixtures = [fixture for fixture in fixtures if (fixture['event'] in gws_to_predict) and (fixture['started'] == False)]
 
@@ -1846,7 +1844,7 @@ gws_to_predict = st.slider("Select amount of gameweeks to calculate predicted po
 # Step 2: Load data only after user confirms
 if st.button("Calculate Points Predictions"):
     with st.spinner("Calculating Points Predictions...", show_time=True):
-        st.session_state.df = initialize_predicted_points_df(all_odds_dict, saves_button, bps_button, gws_to_predict)
+        st.session_state.df = initialize_predicted_points_df(all_odds_dict, fixtures, next_gw, saves_button, bps_button, gws_to_predict)
 
 # Step 3: Show filters and calculation only if data is loaded
 if "df" in st.session_state:
