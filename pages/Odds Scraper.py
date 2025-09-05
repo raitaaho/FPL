@@ -456,7 +456,7 @@ def scrape_all_matches(match_dict, driver):
     st.session_state.scraping_done = True
     st.session_state.scraped_data = match_dict
 
-    return match_dict
+    return st.session_state.scraped_data, st.session_state.scraping_done, st.session_state.scrape_time
 
 def get_logpath() -> str:
     return os.path.join(os.getcwd(), 'selenium.log')
@@ -568,4 +568,4 @@ if st.button("Start scraping"):
         quit()
 
     match_dict = fetch_all_match_links(next_fixtures, team_id_to_name, teams_positions_map, driver)
-    st.session_state.scraped_data = scrape_all_matches(match_dict, driver)
+    st.session_state.scraped_data, st.session_state.scraping_done, st.session_state.scrape_time = scrape_all_matches(match_dict, driver)
