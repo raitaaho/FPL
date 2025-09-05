@@ -485,9 +485,10 @@ old_filename = os.path.join(fixtures_dir, f"gw{next_gw}_all_odds_")
 json_files = glob.glob(f"{old_filename}*.json")
 
 if json_files:
-    latest_file = max(json_files)
-    parts = latest_file.replace(old_filename, '').replace(".json", '').split('_')
-    st.info(f"Github repository's latest scraped odds file for next gameweek has a timestamp of {int(parts[0][1:])}.{int(parts[0][:3])} {int(parts[1][:3])}:{int(parts[1][1:])}")
+    latest_file_path = max(json_files)
+    latest_file = latest_file_path.replace(fixtures_dir, '')
+    parts = latest_file.replace(".json", '').split('_')
+    st.info(f"Github repository's latest scraped odds file for next gameweek has a timestamp of {int(parts[3][2:])}.{int(parts[3][:2])} {int(parts[4][:2])}:{int(parts[4][2:])}")
 else:
     st.info("Latest scraped odds file for next gameweek not found in Github repository")
 
