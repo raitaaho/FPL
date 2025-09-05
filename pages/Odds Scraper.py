@@ -486,9 +486,10 @@ json_files = glob.glob(f"{old_filename}*.json")
 
 if json_files:
     latest_file = max(json_files)
-    st.info(f"Latest scraped odds file in Github repository is {latest_file.replace(fixtures_dir, '')}")
+    parts = latest_file.split('_')
+    st.info(f"Github repository's latest scraped odds file for next gameweek has a timestamp of {(parts[1][2:])}.{int(parts[1][:2])} {int(parts[2][:2])}:{int(parts[2][2:])}")
 else:
-    st.info("Latest scraped odds file not found in Github repository")
+    st.info("Latest scraped odds file for next gameweek not found in Github repository")
 
 if st.button("Start scraping"):
     data, teams_data, players_data, team_id_to_name, player_id_to_name = fetch_fpl_data()

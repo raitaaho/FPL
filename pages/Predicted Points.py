@@ -1801,7 +1801,7 @@ def initialize_predicted_points_df(saves_button: bool, bps_button: bool, extra_g
     for col in player_data_df.columns:
         player_data_df[col] = player_data_df[col].apply(lambda x: x[0] if isinstance(x, list) and len(x) == 1 else x)
 
-    return player_data_df, next_gw
+    return player_data_df
 
 st.set_page_config(page_title="FPL Predicted Points", page_icon="📈")
 
@@ -1809,6 +1809,44 @@ st.markdown("# FPL Predicted Points")
 st.write(
     """This is a FPL Predicted Points tool for viewing Fantasy Premier League predicted points according to the bookmaker odds scraped from Oddschecker.com"""
 )
+
+fixtures = get_all_fixtures()
+next_gw = get_next_gw(fixtures)
+
+cur_dir = os.getcwd()
+fixtures_dir = os.path.join(cur_dir, "data", "fixture_data")
+filename = os.path.join(fixtures_dir, f"gw{next_gw}_all_odds_")
+
+json_files = glob.glob(f"{filename}*.json")
+
+if json_files:
+    latest_file = max(json_files)
+    git_parts = latest_file.split('_')
+    git_timestamp = f"{(git_parts[1][2:])}.{int(git_parts[1][:2])} {int(git_parts[2][:2])}:{int(git_parts[2][2:])}"
+    st.info(f"Github repository's latest scraped odds file for next gameweek has a timestamp of {git_timestamp}")
+    upload_new_file_button = st.toggle("Do you want to upload more recent odds file?",
+    value=False)
+    if upload_new_file_button:
+        uploaded_file = st.file_uploader("Choose a file", type="json")
+        if uploaded_file:
+            parts = uploaded_file.split('_')
+            timestamp = f"{(parts[1][2:])}.{int(parts[1][:2])} {int(parts[2][:2])}:{int(parts[2][2:])}"
+            latest_file = uploaded_file
+            st.info(f"Using uploaded odds file with timestamp of {timestamp} instead of Github repository odds file with timestamp of {git_timestamp}")
+else:
+    st.warning("Latest scraped odds file for next gameweek not found in Github repository, please upload odds file for the next gameweek.")
+    uploaded_file = st.file_uploader("Choose a file", type="json")
+    if uploaded_file:
+        parts = uploaded_file.split('_')
+        timestamp = f"{(parts[1][2:])}.{int(parts[1][:2])} {int(parts[2][:2])}:{int(parts[2][2:])}"
+        latest_file = uploaded_file
+        st.info(f"Using uploaded odds file with timestamp of {timestamp}")
+
+try:
+    with open(latest_file, 'r') as file:
+        all_odds_dict = json.load(file)
+except IOError:
+    st.warning("Could not open all odds file for the next gameweek.")
 
 st.header("Step 1: Select metrics to use in predicted points calculations")
 saves_button = st.toggle(
@@ -1822,19 +1860,15 @@ bps_button = st.toggle(
 
 gws_to_predict = st.slider("Select amount of gameweeks to calculate predicted points", min_value=1, max_value=10, value=3)
 
-if "gw_for_filename" not in st.session_state:
-    st.session_state.gw_for_filename = 0
-
 # Step 2: Load data only after user confirms
 if st.button("Calculate Points Predictions"):
     with st.spinner("Calculating Points Predictions...", show_time=True):
-        st.session_state.df, st.session_state.gw_for_filename = initialize_predicted_points_df(saves_button, bps_button, gws_to_predict)
+        st.session_state.df = initialize_predicted_points_df(saves_button, bps_button, gws_to_predict)
 
 # Step 3: Show filters and calculation only if data is loaded
 if "df" in st.session_state:
     df = st.session_state.df
     chart_df = df
-    gw_for_filename = st.session_state.gw_for_filename
 
     columns = df.columns.tolist()
     column_names = st.multiselect("Select Columns to Display", columns, default=columns)
@@ -1865,7 +1899,7 @@ if "df" in st.session_state:
         st.download_button(
             label="Download Predicted Points as CSV",
             data=csv,
-            file_name=f"gw{gw_for_filename}_filtered_predicted_points.csv",
+            file_name=f"gw{next_gw}_filtered_predicted_points.csv",
             mime="text/csv"
         )
         
