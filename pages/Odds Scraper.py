@@ -486,7 +486,7 @@ json_files = glob.glob(f"{old_filename}*.json")
 
 if json_files:
     latest_file = max(json_files)
-    parts = latest_file.split('_')
+    parts = latest_file.replace(fixtures_dir, '').split('_')
     st.info(f"Github repository's latest scraped odds file for next gameweek has a timestamp of {int(parts[1][2:])}.{int(parts[1][:2])} {int(parts[2][:2])}:{int(parts[2][2:])}")
 else:
     st.info("Latest scraped odds file for next gameweek not found in Github repository")
