@@ -503,22 +503,21 @@ if json_files:
 else:
     st.info("Latest scraped odds file for next gameweek not found in Github repository")
 
-# Show download button if scraping is done
-if st.session_state.scraping_done and st.session_state.scraped_data:
-    json_data = json.dumps(st.session_state.scraped_data, indent=4)
-    current_time = datetime.now()
-    filename = f"gw{next_gw}_all_odds_{current_time.strftime('%m')}{current_time.strftime('%d')}_{current_time.strftime('%H')}{current_time.strftime('%M')}.json"
-
-    st.success(f"✅ Scraping completed in {st.session_state.scrape_time} minutes.")
-    st.download_button(
-        label="Download odds as JSON file",
-        data=json_data,
-        file_name=filename,
-        mime="text/json",
-        icon=":material/download:",
-    )
-
 if st.button("Start scraping"):
+    # Show download button if scraping is done
+    if st.session_state.scraping_done and st.session_state.scraped_data:
+        json_data = json.dumps(st.session_state.scraped_data, indent=4)
+        current_time = datetime.now()
+        filename = f"gw{next_gw}_all_odds_{current_time.strftime('%m')}{current_time.strftime('%d')}_{current_time.strftime('%H')}{current_time.strftime('%M')}.json"
+
+        st.success(f"✅ Scraping completed in {st.session_state.scrape_time} minutes.")
+        st.download_button(
+            label="Download odds as JSON file",
+            data=json_data,
+            file_name=filename,
+            mime="text/json",
+            icon=":material/download:",
+        )
     
     data, teams_data, players_data, team_id_to_name, player_id_to_name = fetch_fpl_data()
     next_fixtures = get_next_fixtures(fixtures, next_gw)
