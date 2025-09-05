@@ -1628,30 +1628,12 @@ def calc_points(player_dict: dict, saves_button: bool) -> None:
         except Exception as e:
             print(f"Could not calculate points for {player}: {e}")
 
-def initialize_predicted_points_df(saves_button: bool, bps_button: bool, extra_gws: int):
+def initialize_predicted_points_df(odds_dict, saves_button: bool, bps_button: bool, extra_gws: int):
 
     fixtures = get_all_fixtures()
     next_gw = get_next_gw(fixtures)
     gws_to_predict = [next_gw + i for i in range(1, extra_gws+1)]
     next_fixtures = [fixture for fixture in fixtures if (fixture['event'] in gws_to_predict) and (fixture['started'] == False)]
-
-    cur_dir = os.getcwd()
-    fixtures_dir = os.path.join(cur_dir, "data", "fixture_data")
-    filename = os.path.join(fixtures_dir, f"gw{next_gw}_all_odds_")
-
-    json_files = glob.glob(f"{filename}*.json")
-
-    if json_files:
-        latest_file = max(json_files, key=os.path.getctime)
-        try:
-            with open(latest_file, 'r') as file:
-                all_odds_dict = json.load(file)
-        except IOError:
-            st.write("Could not open all odds file.")
-            all_odds_dict = {}
-    else:
-        st.write("JSON file not found")
-        all_odds_dict = {}
 
     data, teams_data, players_data, team_id_to_name, player_id_to_name = fetch_fpl_data()
     element_types = position_mapping(data)
@@ -1825,7 +1807,7 @@ if json_files:
     git_parts = latest_file_name.replace(".json", '').split('_')
     git_timestamp = f"{git_parts[3][2:]}.{git_parts[3][:2]} {git_parts[4][:2]}:{git_parts[4][2:]}"
     st.info(f"Github repository's latest scraped odds file for next gameweek has a timestamp of {git_timestamp}")
-    upload_new_file_button = st.toggle("Do you want to upload more recent odds file?",
+    upload_new_file_button = st.toggle("Upload more recent odds file?",
     value=False)
     if upload_new_file_button:
         uploaded_file = st.file_uploader("Choose a file", type="json")
@@ -1842,12 +1824,12 @@ else:
         timestamp = f"{parts[0][2:]}.{parts[0][:2]} {parts[1][:2]}:{parts[1][2:]}"
         latest_file_path = uploaded_file
         st.info(f"Using uploaded odds file with timestamp of {timestamp}")
-
 try:
     with open(latest_file_path, 'r') as file:
         all_odds_dict = json.load(file)
 except IOError:
-    st.warning("Could not open all odds file for the next gameweek.")
+    st.warning(f"Could not open all odds file {latest_file_path} for the next gameweek.")
+    all_odds_dict = {}
 
 st.header("Step 1: Select metrics to use in predicted points calculations")
 saves_button = st.toggle(
@@ -1864,7 +1846,7 @@ gws_to_predict = st.slider("Select amount of gameweeks to calculate predicted po
 # Step 2: Load data only after user confirms
 if st.button("Calculate Points Predictions"):
     with st.spinner("Calculating Points Predictions...", show_time=True):
-        st.session_state.df = initialize_predicted_points_df(saves_button, bps_button, gws_to_predict)
+        st.session_state.df = initialize_predicted_points_df(all_odds_dict, saves_button, bps_button, gws_to_predict)
 
 # Step 3: Show filters and calculation only if data is loaded
 if "df" in st.session_state:
