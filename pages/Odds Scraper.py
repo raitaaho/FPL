@@ -452,7 +452,6 @@ def scrape_all_matches(match_dict, driver):
     match_progress_text.markdown(f"## Scraped all of {total_matches} matches in {round(elapsed/60, 2)} minutes") 
     driver.quit()
     
-    st.session_state.scraped_data = match_dict
     st.session_state.scrape_time = round(elapsed / 60, 2)
     st.session_state.scraping_done = True
 
@@ -499,9 +498,9 @@ if json_files:
     latest_file_path = max(json_files)
     latest_file = latest_file_path.replace(fixtures_dir, '')
     parts = latest_file.replace(".json", '').split('_')
-    st.info(f"Github repository's latest scraped odds file for next gameweek has a timestamp of {parts[3][2:]}.{parts[3][:2]} {parts[4][:2]}:{parts[4][2:]}")
+    st.info(f"Github repository's latest scraped odds file for next gameweek (GW{next_gw}) has a timestamp of {parts[3][2:]}.{parts[3][:2]} {parts[4][:2]}:{parts[4][2:]}")
 else:
-    st.info("Latest scraped odds file for next gameweek not found in Github repository")
+    st.info(f"Latest scraped odds file for next gameweek (GW{next_gw}) not found in Github repository")
 
 if st.button("Start scraping"):
     # Show download button if scraping is done
@@ -566,7 +565,6 @@ if st.button("Start scraping"):
     except Exception as e: 
         st.write("Couldn't open Chrome")
         quit()
-    match_dict = fetch_all_match_links(next_fixtures, team_id_to_name, teams_positions_map, driver)
-    updated_match_dict = scrape_all_matches(match_dict, driver)
 
-    json_data = json.dumps(updated_match_dict, indent=4)
+    match_dict = fetch_all_match_links(next_fixtures, team_id_to_name, teams_positions_map, driver)
+    st.session_state.scraped_data = scrape_all_matches(match_dict, driver)
