@@ -485,7 +485,7 @@ old_filename = os.path.join(fixtures_dir, f"gw{next_gw}_all_odds_")
 json_files = glob.glob(f"{old_filename}*.json")
 
 if json_files:
-    latest_file = max(json_files, key=os.path.getctime)
+    latest_file = max(json_files, key=os.path.getmtime)
     st.info(f"Latest scraped odds file in Github repository is {latest_file.replace(fixtures_dir, '')}")
 else:
     st.info("Latest scraped odds file not found in Github repository")
