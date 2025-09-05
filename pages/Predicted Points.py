@@ -1820,7 +1820,8 @@ filename = os.path.join(fixtures_dir, f"gw{next_gw}_all_odds_")
 json_files = glob.glob(f"{filename}*.json")
 
 if json_files:
-    latest_file = max(json_files)
+    latest_file_path = max(json_files)
+    latest_file = latest_file_path.replace(fixtures_dir, '')
     git_parts = latest_file.replace(filename, '').replace(".json", '').split('_')
     git_timestamp = f"{git_parts[3][2:]}.{git_parts[3][:2]} {git_parts[4][:2]}:{git_parts[4][2:]}"
     st.info(f"Github repository's latest scraped odds file for next gameweek has a timestamp of {git_timestamp}")
@@ -1830,7 +1831,7 @@ if json_files:
         uploaded_file = st.file_uploader("Choose a file", type="json")
         if uploaded_file:
             parts = uploaded_file.replace(filename, '').replace(".json", '').split('_')
-            timestamp = f"{parts[3][2:]}.{parts[3][:2]} {parts[4][:2]}:{parts[4][2:]}"
+            timestamp = f"{parts[0][2:]}.{parts[0][:2]} {parts[1][:2]}:{parts[1][2:]}"
             latest_file = uploaded_file
             st.info(f"Using uploaded odds file with timestamp of {timestamp} instead of Github repository odds file with timestamp of {git_timestamp}")
 else:
@@ -1838,7 +1839,7 @@ else:
     uploaded_file = st.file_uploader("Choose a file", type="json")
     if uploaded_file:
         parts = uploaded_file.replace(filename, '').replace(".json", '').split('_')
-        timestamp = f"{parts[3][2:]}.{parts[3][:2]} {parts[4][:2]}:{parts[4][2:]}"
+        timestamp = f"{parts[0][2:]}.{parts[0][:2]} {parts[1][:2]}:{parts[1][2:]}"
         latest_file = uploaded_file
         st.info(f"Using uploaded odds file with timestamp of {timestamp}")
 
