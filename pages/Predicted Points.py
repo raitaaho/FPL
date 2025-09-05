@@ -1628,9 +1628,9 @@ def calc_points(player_dict: dict, saves_button: bool) -> None:
         except Exception as e:
             print(f"Could not calculate points for {player}: {e}")
 
-def initialize_predicted_points_df(all_odds_dict, fixtures, next_gw, saves_button: bool, bps_button: bool, extra_gws: int):
+def initialize_predicted_points_df(all_odds_dict, fixtures, next_gw, saves_button: bool, bps_button: bool, gws: int):
 
-    gws_to_predict = [next_gw + i for i in range(1, extra_gws+1)]
+    gws_to_predict = [next_gw + i for i in range(1, gws)]
     next_fixtures = [fixture for fixture in fixtures if (fixture['event'] in gws_to_predict) and (fixture['started'] == False)]
 
     data, teams_data, players_data, team_id_to_name, player_id_to_name = fetch_fpl_data()
@@ -1805,7 +1805,7 @@ if json_files:
     git_parts = latest_file_name.replace(".json", '').split('_')
     git_timestamp = f"{git_parts[3][2:]}.{git_parts[3][:2]} {git_parts[4][:2]}:{git_parts[4][2:]}"
     st.info(f"Github repository's latest scraped odds file for next gameweek has a timestamp of {git_timestamp}")
-    upload_new_file_button = st.toggle("Upload more recent odds file?",
+    upload_new_file_button = st.toggle("Upload more recent odds file for predicted points calculation?",
     value=False)
     if upload_new_file_button:
         uploaded_file = st.file_uploader("Choose a file", type="json")
@@ -1839,7 +1839,7 @@ bps_button = st.toggle(
     value=False
 )
 
-gws_to_predict = st.slider("Select amount of gameweeks to calculate predicted points", min_value=1, max_value=10, value=3)
+gws_to_predict = st.slider("Select amount of gameweeks to calculate predicted points", min_value=1, max_value=10, value=1)
 
 # Step 2: Load data only after user confirms
 if st.button("Calculate Points Predictions"):
