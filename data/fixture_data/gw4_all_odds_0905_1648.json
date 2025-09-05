@@ -1,0 +1,7217 @@
+{
+    "Arsenal v Nottingham Forest": {
+        "home_team": "Arsenal",
+        "away_team": "Nottingham Forest",
+        "home_position": 3,
+        "away_position": 10,
+        "Link": "https://www.oddschecker.com/football/english/premier-league/arsenal-v-nottingham-forest/winner",
+        "To Score A Hat-Trick": {
+            "Viktor Gyokeres": [
+                15.0,
+                21.0,
+                19.0
+            ],
+            "Andre Harriman-Annous": [],
+            "Mikel Merino": [],
+            "Eberechi Eze": [],
+            "Ethan Nwaneri": [],
+            "Kai Havertz": [],
+            "Bukayo Saka": [],
+            "Leandro Trossard": [],
+            "Gabriel Martinelli": [],
+            "Noni Madueke": [],
+            "Max Dowman": [],
+            "Martin Odegaard": [],
+            "Chris Wood": [
+                126.0,
+                151.0,
+                151.0
+            ],
+            "Taiwo Awoniyi": [],
+            "Igor Jesus": [],
+            "Arnaud Kalimuendo": [],
+            "Declan Rice": [],
+            "Dilane Bakwa": [],
+            "Jota Silva": [],
+            "Magalhaes Gabriel": [],
+            "Zach Abbott": [],
+            "Douglas Luiz": [],
+            "Piero Hincapie": [],
+            "Cuiabano": [],
+            "Felipe Morato": [],
+            "Omar Richards": [],
+            "Nicolo Savona": [],
+            "Dan Ndoye": [],
+            "Morgan Gibbs-White": [],
+            "Ola Aina": [],
+            "Myles Lewis-Skelly": [],
+            "Willy-Arnaud Boly": [],
+            "Nikola Milenkovic": [],
+            "Elliot Anderson": [],
+            "William Saliba": [],
+            "Jurrien Timber": [],
+            "Murillo dos Santos": [],
+            "Ryan Yates": [],
+            "Cristhian Mosquera": [],
+            "Omari Giraud-Hutchinson": [],
+            "Neco Williams": [],
+            "Ben White": [],
+            "Callum Hudson-Odoi": [],
+            "James McAtee": [],
+            "Riccardo Calafiori": [],
+            "Ibrahim Sangare": [],
+            "Jair Cunha": [],
+            "Christian Norgaard": [],
+            "Martin Zubimendi": []
+        },
+        "Anytime Goalscorer": {
+            "Viktor Gyokeres": [
+                1.8,
+                1.8333333333333333,
+                2.0,
+                2.0
+            ],
+            "Kai Havertz": [],
+            "Andre Harriman-Annous": [],
+            "Bukayo Saka": [],
+            "Eberechi Eze": [
+                2.875,
+                3.0,
+                3.5,
+                3.5
+            ],
+            "Gabriel Martinelli": [
+                3.0,
+                3.1,
+                3.7,
+                3.7
+            ],
+            "Leandro Trossard": [
+                2.875,
+                3.0,
+                3.7,
+                3.7
+            ],
+            "Mikel Merino": [
+                2.75,
+                2.875,
+                3.75,
+                3.75
+            ],
+            "Ethan Nwaneri": [
+                2.75,
+                2.875,
+                3.9,
+                3.9
+            ],
+            "Noni Madueke": [
+                2.875,
+                3.1,
+                4.3,
+                4.3
+            ],
+            "Max Dowman": [
+                3.0,
+                3.25,
+                4.4,
+                4.4
+            ],
+            "Martin Odegaard": [
+                4.0,
+                4.2,
+                4.8,
+                4.8
+            ],
+            "Chris Wood": [
+                4.75,
+                5.0,
+                3.8,
+                3.5
+            ],
+            "Taiwo Awoniyi": [],
+            "Arnaud Kalimuendo": [
+                5.0,
+                5.0,
+                5.4,
+                5.4
+            ],
+            "Declan Rice": [
+                4.75,
+                5.0,
+                5.8,
+                5.8
+            ],
+            "Igor Jesus": [
+                4.75,
+                5.0,
+                6.0,
+                6.0
+            ],
+            "Jota Silva": [],
+            "Magalhaes Gabriel": [
+                8.0,
+                7.0,
+                7.0
+            ],
+            "Morgan Gibbs-White": [
+                6.5,
+                7.5,
+                8.0,
+                8.0
+            ],
+            "Dan Ndoye": [
+                6.5,
+                7.5,
+                9.0,
+                9.0
+            ],
+            "Christian Norgaard": [],
+            "Dilane Bakwa": [
+                6.5,
+                10.0,
+                10.0
+            ],
+            "Callum Hudson-Odoi": [
+                7.0,
+                8.5,
+                10.0,
+                10.0
+            ],
+            "Martin Zubimendi": [
+                7.0,
+                8.5,
+                10.5,
+                10.5
+            ],
+            "Piero Hincapie": [
+                9.5,
+                11.0,
+                10.5,
+                10.5
+            ],
+            "Myles Lewis-Skelly": [
+                8.5,
+                10.0,
+                11.5,
+                11.5
+            ],
+            "James McAtee": [
+                7.0,
+                8.5,
+                11.5,
+                11.5
+            ],
+            "Omari Giraud-Hutchinson": [
+                7.0,
+                8.5,
+                13.0,
+                13.0
+            ],
+            "Cuiabano": [],
+            "Riccardo Calafiori": [
+                13.0,
+                13.0,
+                8.5,
+                8.5
+            ],
+            "Ben White": [
+                13.0,
+                15.0,
+                14.0,
+                14.0
+            ],
+            "Ryan Yates": [
+                13.0,
+                15.0,
+                15.0,
+                15.0
+            ],
+            "Douglas Luiz": [
+                11.0,
+                15.0,
+                15.0
+            ],
+            "Jurrien Timber": [
+                13.0,
+                15.0,
+                11.5,
+                11.5
+            ],
+            "Elliot Anderson": [
+                13.0,
+                15.0,
+                16.0,
+                16.0
+            ],
+            "Cristhian Mosquera": [
+                9.5,
+                12.0,
+                17.0,
+                17.0
+            ],
+            "William Saliba": [
+                13.0,
+                15.0,
+                18.0,
+                18.0
+            ],
+            "Omar Richards": [],
+            "Willy-Arnaud Boly": [],
+            "Nicolo Savona": [
+                19.0,
+                23.0,
+                23.0,
+                23.0
+            ],
+            "Zach Abbott": [],
+            "Nikola Milenkovic": [
+                19.0,
+                23.0,
+                23.0,
+                23.0
+            ],
+            "Neco Williams": [
+                19.0,
+                23.0,
+                19.0,
+                19.0
+            ],
+            "Ibrahim Sangare": [
+                15.0,
+                19.0,
+                29.0,
+                29.0
+            ],
+            "Murillo dos Santos": [
+                19.0,
+                26.0,
+                29.0,
+                29.0
+            ],
+            "Jair Cunha": [
+                23.0,
+                34.0,
+                36.0,
+                36.0
+            ],
+            "Ola Aina": [
+                23.0,
+                34.0,
+                46.0,
+                46.0
+            ],
+            "Felipe Morato": [
+                19.0,
+                46.0,
+                46.0
+            ]
+        },
+        "Total Home Goals": {
+            "Under 5.5": [],
+            "Under 4.5": [
+                1.04,
+                1.04,
+                1.0303030303030303,
+                1.04,
+                1.02,
+                1.01,
+                1.02,
+                1.01,
+                1.02,
+                1.0303030303030303
+            ],
+            "Over 0.5": [
+                1.1,
+                1.1,
+                1.1,
+                1.1,
+                1.0833333333333333,
+                1.1,
+                1.1,
+                1.0909090909090908,
+                1.0833333333333333,
+                1.0833333333333333,
+                1.1,
+                1.1,
+                1.0909090909090908,
+                1.1,
+                1.1,
+                1.0833333333333333,
+                1.0625
+            ],
+            "Under 3.5": [
+                1.1428571428571428,
+                1.1428571428571428,
+                1.125,
+                1.1428571428571428,
+                1.1428571428571428,
+                1.1428571428571428,
+                1.1333333333333333,
+                1.1428571428571428,
+                1.1333333333333333,
+                1.1333333333333333,
+                1.1428571428571428,
+                1.125,
+                1.125,
+                1.1
+            ],
+            "Under 2.5": [
+                1.4444444444444444,
+                1.4444444444444444,
+                1.4444444444444444,
+                1.4444444444444444,
+                1.4444444444444444,
+                1.4444444444444444,
+                1.4444444444444444,
+                1.4444444444444444,
+                1.4444444444444444,
+                1.4444444444444444,
+                1.4444444444444444,
+                1.4444444444444444,
+                1.4444444444444444,
+                1.434782608695652,
+                1.4444444444444444,
+                1.4
+            ],
+            "Over 1.5": [
+                1.5333333333333334,
+                1.5333333333333334,
+                1.5333333333333334,
+                1.5333333333333334,
+                1.5,
+                1.5333333333333334,
+                1.5,
+                1.52,
+                1.5,
+                1.5,
+                1.5,
+                1.52,
+                1.5333333333333334,
+                1.5,
+                1.5333333333333334,
+                1.56,
+                1.5333333333333334,
+                1.5
+            ],
+            "Under 1.5": [
+                2.375,
+                2.4,
+                2.375,
+                2.4,
+                2.5,
+                2.375,
+                2.4,
+                2.4,
+                2.5,
+                2.4,
+                2.5,
+                2.4,
+                2.375,
+                2.4,
+                2.375,
+                2.32,
+                2.375,
+                2.4
+            ],
+            "Over 2.5": [
+                2.625,
+                2.7,
+                2.625,
+                2.7,
+                2.625,
+                2.625,
+                2.55,
+                2.5,
+                2.6,
+                2.625,
+                2.55,
+                2.55,
+                2.6,
+                2.625,
+                2.625,
+                2.625,
+                2.7
+            ],
+            "Over 3.5": [
+                5.5,
+                5.5,
+                5.5,
+                5.5,
+                5.0,
+                5.0,
+                5.0,
+                5.0,
+                5.0,
+                5.0,
+                5.0,
+                5.0,
+                5.5,
+                5.5
+            ],
+            "Under 0.5": [
+                7.0,
+                6.5,
+                6.5,
+                6.5,
+                7.0,
+                6.0,
+                6.0,
+                7.0,
+                6.25,
+                7.0,
+                6.0,
+                5.75,
+                6.0,
+                6.0,
+                6.0,
+                7.0,
+                7.0
+            ],
+            "Over 4.5": [
+                13.0,
+                13.0,
+                11.0,
+                13.0,
+                11.0,
+                10.5,
+                11.0,
+                10.5,
+                10.0,
+                11.0,
+                13.0,
+                13.0
+            ],
+            "Over 5.5": [
+                29.0,
+                34.0,
+                34.0,
+                34.0
+            ]
+        },
+        "Total Away Goals": {
+            "Under 5.5": [],
+            "Under 4.5": [],
+            "Under 3.5": [
+                1.002,
+                1.00001,
+                1.002
+            ],
+            "Under 2.5": [
+                1.02,
+                1.025,
+                1.02,
+                1.025,
+                1.0066666666666666,
+                1.0125,
+                1.0151515151515151,
+                1.0066666666666666,
+                1.02,
+                1.0125
+            ],
+            "Under 1.5": [
+                1.1666666666666667,
+                1.1666666666666667,
+                1.1666666666666667,
+                1.1666666666666667,
+                1.1428571428571428,
+                1.1538461538461537,
+                1.1666666666666667,
+                1.1666666666666667,
+                1.1538461538461537,
+                1.1428571428571428,
+                1.1666666666666667,
+                1.1538461538461537,
+                1.1538461538461537,
+                1.1538461538461537,
+                1.1428571428571428,
+                1.1666666666666667,
+                1.125
+            ],
+            "Over 0.5": [
+                1.8,
+                1.75,
+                1.8,
+                1.75,
+                1.8,
+                1.8,
+                1.775,
+                1.75,
+                1.75,
+                1.7692307692307692,
+                1.8,
+                1.75,
+                1.75,
+                1.75,
+                1.8,
+                1.8,
+                1.6666666666666667,
+                1.7272727272727273
+            ],
+            "Under 0.5": [
+                1.9090909090909092,
+                2.0,
+                1.9090909090909092,
+                2.0,
+                1.9090909090909092,
+                1.95,
+                1.925,
+                1.98,
+                1.9523809523809523,
+                1.95,
+                1.9090909090909092,
+                1.98,
+                1.9523809523809523,
+                1.95,
+                1.95,
+                1.93,
+                2.0,
+                1.9090909090909092
+            ],
+            "Over 1.5": [
+                5.0,
+                5.0,
+                4.5,
+                5.0,
+                5.0,
+                4.8,
+                4.6,
+                4.75,
+                4.75,
+                5.0,
+                4.6,
+                4.6,
+                4.75,
+                4.8,
+                4.75,
+                5.0,
+                5.0
+            ],
+            "Over 2.5": [
+                19.0,
+                19.0,
+                13.0,
+                19.0,
+                15.0,
+                15.0,
+                14.0,
+                15.0,
+                15.0,
+                14.0,
+                10.0,
+                15.0,
+                15.0,
+                17.0,
+                19.0
+            ],
+            "Over 3.5": [
+                51.0,
+                71.0,
+                67.0,
+                41.0,
+                41.0,
+                56.0,
+                34.0,
+                34.0
+            ],
+            "Over 4.5": [
+                151.0,
+                81.0,
+                34.0,
+                34.0
+            ],
+            "Over 5.5": [
+                151.0,
+                34.0,
+                34.0
+            ]
+        },
+        "To Score 2 Or More Goals": {
+            "Viktor Gyokeres": [
+                4.333333333333333,
+                5.5,
+                5.5
+            ],
+            "Kai Havertz": [],
+            "Andre Harriman-Annous": [],
+            "Bukayo Saka": [],
+            "Eberechi Eze": [],
+            "Gabriel Martinelli": [
+                13.0,
+                15.0,
+                20.0
+            ],
+            "Leandro Trossard": [
+                12.0,
+                15.0,
+                20.0
+            ],
+            "Mikel Merino": [
+                11.0,
+                15.0,
+                20.0
+            ],
+            "Ethan Nwaneri": [
+                11.0,
+                15.0,
+                21.0
+            ],
+            "Noni Madueke": [
+                12.0,
+                15.0,
+                29.0
+            ],
+            "Max Dowman": [
+                13.0,
+                17.0,
+                30.0
+            ],
+            "Taiwo Awoniyi": [],
+            "Chris Wood": [
+                29.0,
+                34.0,
+                11.5
+            ],
+            "Martin Odegaard": [
+                23.0,
+                29.0,
+                36.0
+            ],
+            "Arnaud Kalimuendo": [
+                34.0,
+                41.0,
+                46.0
+            ],
+            "Dilane Bakwa": [],
+            "Declan Rice": [
+                29.0,
+                41.0,
+                56.0
+            ],
+            "Igor Jesus": [
+                29.0,
+                34.0,
+                61.0
+            ],
+            "Jota Silva": [],
+            "Morgan Gibbs-White": [],
+            "Dan Ndoye": [],
+            "Martin Zubimendi": [],
+            "Callum Hudson-Odoi": [],
+            "Omari Giraud-Hutchinson": [],
+            "James McAtee": [],
+            "Magalhaes Gabriel": [],
+            "Christian Norgaard": [],
+            "Piero Hincapie": [],
+            "Myles Lewis-Skelly": [],
+            "Douglas Luiz": [],
+            "Cristhian Mosquera": [],
+            "Elliot Anderson": [],
+            "Ryan Yates": [],
+            "Riccardo Calafiori": [],
+            "Ben White": [],
+            "Jurrien Timber": [],
+            "Cuiabano": [],
+            "Omar Richards": [],
+            "Felipe Morato": [],
+            "Nicolo Savona": [],
+            "William Saliba": [],
+            "Zach Abbott": [],
+            "Ibrahim Sangare": [],
+            "Willy-Arnaud Boly": [],
+            "Nikola Milenkovic": [],
+            "Neco Williams": [],
+            "Murillo dos Santos": [],
+            "Ola Aina": [],
+            "Jair Cunha": []
+        }
+    },
+    "Bournemouth v Brighton": {
+        "home_team": "Bournemouth",
+        "away_team": "Brighton",
+        "home_position": 7,
+        "away_position": 11,
+        "Link": "https://www.oddschecker.com/football/english/premier-league/bournemouth-v-brighton/winner",
+        "To Score A Hat-Trick": {
+            "Charalambos Kostoulas": [],
+            "Evanilson": [
+                41.0,
+                67.0,
+                67.0
+            ],
+            "Stefanos Tzimas": [],
+            "Justin Kluivert": [],
+            "Danny Welbeck": [
+                51.0,
+                67.0,
+                101.0
+            ],
+            "Antoine Semenyo": [],
+            "Kaoru Mitoma": [],
+            "Amine Adli": [],
+            "Yankuba Minteh": [],
+            "David Brooks": [],
+            "Harry Howell": [],
+            "Eli Junior Kroupi": [
+                41.0,
+                67.0,
+                131.0
+            ],
+            "Marcus Tavernier": [],
+            "Ben Doak": [],
+            "Georginio Rutter": [
+                101.0,
+                111.0,
+                161.0
+            ],
+            "Alejandro Jimenez": [],
+            "Tom Watson": [],
+            "Yasin Ayari": [],
+            "Diego Gomez": [],
+            "Brajan Gruda": [],
+            "Charlie Tasker": [],
+            "Freddie Simmonds": [],
+            "Veljko Milosavljevic": [],
+            "Romain Faivre": [],
+            "Alex Scott": [],
+            "James Hill": [],
+            "Tyler Adams": [],
+            "Diego Coppola": [],
+            "Carlos Baleba": [],
+            "Marcos Senesi": [],
+            "Adam Smith": [],
+            "Maxim De Cuyper": [],
+            "Jack Hinshelwood": [],
+            "Julio Soler": [],
+            "Julian Araujo": [],
+            "Joel Veltman": [],
+            "Ryan Christie": [],
+            "Mats Wieffer": [],
+            "Olivier Boscagli": [],
+            "Ferdi Kadioglu": [],
+            "James Milner": [],
+            "Jan Paul van Hecke": [],
+            "Lewis Dunk": [],
+            "Bafode Diakite": [],
+            "Adrien Truffert": []
+        },
+        "Anytime Goalscorer": {
+            "Charalambos Kostoulas": [],
+            "Evanilson": [
+                2.6,
+                2.75,
+                2.8,
+                2.6
+            ],
+            "Eli Junior Kroupi": [
+                2.6,
+                2.75,
+                3.4,
+                3.15
+            ],
+            "Antoine Semenyo": [
+                3.2,
+                3.5,
+                3.05,
+                3.05
+            ],
+            "Danny Welbeck": [
+                2.75,
+                2.875,
+                3.5,
+                3.5
+            ],
+            "Stefanos Tzimas": [
+                3.1,
+                3.1,
+                3.5,
+                3.5
+            ],
+            "Georginio Rutter": [
+                3.75,
+                3.75,
+                3.8,
+                3.6
+            ],
+            "Justin Kluivert": [
+                3.1,
+                3.3,
+                4.2,
+                4.2
+            ],
+            "Ben Doak": [
+                4.333333333333333,
+                4.6,
+                4.6,
+                4.6
+            ],
+            "Kaoru Mitoma": [
+                3.5,
+                3.75,
+                4.6,
+                4.6
+            ],
+            "Harry Howell": [],
+            "Marcus Tavernier": [
+                4.333333333333333,
+                4.6,
+                4.8,
+                4.8
+            ],
+            "Tom Watson": [],
+            "Yankuba Minteh": [
+                4.0,
+                4.333333333333333,
+                5.25,
+                5.25
+            ],
+            "David Brooks": [
+                3.5,
+                4.0,
+                5.6,
+                5.6
+            ],
+            "Amine Adli": [
+                3.75,
+                4.333333333333333,
+                6.5,
+                6.5
+            ],
+            "Brajan Gruda": [
+                5.5,
+                6.0,
+                6.75,
+                6.75
+            ],
+            "Romain Faivre": [],
+            "Diego Gomez": [
+                4.75,
+                5.5,
+                7.5,
+                7.5
+            ],
+            "Alex Scott": [
+                5.5,
+                6.5,
+                8.5,
+                8.5
+            ],
+            "Yasin Ayari": [
+                7.5,
+                8.5,
+                8.5
+            ],
+            "Ryan Christie": [
+                6.5,
+                8.0,
+                8.5,
+                8.5
+            ],
+            "Freddie Simmonds": [],
+            "Jack Hinshelwood": [
+                9.0,
+                10.0,
+                10.0,
+                10.0
+            ],
+            "Carlos Baleba": [
+                7.5,
+                8.5,
+                10.0,
+                10.0
+            ],
+            "Charlie Tasker": [],
+            "Ferdi Kadioglu": [
+                8.0,
+                9.0,
+                10.0,
+                10.0
+            ],
+            "Alejandro Jimenez": [
+                6.5,
+                11.0,
+                11.0
+            ],
+            "James Milner": [
+                8.0,
+                9.5,
+                11.5,
+                11.5
+            ],
+            "Maxim De Cuyper": [
+                7.5,
+                9.0,
+                11.5,
+                11.5
+            ],
+            "Adrien Truffert": [
+                10.0,
+                12.0,
+                12.0,
+                12.0
+            ],
+            "Veljko Milosavljevic": [],
+            "James Hill": [
+                10.0,
+                12.0,
+                11.0,
+                11.0
+            ],
+            "Mats Wieffer": [
+                8.0,
+                10.0,
+                12.0,
+                12.0
+            ],
+            "Lewis Dunk": [
+                10.0,
+                12.0,
+                11.5,
+                11.5
+            ],
+            "Bafode Diakite": [
+                10.0,
+                13.0,
+                13.0,
+                13.0
+            ],
+            "Diego Coppola": [
+                10.0,
+                12.0,
+                13.0,
+                13.0
+            ],
+            "Tyler Adams": [
+                12.0,
+                13.0,
+                13.0,
+                13.0
+            ],
+            "Julian Araujo": [
+                12.0,
+                13.0,
+                12.5,
+                12.5
+            ],
+            "Julio Soler": [],
+            "Marcos Senesi": [
+                15.0,
+                15.0,
+                9.5,
+                9.5
+            ],
+            "Jan Paul van Hecke": [
+                15.0,
+                17.0,
+                17.0,
+                17.0
+            ],
+            "Olivier Boscagli": [
+                12.0,
+                15.0,
+                21.0,
+                21.0
+            ],
+            "Joel Veltman": [
+                15.0,
+                19.0,
+                26.0,
+                26.0
+            ],
+            "Adam Smith": [
+                15.0,
+                19.0,
+                26.0,
+                26.0
+            ]
+        },
+        "Total Home Goals": {
+            "Under 5.5": [],
+            "Under 4.5": [
+                1.01,
+                1.0066666666666666,
+                1.0066666666666666,
+                1.001,
+                1.001
+            ],
+            "Under 3.5": [
+                1.05,
+                1.05,
+                1.04,
+                1.05,
+                1.0303030303030303,
+                1.04,
+                1.04,
+                1.0303030303030303,
+                1.04,
+                1.02,
+                1.04,
+                1.02
+            ],
+            "Over 0.5": [
+                1.2222222222222223,
+                1.2222222222222223,
+                1.2222222222222223,
+                1.2222222222222223,
+                1.2,
+                1.2222222222222223,
+                1.2,
+                1.1818181818181819,
+                1.2,
+                1.2,
+                1.2,
+                1.2,
+                1.2,
+                1.2222222222222223,
+                1.2222222222222223,
+                1.2,
+                1.1666666666666667
+            ],
+            "Under 2.5": [
+                1.2,
+                1.1818181818181819,
+                1.2,
+                1.1818181818181819,
+                1.2,
+                1.2,
+                1.2,
+                1.25,
+                1.1818181818181819,
+                1.2,
+                1.2,
+                1.2,
+                1.2,
+                1.2,
+                1.1818181818181819,
+                1.1666666666666667,
+                1.1428571428571428
+            ],
+            "Under 1.5": [
+                1.7272727272727273,
+                1.7,
+                1.7272727272727273,
+                1.7,
+                1.7272727272727273,
+                1.7,
+                1.7,
+                1.7272727272727273,
+                1.7272727272727273,
+                1.7272727272727273,
+                1.7272727272727273,
+                1.7272727272727273,
+                1.7272727272727273,
+                1.7,
+                1.6666666666666667,
+                1.7272727272727273,
+                1.6666666666666667
+            ],
+            "Over 1.5": [
+                2.0,
+                2.05,
+                2.0,
+                2.05,
+                2.0,
+                2.05,
+                2.05,
+                2.0,
+                1.9090909090909092,
+                2.0,
+                2.0,
+                2.0,
+                2.0,
+                2.0,
+                2.05,
+                2.1,
+                2.0,
+                2.0
+            ],
+            "Under 0.5": [
+                4.0,
+                4.0,
+                4.0,
+                4.0,
+                4.333333333333333,
+                3.9,
+                4.0,
+                4.333333333333333,
+                4.0,
+                4.333333333333333,
+                4.0,
+                4.0,
+                4.0,
+                3.9,
+                3.8,
+                4.333333333333333,
+                4.2
+            ],
+            "Over 2.5": [
+                4.333333333333333,
+                4.5,
+                4.333333333333333,
+                4.5,
+                4.333333333333333,
+                4.2,
+                4.0,
+                4.0,
+                4.2,
+                4.333333333333333,
+                4.0,
+                4.0,
+                4.0,
+                4.2,
+                4.333333333333333,
+                4.5,
+                4.5
+            ],
+            "Over 3.5": [
+                11.0,
+                11.0,
+                10.0,
+                11.0,
+                10.0,
+                9.5,
+                9.0,
+                10.0,
+                9.0,
+                10.0,
+                9.5,
+                11.0,
+                12.0,
+                11.0
+            ],
+            "Over 4.5": [
+                26.0,
+                34.0,
+                26.0,
+                26.0,
+                26.0,
+                34.0,
+                34.0
+            ],
+            "Over 5.5": [
+                91.0,
+                34.0,
+                34.0
+            ]
+        },
+        "Total Away Goals": {
+            "Under 5.5": [],
+            "Under 4.5": [
+                1.005,
+                1.005,
+                1.004
+            ],
+            "Under 3.5": [
+                1.04,
+                1.0303030303030303,
+                1.025,
+                1.0303030303030303,
+                1.02,
+                1.0303030303030303,
+                1.02,
+                1.02,
+                1.0303030303030303,
+                1.01
+            ],
+            "Under 2.5": [
+                1.1666666666666667,
+                1.1538461538461537,
+                1.1428571428571428,
+                1.1538461538461537,
+                1.1428571428571428,
+                1.1538461538461537,
+                1.1333333333333333,
+                1.1818181818181819,
+                1.1538461538461537,
+                1.1428571428571428,
+                1.1333333333333333,
+                1.1538461538461537,
+                1.1538461538461537,
+                1.1538461538461537,
+                1.1428571428571428,
+                1.1428571428571428,
+                1.1111111111111112
+            ],
+            "Over 0.5": [
+                1.25,
+                1.25,
+                1.25,
+                1.25,
+                1.25,
+                1.25,
+                1.27,
+                1.2222222222222223,
+                1.25,
+                1.25,
+                1.27,
+                1.25,
+                1.25,
+                1.25,
+                1.27,
+                1.25,
+                1.2
+            ],
+            "Under 1.5": [
+                1.6153846153846154,
+                1.6153846153846154,
+                1.6153846153846154,
+                1.6153846153846154,
+                1.6153846153846154,
+                1.6,
+                1.6,
+                1.55,
+                1.6666666666666667,
+                1.6,
+                1.6153846153846154,
+                1.55,
+                1.6153846153846154,
+                1.6,
+                1.6,
+                1.588235294117647,
+                1.6153846153846154,
+                1.5714285714285714
+            ],
+            "Over 1.5": [
+                2.2,
+                2.2,
+                2.2,
+                2.2,
+                2.2,
+                2.25,
+                2.2,
+                2.25,
+                2.15,
+                2.2,
+                2.2,
+                2.25,
+                2.2,
+                2.2,
+                2.25,
+                2.26,
+                2.2,
+                2.1
+            ],
+            "Under 0.5": [
+                3.75,
+                3.75,
+                3.75,
+                3.75,
+                3.75,
+                3.5,
+                3.45,
+                3.8,
+                3.65,
+                3.75,
+                3.45,
+                3.6,
+                3.6,
+                3.5,
+                3.5,
+                3.75,
+                3.75
+            ],
+            "Over 2.5": [
+                5.0,
+                5.0,
+                5.0,
+                5.0,
+                5.0,
+                4.8,
+                4.8,
+                4.75,
+                4.75,
+                5.0,
+                4.8,
+                4.6,
+                4.75,
+                4.8,
+                5.0,
+                5.0,
+                5.0
+            ],
+            "Over 3.5": [
+                13.0,
+                13.0,
+                12.0,
+                13.0,
+                11.0,
+                11.0,
+                11.5,
+                11.0,
+                11.5,
+                10.0,
+                11.0,
+                13.0,
+                13.0,
+                14.0
+            ],
+            "Over 4.5": [
+                34.0,
+                41.0,
+                41.0,
+                29.0,
+                29.0,
+                34.0,
+                34.0
+            ],
+            "Over 5.5": [
+                101.0,
+                34.0,
+                34.0
+            ]
+        },
+        "To Score 2 Or More Goals": {
+            "Charalambos Kostoulas": [],
+            "Evanilson": [
+                9.5,
+                13.0,
+                8.5
+            ],
+            "Eli Junior Kroupi": [
+                9.5,
+                13.0,
+                12.5
+            ],
+            "Danny Welbeck": [
+                11.0,
+                13.0,
+                17.0
+            ],
+            "Stefanos Tzimas": [],
+            "Antoine Semenyo": [
+                15.0,
+                19.0,
+                13.0
+            ],
+            "Justin Kluivert": [
+                13.0,
+                19.0,
+                23.0
+            ],
+            "Georginio Rutter": [
+                21.0,
+                23.0,
+                12.0
+            ],
+            "David Brooks": [],
+            "Amine Adli": [],
+            "Ben Doak": [
+                29.0,
+                34.0,
+                34.0
+            ],
+            "Harry Howell": [],
+            "Kaoru Mitoma": [
+                19.0,
+                23.0,
+                35.0
+            ],
+            "Tom Watson": [],
+            "Marcus Tavernier": [
+                29.0,
+                34.0,
+                41.0
+            ],
+            "Diego Gomez": [],
+            "Yankuba Minteh": [
+                23.0,
+                29.0,
+                46.0
+            ],
+            "Brajan Gruda": [],
+            "Alex Scott": [],
+            "Romain Faivre": [],
+            "Alejandro Jimenez": [],
+            "Ryan Christie": [],
+            "Carlos Baleba": [],
+            "Yasin Ayari": [],
+            "Maxim De Cuyper": [],
+            "Mats Wieffer": [],
+            "Charlie Tasker": [],
+            "James Milner": [],
+            "Freddie Simmonds": [],
+            "Veljko Milosavljevic": [],
+            "Ferdi Kadioglu": [],
+            "Jack Hinshelwood": [],
+            "Lewis Dunk": [],
+            "Diego Coppola": [],
+            "Adrien Truffert": [],
+            "James Hill": [],
+            "Julio Soler": [],
+            "Bafode Diakite": [],
+            "Tyler Adams": [],
+            "Julian Araujo": [],
+            "Marcos Senesi": [],
+            "Olivier Boscagli": [],
+            "Jan Paul van Hecke": [],
+            "Joel Veltman": [],
+            "Adam Smith": []
+        }
+    },
+    "Crystal Palace v Sunderland": {
+        "home_team": "Crystal Palace",
+        "away_team": "Sunderland",
+        "home_position": 8,
+        "away_position": 6,
+        "Link": "https://www.oddschecker.com/football/english/premier-league/crystal-palace-v-sunderland/winner",
+        "To Score A Hat-Trick": {
+            "Rio Cardines": [],
+            "Jean-Philippe Mateta": [
+                41.0,
+                51.0,
+                11.5
+            ],
+            "Chrisantus Uche": [],
+            "Yeremi Pino": [],
+            "Ismaila Sarr": [],
+            "Jesurun Rak-Sakyi": [],
+            "Brian Brobbey": [],
+            "Romain Esse": [],
+            "Bertrand Traore": [],
+            "Wilson Isidor": [],
+            "Daichi Kamada": [],
+            "Eliezer Mayenda": [],
+            "Kaden Rodney": [],
+            "Ian Poveda-Ocampo": [],
+            "Simon Adingra": [],
+            "Jaydee Canvot": [],
+            "Niall Huggins": [],
+            "Lutsharel Geertruida": [],
+            "Habib Diarra": [],
+            "Maxence Lacroix": [],
+            "Noah Sadiki": [],
+            "Enzo Le Fee": [],
+            "Chemsdine Talbi": [],
+            "Chris Richards": [],
+            "Leo Hjelde": [],
+            "Joe Anderson": [],
+            "Nordi Mukiele": [],
+            "Trai Hume": [],
+            "Daniel Munoz": [],
+            "Borna Sosa": [],
+            "Jefferson Lerma": [],
+            "Omar Alderete": [],
+            "Granit Xhaka": [],
+            "Daniel Ballard": [],
+            "Milan Aleksic": [],
+            "Arthur Masuaku": [],
+            "Luke ONien": [],
+            "Nathaniel Clyne": [],
+            "Will Hughes": [],
+            "Dan Neil": [],
+            "Dennis Cirkin": [],
+            "Tyrick Mitchell": [],
+            "Chris Rigg": [],
+            "Reinildo Mandava": [],
+            "Justin Devenny": [],
+            "Adam Wharton": [],
+            "Marc Guehi": []
+        },
+        "Anytime Goalscorer": {
+            "Rio Cardines": [],
+            "Jean-Philippe Mateta": [
+                2.5,
+                2.625,
+                2.0,
+                2.0
+            ],
+            "Ismaila Sarr": [],
+            "Jesurun Rak-Sakyi": [],
+            "Chrisantus Uche": [
+                3.2,
+                4.3,
+                4.3
+            ],
+            "Yeremi Pino": [
+                4.0,
+                4.2,
+                4.5,
+                4.5
+            ],
+            "Wilson Isidor": [
+                5.0,
+                5.0,
+                5.0,
+                5.0
+            ],
+            "Romain Esse": [
+                4.0,
+                4.5,
+                5.2,
+                5.2
+            ],
+            "Brian Brobbey": [
+                4.5,
+                4.6,
+                5.5,
+                5.5
+            ],
+            "Eliezer Mayenda": [
+                5.5,
+                5.5,
+                4.5,
+                4.5
+            ],
+            "Daichi Kamada": [
+                4.0,
+                4.5,
+                5.5,
+                5.5
+            ],
+            "Kaden Rodney": [],
+            "Bertrand Traore": [
+                6.0,
+                6.5,
+                6.5
+            ],
+            "Justin Devenny": [
+                7.0,
+                7.0,
+                6.25,
+                6.25
+            ],
+            "Daniel Munoz": [
+                7.0,
+                7.5,
+                6.75,
+                6.75
+            ],
+            "Simon Adingra": [
+                6.0,
+                6.5,
+                7.5,
+                7.5
+            ],
+            "Jefferson Lerma": [
+                7.5,
+                8.5,
+                7.5,
+                7.5
+            ],
+            "Ian Poveda-Ocampo": [],
+            "Milan Aleksic": [],
+            "Habib Diarra": [
+                8.5,
+                9.0,
+                8.0,
+                8.0
+            ],
+            "Jaydee Canvot": [
+                9.0,
+                8.5,
+                8.5
+            ],
+            "Adam Wharton": [
+                7.5,
+                9.0,
+                9.5,
+                9.5
+            ],
+            "Chemsdine Talbi": [
+                7.5,
+                8.5,
+                10.0,
+                10.0
+            ],
+            "Enzo Le Fee": [
+                8.5,
+                9.0,
+                10.0,
+                10.0
+            ],
+            "Harrison Jones": [
+                9.5,
+                10.0,
+                10.0
+            ],
+            "Chris Rigg": [
+                7.5,
+                9.0,
+                10.0,
+                10.0
+            ],
+            "Will Hughes": [
+                7.5,
+                9.0,
+                10.0,
+                10.0
+            ],
+            "Granit Xhaka": [
+                11.0,
+                12.0,
+                11.0,
+                11.0
+            ],
+            "Chris Richards": [
+                9.0,
+                11.0,
+                12.0,
+                8.5
+            ],
+            "Borna Sosa": [
+                11.0,
+                13.0,
+                13.0,
+                13.0
+            ],
+            "Daniel Ballard": [],
+            "Maxence Lacroix": [
+                11.0,
+                13.0,
+                12.0,
+                8.5
+            ],
+            "Tyrick Mitchell": [
+                13.0,
+                15.0,
+                11.0,
+                11.0
+            ],
+            "Marc Guehi": [
+                9.0,
+                11.0,
+                16.0,
+                10.0
+            ],
+            "Dennis Cirkin": [
+                17.0,
+                15.0,
+                12.5,
+                12.5
+            ],
+            "Dan Neil": [
+                17.0,
+                13.0,
+                15.0,
+                15.0
+            ],
+            "Luke ONien": [],
+            "Nordi Mukiele": [
+                17.0,
+                19.0,
+                18.0,
+                18.0
+            ],
+            "Omar Alderete": [
+                13.0,
+                15.0,
+                19.0,
+                19.0
+            ],
+            "Joe Anderson": [],
+            "Trai Hume": [
+                17.0,
+                19.0,
+                23.0,
+                23.0
+            ],
+            "Noah Sadiki": [
+                9.0,
+                12.0,
+                23.0,
+                23.0
+            ],
+            "Niall Huggins": [],
+            "Nathaniel Clyne": [
+                17.0,
+                21.0,
+                25.0,
+                25.0
+            ],
+            "Reinildo Mandava": [
+                19.0,
+                26.0,
+                26.0,
+                26.0
+            ],
+            "Lutsharel Geertruida": [
+                17.0,
+                29.0,
+                29.0
+            ],
+            "Arthur Masuaku": [
+                17.0,
+                21.0,
+                30.0,
+                30.0
+            ],
+            "Leo Hjelde": []
+        },
+        "Total Home Goals": {
+            "Under 5.5": [],
+            "Under 4.5": [
+                1.0151515151515151,
+                1.02,
+                1.01,
+                1.02,
+                1.004,
+                1.004
+            ],
+            "Under 3.5": [
+                1.0833333333333333,
+                1.0833333333333333,
+                1.0625,
+                1.0833333333333333,
+                1.0625,
+                1.0833333333333333,
+                1.0625,
+                1.0625,
+                1.0625,
+                1.0714285714285714,
+                1.0833333333333333,
+                1.0625,
+                1.05,
+                1.05
+            ],
+            "Over 0.5": [
+                1.1666666666666667,
+                1.1538461538461537,
+                1.1428571428571428,
+                1.1538461538461537,
+                1.1428571428571428,
+                1.1666666666666667,
+                1.1538461538461537,
+                1.1538461538461537,
+                1.1538461538461537,
+                1.1428571428571428,
+                1.1538461538461537,
+                1.1538461538461537,
+                1.1538461538461537,
+                1.1666666666666667,
+                1.1538461538461537,
+                1.1428571428571428,
+                1.125
+            ],
+            "Under 2.5": [
+                1.2857142857142858,
+                1.2857142857142858,
+                1.2857142857142858,
+                1.2857142857142858,
+                1.2857142857142858,
+                1.2857142857142858,
+                1.28,
+                1.3,
+                1.25,
+                1.2857142857142858,
+                1.28,
+                1.2857142857142858,
+                1.2857142857142858,
+                1.2857142857142858,
+                1.25,
+                1.25,
+                1.2222222222222223
+            ],
+            "Over 1.5": [
+                1.8,
+                1.75,
+                1.8,
+                1.75,
+                1.8,
+                1.8,
+                1.775,
+                1.7692307692307692,
+                1.75,
+                1.7692307692307692,
+                1.8,
+                1.7692307692307692,
+                1.8,
+                1.8,
+                1.8,
+                1.8333333333333333,
+                1.8,
+                1.7272727272727273
+            ],
+            "Under 1.5": [
+                1.9090909090909092,
+                1.95,
+                1.9090909090909092,
+                1.95,
+                1.9090909090909092,
+                1.95,
+                1.925,
+                1.95,
+                1.9523809523809523,
+                1.93,
+                1.9090909090909092,
+                1.95,
+                1.9090909090909092,
+                1.9090909090909092,
+                1.95,
+                1.88,
+                1.9090909090909092,
+                1.9090909090909092
+            ],
+            "Over 2.5": [
+                3.5,
+                3.5,
+                3.5,
+                3.5,
+                3.5,
+                3.4,
+                3.4,
+                3.5,
+                3.45,
+                3.5,
+                3.4,
+                3.3,
+                3.3,
+                3.4,
+                3.5,
+                3.75,
+                3.6
+            ],
+            "Under 0.5": [
+                5.0,
+                5.0,
+                5.0,
+                5.0,
+                5.0,
+                4.8,
+                4.6,
+                5.0,
+                4.75,
+                5.0,
+                4.6,
+                4.6,
+                4.75,
+                4.8,
+                4.5,
+                5.0,
+                5.0
+            ],
+            "Over 3.5": [
+                8.0,
+                8.0,
+                8.0,
+                8.0,
+                8.0,
+                7.0,
+                7.0,
+                8.0,
+                7.0,
+                7.0,
+                7.0,
+                8.0,
+                9.0,
+                8.5
+            ],
+            "Over 4.5": [
+                21.0,
+                21.0,
+                21.0,
+                21.0,
+                19.0,
+                18.0,
+                19.0,
+                18.0,
+                17.0,
+                21.0,
+                21.0
+            ],
+            "Over 5.5": [
+                51.0,
+                56.0,
+                34.0,
+                34.0
+            ]
+        },
+        "Total Away Goals": {
+            "Under 4.5": [],
+            "Under 5.5": [],
+            "Under 3.5": [
+                1.002,
+                1.002,
+                1.004
+            ],
+            "Under 2.5": [
+                1.0303030303030303,
+                1.0303030303030303,
+                1.0303030303030303,
+                1.0303030303030303,
+                1.02,
+                1.025,
+                1.0303030303030303,
+                1.02,
+                1.02,
+                1.01,
+                1.025,
+                1.01
+            ],
+            "Under 1.5": [
+                1.2,
+                1.2,
+                1.2222222222222223,
+                1.2,
+                1.2,
+                1.2,
+                1.1818181818181819,
+                1.2222222222222223,
+                1.1818181818181819,
+                1.2,
+                1.1818181818181819,
+                1.1818181818181819,
+                1.2,
+                1.2,
+                1.2,
+                1.2,
+                1.1666666666666667
+            ],
+            "Over 0.5": [
+                1.6666666666666667,
+                1.6153846153846154,
+                1.6666666666666667,
+                1.6153846153846154,
+                1.6153846153846154,
+                1.6666666666666667,
+                1.65,
+                1.6666666666666667,
+                1.6153846153846154,
+                1.65,
+                1.6153846153846154,
+                1.6666666666666667,
+                1.6666666666666667,
+                1.65,
+                1.6666666666666667,
+                1.65,
+                1.6153846153846154,
+                1.6153846153846154
+            ],
+            "Under 0.5": [
+                2.1,
+                2.2,
+                2.1,
+                2.2,
+                2.2,
+                2.1,
+                2.1,
+                2.08,
+                2.15,
+                2.1,
+                2.2,
+                2.08,
+                2.1,
+                2.1,
+                2.1,
+                2.15,
+                2.2,
+                2.1
+            ],
+            "Over 1.5": [
+                4.333333333333333,
+                4.2,
+                4.0,
+                4.2,
+                4.333333333333333,
+                4.2,
+                4.2,
+                4.2,
+                4.2,
+                4.333333333333333,
+                4.2,
+                4.2,
+                4.0,
+                4.2,
+                4.0,
+                4.333333333333333,
+                4.2
+            ],
+            "Over 2.5": [
+                15.0,
+                13.0,
+                11.0,
+                13.0,
+                11.0,
+                12.0,
+                12.5,
+                12.0,
+                11.0,
+                12.5,
+                9.5,
+                11.0,
+                12.0,
+                12.0,
+                13.0,
+                14.0
+            ],
+            "Over 3.5": [
+                51.0,
+                56.0,
+                41.0,
+                34.0,
+                34.0,
+                41.0,
+                34.0,
+                34.0
+            ],
+            "Over 4.5": [
+                126.0,
+                81.0,
+                34.0,
+                34.0
+            ],
+            "Over 5.5": [
+                151.0,
+                34.0,
+                34.0
+            ]
+        },
+        "To Score 2 Or More Goals": {
+            "Rio Cardines": [],
+            "Jean-Philippe Mateta": [
+                9.0,
+                12.0,
+                5.5
+            ],
+            "Ismaila Sarr": [],
+            "Jesurun Rak-Sakyi": [],
+            "Brian Brobbey": [],
+            "Chrisantus Uche": [],
+            "Romain Esse": [],
+            "Yeremi Pino": [],
+            "Eliezer Mayenda": [
+                41.0,
+                41.0,
+                31.0
+            ],
+            "Wilson Isidor": [
+                34.0,
+                34.0,
+                46.0
+            ],
+            "Daichi Kamada": [
+                26.0,
+                34.0,
+                51.0
+            ],
+            "Bertrand Traore": [],
+            "Kaden Rodney": [],
+            "Simon Adingra": [],
+            "Daniel Munoz": [],
+            "Justin Devenny": [],
+            "Chemsdine Talbi": [],
+            "Will Hughes": [],
+            "Adam Wharton": [],
+            "Milan Aleksic": [],
+            "Chris Rigg": [],
+            "Ian Poveda-Ocampo": [],
+            "Enzo Le Fee": [],
+            "Jaydee Canvot": [],
+            "Habib Diarra": [],
+            "Chris Richards": [],
+            "Noah Sadiki": [],
+            "Jefferson Lerma": [
+                81.0,
+                81.0,
+                111.0
+            ],
+            "Marc Guehi": [],
+            "Granit Xhaka": [],
+            "Borna Sosa": [],
+            "Tyrick Mitchell": [],
+            "Maxence Lacroix": [],
+            "Daniel Ballard": [],
+            "Lutsharel Geertruida": [],
+            "Dan Neil": [],
+            "Omar Alderete": [],
+            "Dennis Cirkin": [],
+            "Nordi Mukiele": [],
+            "Niall Huggins": [],
+            "Joe Anderson": [],
+            "Luke ONien": [],
+            "Trai Hume": [],
+            "Arthur Masuaku": [],
+            "Nathaniel Clyne": [],
+            "Reinildo Mandava": [],
+            "Leo Hjelde": []
+        }
+    },
+    "Everton v Aston Villa": {
+        "home_team": "Everton",
+        "away_team": "Aston Villa",
+        "home_position": 5,
+        "away_position": 19,
+        "Link": "https://www.oddschecker.com/football/english/premier-league/everton-v-aston-villa/winner",
+        "To Score A Hat-Trick": {
+            "Ollie Watkins": [
+                67.0,
+                81.0,
+                51.0
+            ],
+            "Iliman-Cheikh Ndiaye": [],
+            "Evann Guessand": [],
+            "Beto": [
+                81.0,
+                81.0,
+                121.0
+            ],
+            "Merlin Rohl": [],
+            "Morgan Rogers": [],
+            "Harvey Elliott": [],
+            "Tyler Dibling": [],
+            "Jack Grealish": [],
+            "Thierno Barry": [
+                67.0,
+                81.0,
+                151.0
+            ],
+            "Carlos Alcaraz": [],
+            "Jadon Sancho": [],
+            "Justin Clarke": [],
+            "Donyell Malen": [],
+            "Dwight McNeil": [],
+            "Bradley Burrowes": [],
+            "Elijah Campbell": [],
+            "Travis Patterson": [],
+            "Kiernan Dewsbury-Hall": [],
+            "Emiliano Buendia": [],
+            "Jamaldeen Jimoh": [],
+            "Nathan Patterson": [],
+            "Yeimar Mosquera": [],
+            "Victor Lindelof": [],
+            "Adam Aznou": [],
+            "John McGinn": [],
+            "Ross Barkley": [],
+            "Boubacar Kamara": [],
+            "Seamus Coleman": [],
+            "Tyrone Mings": [],
+            "Vitaliy Mykolenko": [],
+            "James Garner": [],
+            "Jake OBrien": [],
+            "Michael Keane": [],
+            "Ian Maatsen": [],
+            "Idrissa Gueye": [],
+            "Pau Torres": [],
+            "Andres Garcia": [],
+            "Jarrad Branthwaite": [],
+            "James Tarkowski": [],
+            "Timothy Iroegbunam": [],
+            "Triston Rowe": [],
+            "Lamare Bogarde": [],
+            "Lucas Digne": [],
+            "Matty Cash": [],
+            "Youri Tielemans": [],
+            "Amadou Onana": [],
+            "Ezri Konsa": []
+        },
+        "Anytime Goalscorer": {
+            "Ollie Watkins": [
+                2.875,
+                3.0,
+                2.625,
+                2.45
+            ],
+            "Beto": [
+                3.1,
+                3.1,
+                3.25,
+                3.0
+            ],
+            "Thierno Barry": [
+                2.875,
+                3.0,
+                3.45,
+                3.15
+            ],
+            "Iliman-Cheikh Ndiaye": [
+                3.6,
+                3.5,
+                3.5,
+                3.5
+            ],
+            "Morgan Rogers": [
+                4.0,
+                4.2,
+                4.6,
+                4.6
+            ],
+            "Jack Grealish": [
+                4.5,
+                4.6,
+                4.6,
+                4.6
+            ],
+            "Harvey Elliott": [
+                5.0,
+                5.0,
+                5.0
+            ],
+            "Carlos Alcaraz": [
+                4.5,
+                4.6,
+                5.0,
+                5.0
+            ],
+            "Evann Guessand": [
+                3.25,
+                3.6,
+                5.2,
+                5.2
+            ],
+            "Donyell Malen": [
+                5.0,
+                5.0,
+                5.4,
+                4.6
+            ],
+            "Bradley Burrowes": [],
+            "Kiernan Dewsbury-Hall": [
+                6.0,
+                6.0,
+                5.2,
+                5.2
+            ],
+            "Tyler Dibling": [
+                4.5,
+                6.25,
+                6.25
+            ],
+            "Dwight McNeil": [
+                4.5,
+                5.0,
+                6.5,
+                6.5
+            ],
+            "Merlin Rohl": [
+                5.0,
+                7.0,
+                7.0
+            ],
+            "Justin Clarke": [],
+            "Ross Barkley": [],
+            "Jadon Sancho": [
+                5.5,
+                7.5,
+                7.5
+            ],
+            "Elijah Campbell": [],
+            "Youri Tielemans": [
+                8.5,
+                8.5,
+                8.5,
+                8.5
+            ],
+            "John McGinn": [
+                6.0,
+                7.0,
+                8.5,
+                8.5
+            ],
+            "Emiliano Buendia": [
+                5.5,
+                6.0,
+                8.5,
+                8.5
+            ],
+            "Travis Patterson": [],
+            "Adam Aznou": [],
+            "Jamaldeen Jimoh": [],
+            "Timothy Iroegbunam": [
+                8.5,
+                9.5,
+                10.0,
+                10.0
+            ],
+            "James Garner": [
+                8.5,
+                9.5,
+                10.5,
+                10.5
+            ],
+            "Amadou Onana": [
+                7.5,
+                8.5,
+                11.0,
+                11.0
+            ],
+            "Andres Garcia": [],
+            "Yeimar Mosquera": [],
+            "Matty Cash": [
+                8.5,
+                10.0,
+                13.0,
+                13.0
+            ],
+            "Ian Maatsen": [
+                10.0,
+                12.0,
+                13.0,
+                13.0
+            ],
+            "James Tarkowski": [
+                9.5,
+                11.0,
+                13.0,
+                9.5
+            ],
+            "Nathan Patterson": [],
+            "Michael Keane": [
+                10.0,
+                12.0,
+                14.0,
+                9.5
+            ],
+            "Boubacar Kamara": [
+                13.0,
+                15.0,
+                14.0,
+                14.0
+            ],
+            "Jarrad Branthwaite": [],
+            "Jake OBrien": [
+                12.0,
+                13.0,
+                15.0,
+                10.0
+            ],
+            "Triston Rowe": [],
+            "Idrissa Gueye": [
+                9.5,
+                11.0,
+                16.0,
+                16.0
+            ],
+            "Vitaliy Mykolenko": [
+                13.0,
+                15.0,
+                17.0,
+                10.5
+            ],
+            "Seamus Coleman": [
+                17.0,
+                19.0,
+                17.0,
+                17.0
+            ],
+            "Pau Torres": [
+                17.0,
+                19.0,
+                19.0,
+                19.0
+            ],
+            "Lamare Bogarde": [
+                10.0,
+                13.0,
+                21.0,
+                21.0
+            ],
+            "Lucas Digne": [
+                17.0,
+                19.0,
+                23.0,
+                23.0
+            ],
+            "Ezri Konsa": [
+                21.0,
+                23.0,
+                18.0,
+                18.0
+            ],
+            "Tyrone Mings": [
+                17.0,
+                21.0,
+                23.0,
+                23.0
+            ],
+            "Victor Lindelof": [
+                26.0,
+                15.0,
+                15.0
+            ]
+        },
+        "Total Home Goals": {
+            "Under 5.5": [],
+            "Under 4.5": [
+                1.004,
+                1.001,
+                1.004
+            ],
+            "Under 3.5": [
+                1.025,
+                1.02,
+                1.02,
+                1.02,
+                1.01,
+                1.0151515151515151,
+                1.01,
+                1.0151515151515151
+            ],
+            "Under 2.5": [
+                1.125,
+                1.1111111111111112,
+                1.125,
+                1.1111111111111112,
+                1.125,
+                1.125,
+                1.1111111111111112,
+                1.1428571428571428,
+                1.1111111111111112,
+                1.125,
+                1.1111111111111112,
+                1.125,
+                1.1111111111111112,
+                1.125,
+                1.1111111111111112,
+                1.1111111111111112,
+                1.0833333333333333
+            ],
+            "Over 0.5": [
+                1.3,
+                1.3,
+                1.2857142857142858,
+                1.3,
+                1.2857142857142858,
+                1.3333333333333333,
+                1.2857142857142858,
+                1.2857142857142858,
+                1.3,
+                1.2857142857142858,
+                1.2857142857142858,
+                1.3,
+                1.2857142857142858,
+                1.3333333333333333,
+                1.3333333333333333,
+                1.3,
+                1.25
+            ],
+            "Under 1.5": [
+                1.5,
+                1.4444444444444444,
+                1.5333333333333334,
+                1.4444444444444444,
+                1.5333333333333334,
+                1.5,
+                1.5,
+                1.52,
+                1.55,
+                1.5,
+                1.5333333333333334,
+                1.52,
+                1.5,
+                1.5,
+                1.5,
+                1.4761904761904763,
+                1.5,
+                1.4444444444444444
+            ],
+            "Over 1.5": [
+                2.5,
+                2.5,
+                2.375,
+                2.5,
+                2.375,
+                2.45,
+                2.4,
+                2.4,
+                2.375,
+                2.4,
+                2.375,
+                2.4,
+                2.4,
+                2.4,
+                2.45,
+                2.5,
+                2.5,
+                2.4
+            ],
+            "Under 0.5": [
+                3.4,
+                3.25,
+                3.5,
+                3.25,
+                3.5,
+                3.2,
+                3.3,
+                3.4,
+                3.25,
+                3.5,
+                3.3,
+                3.2,
+                3.3,
+                3.2,
+                3.1,
+                3.4,
+                3.4
+            ],
+            "Over 2.5": [
+                6.0,
+                6.0,
+                5.5,
+                6.0,
+                5.5,
+                5.5,
+                5.4,
+                5.0,
+                5.5,
+                5.5,
+                5.4,
+                5.25,
+                5.5,
+                5.5,
+                5.5,
+                6.0,
+                6.0
+            ],
+            "Over 3.5": [
+                17.0,
+                19.0,
+                13.0,
+                19.0,
+                13.0,
+                13.0,
+                14.0,
+                13.0,
+                14.0,
+                13.0,
+                15.0,
+                17.0,
+                15.0
+            ],
+            "Over 4.5": [
+                41.0,
+                61.0,
+                41.0,
+                61.0,
+                34.0,
+                34.0
+            ],
+            "Over 5.5": [
+                126.0,
+                126.0,
+                34.0,
+                34.0
+            ]
+        },
+        "Total Away Goals": {
+            "Under 5.5": [],
+            "Under 4.5": [
+                1.002,
+                1.00001,
+                1.002
+            ],
+            "Under 3.5": [
+                1.0151515151515151,
+                1.0151515151515151,
+                1.0125,
+                1.01,
+                1.004,
+                1.0066666666666666,
+                1.004,
+                1.0066666666666666
+            ],
+            "Under 2.5": [
+                1.0833333333333333,
+                1.0833333333333333,
+                1.1,
+                1.0833333333333333,
+                1.0833333333333333,
+                1.0909090909090908,
+                1.0833333333333333,
+                1.1,
+                1.0833333333333333,
+                1.0833333333333333,
+                1.0833333333333333,
+                1.0909090909090908,
+                1.0833333333333333,
+                1.0909090909090908,
+                1.0833333333333333,
+                1.0833333333333333,
+                1.0625
+            ],
+            "Over 0.5": [
+                1.3636363636363635,
+                1.3636363636363635,
+                1.3636363636363635,
+                1.3636363636363635,
+                1.3636363636363635,
+                1.3636363636363635,
+                1.35,
+                1.3333333333333333,
+                1.3636363636363635,
+                1.3636363636363635,
+                1.35,
+                1.3636363636363635,
+                1.3636363636363635,
+                1.3636363636363635,
+                1.37,
+                1.3333333333333333
+            ],
+            "Under 1.5": [
+                1.4,
+                1.4,
+                1.4444444444444444,
+                1.4,
+                1.4444444444444444,
+                1.4,
+                1.4,
+                1.42,
+                1.5,
+                1.4,
+                1.4444444444444444,
+                1.42,
+                1.4,
+                1.4,
+                1.4,
+                1.4,
+                1.4444444444444444,
+                1.4
+            ],
+            "Over 1.5": [
+                2.75,
+                2.8,
+                2.625,
+                2.8,
+                2.625,
+                2.75,
+                2.75,
+                2.7,
+                2.625,
+                2.75,
+                2.625,
+                2.7,
+                2.7,
+                2.7,
+                2.75,
+                2.74,
+                2.625,
+                2.625
+            ],
+            "Under 0.5": [
+                3.0,
+                2.9,
+                3.0,
+                2.9,
+                3.0,
+                2.875,
+                2.95,
+                3.0,
+                2.9,
+                3.0,
+                2.95,
+                2.875,
+                2.9,
+                2.875,
+                2.8,
+                3.25,
+                3.1
+            ],
+            "Over 2.5": [
+                8.0,
+                7.5,
+                6.5,
+                7.5,
+                7.0,
+                6.5,
+                6.25,
+                6.5,
+                6.5,
+                7.0,
+                6.25,
+                6.0,
+                6.5,
+                6.5,
+                6.5,
+                7.0,
+                7.0
+            ],
+            "Over 3.5": [
+                21.0,
+                23.0,
+                17.0,
+                23.0,
+                19.0,
+                17.0,
+                17.0,
+                19.0,
+                17.0,
+                17.0,
+                19.0,
+                21.0,
+                21.0
+            ],
+            "Over 4.5": [
+                51.0,
+                71.0,
+                67.0,
+                71.0,
+                34.0,
+                34.0
+            ],
+            "Over 5.5": [
+                151.0,
+                151.0,
+                34.0,
+                34.0
+            ]
+        },
+        "To Score 2 Or More Goals": {
+            "Thierno Barry": [
+                13.0,
+                15.0,
+                13.0
+            ],
+            "Beto": [
+                15.0,
+                15.0,
+                11.5
+            ],
+            "Ollie Watkins": [
+                13.0,
+                15.0,
+                7.5
+            ],
+            "Iliman-Cheikh Ndiaye": [
+                21.0,
+                21.0,
+                19.0
+            ],
+            "Tyler Dibling": [],
+            "Merlin Rohl": [],
+            "Carlos Alcaraz": [],
+            "Jack Grealish": [
+                29.0,
+                34.0,
+                35.0
+            ],
+            "Morgan Rogers": [
+                23.0,
+                29.0,
+                36.0
+            ],
+            "Harvey Elliott": [],
+            "Dwight McNeil": [],
+            "Jadon Sancho": [],
+            "Bradley Burrowes": [],
+            "Donyell Malen": [
+                34.0,
+                41.0,
+                46.0
+            ],
+            "Evann Guessand": [
+                17.0,
+                21.0,
+                51.0
+            ],
+            "Kiernan Dewsbury-Hall": [
+                51.0,
+                51.0,
+                41.0
+            ],
+            "Emiliano Buendia": [],
+            "Ross Barkley": [],
+            "John McGinn": [],
+            "Justin Clarke": [],
+            "Amadou Onana": [],
+            "Jamaldeen Jimoh": [],
+            "Matty Cash": [],
+            "Travis Patterson": [],
+            "Youri Tielemans": [],
+            "Adam Aznou": [],
+            "Elijah Campbell": [],
+            "Timothy Iroegbunam": [],
+            "James Garner": [],
+            "Idrissa Gueye": [],
+            "James Tarkowski": [],
+            "Andres Garcia": [],
+            "Michael Keane": [],
+            "Ian Maatsen": [],
+            "Lamare Bogarde": [],
+            "Jake OBrien": [],
+            "Yeimar Mosquera": [],
+            "Nathan Patterson": [],
+            "Boubacar Kamara": [],
+            "Jarrad Branthwaite": [],
+            "Triston Rowe": [],
+            "Vitaliy Mykolenko": [],
+            "Victor Lindelof": [],
+            "Pau Torres": [],
+            "Seamus Coleman": [],
+            "Lucas Digne": [],
+            "Tyrone Mings": [],
+            "Ezri Konsa": []
+        }
+    },
+    "Fulham v Leeds": {
+        "home_team": "Fulham",
+        "away_team": "Leeds",
+        "home_position": 18,
+        "away_position": 12,
+        "Link": "https://www.oddschecker.com/football/english/premier-league/fulham-v-leeds/winner",
+        "To Score A Hat-Trick": {
+            "Jonah Kusi-Asare": [],
+            "Raul Jimenez": [
+                41.0,
+                51.0,
+                67.0
+            ],
+            "Samuel Chukwueze": [],
+            "Kevin Macedo": [],
+            "Rodrigo Muniz": [
+                51.0,
+                67.0,
+                101.0
+            ],
+            "Dominic Calvert-Lewin": [],
+            "Alex Iwobi": [],
+            "Joel Piroe": [],
+            "Harry Wilson": [],
+            "Emile Smith Rowe": [],
+            "Lukas Nmecha": [],
+            "Joshua King": [],
+            "Noah Okafor": [],
+            "Ryan Sessegnon": [],
+            "Adama Traore": [],
+            "Daniel James": [],
+            "Degnand Gnonto": [],
+            "Harry Gray": [],
+            "James Justin": [],
+            "Tom Cairney": [],
+            "Ao Tanaka": [],
+            "Pascal Struijk": [],
+            "Sean Longstaff": [],
+            "Ethan Ampadu": [],
+            "Brenden Aaronson": [],
+            "Sebastiaan Bornauw": [],
+            "Anton Stach": [],
+            "Issa Diop": [],
+            "Timothy Castagne": [],
+            "Ilia Gruev": [],
+            "Jaka Bijol": [],
+            "Kenny Tete": [],
+            "Sasa Lukic": [],
+            "Calvin Bassey": [],
+            "Sander Berge": [],
+            "Harrison Reed": [],
+            "Sam Byram": [],
+            "Jayden Bogle": [],
+            "Joe Rodon": [],
+            "Jack Harrison": [],
+            "Antonee Robinson": [],
+            "Joachim Andersen": [],
+            "Jorge Cuenca": [],
+            "Gabriel Gudmundsson": []
+        },
+        "Anytime Goalscorer": {
+            "Raul Jimenez": [
+                2.5,
+                2.5,
+                2.95,
+                2.95
+            ],
+            "Rodrigo Muniz": [
+                2.625,
+                2.75,
+                3.2,
+                3.05
+            ],
+            "Harry Wilson": [
+                4.0,
+                4.0,
+                3.9,
+                3.9
+            ],
+            "Joel Piroe": [
+                4.0,
+                4.0,
+                4.0,
+                4.0
+            ],
+            "Dominic Calvert-Lewin": [
+                3.6,
+                3.75,
+                4.3,
+                4.3
+            ],
+            "Jonah Kusi-Asare": [
+                2.875,
+                4.4,
+                4.4
+            ],
+            "Alex Iwobi": [
+                3.4,
+                3.6,
+                4.8,
+                4.8
+            ],
+            "Samuel Chukwueze": [
+                4.0,
+                4.8,
+                4.8
+            ],
+            "Lukas Nmecha": [
+                4.5,
+                4.6,
+                4.8,
+                4.8
+            ],
+            "Joshua King": [
+                4.5,
+                4.6,
+                5.0,
+                5.0
+            ],
+            "Kevin Macedo": [
+                3.6,
+                5.0,
+                5.0
+            ],
+            "Ryan Sessegnon": [
+                4.5,
+                4.6,
+                5.0,
+                5.0
+            ],
+            "Degnand Gnonto": [
+                4.75,
+                5.0,
+                5.2,
+                5.2
+            ],
+            "Daniel James": [
+                4.75,
+                5.0,
+                5.2,
+                5.2
+            ],
+            "Noah Okafor": [
+                4.5,
+                5.0,
+                5.5,
+                5.5
+            ],
+            "Harry Gray": [],
+            "Emile Smith Rowe": [
+                3.6,
+                4.0,
+                5.8,
+                5.8
+            ],
+            "Adama Traore": [
+                4.5,
+                5.0,
+                6.25,
+                6.25
+            ],
+            "Brenden Aaronson": [
+                7.0,
+                8.0,
+                8.5,
+                8.5
+            ],
+            "Sasa Lukic": [
+                7.0,
+                8.0,
+                9.5,
+                9.5
+            ],
+            "Sander Berge": [
+                7.0,
+                8.0,
+                9.5,
+                9.5
+            ],
+            "Jack Harrison": [
+                7.5,
+                9.0,
+                9.5,
+                9.5
+            ],
+            "Harrison Reed": [
+                8.5,
+                9.5,
+                10.5,
+                10.5
+            ],
+            "Ao Tanaka": [],
+            "Jorge Cuenca": [
+                10.0,
+                12.0,
+                12.0,
+                12.0
+            ],
+            "Pascal Struijk": [
+                11.0,
+                13.0,
+                10.5,
+                10.5
+            ],
+            "Kenny Tete": [
+                7.0,
+                8.5,
+                13.0,
+                9.5
+            ],
+            "Sean Longstaff": [
+                11.0,
+                13.0,
+                12.5,
+                12.5
+            ],
+            "Anton Stach": [
+                7.5,
+                9.5,
+                14.0,
+                14.0
+            ],
+            "Tom Cairney": [
+                6.0,
+                6.5,
+                14.0,
+                14.0
+            ],
+            "Issa Diop": [],
+            "Joachim Andersen": [
+                13.0,
+                15.0,
+                13.0,
+                9.5
+            ],
+            "Timothy Castagne": [
+                13.0,
+                15.0,
+                16.0,
+                16.0
+            ],
+            "Calvin Bassey": [
+                13.0,
+                15.0,
+                16.0,
+                10.5
+            ],
+            "James Justin": [
+                15.0,
+                17.0,
+                15.0,
+                15.0
+            ],
+            "Jayden Bogle": [
+                15.0,
+                17.0,
+                14.0,
+                14.0
+            ],
+            "Ilia Gruev": [
+                15.0,
+                19.0,
+                16.0,
+                16.0
+            ],
+            "Sebastiaan Bornauw": [
+                15.0,
+                19.0,
+                19.0,
+                19.0
+            ],
+            "Antonee Robinson": [
+                13.0,
+                15.0,
+                19.0,
+                11.5
+            ],
+            "Ethan Ampadu": [
+                15.0,
+                19.0,
+                18.0,
+                18.0
+            ],
+            "Jaka Bijol": [
+                15.0,
+                19.0,
+                20.0,
+                20.0
+            ],
+            "Gabriel Gudmundsson": [
+                11.0,
+                15.0,
+                21.0,
+                21.0
+            ],
+            "Sam Byram": [
+                19.0,
+                23.0,
+                21.0,
+                21.0
+            ],
+            "Joe Rodon": [
+                19.0,
+                29.0,
+                46.0,
+                46.0
+            ]
+        },
+        "Total Home Goals": {
+            "Under 5.5": [],
+            "Under 4.5": [
+                1.01,
+                1.01,
+                1.0066666666666666,
+                1.01,
+                1.0013333333333334,
+                1.0013333333333334
+            ],
+            "Under 3.5": [
+                1.05,
+                1.05,
+                1.04,
+                1.05,
+                1.04,
+                1.05,
+                1.025,
+                1.04,
+                1.025,
+                1.0303030303030303,
+                1.05,
+                1.0303030303030303,
+                1.0303030303030303
+            ],
+            "Over 0.5": [
+                1.2,
+                1.2,
+                1.2,
+                1.2,
+                1.2,
+                1.2222222222222223,
+                1.2,
+                1.1818181818181819,
+                1.2,
+                1.2,
+                1.2,
+                1.2,
+                1.2,
+                1.2222222222222223,
+                1.2,
+                1.2,
+                1.1666666666666667
+            ],
+            "Under 2.5": [
+                1.2,
+                1.2,
+                1.2,
+                1.2,
+                1.2222222222222223,
+                1.2222222222222223,
+                1.2,
+                1.25,
+                1.2,
+                1.2222222222222223,
+                1.2,
+                1.2,
+                1.2,
+                1.2222222222222223,
+                1.2,
+                1.1666666666666667,
+                1.1428571428571428
+            ],
+            "Under 1.5": [
+                1.7272727272727273,
+                1.75,
+                1.7272727272727273,
+                1.75,
+                1.8,
+                1.75,
+                1.7272727272727273,
+                1.75,
+                1.8333333333333333,
+                1.75,
+                1.8,
+                1.75,
+                1.75,
+                1.7272727272727273,
+                1.75,
+                1.73,
+                1.7272727272727273,
+                1.6666666666666667
+            ],
+            "Over 1.5": [
+                2.0,
+                2.0,
+                2.0,
+                2.0,
+                1.9090909090909092,
+                2.0,
+                2.0,
+                1.98,
+                1.9090909090909092,
+                1.95,
+                1.9090909090909092,
+                1.98,
+                1.9523809523809523,
+                2.0,
+                2.0,
+                2.02,
+                2.0,
+                2.0
+            ],
+            "Under 0.5": [
+                4.333333333333333,
+                4.2,
+                4.333333333333333,
+                4.2,
+                4.333333333333333,
+                4.0,
+                4.0,
+                4.333333333333333,
+                4.0,
+                4.333333333333333,
+                4.0,
+                4.0,
+                4.0,
+                4.0,
+                4.0,
+                4.333333333333333,
+                4.2
+            ],
+            "Over 2.5": [
+                4.333333333333333,
+                4.333333333333333,
+                4.333333333333333,
+                4.333333333333333,
+                4.0,
+                4.0,
+                4.0,
+                3.8,
+                4.0,
+                4.0,
+                4.0,
+                4.0,
+                4.0,
+                4.0,
+                4.2,
+                4.5,
+                4.333333333333333
+            ],
+            "Over 3.5": [
+                11.0,
+                11.0,
+                10.0,
+                11.0,
+                9.0,
+                9.0,
+                9.0,
+                9.0,
+                9.0,
+                9.0,
+                9.0,
+                10.0,
+                11.0,
+                11.0
+            ],
+            "Over 4.5": [
+                26.0,
+                29.0,
+                26.0,
+                29.0,
+                23.0,
+                25.0,
+                23.0,
+                25.0,
+                23.0,
+                34.0,
+                34.0
+            ],
+            "Over 5.5": [
+                81.0,
+                81.0,
+                34.0,
+                34.0
+            ]
+        },
+        "Total Away Goals": {
+            "Under 5.5": [],
+            "Under 4.5": [],
+            "Under 3.5": [
+                1.0066666666666666,
+                1.0066666666666666,
+                1.0066666666666666,
+                1.001,
+                1.001
+            ],
+            "Under 2.5": [
+                1.0625,
+                1.05,
+                1.05,
+                1.05,
+                1.04,
+                1.0555555555555556,
+                1.025,
+                1.0625,
+                1.04,
+                1.025,
+                1.05,
+                1.04,
+                1.0555555555555556,
+                1.04,
+                1.0303030303030303
+            ],
+            "Under 1.5": [
+                1.3,
+                1.3,
+                1.2857142857142858,
+                1.3,
+                1.3,
+                1.3,
+                1.28,
+                1.3333333333333333,
+                1.3,
+                1.3,
+                1.28,
+                1.3,
+                1.3,
+                1.3,
+                1.31,
+                1.2857142857142858
+            ],
+            "Over 0.5": [
+                1.5,
+                1.4444444444444444,
+                1.5,
+                1.4444444444444444,
+                1.5,
+                1.5,
+                1.4705882352941178,
+                1.5,
+                1.4444444444444444,
+                1.45,
+                1.5,
+                1.5,
+                1.5,
+                1.475,
+                1.5,
+                1.4761904761904763,
+                1.5,
+                1.4444444444444444
+            ],
+            "Under 0.5": [
+                2.5,
+                2.5,
+                2.5,
+                2.5,
+                2.5,
+                2.45,
+                2.5,
+                2.4,
+                2.5,
+                2.55,
+                2.5,
+                2.4,
+                2.45,
+                2.5,
+                2.45,
+                2.45,
+                2.5,
+                2.4
+            ],
+            "Over 1.5": [
+                3.4,
+                3.3,
+                3.5,
+                3.3,
+                3.4,
+                3.3,
+                3.35,
+                3.3,
+                3.25,
+                3.4,
+                3.35,
+                3.25,
+                3.2,
+                3.3,
+                3.3,
+                3.5,
+                3.5
+            ],
+            "Over 2.5": [
+                10.0,
+                10.0,
+                9.0,
+                10.0,
+                9.0,
+                8.5,
+                8.5,
+                9.0,
+                9.0,
+                8.5,
+                8.0,
+                8.5,
+                8.5,
+                9.0,
+                11.0,
+                10.0
+            ],
+            "Over 3.5": [
+                29.0,
+                36.0,
+                26.0,
+                29.0,
+                23.0,
+                29.0,
+                23.0,
+                26.0,
+                34.0,
+                34.0
+            ],
+            "Over 4.5": [
+                101.0,
+                81.0,
+                101.0,
+                34.0,
+                34.0
+            ],
+            "Over 5.5": [
+                151.0,
+                151.0,
+                34.0,
+                34.0
+            ]
+        },
+        "To Score 2 Or More Goals": {
+            "Raul Jimenez": [
+                9.0,
+                11.0,
+                11.5
+            ],
+            "Rodrigo Muniz": [
+                10.0,
+                12.0,
+                9.5
+            ],
+            "Kevin Macedo": [],
+            "Samuel Chukwueze": [],
+            "Emile Smith Rowe": [],
+            "Harry Wilson": [
+                23.0,
+                26.0,
+                21.0
+            ],
+            "Joel Piroe": [
+                23.0,
+                26.0,
+                29.0
+            ],
+            "Dominic Calvert-Lewin": [
+                19.0,
+                21.0,
+                29.0
+            ],
+            "Jonah Kusi-Asare": [],
+            "Alex Iwobi": [
+                17.0,
+                21.0,
+                31.0
+            ],
+            "Adama Traore": [],
+            "Joshua King": [
+                29.0,
+                34.0,
+                36.0
+            ],
+            "Lukas Nmecha": [
+                29.0,
+                34.0,
+                36.0
+            ],
+            "Harry Gray": [],
+            "Ryan Sessegnon": [
+                29.0,
+                34.0,
+                41.0
+            ],
+            "Degnand Gnonto": [
+                34.0,
+                41.0,
+                41.0
+            ],
+            "Noah Okafor": [
+                29.0,
+                34.0,
+                51.0
+            ],
+            "Daniel James": [
+                34.0,
+                41.0,
+                51.0
+            ],
+            "Tom Cairney": [],
+            "Brenden Aaronson": [],
+            "Sasa Lukic": [],
+            "Jack Harrison": [],
+            "Sander Berge": [],
+            "Kenny Tete": [],
+            "Anton Stach": [],
+            "Harrison Reed": [],
+            "Ao Tanaka": [],
+            "Jorge Cuenca": [],
+            "Pascal Struijk": [],
+            "Sean Longstaff": [],
+            "Gabriel Gudmundsson": [],
+            "Calvin Bassey": [],
+            "Issa Diop": [],
+            "Timothy Castagne": [],
+            "Joachim Andersen": [],
+            "James Justin": [],
+            "Antonee Robinson": [],
+            "Ilia Gruev": [],
+            "Ethan Ampadu": [],
+            "Jayden Bogle": [],
+            "Sebastiaan Bornauw": [],
+            "Jaka Bijol": [],
+            "Sam Byram": [],
+            "Joe Rodon": []
+        }
+    },
+    "Newcastle v Wolverhampton": {
+        "home_team": "Newcastle",
+        "away_team": "Wolverhampton",
+        "home_position": 17,
+        "away_position": 20,
+        "Link": "https://www.oddschecker.com/football/english/premier-league/newcastle-v-wolverhampton/winner",
+        "To Score A Hat-Trick": {
+            "Nick Woltemade": [],
+            "Yoane Wissa": [],
+            "Sean Neave": [],
+            "William Osula": [],
+            "Harvey Barnes": [],
+            "Anthony Elanga": [],
+            "Jacob Ramsey": [],
+            "Jacob Murphy": [],
+            "Seung-Soo Park": [],
+            "Toluwalase Arokodare": [],
+            "Joe Willock": [],
+            "Sasa Kalajdzic": [],
+            "Mateus Mane": [],
+            "Joelinton": [],
+            "Tawanda Chirewa": [],
+            "Hee-Chan Hwang": [],
+            "Jorgen Larsen": [],
+            "Tom Edozie": [],
+            "Alex Murphy": [],
+            "Lewis Hall": [],
+            "Harrison Ashby": [],
+            "Sandro Tonali": [],
+            "Fabian Schar": [],
+            "Jhon Arias": [],
+            "Valentino Livramento": [],
+            "Marshall Munetsi": [],
+            "Ladislav Krejci": [],
+            "Wesley Okoduwa": [],
+            "Pedro Lima": [],
+            "Andre Trindade": [],
+            "David Wolfe": [],
+            "Moura Bruno Guimaraes": [],
+            "Sven Botman": [],
+            "Fernando Lopez": [],
+            "Toti Gomes": [],
+            "Jeanricner Bellegarde": [],
+            "Ki-Jana Hoever": [],
+            "Kieran Trippier": [],
+            "Jackson Tchatchoua": [],
+            "Yerson Mosquera": [],
+            "Emil Krafth": [],
+            "Lewis Miley": [],
+            "Hugo Bueno": [],
+            "Rodrigo Gomes": [],
+            "Jamaal Lascelles": [],
+            "Malick Thiaw": [],
+            "Matt Doherty": [],
+            "Dan Burn": [],
+            "Joao Gomes": [],
+            "Santiago Bueno": [],
+            "Emmanuel Agbadou": []
+        },
+        "Anytime Goalscorer": {
+            "Nick Woltemade": [
+                2.3,
+                2.4,
+                2.2,
+                2.2
+            ],
+            "Yoane Wissa": [
+                2.3,
+                2.4,
+                2.4
+            ],
+            "Sean Neave": [],
+            "Anthony Elanga": [
+                2.625,
+                2.75,
+                2.6,
+                2.6
+            ],
+            "Harvey Barnes": [
+                2.5,
+                2.6,
+                3.15,
+                3.15
+            ],
+            "William Osula": [
+                2.3,
+                2.5,
+                3.25,
+                3.25
+            ],
+            "Jacob Murphy": [
+                3.1,
+                3.25,
+                3.8,
+                3.8
+            ],
+            "Seung-Soo Park": [],
+            "Toluwalase Arokodare": [
+                4.5,
+                4.5,
+                4.5
+            ],
+            "Jacob Ramsey": [
+                2.75,
+                3.0,
+                4.8,
+                4.8
+            ],
+            "Sasa Kalajdzic": [],
+            "Joe Willock": [
+                4.5,
+                4.6,
+                5.25,
+                5.25
+            ],
+            "Joelinton": [
+                3.6,
+                5.0,
+                5.5,
+                5.5
+            ],
+            "Jorgen Larsen": [
+                4.75,
+                5.5,
+                4.3,
+                4.3
+            ],
+            "Hee-Chan Hwang": [
+                4.75,
+                5.5,
+                5.8,
+                5.8
+            ],
+            "Sandro Tonali": [
+                5.5,
+                6.0,
+                5.5,
+                5.5
+            ],
+            "Mateus Mane": [],
+            "Jhon Arias": [
+                6.0,
+                6.5,
+                5.75,
+                5.75
+            ],
+            "Fabian Schar": [
+                5.5,
+                6.5,
+                7.0,
+                7.0
+            ],
+            "Tawanda Chirewa": [],
+            "Moura Bruno Guimaraes": [
+                7.0,
+                7.0,
+                5.5,
+                5.5
+            ],
+            "Lewis Miley": [
+                7.0,
+                7.5,
+                7.0,
+                7.0
+            ],
+            "Tom Edozie": [],
+            "Alex Murphy": [],
+            "Marshall Munetsi": [
+                5.5,
+                6.5,
+                8.0,
+                8.0
+            ],
+            "Harrison Ashby": [],
+            "Fernando Lopez": [
+                7.5,
+                8.5,
+                8.0,
+                8.0
+            ],
+            "Dan Burn": [
+                7.5,
+                9.0,
+                10.0,
+                10.0
+            ],
+            "Jeanricner Bellegarde": [
+                9.5,
+                11.0,
+                11.0,
+                11.0
+            ],
+            "Kieran Trippier": [
+                8.0,
+                10.0,
+                11.0,
+                11.0
+            ],
+            "Sven Botman": [
+                10.0,
+                12.0,
+                11.0,
+                11.0
+            ],
+            "Lewis Hall": [
+                8.0,
+                10.0,
+                13.0,
+                13.0
+            ],
+            "Joao Gomes": [
+                8.0,
+                10.0,
+                14.0,
+                14.0
+            ],
+            "Valentino Livramento": [
+                5.5,
+                6.0,
+                15.0,
+                15.0
+            ],
+            "Rodrigo Gomes": [
+                9.5,
+                13.0,
+                15.0,
+                15.0
+            ],
+            "Emil Krafth": [],
+            "Malick Thiaw": [
+                12.0,
+                15.0,
+                13.0,
+                13.0
+            ],
+            "Jamaal Lascelles": [],
+            "Wesley Okoduwa": [],
+            "Ki-Jana Hoever": [],
+            "Ladislav Krejci": [
+                9.5,
+                12.0,
+                19.0,
+                19.0
+            ],
+            "Matt Doherty": [
+                17.0,
+                23.0,
+                20.0,
+                20.0
+            ],
+            "Toti Gomes": [
+                17.0,
+                23.0,
+                15.0,
+                13.0
+            ],
+            "Hugo Bueno": [
+                17.0,
+                23.0,
+                21.0,
+                21.0
+            ],
+            "Yerson Mosquera": [],
+            "Pedro Lima": [],
+            "Jackson Tchatchoua": [
+                15.0,
+                19.0,
+                23.0,
+                23.0
+            ],
+            "Emmanuel Agbadou": [
+                23.0,
+                26.0,
+                16.0,
+                10.0
+            ],
+            "David Wolfe": [
+                17.0,
+                26.0,
+                26.0
+            ],
+            "Santiago Bueno": [
+                26.0,
+                34.0,
+                16.0,
+                13.0
+            ],
+            "Andre Trindade": [
+                15.0,
+                35.0,
+                35.0
+            ]
+        },
+        "Total Home Goals": {
+            "Under 5.5": [],
+            "Under 4.5": [
+                1.04,
+                1.04,
+                1.0303030303030303,
+                1.04,
+                1.02,
+                1.01,
+                1.02,
+                1.01,
+                1.02,
+                1.02
+            ],
+            "Over 0.5": [
+                1.1,
+                1.1,
+                1.1,
+                1.1,
+                1.0833333333333333,
+                1.1,
+                1.0833333333333333,
+                1.0909090909090908,
+                1.0833333333333333,
+                1.0833333333333333,
+                1.0833333333333333,
+                1.1,
+                1.0909090909090908,
+                1.1,
+                1.1,
+                1.0833333333333333,
+                1.0625
+            ],
+            "Under 3.5": [
+                1.1428571428571428,
+                1.1428571428571428,
+                1.125,
+                1.1428571428571428,
+                1.125,
+                1.1538461538461537,
+                1.1333333333333333,
+                1.125,
+                1.1333333333333333,
+                1.1333333333333333,
+                1.1538461538461537,
+                1.1333333333333333,
+                1.125,
+                1.1
+            ],
+            "Under 2.5": [
+                1.4444444444444444,
+                1.4,
+                1.4444444444444444,
+                1.4,
+                1.4444444444444444,
+                1.4761904761904763,
+                1.4444444444444444,
+                1.5,
+                1.42,
+                1.4444444444444444,
+                1.4444444444444444,
+                1.4444444444444444,
+                1.4444444444444444,
+                1.4761904761904763,
+                1.434782608695652,
+                1.4444444444444444,
+                1.4
+            ],
+            "Over 1.5": [
+                1.5333333333333334,
+                1.5333333333333334,
+                1.5333333333333334,
+                1.5333333333333334,
+                1.5333333333333334,
+                1.5,
+                1.5,
+                1.5,
+                1.5,
+                1.5333333333333334,
+                1.5333333333333334,
+                1.5,
+                1.5333333333333334,
+                1.5,
+                1.5,
+                1.5333333333333334,
+                1.5333333333333334,
+                1.5
+            ],
+            "Under 1.5": [
+                2.375,
+                2.4,
+                2.375,
+                2.4,
+                2.375,
+                2.4,
+                2.4,
+                2.4,
+                2.375,
+                2.375,
+                2.4,
+                2.375,
+                2.4,
+                2.4,
+                2.3,
+                2.375,
+                2.4
+            ],
+            "Over 2.5": [
+                2.625,
+                2.7,
+                2.625,
+                2.7,
+                2.625,
+                2.5,
+                2.6,
+                2.6,
+                2.625,
+                2.625,
+                2.6,
+                2.6,
+                2.6,
+                2.5,
+                2.625,
+                2.625,
+                2.625
+            ],
+            "Over 3.5": [
+                5.5,
+                5.5,
+                5.5,
+                5.5,
+                5.5,
+                4.8,
+                5.0,
+                5.5,
+                5.0,
+                5.0,
+                4.8,
+                5.0,
+                5.5,
+                5.5
+            ],
+            "Under 0.5": [
+                7.0,
+                6.5,
+                6.5,
+                6.5,
+                7.0,
+                6.5,
+                6.0,
+                6.5,
+                6.25,
+                7.0,
+                6.0,
+                5.75,
+                6.0,
+                6.5,
+                6.0,
+                7.0,
+                7.0
+            ],
+            "Over 4.5": [
+                13.0,
+                13.0,
+                11.0,
+                13.0,
+                11.0,
+                10.5,
+                11.0,
+                10.5,
+                10.0,
+                11.0,
+                13.0,
+                12.0
+            ],
+            "Over 5.5": [
+                29.0,
+                34.0,
+                34.0,
+                34.0
+            ]
+        },
+        "Total Away Goals": {
+            "Under 4.5": [],
+            "Under 5.5": [],
+            "Under 3.5": [
+                1.002,
+                1.002,
+                1.004,
+                1.002
+            ],
+            "Under 2.5": [
+                1.0303030303030303,
+                1.0303030303030303,
+                1.025,
+                1.0303030303030303,
+                1.01,
+                1.02,
+                1.0303030303030303,
+                1.01,
+                1.0303030303030303,
+                1.01,
+                1.02,
+                1.01
+            ],
+            "Under 1.5": [
+                1.1818181818181819,
+                1.2,
+                1.2,
+                1.2,
+                1.2,
+                1.1818181818181819,
+                1.1666666666666667,
+                1.2222222222222223,
+                1.1818181818181819,
+                1.2,
+                1.1666666666666667,
+                1.2,
+                1.2,
+                1.1818181818181819,
+                1.2,
+                1.1666666666666667,
+                1.1428571428571428
+            ],
+            "Over 0.5": [
+                1.6666666666666667,
+                1.6153846153846154,
+                1.7272727272727273,
+                1.65,
+                1.6666666666666667,
+                1.6666666666666667,
+                1.65,
+                1.7,
+                1.6153846153846154,
+                1.65,
+                1.6666666666666667,
+                1.7,
+                1.6666666666666667,
+                1.65,
+                1.6666666666666667,
+                1.6666666666666667,
+                1.6666666666666667,
+                1.6666666666666667
+            ],
+            "Under 0.5": [
+                2.1,
+                2.15,
+                2.0,
+                2.15,
+                2.1,
+                2.05,
+                2.1,
+                2.04,
+                2.1,
+                2.1,
+                2.1,
+                2.04,
+                2.1,
+                2.1,
+                2.05,
+                2.11,
+                2.1,
+                2.0
+            ],
+            "Over 1.5": [
+                4.5,
+                4.2,
+                4.333333333333333,
+                4.2,
+                4.333333333333333,
+                4.2,
+                4.4,
+                4.2,
+                4.2,
+                4.333333333333333,
+                4.4,
+                4.2,
+                4.0,
+                4.2,
+                4.2,
+                4.5,
+                4.5
+            ],
+            "Over 2.5": [
+                15.0,
+                13.0,
+                12.0,
+                13.0,
+                13.0,
+                12.0,
+                12.5,
+                12.0,
+                13.0,
+                12.5,
+                9.5,
+                11.0,
+                12.0,
+                13.0,
+                17.0,
+                15.0
+            ],
+            "Over 3.5": [
+                51.0,
+                56.0,
+                41.0,
+                56.0,
+                34.0,
+                34.0,
+                41.0,
+                34.0,
+                34.0
+            ],
+            "Over 4.5": [
+                126.0,
+                81.0,
+                126.0,
+                34.0,
+                34.0
+            ],
+            "Over 5.5": [
+                151.0,
+                151.0,
+                34.0,
+                34.0
+            ]
+        },
+        "To Score 2 Or More Goals": {
+            "Nick Woltemade": [],
+            "Yoane Wissa": [],
+            "Sean Neave": [],
+            "Anthony Elanga": [
+                10.0,
+                13.0,
+                9.0
+            ],
+            "Harvey Barnes": [
+                9.0,
+                11.0,
+                14.0
+            ],
+            "William Osula": [
+                7.5,
+                10.0,
+                15.0
+            ],
+            "Jacob Murphy": [
+                15.0,
+                17.0,
+                21.0
+            ],
+            "Seung-Soo Park": [],
+            "Toluwalase Arokodare": [],
+            "Sasa Kalajdzic": [],
+            "Jacob Ramsey": [
+                11.0,
+                15.0,
+                41.0
+            ],
+            "Jorgen Larsen": [
+                34.0,
+                41.0,
+                29.0
+            ],
+            "Joelinton": [
+                19.0,
+                34.0,
+                46.0
+            ],
+            "Joe Willock": [
+                29.0,
+                34.0,
+                46.0
+            ],
+            "Sandro Tonali": [
+                41.0,
+                51.0,
+                46.0
+            ],
+            "Jhon Arias": [
+                51.0,
+                51.0,
+                51.0
+            ],
+            "Marshall Munetsi": [],
+            "Valentino Livramento": [],
+            "Mateus Mane": [],
+            "Hee-Chan Hwang": [
+                34.0,
+                41.0,
+                56.0
+            ],
+            "Lewis Miley": [],
+            "Tawanda Chirewa": [],
+            "Moura Bruno Guimaraes": [
+                67.0,
+                67.0,
+                46.0
+            ],
+            "Fabian Schar": [
+                41.0,
+                51.0,
+                76.0
+            ],
+            "Fernando Lopez": [],
+            "Tom Edozie": [],
+            "Dan Burn": [],
+            "Lewis Hall": [],
+            "Kieran Trippier": [],
+            "Ladislav Krejci": [],
+            "Harrison Ashby": [],
+            "Alex Murphy": [],
+            "Joao Gomes": [],
+            "Jeanricner Bellegarde": [],
+            "Sven Botman": [],
+            "Andre Trindade": [],
+            "Emil Krafth": [],
+            "Wesley Okoduwa": [],
+            "Rodrigo Gomes": [],
+            "Jamaal Lascelles": [],
+            "Malick Thiaw": [],
+            "David Wolfe": [],
+            "Pedro Lima": [],
+            "Ki-Jana Hoever": [],
+            "Jackson Tchatchoua": [],
+            "Yerson Mosquera": [],
+            "Hugo Bueno": [],
+            "Matt Doherty": [],
+            "Toti Gomes": [],
+            "Emmanuel Agbadou": [],
+            "Santiago Bueno": []
+        }
+    },
+    "West Ham v Tottenham": {
+        "home_team": "West Ham",
+        "away_team": "Tottenham",
+        "home_position": 16,
+        "away_position": 4,
+        "Link": "https://www.oddschecker.com/football/english/premier-league/west-ham-v-tottenham/winner",
+        "To Score A Hat-Trick": {
+            "Randal Muani": [],
+            "Dominic Solanke": [],
+            "Richarlison": [
+                41.0,
+                51.0,
+                56.0
+            ],
+            "Jarrod Bowen": [],
+            "Xavi Simons": [],
+            "Niclas Fullkrug": [],
+            "Mathys Tel": [],
+            "Brennan Johnson": [],
+            "Mohammed Kudus": [],
+            "Callum Marshall": [],
+            "Wilson Odobert": [],
+            "Lucas Paqueta": [],
+            "Callum Wilson": [
+                67.0,
+                81.0,
+                131.0
+            ],
+            "Mateus Fernandes": [],
+            "Luis Guilherme Lira": [],
+            "Crysencio Summerville": [],
+            "Pape Matar Sarr": [],
+            "Tomas Soucek": [],
+            "Andrew Irving": [],
+            "Junai Byfield": [],
+            "de Paulo Igor": [],
+            "Soungoutou Magassa": [],
+            "Konstantinos Mavropanos": [],
+            "Freddie Potts": [],
+            "Iyenoma Udogie": [],
+            "Max Kilman": [],
+            "Pedro Porro": [],
+            "Yves Bissouma": [],
+            "Jean-Clair Todibo": [],
+            "Guido Rodriguez": [],
+            "Archie Gray": [],
+            "Djed Spence": [],
+            "Ben Davies": [],
+            "Aaron Wan-Bissaka": [],
+            "Kevin Danso": [],
+            "James Ward-Prowse": [],
+            "Oliver Scarles": [],
+            "Joao Palhinha": [],
+            "Lucas Bergvall": [],
+            "Rodrigo Bentancur": [],
+            "Cristian Romero": [],
+            "Mickey van de Ven": [],
+            "Kyle Walker-Peters": [],
+            "El Hadji Diouf": []
+        },
+        "Anytime Goalscorer": {
+            "Richarlison": [
+                2.5,
+                2.5,
+                2.75,
+                2.75
+            ],
+            "Dominic Solanke": [
+                2.5,
+                2.5,
+                2.9,
+                2.9
+            ],
+            "Randal Muani": [
+                2.75,
+                3.1,
+                3.1
+            ],
+            "Jarrod Bowen": [
+                3.0,
+                3.1,
+                3.3,
+                3.3
+            ],
+            "Brennan Johnson": [
+                3.25,
+                3.2,
+                3.6,
+                3.6
+            ],
+            "Callum Wilson": [
+                3.0,
+                3.1,
+                3.6,
+                3.6
+            ],
+            "Mohammed Kudus": [
+                3.5,
+                3.4,
+                3.6,
+                3.6
+            ],
+            "Xavi Simons": [
+                3.1,
+                3.9,
+                3.9
+            ],
+            "Niclas Fullkrug": [
+                3.0,
+                3.25,
+                4.0,
+                3.75
+            ],
+            "Mathys Tel": [
+                3.1,
+                3.3,
+                4.2,
+                4.2
+            ],
+            "Callum Marshall": [
+                3.75,
+                4.0,
+                4.3,
+                4.3
+            ],
+            "Wilson Odobert": [
+                3.75,
+                4.0,
+                4.8,
+                4.8
+            ],
+            "Lucas Paqueta": [
+                3.75,
+                4.333333333333333,
+                5.0,
+                5.0
+            ],
+            "Crysencio Summerville": [],
+            "Luis Guilherme Lira": [],
+            "Pape Matar Sarr": [
+                5.5,
+                6.0,
+                5.8,
+                5.8
+            ],
+            "Andrew Irving": [],
+            "Tomas Soucek": [
+                5.5,
+                6.5,
+                7.0,
+                7.0
+            ],
+            "Mateus Fernandes": [
+                5.5,
+                7.0,
+                7.5,
+                7.5
+            ],
+            "Lucas Bergvall": [
+                7.0,
+                7.5,
+                7.0,
+                7.0
+            ],
+            "Yves Bissouma": [],
+            "James Ward-Prowse": [
+                7.5,
+                9.0,
+                8.5,
+                8.5
+            ],
+            "Pedro Porro": [
+                8.5,
+                9.5,
+                9.5,
+                9.5
+            ],
+            "Rodrigo Bentancur": [
+                8.5,
+                9.5,
+                10.0,
+                10.0
+            ],
+            "Joao Palhinha": [
+                7.0,
+                8.5,
+                10.5,
+                10.5
+            ],
+            "Freddie Potts": [],
+            "El Hadji Diouf": [
+                9.5,
+                11.0,
+                8.5,
+                8.5
+            ],
+            "Junai Byfield": [],
+            "Cristian Romero": [
+                10.0,
+                12.0,
+                12.5,
+                12.5
+            ],
+            "Guido Rodriguez": [
+                9.5,
+                12.0,
+                13.0,
+                13.0
+            ],
+            "Kevin Danso": [
+                10.0,
+                13.0,
+                14.0,
+                14.0
+            ],
+            "Ben Davies": [
+                15.0,
+                15.0,
+                14.0,
+                14.0
+            ],
+            "Oliver Scarles": [],
+            "Mickey van de Ven": [
+                15.0,
+                17.0,
+                14.0,
+                14.0
+            ],
+            "Max Kilman": [
+                15.0,
+                17.0,
+                17.0,
+                17.0
+            ],
+            "Kyle Walker-Peters": [
+                15.0,
+                17.0,
+                18.0,
+                18.0
+            ],
+            "Djed Spence": [
+                12.0,
+                15.0,
+                18.0,
+                18.0
+            ],
+            "Iyenoma Udogie": [
+                10.0,
+                15.0,
+                20.0,
+                20.0
+            ],
+            "Jean-Clair Todibo": [
+                19.0,
+                21.0,
+                17.0,
+                17.0
+            ],
+            "Konstantinos Mavropanos": [
+                7.5,
+                9.0,
+                21.0,
+                21.0
+            ],
+            "Archie Gray": [
+                10.0,
+                15.0,
+                21.0,
+                21.0
+            ],
+            "de Paulo Igor": [
+                15.0,
+                25.0,
+                25.0
+            ],
+            "Aaron Wan-Bissaka": [
+                19.0,
+                23.0,
+                25.0,
+                25.0
+            ],
+            "Soungoutou Magassa": [
+                10.0,
+                26.0,
+                26.0
+            ]
+        },
+        "Total Home Goals": {
+            "Under 5.5": [],
+            "Under 4.5": [
+                1.002,
+                1.001,
+                1.002
+            ],
+            "Under 3.5": [
+                1.02,
+                1.02,
+                1.0151515151515151,
+                1.02,
+                1.005,
+                1.01,
+                1.005,
+                1.01
+            ],
+            "Under 2.5": [
+                1.1111111111111112,
+                1.1,
+                1.1,
+                1.1,
+                1.1,
+                1.1,
+                1.0833333333333333,
+                1.125,
+                1.0909090909090908,
+                1.1,
+                1.0833333333333333,
+                1.1111111111111112,
+                1.1,
+                1.1,
+                1.0909090909090908,
+                1.0833333333333333,
+                1.0625
+            ],
+            "Over 0.5": [
+                1.3333333333333333,
+                1.3333333333333333,
+                1.3636363636363635,
+                1.3333333333333333,
+                1.3333333333333333,
+                1.35,
+                1.3333333333333333,
+                1.3,
+                1.3333333333333333,
+                1.3333333333333333,
+                1.3333333333333333,
+                1.3333333333333333,
+                1.3,
+                1.35,
+                1.3571428571428572,
+                1.3333333333333333,
+                1.3
+            ],
+            "Under 1.5": [
+                1.4444444444444444,
+                1.4444444444444444,
+                1.4444444444444444,
+                1.4444444444444444,
+                1.4444444444444444,
+                1.4444444444444444,
+                1.4444444444444444,
+                1.44,
+                1.5,
+                1.45,
+                1.4444444444444444,
+                1.44,
+                1.4444444444444444,
+                1.475,
+                1.4444444444444444,
+                1.4545454545454546,
+                1.4444444444444444,
+                1.4
+            ],
+            "Over 1.5": [
+                2.625,
+                2.625,
+                2.625,
+                2.625,
+                2.625,
+                2.625,
+                2.55,
+                2.6,
+                2.5,
+                2.55,
+                2.625,
+                2.6,
+                2.55,
+                2.5,
+                2.625,
+                2.58,
+                2.625,
+                2.625
+            ],
+            "Under 0.5": [
+                3.25,
+                3.1,
+                3.0,
+                3.1,
+                3.2,
+                3.0,
+                3.05,
+                3.2,
+                3.1,
+                3.2,
+                3.05,
+                3.0,
+                3.2,
+                3.0,
+                3.0,
+                3.25,
+                3.1
+            ],
+            "Over 2.5": [
+                6.5,
+                6.5,
+                6.5,
+                6.5,
+                6.5,
+                6.0,
+                6.25,
+                6.0,
+                6.0,
+                6.5,
+                6.25,
+                5.75,
+                5.75,
+                6.0,
+                6.0,
+                7.0,
+                6.5
+            ],
+            "Over 3.5": [
+                19.0,
+                19.0,
+                15.0,
+                19.0,
+                17.0,
+                15.0,
+                17.0,
+                17.0,
+                17.0,
+                15.0,
+                17.0,
+                21.0,
+                21.0
+            ],
+            "Over 4.5": [
+                51.0,
+                61.0,
+                67.0,
+                61.0,
+                34.0,
+                34.0
+            ],
+            "Over 5.5": [
+                126.0,
+                126.0,
+                34.0,
+                34.0
+            ]
+        },
+        "Total Away Goals": {
+            "Under 5.5": [],
+            "Under 4.5": [
+                1.01,
+                1.01,
+                1.0066666666666666,
+                1.01,
+                1.0013333333333334,
+                1.0013333333333334
+            ],
+            "Under 3.5": [
+                1.0625,
+                1.05,
+                1.05,
+                1.05,
+                1.04,
+                1.0555555555555556,
+                1.025,
+                1.04,
+                1.025,
+                1.0303030303030303,
+                1.0555555555555556,
+                1.0303030303030303,
+                1.0303030303030303,
+                1.0303030303030303
+            ],
+            "Over 0.5": [
+                1.2,
+                1.2,
+                1.2,
+                1.2,
+                1.1666666666666667,
+                1.2,
+                1.1818181818181819,
+                1.1666666666666667,
+                1.1818181818181819,
+                1.1666666666666667,
+                1.1818181818181819,
+                1.1818181818181819,
+                1.1818181818181819,
+                1.2,
+                1.2222222222222223,
+                1.1666666666666667,
+                1.1428571428571428
+            ],
+            "Under 2.5": [
+                1.2222222222222223,
+                1.2,
+                1.2222222222222223,
+                1.2,
+                1.2222222222222223,
+                1.2222222222222223,
+                1.22,
+                1.25,
+                1.2,
+                1.2222222222222223,
+                1.22,
+                1.2222222222222223,
+                1.2222222222222223,
+                1.2222222222222223,
+                1.2,
+                1.2,
+                1.1666666666666667
+            ],
+            "Under 1.5": [
+                1.8,
+                1.75,
+                1.8,
+                1.75,
+                1.8,
+                1.8,
+                1.775,
+                1.7692307692307692,
+                1.8695652173913044,
+                1.7692307692307692,
+                1.8,
+                1.7692307692307692,
+                1.8,
+                1.8,
+                1.8,
+                1.73,
+                1.7272727272727273,
+                1.7272727272727273
+            ],
+            "Over 1.5": [
+                1.9090909090909092,
+                2.0,
+                1.9090909090909092,
+                2.0,
+                1.9090909090909092,
+                1.95,
+                1.925,
+                1.9090909090909092,
+                1.8695652173913044,
+                1.95,
+                1.9090909090909092,
+                1.9090909090909092,
+                1.9090909090909092,
+                1.9090909090909092,
+                1.95,
+                2.02,
+                2.0,
+                1.9090909090909092
+            ],
+            "Over 2.5": [
+                4.0,
+                4.2,
+                4.0,
+                4.2,
+                4.0,
+                3.9,
+                3.8,
+                3.8,
+                4.0,
+                4.0,
+                3.8,
+                3.8,
+                3.8,
+                3.9,
+                4.2,
+                4.333333333333333,
+                4.2
+            ],
+            "Under 0.5": [
+                4.333333333333333,
+                4.333333333333333,
+                4.333333333333333,
+                4.333333333333333,
+                4.5,
+                4.2,
+                4.2,
+                4.5,
+                4.2,
+                4.5,
+                4.2,
+                4.2,
+                4.333333333333333,
+                4.2,
+                4.0,
+                4.5,
+                4.5
+            ],
+            "Over 3.5": [
+                10.0,
+                11.0,
+                9.0,
+                11.0,
+                9.0,
+                8.5,
+                8.5,
+                9.0,
+                8.5,
+                9.0,
+                8.5,
+                10.0,
+                11.0,
+                10.0
+            ],
+            "Over 4.5": [
+                26.0,
+                29.0,
+                26.0,
+                29.0,
+                23.0,
+                23.0,
+                23.0,
+                23.0,
+                21.0,
+                26.0,
+                31.0
+            ],
+            "Over 5.5": [
+                81.0,
+                81.0,
+                34.0,
+                34.0
+            ]
+        },
+        "To Score 2 Or More Goals": {
+            "Richarlison": [
+                9.0,
+                10.0,
+                10.5
+            ],
+            "Dominic Solanke": [
+                9.0,
+                11.0,
+                11.5
+            ],
+            "Randal Muani": [],
+            "Jarrod Bowen": [
+                13.0,
+                15.0,
+                15.0
+            ],
+            "Niclas Fullkrug": [
+                13.0,
+                17.0,
+                12.5
+            ],
+            "Brennan Johnson": [
+                17.0,
+                17.0,
+                17.0
+            ],
+            "Mohammed Kudus": [
+                19.0,
+                19.0,
+                19.0
+            ],
+            "Callum Wilson": [
+                13.0,
+                15.0,
+                19.0
+            ],
+            "Mathys Tel": [
+                15.0,
+                19.0,
+                23.0
+            ],
+            "Xavi Simons": [],
+            "Wilson Odobert": [],
+            "Callum Marshall": [
+                21.0,
+                26.0,
+                30.0
+            ],
+            "Crysencio Summerville": [],
+            "Lucas Paqueta": [
+                21.0,
+                29.0,
+                41.0
+            ],
+            "Mateus Fernandes": [],
+            "Luis Guilherme Lira": [],
+            "Andrew Irving": [],
+            "Tomas Soucek": [],
+            "Pape Matar Sarr": [
+                41.0,
+                51.0,
+                56.0
+            ],
+            "Lucas Bergvall": [],
+            "James Ward-Prowse": [],
+            "Joao Palhinha": [],
+            "Yves Bissouma": [],
+            "Konstantinos Mavropanos": [],
+            "Pedro Porro": [],
+            "Soungoutou Magassa": [],
+            "Rodrigo Bentancur": [],
+            "El Hadji Diouf": [],
+            "Freddie Potts": [],
+            "Cristian Romero": [],
+            "Guido Rodriguez": [],
+            "Kevin Danso": [],
+            "de Paulo Igor": [],
+            "Junai Byfield": [],
+            "Iyenoma Udogie": [],
+            "Archie Gray": [],
+            "Oliver Scarles": [],
+            "Djed Spence": [],
+            "Ben Davies": [],
+            "Mickey van de Ven": [],
+            "Max Kilman": [],
+            "Kyle Walker-Peters": [],
+            "Jean-Clair Todibo": [],
+            "Aaron Wan-Bissaka": []
+        }
+    },
+    "Brentford v Chelsea": {
+        "home_team": "Brentford",
+        "away_team": "Chelsea",
+        "home_position": 15,
+        "away_position": 2,
+        "Link": "https://www.oddschecker.com/football/english/premier-league/brentford-v-chelsea/winner",
+        "To Score A Hat-Trick": {
+            "Facundo Buonanotte": [],
+            "Cole Palmer": [],
+            "Marc Guiu": [],
+            "de Jesus Joao Pedro": [
+                41.0,
+                67.0,
+                23.0
+            ],
+            "Liam Delap": [],
+            "Alejandro Garnacho": [],
+            "Igor Thiago": [],
+            "Pedro neto": [],
+            "Estevao": [],
+            "Tyrique George": [],
+            "Jamie Bynoe-Gittens": [],
+            "Dango Ouattara": [],
+            "Reiss Nelson": [],
+            "Kevin Schade": [],
+            "Andrey Santos": [],
+            "Enzo Fernandez": [],
+            "Sam Rak-Sakyi": [],
+            "Fabio Carvalho": [],
+            "Antoni Milambo": [],
+            "Michael Kayode": [],
+            "Gustavo Nunes Gomes": [],
+            "Myles Peart-Harris": [],
+            "Mikkel Damsgaard": [],
+            "Yegor Yarmolyuk": [],
+            "Romelle Donovan": [],
+            "Reece James": [],
+            "Frank Onyeka": [],
+            "Yunus Emre Konak": [],
+            "Nathan Collins": [],
+            "Malo Gusto": [],
+            "Keane Lewis-Potter": [],
+            "Sepp van den Berg": [],
+            "Trevoh Chalobah": [],
+            "Ethan Pinnock": [],
+            "Romeo Lavia": [],
+            "Tosin Adarabioyo": [],
+            "Vitaly Janelt": [],
+            "Marc Cucurella": [],
+            "Moises Caicedo": [],
+            "Kristoffer Ajer": [],
+            "Josh Acheampong": [],
+            "Benoit Badiashile": [],
+            "Wesley Fofana": [],
+            "Benjamin Arthur": [],
+            "Rico Henry": [],
+            "Jorrel Hato": [],
+            "Jordan Henderson": [],
+            "Mathias Jensen": [],
+            "Aaron Hickey": [],
+            "Dario Essugo": []
+        },
+        "Anytime Goalscorer": {
+            "Cole Palmer": [
+                2.3,
+                2.4,
+                2.55,
+                2.55
+            ],
+            "Marc Guiu": [],
+            "de Jesus Joao Pedro": [
+                2.625,
+                2.8,
+                2.2,
+                2.08
+            ],
+            "Liam Delap": [],
+            "Alejandro Garnacho": [
+                3.1,
+                3.5,
+                3.5
+            ],
+            "Estevao": [
+                3.5,
+                3.5,
+                3.5
+            ],
+            "Igor Thiago": [
+                3.25,
+                3.3,
+                3.5,
+                3.3
+            ],
+            "Jamie Bynoe-Gittens": [
+                3.6,
+                3.75,
+                4.2,
+                4.2
+            ],
+            "Pedro neto": [
+                3.1,
+                3.4,
+                4.2,
+                4.2
+            ],
+            "Facundo Buonanotte": [
+                2.625,
+                4.3,
+                4.3
+            ],
+            "Dango Ouattara": [
+                4.0,
+                4.333333333333333,
+                4.6,
+                4.6
+            ],
+            "Tyrique George": [
+                3.5,
+                3.75,
+                5.2,
+                5.2
+            ],
+            "Enzo Fernandez": [
+                4.75,
+                5.5,
+                5.75,
+                5.75
+            ],
+            "Reiss Nelson": [
+                5.5,
+                5.8,
+                5.8
+            ],
+            "Fabio Carvalho": [
+                5.5,
+                6.0,
+                5.8,
+                5.0
+            ],
+            "Kevin Schade": [
+                4.75,
+                5.0,
+                6.0,
+                6.0
+            ],
+            "Andrey Santos": [
+                4.75,
+                5.5,
+                6.0,
+                6.0
+            ],
+            "Myles Peart-Harris": [
+                6.0,
+                7.0,
+                7.0,
+                7.0
+            ],
+            "Gustavo Nunes Gomes": [],
+            "Sam Rak-Sakyi": [],
+            "Romelle Donovan": [],
+            "Antoni Milambo": [
+                5.5,
+                6.5,
+                8.5,
+                8.5
+            ],
+            "Dario Essugo": [],
+            "Romeo Lavia": [],
+            "Keane Lewis-Potter": [
+                8.5,
+                9.0,
+                8.0,
+                8.0
+            ],
+            "Mikkel Damsgaard": [
+                6.0,
+                7.5,
+                9.5,
+                9.5
+            ],
+            "Reece James": [
+                7.5,
+                9.0,
+                10.0,
+                10.0
+            ],
+            "Marc Cucurella": [
+                10.0,
+                11.0,
+                9.0,
+                9.0
+            ],
+            "Yunus Emre Konak": [],
+            "Frank Onyeka": [
+                9.5,
+                11.0,
+                10.5,
+                10.5
+            ],
+            "Yegor Yarmolyuk": [
+                5.5,
+                7.0,
+                12.0,
+                12.0
+            ],
+            "Benoit Badiashile": [],
+            "Mathias Jensen": [
+                10.0,
+                12.0,
+                12.0,
+                12.0
+            ],
+            "Jordan Henderson": [
+                10.0,
+                12.0,
+                12.5,
+                12.5
+            ],
+            "Malo Gusto": [
+                10.0,
+                13.0,
+                13.0,
+                13.0
+            ],
+            "Jorrel Hato": [
+                10.0,
+                13.0,
+                13.0,
+                13.0
+            ],
+            "Vitaly Janelt": [
+                10.0,
+                13.0,
+                14.0,
+                14.0
+            ],
+            "Wesley Fofana": [
+                10.0,
+                13.0,
+                15.0,
+                15.0
+            ],
+            "Tosin Adarabioyo": [
+                10.0,
+                13.0,
+                15.0,
+                15.0
+            ],
+            "Trevoh Chalobah": [
+                12.0,
+                15.0,
+                15.0,
+                15.0
+            ],
+            "Josh Acheampong": [
+                9.5,
+                12.0,
+                15.0,
+                15.0
+            ],
+            "Moises Caicedo": [
+                9.5,
+                12.0,
+                16.0,
+                16.0
+            ],
+            "Benjamin Arthur": [],
+            "Ethan Pinnock": [
+                15.0,
+                17.0,
+                13.0,
+                13.0
+            ],
+            "Nathan Collins": [
+                15.0,
+                17.0,
+                19.0,
+                19.0
+            ],
+            "Sepp van den Berg": [
+                19.0,
+                19.0,
+                14.0,
+                14.0
+            ],
+            "Aaron Hickey": [
+                15.0,
+                19.0,
+                21.0,
+                21.0
+            ],
+            "Rico Henry": [
+                19.0,
+                21.0,
+                17.0,
+                17.0
+            ],
+            "Michael Kayode": [
+                15.0,
+                21.0,
+                21.0
+            ],
+            "Kristoffer Ajer": [
+                19.0,
+                21.0,
+                16.0,
+                16.0
+            ]
+        },
+        "Total Home Goals": {
+            "Under 5.5": [],
+            "Under 4.5": [],
+            "Under 3.5": [
+                1.01,
+                1.01,
+                1.01,
+                1.01,
+                1.0013333333333334,
+                1.001,
+                1.0013333333333334,
+                1.001
+            ],
+            "Under 2.5": [
+                1.0714285714285714,
+                1.0625,
+                1.0714285714285714,
+                1.0625,
+                1.0625,
+                1.0625,
+                1.0555555555555556,
+                1.0833333333333333,
+                1.0625,
+                1.0555555555555556,
+                1.0625,
+                1.05,
+                1.0625,
+                1.05,
+                1.05,
+                1.04
+            ],
+            "Under 1.5": [
+                1.3333333333333333,
+                1.3,
+                1.3636363636363635,
+                1.3,
+                1.3333333333333333,
+                1.3333333333333333,
+                1.3333333333333333,
+                1.3636363636363635,
+                1.3333333333333333,
+                1.3333333333333333,
+                1.3333333333333333,
+                1.3333333333333333,
+                1.3333333333333333,
+                1.3333333333333333,
+                1.3333333333333333,
+                1.3333333333333333,
+                1.2857142857142858
+            ],
+            "Over 0.5": [
+                1.4444444444444444,
+                1.4444444444444444,
+                1.4444444444444444,
+                1.4444444444444444,
+                1.4,
+                1.4444444444444444,
+                1.4444444444444444,
+                1.42,
+                1.4,
+                1.42,
+                1.4,
+                1.42,
+                1.4444444444444444,
+                1.425,
+                1.4444444444444444,
+                1.4545454545454546,
+                1.4444444444444444,
+                1.4
+            ],
+            "Under 0.5": [
+                2.625,
+                2.6,
+                2.625,
+                2.625,
+                2.75,
+                2.6,
+                2.625,
+                2.65,
+                2.7,
+                2.65,
+                2.75,
+                2.65,
+                2.6,
+                2.625,
+                2.6,
+                2.6,
+                2.625,
+                2.6
+            ],
+            "Over 1.5": [
+                3.25,
+                3.25,
+                3.0,
+                3.25,
+                3.2,
+                3.1,
+                3.05,
+                3.0,
+                3.0,
+                3.2,
+                3.05,
+                3.0,
+                3.0,
+                3.1,
+                3.05,
+                3.25,
+                3.2
+            ],
+            "Over 2.5": [
+                9.0,
+                9.5,
+                7.5,
+                9.5,
+                8.0,
+                8.0,
+                7.5,
+                8.0,
+                8.0,
+                7.5,
+                7.0,
+                8.0,
+                8.0,
+                8.0,
+                9.0,
+                9.0
+            ],
+            "Over 3.5": [
+                26.0,
+                29.0,
+                21.0,
+                29.0,
+                23.0,
+                21.0,
+                25.0,
+                23.0,
+                25.0,
+                21.0,
+                23.0,
+                26.0,
+                31.0
+            ],
+            "Over 4.5": [
+                91.0,
+                67.0,
+                91.0,
+                34.0,
+                34.0
+            ],
+            "Over 5.5": [
+                151.0,
+                151.0,
+                34.0,
+                34.0
+            ]
+        },
+        "Total Away Goals": {
+            "Under 5.5": [
+                1.004,
+                1.001,
+                1.001
+            ],
+            "Under 4.5": [
+                1.02,
+                1.02,
+                1.0125,
+                1.02,
+                1.0066666666666666,
+                1.0066666666666666
+            ],
+            "Under 3.5": [
+                1.0833333333333333,
+                1.0833333333333333,
+                1.0714285714285714,
+                1.0833333333333333,
+                1.0833333333333333,
+                1.0833333333333333,
+                1.0714285714285714,
+                1.0833333333333333,
+                1.0714285714285714,
+                1.0833333333333333,
+                1.0833333333333333,
+                1.0714285714285714,
+                1.0714285714285714,
+                1.0555555555555556
+            ],
+            "Over 0.5": [
+                1.1428571428571428,
+                1.1538461538461537,
+                1.1428571428571428,
+                1.1538461538461537,
+                1.125,
+                1.1538461538461537,
+                1.1333333333333333,
+                1.125,
+                1.1333333333333333,
+                1.125,
+                1.1333333333333333,
+                1.1428571428571428,
+                1.1333333333333333,
+                1.1538461538461537,
+                1.1538461538461537,
+                1.125,
+                1.1
+            ],
+            "Under 2.5": [
+                1.3,
+                1.2857142857142858,
+                1.2857142857142858,
+                1.2857142857142858,
+                1.3333333333333333,
+                1.3,
+                1.32,
+                1.3333333333333333,
+                1.3,
+                1.3333333333333333,
+                1.32,
+                1.3,
+                1.3,
+                1.3,
+                1.2857142857142858,
+                1.3333333333333333,
+                1.25
+            ],
+            "Over 1.5": [
+                1.7272727272727273,
+                1.75,
+                1.7272727272727273,
+                1.75,
+                1.6666666666666667,
+                1.75,
+                1.7272727272727273,
+                1.7,
+                1.7,
+                1.7272727272727273,
+                1.6666666666666667,
+                1.7,
+                1.7272727272727273,
+                1.7272727272727273,
+                1.75,
+                1.79,
+                1.6666666666666667,
+                1.6666666666666667
+            ],
+            "Under 1.5": [
+                2.0,
+                1.95,
+                2.0,
+                2.0,
+                2.1,
+                1.95,
+                2.0,
+                2.0,
+                2.1,
+                2.0,
+                2.1,
+                2.0,
+                2.0,
+                2.0,
+                1.95,
+                1.93,
+                2.1,
+                2.0
+            ],
+            "Over 2.5": [
+                3.4,
+                3.4,
+                3.5,
+                3.4,
+                3.2,
+                3.3,
+                3.15,
+                3.25,
+                3.2,
+                3.2,
+                3.15,
+                3.1,
+                3.2,
+                3.3,
+                3.4,
+                3.25,
+                3.3
+            ],
+            "Under 0.5": [
+                5.5,
+                5.0,
+                5.0,
+                5.0,
+                5.5,
+                4.8,
+                4.8,
+                5.5,
+                5.0,
+                5.5,
+                4.8,
+                5.0,
+                5.0,
+                4.8,
+                4.75,
+                5.5,
+                5.5
+            ],
+            "Over 3.5": [
+                8.0,
+                8.0,
+                7.5,
+                8.0,
+                7.0,
+                7.0,
+                6.5,
+                7.0,
+                6.5,
+                6.5,
+                7.0,
+                7.5,
+                8.0,
+                7.5
+            ],
+            "Over 4.5": [
+                19.0,
+                21.0,
+                17.0,
+                21.0,
+                15.0,
+                15.0,
+                15.0,
+                15.0,
+                15.0,
+                21.0,
+                19.0
+            ],
+            "Over 5.5": [
+                41.0,
+                56.0,
+                56.0,
+                34.0,
+                34.0
+            ]
+        },
+        "To Score 2 Or More Goals": {
+            "Cole Palmer": [
+                7.5,
+                9.5,
+                9.0
+            ],
+            "Facundo Buonanotte": [],
+            "Marc Guiu": [],
+            "de Jesus Joao Pedro": [
+                10.0,
+                13.0,
+                5.8
+            ],
+            "Liam Delap": [],
+            "Alejandro Garnacho": [],
+            "Igor Thiago": [
+                17.0,
+                17.0,
+                15.0
+            ],
+            "Estevao": [],
+            "Tyrique George": [],
+            "Pedro neto": [
+                15.0,
+                19.0,
+                26.0
+            ],
+            "Jamie Bynoe-Gittens": [
+                21.0,
+                23.0,
+                29.0
+            ],
+            "Dango Ouattara": [
+                26.0,
+                29.0,
+                29.0
+            ],
+            "Kevin Schade": [],
+            "Andrey Santos": [],
+            "Reiss Nelson": [],
+            "Enzo Fernandez": [
+                34.0,
+                41.0,
+                51.0
+            ],
+            "Antoni Milambo": [],
+            "Mikkel Damsgaard": [],
+            "Myles Peart-Harris": [],
+            "Gustavo Nunes Gomes": [],
+            "Yegor Yarmolyuk": [],
+            "Fabio Carvalho": [
+                41.0,
+                51.0,
+                71.0
+            ],
+            "Romelle Donovan": [],
+            "Sam Rak-Sakyi": [],
+            "Dario Essugo": [],
+            "Romeo Lavia": [],
+            "Reece James": [],
+            "Frank Onyeka": [],
+            "Keane Lewis-Potter": [],
+            "Marc Cucurella": [],
+            "Yunus Emre Konak": [],
+            "Josh Acheampong": [],
+            "Jordan Henderson": [],
+            "Moises Caicedo": [],
+            "Mathias Jensen": [],
+            "Benoit Badiashile": [],
+            "Vitaly Janelt": [],
+            "Malo Gusto": [],
+            "Wesley Fofana": [],
+            "Jorrel Hato": [],
+            "Tosin Adarabioyo": [],
+            "Michael Kayode": [],
+            "Trevoh Chalobah": [],
+            "Ethan Pinnock": [],
+            "Benjamin Arthur": [],
+            "Nathan Collins": [],
+            "Sepp van den Berg": [],
+            "Aaron Hickey": [],
+            "Rico Henry": [],
+            "Kristoffer Ajer": []
+        }
+    },
+    "Burnley v Liverpool": {
+        "home_team": "Burnley",
+        "away_team": "Liverpool",
+        "home_position": 14,
+        "away_position": 1,
+        "Link": "https://www.oddschecker.com/football/english/premier-league/burnley-v-liverpool/winner",
+        "To Score A Hat-Trick": {
+            "Mohamed Salah": [
+                19.0,
+                29.0,
+                30.0
+            ],
+            "Alexander Isak": [],
+            "Hugo Ekitike": [
+                26.0,
+                34.0,
+                41.0
+            ],
+            "Cody Gakpo": [],
+            "Rio Ngumoha": [],
+            "Florian Wirtz": [],
+            "Federico Chiesa": [
+                101.0,
+                91.0,
+                131.0
+            ],
+            "Mike Tresor": [],
+            "Curtis Jones": [],
+            "Dominik Szoboszlai": [],
+            "Jacob Bruun Larsen": [],
+            "Manuel Benson": [],
+            "Armando Broja": [],
+            "Lyle Foster": [],
+            "Trey Nyoni": [],
+            "Zian Flemming": [],
+            "Jeremie Frimpong": [],
+            "Oliver Pimlott": [],
+            "Tom Tweedy": [],
+            "Marley Leuluai": [],
+            "Marcus Edwards": [],
+            "Jaidon Anthony": [],
+            "Alexis Mac Allister": [],
+            "Jaydon Banel": [],
+            "Lesley Ugochukwu": [],
+            "Maxime Esteve": [],
+            "Josh Laurent": [],
+            "Joe Worrall": [],
+            "Milos Kerkez": [],
+            "Connor Roberts": [],
+            "Ashley Barnes": [],
+            "Oliver Sonne": [],
+            "Bashir Humphreys": [],
+            "Ryan Gravenberch": [],
+            "Josh Cullen": [],
+            "Conor Bradley": [],
+            "Virgil van Dijk": [],
+            "Kyle Walker": [],
+            "Hannes Delcroix": [],
+            "Wataru Endo": [],
+            "Lucas Pires": [],
+            "Joe Gomez": [],
+            "Hjalmar Ekdal": [],
+            "Quilindschy Hartman": [],
+            "Axel Tuanzebe": [],
+            "Loum Tchaouna": [],
+            "Giovanni Leoni": [],
+            "Hannibal Mejbri": [],
+            "Ibrahima Konate": [],
+            "Jordan Beyer": [],
+            "Andrew Robertson": []
+        },
+        "Anytime Goalscorer": {
+            "Mohamed Salah": [
+                1.9523809523809523,
+                2.05,
+                2.25,
+                2.25
+            ],
+            "Alexander Isak": [
+                2.05,
+                2.3,
+                2.3
+            ],
+            "Hugo Ekitike": [
+                2.2,
+                2.25,
+                2.55,
+                2.45
+            ],
+            "Cody Gakpo": [
+                2.875,
+                2.8,
+                3.15,
+                3.15
+            ],
+            "Florian Wirtz": [
+                3.25,
+                3.2,
+                3.35,
+                3.35
+            ],
+            "Rio Ngumoha": [
+                2.875,
+                2.875,
+                3.4,
+                3.4
+            ],
+            "Federico Chiesa": [
+                3.25,
+                3.25,
+                3.5,
+                3.5
+            ],
+            "Dominik Szoboszlai": [
+                5.0,
+                5.5,
+                5.0,
+                5.0
+            ],
+            "Armando Broja": [
+                5.0,
+                6.0,
+                5.5,
+                5.5
+            ],
+            "Jeremie Frimpong": [
+                6.0,
+                6.0,
+                5.75,
+                5.75
+            ],
+            "Mike Tresor": [],
+            "Trey Nyoni": [],
+            "Alexis Mac Allister": [
+                6.0,
+                6.5,
+                6.5,
+                6.5
+            ],
+            "Zian Flemming": [
+                6.0,
+                6.5,
+                5.6,
+                5.6
+            ],
+            "Curtis Jones": [
+                4.5,
+                5.0,
+                6.75,
+                6.75
+            ],
+            "Lyle Foster": [
+                5.0,
+                6.0,
+                6.75,
+                5.75
+            ],
+            "Manuel Benson": [],
+            "Jaidon Anthony": [
+                6.5,
+                7.0,
+                5.5,
+                5.5
+            ],
+            "Jacob Bruun Larsen": [
+                4.5,
+                5.5,
+                7.5,
+                7.5
+            ],
+            "Marcus Edwards": [
+                6.0,
+                7.0,
+                8.0,
+                8.0
+            ],
+            "Ashley Barnes": [],
+            "Loum Tchaouna": [
+                8.0,
+                9.0,
+                9.5,
+                9.5
+            ],
+            "Ryan Gravenberch": [
+                6.5,
+                8.0,
+                9.5,
+                9.5
+            ],
+            "Jaydon Banel": [],
+            "Conor Bradley": [
+                7.0,
+                8.0,
+                9.5,
+                9.5
+            ],
+            "Milos Kerkez": [
+                9.0,
+                10.0,
+                10.0,
+                10.0
+            ],
+            "Joe Gomez": [],
+            "Virgil van Dijk": [
+                9.0,
+                10.0,
+                10.0,
+                10.0
+            ],
+            "Oliver Pimlott": [],
+            "Marley Leuluai": [],
+            "Tom Tweedy": [],
+            "Hannibal Mejbri": [
+                9.0,
+                11.0,
+                13.0,
+                13.0
+            ],
+            "Wataru Endo": [
+                6.0,
+                7.5,
+                13.0,
+                13.0
+            ],
+            "Josh Laurent": [
+                10.0,
+                13.0,
+                13.0,
+                13.0
+            ],
+            "Giovanni Leoni": [
+                7.0,
+                9.0,
+                14.0,
+                14.0
+            ],
+            "Ibrahima Konate": [
+                9.0,
+                12.0,
+                18.0,
+                18.0
+            ],
+            "Andrew Robertson": [
+                7.0,
+                8.0,
+                20.0,
+                20.0
+            ],
+            "Lesley Ugochukwu": [
+                17.0,
+                21.0,
+                20.0,
+                20.0
+            ],
+            "Oliver Sonne": [
+                17.0,
+                21.0,
+                16.0,
+                16.0
+            ],
+            "Quilindschy Hartman": [
+                17.0,
+                21.0,
+                16.0,
+                16.0
+            ],
+            "Jordan Beyer": [],
+            "Hjalmar Ekdal": [
+                21.0,
+                23.0,
+                15.0,
+                15.0
+            ],
+            "Josh Cullen": [
+                13.0,
+                19.0,
+                26.0,
+                26.0
+            ],
+            "Maxime Esteve": [
+                17.0,
+                26.0,
+                29.0,
+                29.0
+            ],
+            "Lucas Pires": [
+                11.0,
+                15.0,
+                34.0,
+                34.0
+            ],
+            "Bashir Humphreys": [
+                21.0,
+                34.0,
+                34.0,
+                34.0
+            ],
+            "Kyle Walker": [
+                26.0,
+                34.0,
+                30.0,
+                30.0
+            ],
+            "Joe Worrall": [
+                26.0,
+                34.0,
+                29.0,
+                29.0
+            ],
+            "Connor Roberts": [
+                21.0,
+                34.0,
+                34.0,
+                34.0
+            ],
+            "Axel Tuanzebe": [
+                26.0,
+                34.0,
+                25.0,
+                25.0
+            ],
+            "Hannes Delcroix": []
+        },
+        "Total Home Goals": {
+            "Under 5.5": [],
+            "Under 4.5": [],
+            "Under 3.5": [
+                1.002,
+                1.00001,
+                1.002
+            ],
+            "Under 2.5": [
+                1.025,
+                1.025,
+                1.02,
+                1.025,
+                1.0066666666666666,
+                1.0151515151515151,
+                1.0151515151515151,
+                1.0066666666666666,
+                1.02,
+                1.0151515151515151
+            ],
+            "Under 1.5": [
+                1.1666666666666667,
+                1.1666666666666667,
+                1.1666666666666667,
+                1.1666666666666667,
+                1.1428571428571428,
+                1.1666666666666667,
+                1.1538461538461537,
+                1.1666666666666667,
+                1.1538461538461537,
+                1.1428571428571428,
+                1.1538461538461537,
+                1.1666666666666667,
+                1.1538461538461537,
+                1.1666666666666667,
+                1.1538461538461537,
+                1.1428571428571428,
+                1.125
+            ],
+            "Over 0.5": [
+                1.7272727272727273,
+                1.75,
+                1.8,
+                1.75,
+                1.7272727272727273,
+                1.75,
+                1.75,
+                1.75,
+                1.75,
+                1.7272727272727273,
+                1.7272727272727273,
+                1.75,
+                1.75,
+                1.75,
+                1.75,
+                1.79,
+                1.7272727272727273,
+                1.6666666666666667
+            ],
+            "Under 0.5": [
+                2.0,
+                2.0,
+                1.9090909090909092,
+                2.0,
+                2.0,
+                1.95,
+                1.9523809523809523,
+                1.98,
+                1.9523809523809523,
+                2.0,
+                2.0,
+                1.98,
+                2.0,
+                1.95,
+                1.95,
+                1.93,
+                2.0,
+                2.0
+            ],
+            "Over 1.5": [
+                5.0,
+                4.8,
+                4.5,
+                4.8,
+                5.0,
+                4.8,
+                4.6,
+                4.75,
+                4.75,
+                5.0,
+                4.6,
+                4.5,
+                4.75,
+                4.8,
+                4.75,
+                5.0,
+                4.5
+            ],
+            "Over 2.5": [
+                17.0,
+                19.0,
+                13.0,
+                19.0,
+                15.0,
+                15.0,
+                15.0,
+                15.0,
+                15.0,
+                15.0,
+                10.0,
+                15.0,
+                15.0,
+                17.0,
+                17.0
+            ],
+            "Over 3.5": [
+                51.0,
+                71.0,
+                67.0,
+                71.0,
+                34.0,
+                34.0,
+                51.0,
+                34.0,
+                34.0
+            ],
+            "Over 4.5": [
+                151.0,
+                81.0,
+                151.0,
+                34.0,
+                34.0
+            ],
+            "Over 5.5": [
+                151.0,
+                151.0,
+                34.0,
+                34.0
+            ]
+        },
+        "Total Away Goals": {
+            "Under 6.5": [],
+            "Under 5.5": [
+                1.0151515151515151,
+                1.0151515151515151,
+                1.01
+            ],
+            "Over 0.5": [
+                1.0714285714285714,
+                1.0714285714285714,
+                1.05,
+                1.0625,
+                1.05,
+                1.0555555555555556,
+                1.05,
+                1.0555555555555556,
+                1.05,
+                1.0625,
+                1.05,
+                1.04
+            ],
+            "Under 4.5": [
+                1.0714285714285714,
+                1.0625,
+                1.0625,
+                1.0625,
+                1.0625,
+                1.0625,
+                1.0555555555555556,
+                1.0625,
+                1.0555555555555556,
+                1.05,
+                1.0625,
+                1.0625,
+                1.05,
+                1.04
+            ],
+            "Under 3.5": [
+                1.2222222222222223,
+                1.2,
+                1.2222222222222223,
+                1.2,
+                1.2222222222222223,
+                1.2,
+                1.2,
+                1.2222222222222223,
+                1.2,
+                1.2222222222222223,
+                1.2,
+                1.2222222222222223,
+                1.2222222222222223,
+                1.2,
+                1.1818181818181819,
+                1.2,
+                1.1666666666666667
+            ],
+            "Over 1.5": [
+                1.4,
+                1.4,
+                1.3636363636363635,
+                1.4,
+                1.3636363636363635,
+                1.4,
+                1.3636363636363635,
+                1.3636363636363635,
+                1.38,
+                1.3636363636363635,
+                1.3636363636363635,
+                1.3636363636363635,
+                1.3636363636363635,
+                1.4,
+                1.4166666666666667,
+                1.3636363636363635,
+                1.3333333333333333
+            ],
+            "Under 2.5": [
+                1.6153846153846154,
+                1.6,
+                1.6153846153846154,
+                1.6,
+                1.6153846153846154,
+                1.6,
+                1.6153846153846154,
+                1.6153846153846154,
+                1.6666666666666667,
+                1.6153846153846154,
+                1.6153846153846154,
+                1.6153846153846154,
+                1.6153846153846154,
+                1.6153846153846154,
+                1.6,
+                1.56,
+                1.5714285714285714,
+                1.5714285714285714
+            ],
+            "Over 2.5": [
+                2.2,
+                2.25,
+                2.2,
+                2.25,
+                2.2,
+                2.2,
+                2.15,
+                2.15,
+                2.15,
+                2.15,
+                2.2,
+                2.15,
+                2.15,
+                2.2,
+                2.2,
+                2.27,
+                2.25,
+                2.2
+            ],
+            "Under 1.5": [
+                2.75,
+                2.8,
+                3.0,
+                2.8,
+                3.0,
+                2.75,
+                2.8,
+                2.9,
+                2.8,
+                3.0,
+                2.8,
+                2.8,
+                2.875,
+                2.75,
+                2.68,
+                3.0,
+                2.875
+            ],
+            "Over 3.5": [
+                4.0,
+                4.2,
+                4.0,
+                4.2,
+                4.0,
+                4.0,
+                3.9,
+                4.2,
+                4.0,
+                4.0,
+                3.9,
+                3.9,
+                3.8,
+                4.0,
+                4.333333333333333,
+                4.333333333333333,
+                4.2
+            ],
+            "Under 0.5": [
+                9.0,
+                8.5,
+                9.0,
+                8.5,
+                8.5,
+                7.5,
+                8.5,
+                7.5,
+                8.0,
+                7.5,
+                9.0,
+                9.0
+            ],
+            "Over 4.5": [
+                9.0,
+                9.0,
+                8.0,
+                9.0,
+                8.0,
+                8.0,
+                7.5,
+                8.0,
+                7.5,
+                8.0,
+                8.0,
+                8.0,
+                9.0,
+                9.0
+            ],
+            "Over 5.5": [
+                21.0,
+                21.0,
+                21.0,
+                17.0,
+                17.0,
+                19.0,
+                21.0,
+                21.0
+            ],
+            "Over 6.5": []
+        },
+        "To Score 2 Or More Goals": {
+            "Mohamed Salah": [
+                5.5,
+                7.0,
+                7.0
+            ],
+            "Alexander Isak": [],
+            "Hugo Ekitike": [
+                7.0,
+                8.5,
+                7.0
+            ],
+            "Cody Gakpo": [
+                12.0,
+                13.0,
+                14.0
+            ],
+            "Rio Ngumoha": [
+                12.0,
+                13.0,
+                16.0
+            ],
+            "Florian Wirtz": [
+                17.0,
+                17.0,
+                15.0
+            ],
+            "Federico Chiesa": [
+                17.0,
+                17.0,
+                17.0
+            ],
+            "Dominik Szoboszlai": [
+                41.0,
+                41.0,
+                41.0
+            ],
+            "Jacob Bruun Larsen": [],
+            "Curtis Jones": [],
+            "Trey Nyoni": [],
+            "Armando Broja": [
+                41.0,
+                51.0,
+                51.0
+            ],
+            "Alexis Mac Allister": [],
+            "Zian Flemming": [
+                51.0,
+                51.0,
+                51.0
+            ],
+            "Mike Tresor": [],
+            "Jeremie Frimpong": [
+                51.0,
+                51.0,
+                46.0
+            ],
+            "Wataru Endo": [],
+            "Marcus Edwards": [],
+            "Jaidon Anthony": [
+                51.0,
+                67.0,
+                46.0
+            ],
+            "Ryan Gravenberch": [],
+            "Ashley Barnes": [],
+            "Lyle Foster": [
+                41.0,
+                51.0,
+                76.0
+            ],
+            "Andrew Robertson": [],
+            "Conor Bradley": [],
+            "Manuel Benson": [],
+            "Loum Tchaouna": [],
+            "Giovanni Leoni": [],
+            "Jaydon Banel": [],
+            "Oliver Pimlott": [],
+            "Tom Tweedy": [],
+            "Milos Kerkez": [],
+            "Marley Leuluai": [],
+            "Joe Gomez": [],
+            "Virgil van Dijk": [],
+            "Hannibal Mejbri": [],
+            "Ibrahima Konate": [],
+            "Josh Laurent": [],
+            "Lucas Pires": [],
+            "Josh Cullen": [],
+            "Quilindschy Hartman": [],
+            "Oliver Sonne": [],
+            "Lesley Ugochukwu": [],
+            "Jordan Beyer": [],
+            "Hjalmar Ekdal": [],
+            "Maxime Esteve": [],
+            "Kyle Walker": [],
+            "Hannes Delcroix": [],
+            "Bashir Humphreys": [],
+            "Joe Worrall": [],
+            "Axel Tuanzebe": [],
+            "Connor Roberts": []
+        }
+    },
+    "Man City v Man Utd": {
+        "home_team": "Man City",
+        "away_team": "Man Utd",
+        "home_position": 13,
+        "away_position": 9,
+        "Link": "https://www.oddschecker.com/football/english/premier-league/man-city-v-man-utd/winner",
+        "To Score A Hat-Trick": {
+            "Erling Haaland": [
+                13.0,
+                19.0,
+                10.0
+            ],
+            "Omar Marmoush": [],
+            "Phil Foden": [],
+            "Benjamin Sesko": [
+                67.0,
+                81.0,
+                91.0
+            ],
+            "Chidozie Obi-Martin": [],
+            "Rayan Cherki": [],
+            "Bryan Mbeumo": [],
+            "Oscar Bobb": [],
+            "Bruno Fernandes": [],
+            "Amad Diallo": [],
+            "Tijjani Reijnders": [],
+            "Jeremy Doku": [],
+            "Joshua Zirkzee": [],
+            "Santos Matheus Cunha": [],
+            "de Oliveira Savio": [],
+            "Bernardo Silva": [],
+            "Rodri": [],
+            "Jack Fletcher": [],
+            "Noussair Mazraoui": [],
+            "Tyler Fredricson": [],
+            "Leny Yoro": [],
+            "Patrick Dorgu": [],
+            "Diogo Dalot": [],
+            "Josko Gvardiol": [],
+            "Mason Mount": [],
+            "Nico OReilly": [],
+            "Ruben Dias": [],
+            "Diego Leon": [],
+            "Nico Gonzalez": [],
+            "Rico Lewis": [],
+            "John Stones": [],
+            "Rayan Ait Nouri": [],
+            "Nathan Ake": [],
+            "Harry Maguire": [],
+            "Manuel Ugarte": [],
+            "Ayden Heaven": [],
+            "Kobbie Mainoo": [],
+            "Luke Shaw": [],
+            "Nunes Matheus Luiz": [],
+            "Mateo Kovacic": [],
+            "Abduqodir Khusanov": [],
+            "Casemiro": [],
+            "Matthijs de Ligt": []
+        },
+        "Anytime Goalscorer": {
+            "Erling Haaland": [
+                1.7272727272727273,
+                1.8,
+                1.88,
+                1.88
+            ],
+            "Benjamin Sesko": [
+                3.0,
+                3.0,
+                3.25,
+                3.0
+            ],
+            "Omar Marmoush": [
+                2.625,
+                2.8,
+                3.45,
+                3.45
+            ],
+            "Rayan Cherki": [],
+            "Chidozie Obi-Martin": [],
+            "Bruno Fernandes": [
+                4.0,
+                4.0,
+                4.0,
+                4.0
+            ],
+            "Bryan Mbeumo": [
+                4.0,
+                4.0,
+                3.7,
+                3.7
+            ],
+            "Phil Foden": [
+                3.0,
+                3.2,
+                4.0,
+                4.0
+            ],
+            "Santos Matheus Cunha": [],
+            "Joshua Zirkzee": [],
+            "Oscar Bobb": [
+                3.6,
+                3.75,
+                4.4,
+                4.4
+            ],
+            "Tijjani Reijnders": [
+                4.5,
+                4.5,
+                4.0,
+                4.0
+            ],
+            "Jeremy Doku": [
+                4.333333333333333,
+                4.333333333333333,
+                4.5,
+                4.5
+            ],
+            "de Oliveira Savio": [
+                4.333333333333333,
+                4.5,
+                4.8,
+                4.8
+            ],
+            "Amad Diallo": [
+                4.0,
+                4.333333333333333,
+                5.2,
+                5.2
+            ],
+            "Rodri": [
+                5.0,
+                5.5,
+                5.2,
+                5.2
+            ],
+            "Bernardo Silva": [
+                4.5,
+                5.0,
+                6.0,
+                6.0
+            ],
+            "Jack Fletcher": [],
+            "Mason Mount": [],
+            "Mateo Kovacic": [],
+            "Rayan Ait Nouri": [
+                8.5,
+                9.0,
+                7.5,
+                7.5
+            ],
+            "Kobbie Mainoo": [
+                7.0,
+                8.5,
+                9.0,
+                9.0
+            ],
+            "Nico OReilly": [
+                7.0,
+                8.0,
+                9.0,
+                9.0
+            ],
+            "Josko Gvardiol": [
+                7.0,
+                8.5,
+                10.0,
+                10.0
+            ],
+            "Nunes Matheus Luiz": [
+                7.0,
+                8.5,
+                10.0,
+                10.0
+            ],
+            "Casemiro": [
+                9.5,
+                11.0,
+                9.0,
+                9.0
+            ],
+            "Patrick Dorgu": [
+                9.5,
+                11.0,
+                10.5,
+                10.5
+            ],
+            "Nico Gonzalez": [
+                7.0,
+                10.0,
+                11.5,
+                11.5
+            ],
+            "Diego Leon": [],
+            "Rico Lewis": [
+                11.0,
+                13.0,
+                13.0,
+                13.0
+            ],
+            "Ruben Dias": [
+                11.0,
+                13.0,
+                13.0,
+                13.0
+            ],
+            "Nathan Ake": [
+                11.0,
+                13.0,
+                14.0,
+                14.0
+            ],
+            "John Stones": [
+                11.0,
+                13.0,
+                14.0,
+                14.0
+            ],
+            "Matthijs de Ligt": [
+                13.0,
+                15.0,
+                13.0,
+                13.0
+            ],
+            "Diogo Dalot": [
+                13.0,
+                15.0,
+                13.0,
+                13.0
+            ],
+            "Harry Maguire": [
+                13.0,
+                15.0,
+                14.0,
+                14.0
+            ],
+            "Abduqodir Khusanov": [
+                11.0,
+                15.0,
+                18.0,
+                18.0
+            ],
+            "Ayden Heaven": [
+                17.0,
+                19.0,
+                15.0,
+                15.0
+            ],
+            "Luke Shaw": [
+                17.0,
+                21.0,
+                18.0,
+                18.0
+            ],
+            "Noussair Mazraoui": [
+                17.0,
+                21.0,
+                19.0,
+                19.0
+            ],
+            "Manuel Ugarte": [
+                11.0,
+                15.0,
+                21.0,
+                21.0
+            ],
+            "Tyler Fredricson": [
+                17.0,
+                21.0,
+                21.0,
+                21.0
+            ],
+            "Leny Yoro": [
+                13.0,
+                19.0,
+                26.0,
+                26.0
+            ]
+        },
+        "Total Home Goals": {
+            "Under 5.5": [
+                1.005,
+                1.005,
+                1.005
+            ],
+            "Under 4.5": [
+                1.0303030303030303,
+                1.0303030303030303,
+                1.02,
+                1.0303030303030303,
+                1.01,
+                1.01,
+                1.004,
+                1.01
+            ],
+            "Over 0.5": [
+                1.1111111111111112,
+                1.1111111111111112,
+                1.1111111111111112,
+                1.1111111111111112,
+                1.1111111111111112,
+                1.1111111111111112,
+                1.1,
+                1.1,
+                1.1,
+                1.1111111111111112,
+                1.1,
+                1.1111111111111112,
+                1.1111111111111112,
+                1.1111111111111112,
+                1.125,
+                1.1,
+                1.0833333333333333
+            ],
+            "Under 3.5": [
+                1.125,
+                1.1111111111111112,
+                1.1111111111111112,
+                1.1111111111111112,
+                1.1111111111111112,
+                1.1333333333333333,
+                1.1111111111111112,
+                1.1111111111111112,
+                1.1111111111111112,
+                1.1,
+                1.1333333333333333,
+                1.1,
+                1.1,
+                1.0833333333333333
+            ],
+            "Under 2.5": [
+                1.4,
+                1.3636363636363635,
+                1.3636363636363635,
+                1.3636363636363635,
+                1.4,
+                1.4,
+                1.3636363636363635,
+                1.4444444444444444,
+                1.38,
+                1.4,
+                1.3636363636363635,
+                1.4,
+                1.375,
+                1.4,
+                1.3571428571428572,
+                1.3636363636363635,
+                1.3333333333333333
+            ],
+            "Over 1.5": [
+                1.5714285714285714,
+                1.6153846153846154,
+                1.5714285714285714,
+                1.6153846153846154,
+                1.5714285714285714,
+                1.5714285714285714,
+                1.6,
+                1.5714285714285714,
+                1.5714285714285714,
+                1.6,
+                1.5714285714285714,
+                1.5714285714285714,
+                1.5714285714285714,
+                1.5714285714285714,
+                1.5714285714285714,
+                1.625,
+                1.5714285714285714,
+                1.5714285714285714
+            ],
+            "Under 1.5": [
+                2.25,
+                2.25,
+                2.25,
+                2.25,
+                2.25,
+                2.25,
+                2.2,
+                2.25,
+                2.3,
+                2.2,
+                2.25,
+                2.25,
+                2.2,
+                2.25,
+                2.25,
+                2.16,
+                2.25,
+                2.2
+            ],
+            "Over 2.5": [
+                2.75,
+                2.9,
+                3.0,
+                2.9,
+                2.75,
+                2.75,
+                2.8,
+                2.8,
+                2.8,
+                2.75,
+                2.8,
+                2.75,
+                2.8,
+                2.75,
+                2.9,
+                3.0,
+                2.875
+            ],
+            "Under 0.5": [
+                6.5,
+                6.0,
+                6.0,
+                6.0,
+                6.0,
+                5.75,
+                5.6,
+                6.0,
+                5.75,
+                6.0,
+                5.6,
+                5.5,
+                5.5,
+                5.75,
+                5.5,
+                6.5,
+                6.0
+            ],
+            "Over 3.5": [
+                6.0,
+                6.0,
+                6.0,
+                6.0,
+                6.0,
+                5.5,
+                5.5,
+                6.0,
+                5.5,
+                5.75,
+                5.5,
+                6.0,
+                6.5,
+                6.0
+            ],
+            "Over 4.5": [
+                15.0,
+                15.0,
+                13.0,
+                15.0,
+                13.0,
+                12.0,
+                13.0,
+                12.0,
+                12.0,
+                12.0,
+                17.0,
+                15.0
+            ],
+            "Over 5.5": [
+                34.0,
+                41.0,
+                41.0,
+                34.0,
+                34.0
+            ]
+        },
+        "Total Away Goals": {
+            "Under 5.5": [],
+            "Under 4.5": [],
+            "Under 3.5": [
+                1.0151515151515151,
+                1.0151515151515151,
+                1.0125,
+                1.01,
+                1.0033333333333334,
+                1.005,
+                1.0033333333333334,
+                1.005
+            ],
+            "Under 2.5": [
+                1.0833333333333333,
+                1.0833333333333333,
+                1.0833333333333333,
+                1.0833333333333333,
+                1.0714285714285714,
+                1.0833333333333333,
+                1.0714285714285714,
+                1.0909090909090908,
+                1.0714285714285714,
+                1.0714285714285714,
+                1.0714285714285714,
+                1.0833333333333333,
+                1.0833333333333333,
+                1.0833333333333333,
+                1.0714285714285714,
+                1.0714285714285714,
+                1.0555555555555556
+            ],
+            "Over 0.5": [
+                1.4,
+                1.3636363636363635,
+                1.4,
+                1.3636363636363635,
+                1.3636363636363635,
+                1.4,
+                1.3636363636363635,
+                1.3636363636363635,
+                1.3636363636363635,
+                1.3636363636363635,
+                1.3636363636363635,
+                1.3636363636363635,
+                1.3636363636363635,
+                1.4,
+                1.3846153846153846,
+                1.3636363636363635,
+                1.3333333333333333
+            ],
+            "Under 1.5": [
+                1.4,
+                1.4,
+                1.4,
+                1.4,
+                1.4,
+                1.4,
+                1.3636363636363635,
+                1.3636363636363635,
+                1.4444444444444444,
+                1.4,
+                1.4,
+                1.3636363636363635,
+                1.4,
+                1.4,
+                1.4,
+                1.3846153846153846,
+                1.3636363636363635,
+                1.3636363636363635
+            ],
+            "Under 0.5": [
+                2.75,
+                2.9,
+                2.75,
+                2.9,
+                3.0,
+                2.8,
+                2.8,
+                2.875,
+                2.875,
+                3.0,
+                2.8,
+                2.8,
+                2.875,
+                2.8,
+                2.76,
+                3.0,
+                2.875
+            ],
+            "Over 1.5": [
+                2.75,
+                2.8,
+                2.75,
+                2.8,
+                2.75,
+                2.8,
+                2.875,
+                2.8,
+                2.8,
+                2.75,
+                2.75,
+                2.8,
+                2.75,
+                2.7,
+                2.8,
+                2.8,
+                2.8
+            ],
+            "Over 2.5": [
+                8.0,
+                7.5,
+                7.0,
+                7.5,
+                7.5,
+                7.0,
+                6.5,
+                7.0,
+                7.0,
+                7.5,
+                6.5,
+                6.5,
+                6.5,
+                7.0,
+                7.0,
+                8.0,
+                7.5
+            ],
+            "Over 3.5": [
+                21.0,
+                23.0,
+                17.0,
+                23.0,
+                21.0,
+                17.0,
+                18.0,
+                21.0,
+                18.0,
+                17.0,
+                21.0,
+                21.0,
+                23.0
+            ],
+            "Over 4.5": [
+                71.0,
+                67.0,
+                71.0,
+                34.0,
+                34.0
+            ],
+            "Over 5.5": [
+                151.0,
+                151.0,
+                34.0,
+                34.0
+            ]
+        },
+        "To Score 2 Or More Goals": {
+            "Erling Haaland": [
+                4.0,
+                5.0,
+                5.0
+            ],
+            "Benjamin Sesko": [
+                13.0,
+                15.0,
+                11.0
+            ],
+            "Omar Marmoush": [
+                10.0,
+                13.0,
+                17.0
+            ],
+            "Rayan Cherki": [],
+            "Bryan Mbeumo": [
+                23.0,
+                23.0,
+                20.0
+            ],
+            "Oscar Bobb": [
+                19.0,
+                23.0,
+                13.0
+            ],
+            "Chidozie Obi-Martin": [],
+            "Phil Foden": [
+                13.0,
+                17.0,
+                23.0
+            ],
+            "Bruno Fernandes": [
+                23.0,
+                26.0,
+                21.0
+            ],
+            "Joshua Zirkzee": [],
+            "Jeremy Doku": [
+                26.0,
+                29.0,
+                29.0
+            ],
+            "Tijjani Reijnders": [
+                29.0,
+                29.0,
+                23.0
+            ],
+            "Santos Matheus Cunha": [],
+            "de Oliveira Savio": [
+                26.0,
+                34.0,
+                41.0
+            ],
+            "Amad Diallo": [
+                23.0,
+                29.0,
+                46.0
+            ],
+            "Rodri": [
+                41.0,
+                41.0,
+                46.0
+            ],
+            "Bernardo Silva": [
+                29.0,
+                41.0,
+                67.0
+            ],
+            "Mateo Kovacic": [],
+            "Mason Mount": [],
+            "Josko Gvardiol": [],
+            "Kobbie Mainoo": [],
+            "Nunes Matheus Luiz": [],
+            "Nico OReilly": [],
+            "Jack Fletcher": [],
+            "Nico Gonzalez": [],
+            "Casemiro": [],
+            "Rayan Ait Nouri": [],
+            "Patrick Dorgu": [],
+            "Diego Leon": [],
+            "Nathan Ake": [],
+            "Rico Lewis": [],
+            "Ruben Dias": [],
+            "John Stones": [],
+            "Matthijs de Ligt": [],
+            "Abduqodir Khusanov": [],
+            "Manuel Ugarte": [],
+            "Diogo Dalot": [],
+            "Harry Maguire": [],
+            "Leny Yoro": [],
+            "Ayden Heaven": [],
+            "Noussair Mazraoui": [],
+            "Luke Shaw": [],
+            "Tyler Fredricson": []
+        }
+    }
+}
