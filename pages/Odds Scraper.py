@@ -454,6 +454,7 @@ def scrape_all_matches(match_dict, driver):
     
     st.session_state.scrape_time = round(elapsed / 60, 2)
     st.session_state.scraping_done = True
+    st.session_state.scraped_data = match_dict
 
     return match_dict
 
