@@ -1645,6 +1645,8 @@ def calc_points(player_dict: dict, saves_button: bool) -> None:
                 xsav = s1 if s1 != -1 else saves_avg
                 bp = bp1 if bp1 != -1 else 0
 
+                points = 0
+
                 if position in ('GKP'):
                     points = chance_of_playing * (2 + xsav/3 +
                     xcs * 4 - xgc/2 + bp + dc_points)
@@ -1672,7 +1674,7 @@ def calc_points(player_dict: dict, saves_button: bool) -> None:
 
                 player_dict[player]['Expected Points'].append(round(points, 3))
             
-            '''
+            
             points = 0
             # Calculate points
             if position in ('MID'):
@@ -1708,7 +1710,7 @@ def calc_points(player_dict: dict, saves_button: bool) -> None:
                 sum(ass_average_bookmaker) * 3)
 
             player_dict[player]['xP by Bookmaker Odds'] = round(points, 3)
-            '''
+            
         except Exception as e:
             print(f"Could not calculate points for {player}: {e}")
 
