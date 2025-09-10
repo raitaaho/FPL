@@ -724,73 +724,73 @@ def construct_team_and_player_data(
         for stat in fixture['stats']:
             if stat['identifier'] == 'bps':
                 for pair in stat['a']:
-                    if player_data.get(" ".join(prepare_name(player_id_to_name_24_25[pair['element']]))) == None:
-                        continue
+                    old_name_tokens = prepare_name(player_id_to_name_24_25[pair['element']])
                     for player in player_data:
-                        if player_data[player]["Team"] == away_team_name and player == " ".join(prepare_name(player_id_to_name_24_25[pair['element']])):
-                            player_data[player]['24/25 Away Games Played for Current Team'] += 1
-                            player_data[player][away_games_against_string] += 1
+                        if all(token in old_name_tokens for token in prepare_name(player)) or all(token in prepare_name(player) for token in old_name_tokens):
+                            if player_data[player]["Team"] == away_team_name:
+                                player_data[player]['24/25 Away Games Played for Current Team'] += 1
+                                player_data[player][away_games_against_string] += 1
 
                 for pair in stat['h']:
-                    if player_data.get(" ".join(prepare_name(player_id_to_name_24_25[pair['element']]))) == None:
-                        continue
+                    old_name_tokens = prepare_name(player_id_to_name_24_25[pair['element']])
                     for player in player_data:
-                        if player_data[player]["Team"] == home_team_name and player == " ".join(prepare_name(player_id_to_name_24_25[pair['element']])):
-                            player_data[player]['24/25 Home Games Played for Current Team'] += 1
-                            player_data[player][home_games_against_string] += 1
+                        if all(token in old_name_tokens for token in prepare_name(player)) or all(token in prepare_name(player) for token in old_name_tokens):
+                            if player_data[player]["Team"] == home_team_name:
+                                player_data[player]['24/25 Home Games Played for Current Team'] += 1
+                                player_data[player][home_games_against_string] += 1
 
             if stat['identifier'] == 'goals_scored':
                 for pair in stat['a']:
-                    if player_data.get(" ".join(prepare_name(player_id_to_name_24_25[pair['element']]))) == None:
-                        continue
+                    old_name_tokens = prepare_name(player_id_to_name_24_25[pair['element']])
                     for player in player_data:
-                        if player_data[player]["Team"] == away_team_name and player == " ".join(prepare_name(player_id_to_name_24_25[pair['element']])):
-                            player_data[player]['24/25 Away Goals for Current Team'] += int(pair['value'])
-                            player_data[player][away_goals_against_string] += int(pair['value'])
+                        if all(token in old_name_tokens for token in prepare_name(player)) or all(token in prepare_name(player) for token in old_name_tokens):
+                            if player_data[player]["Team"] == away_team_name:
+                                player_data[player]['24/25 Away Goals for Current Team'] += int(pair['value'])
+                                player_data[player][away_goals_against_string] += int(pair['value'])
 
                 for pair in stat['h']:
-                    if player_data.get(" ".join(prepare_name(player_id_to_name_24_25[pair['element']]))) == None:
-                        continue
+                    old_name_tokens = prepare_name(player_id_to_name_24_25[pair['element']])
                     for player in player_data:
-                        if player_data[player]["Team"] == home_team_name and player == " ".join(prepare_name(player_id_to_name_24_25[pair['element']])):
-                            player_data[player]['24/25 Home Goals for Current Team'] += int(pair['value'])
-                            player_data[player][home_goals_against_string] += int(pair['value'])
+                        if all(token in old_name_tokens for token in prepare_name(player)) or all(token in prepare_name(player) for token in old_name_tokens):
+                            if player_data[player]["Team"] == home_team_name:
+                                player_data[player]['24/25 Home Goals for Current Team'] += int(pair['value'])
+                                player_data[player][home_goals_against_string] += int(pair['value'])
 
             if stat['identifier'] == 'assists':
                 for pair in stat['a']:
                     team_data[away_team_name]['24/25 Away Assists'] += int(pair['value'])
-                    if player_data.get(" ".join(prepare_name(player_id_to_name_24_25[pair['element']]))) == None:
-                        continue
+                    old_name_tokens = prepare_name(player_id_to_name_24_25[pair['element']])
                     for player in player_data:
-                        if player_data[player]["Team"] == away_team_name and player == " ".join(prepare_name(player_id_to_name_24_25[pair['element']])): 
-                            player_data[player]['24/25 Away Assists for Current Team'] += int(pair['value'])
-                            player_data[player][away_assists_against_string] += int(pair['value'])
+                        if all(token in old_name_tokens for token in prepare_name(player)) or all(token in prepare_name(player) for token in old_name_tokens):
+                            if player_data[player]["Team"] == away_team_name: 
+                                player_data[player]['24/25 Away Assists for Current Team'] += int(pair['value'])
+                                player_data[player][away_assists_against_string] += int(pair['value'])
 
                 for pair in stat['h']:
                     team_data[home_team_name]['24/25 Home Assists'] += int(pair['value'])
-                    if player_data.get(" ".join(prepare_name(player_id_to_name_24_25[pair['element']]))) == None:
-                        continue
+                    old_name_tokens = prepare_name(player_id_to_name_24_25[pair['element']])
                     for player in player_data:
-                        if player_data[player]["Team"] == home_team_name and player == " ".join(prepare_name(player_id_to_name_24_25[pair['element']])): 
-                            player_data[player]['24/25 Home Assists for Current Team'] += int(pair['value'])
-                            player_data[player][home_assists_against_string] += int(pair['value'])
+                        if all(token in old_name_tokens for token in prepare_name(player)) or all(token in prepare_name(player) for token in old_name_tokens):
+                            if player_data[player]["Team"] == home_team_name: 
+                                player_data[player]['24/25 Home Assists for Current Team'] += int(pair['value'])
+                                player_data[player][home_assists_against_string] += int(pair['value'])
 
             if stat['identifier'] == 'saves':
                 for pair in stat['a']:
                     team_data[away_team_name]['24/25 Away Goalkeeper Saves'] += int(pair['value'])
-                    if player_data.get(" ".join(prepare_name(player_id_to_name_24_25[pair['element']]))) == None:
-                        continue
+                    old_name_tokens = prepare_name(player_id_to_name_24_25[pair['element']])
                     for player in player_data:
-                        if player_data[player]["Team"] == away_team_name and player == " ".join(prepare_name(player_id_to_name_24_25[pair['element']])):
-                            player_data[player]['24/25 Goalkeeper Saves for Current Team'] += int(pair['value'])
+                        if all(token in old_name_tokens for token in prepare_name(player)) or all(token in prepare_name(player) for token in old_name_tokens):
+                            if player_data[player]["Team"] == away_team_name:
+                                player_data[player]['24/25 Goalkeeper Saves for Current Team'] += int(pair['value'])
 
                 for pair in stat['h']:
                     team_data[home_team_name]['24/25 Home Goalkeeper Saves'] += int(pair['value'])
-                    if player_data.get(" ".join(prepare_name(player_id_to_name_24_25[pair['element']]))) == None:
-                        continue
+                    old_name_tokens = prepare_name(player_id_to_name_24_25[pair['element']])
                     for player in player_data:
-                        if player_data[player]["Team"] == home_team_name and player == " ".join(prepare_name(player_id_to_name_24_25[pair['element']])):
-                            player_data[player]['24/25 Goalkeeper Saves for Current Team'] += int(pair['value'])
+                        if all(token in old_name_tokens for token in prepare_name(player)) or all(token in prepare_name(player) for token in old_name_tokens):
+                            if player_data[player]["Team"] == home_team_name:
+                                player_data[player]['24/25 Goalkeeper Saves for Current Team'] += int(pair['value'])
 
     # Process each gameweek
     for fixture in fixtures:
@@ -1891,7 +1891,7 @@ if json_files:
     git_parts = latest_file_name.replace(".json", '').split('_')
     git_timestamp = f"{git_parts[3][2:]}.{git_parts[3][:2]} {git_parts[4][:2]}:{git_parts[4][2:]}"
     st.info(f"Github repository's latest scraped odds file for next gameweek has a timestamp of {git_timestamp}")
-    upload_new_file_button = st.toggle("Upload more recent odds file for predicted points calculation?",
+    upload_new_file_button = st.toggle("Upload more recent odds file for predicted points calculation",
     value=False)
     if upload_new_file_button:
         uploaded_file = st.file_uploader("Choose a file", type="json")
