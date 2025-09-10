@@ -1828,24 +1828,43 @@ if json_files:
         if uploaded_file:
             uploaded_file_name = uploaded_file.name
             parts = uploaded_file_name.replace(".json", '').split('_')
+            gw = parts[0].replace("gw", '')
             timestamp = f"{parts[3][2:]}.{parts[3][:2]} {parts[4][:2]}:{parts[4][2:]}"
-            latest_file_path = uploaded_file
-            st.info(f"Using uploaded odds file with timestamp of {timestamp} instead of Github repository odds file with timestamp of {git_timestamp}")
+            if next_gw == int(gw):
+                try:
+                    all_odds_dict = json.load(uploaded_file)
+                    st.info(f"Using uploaded odds file with timestamp of {timestamp} instead of Github repository odds file with timestamp of {git_timestamp}")
+                except Exception as e:
+                    st.warning(f"Could not load all odds file {uploaded_file_name} into dictionary.")
+                    all_odds_dict = {}
+            else:
+                st.warning(f"Odds in uploaded file {uploaded_file_name} are not for the next gameweek ({next_gw}).")
+                all_odds_dict = {}
+    else:
+        try:
+            with open(latest_file_path, 'r') as file:
+                all_odds_dict = json.load(file)
+        except IOError:
+            st.warning(f"Could not open all odds file {latest_file_path} found in Github repository.")
+            all_odds_dict = {}
 else:
     st.warning("Latest scraped odds file for next gameweek not found in Github repository, please upload odds file for the next gameweek.")
     uploaded_file = st.file_uploader("Choose a file", type="json")
     if uploaded_file:
         uploaded_file_name = uploaded_file.name
         parts = uploaded_file_name.replace(".json", '').split('_')
+        gw = parts[0].replace("gw", '')
         timestamp = f"{parts[3][2:]}.{parts[3][:2]} {parts[4][:2]}:{parts[4][2:]}"
-        latest_file_path = uploaded_file
-        st.info(f"Using uploaded odds file with timestamp of {timestamp}")
-try:
-    with open(latest_file_path, 'r') as file:
-        all_odds_dict = json.load(file)
-except IOError:
-    st.warning(f"Could not open all odds file {latest_file_path} for the next gameweek.")
-    all_odds_dict = {}
+        if next_gw == int(gw):
+            try:
+                all_odds_dict = json.load(uploaded_file)
+                st.info(f"Using uploaded odds file with timestamp of {timestamp}")
+            except Exception as e:
+                st.warning(f"Could not load all odds file {uploaded_file_name} into dictionary.")
+                all_odds_dict = {}
+        else:
+            st.warning(f"Odds in uploaded file {uploaded_file_name} are not for the next gameweek ({next_gw}).")
+            all_odds_dict = {}
 
 st.header("Step 1: Select metrics to use in predicted points calculations")
 saves_button = st.toggle(
