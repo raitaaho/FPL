@@ -1994,20 +1994,20 @@ if "df" in st.session_state:
         df_others = chart_df[chart_df["Position"] != "GKP"]
 
         # For goalkeepers, keep only one per team with highest predicted points
-        df_gk_sorted = df_gk.sort_values("xP by Bookmaker Odds", ascending=False)
+        df_gk_sorted = df_gk.sort_values("Expected Points", ascending=False)
         df_gk_one_per_team = df_gk_sorted.drop_duplicates(subset="Team", keep="first")
 
         # Combine and get top 5 per position
         df_combined = pd.concat([df_gk_one_per_team, df_others])
 
         # Get top 5 players per position
-        top_players = df_combined.groupby("Position", group_keys=False).apply(lambda x: x.nlargest(5, "xP by Bookmaker Odds"))
+        top_players = df_combined.groupby("Position", group_keys=False).apply(lambda x: x.nlargest(5, "Expected Points"))
 
         # Create chart
         fig = px.bar(
             top_players,
             x="Nickname",
-            y="xP by Bookmaker Odds",
+            y="Expected Points",
             color="Position",
             title="Top 5 FPL Players by Position",
             labels={"Predicted Points": "Predicted Points"},
