@@ -1597,6 +1597,7 @@ def calc_points(player_dict: dict, saves_button: bool) -> None:
             def_contr_avg = (2 * def_contr_p90_24_25 + def_contr_per_game) / 3 if def_contr_p90_24_25 > 0 else def_contr_per_game
             threshold = 10 if position == 'DEF' else 12
             dc_points = max(float(2 * (norm.cdf(2 * def_contr_avg, loc=def_contr_avg, scale=def_contr_avg/2) - norm.cdf(threshold, loc=def_contr_avg, scale=def_contr_avg/2)) / (norm.cdf(2 * def_contr_avg, loc=def_contr_avg, scale=def_contr_avg/2) - norm.cdf(0, loc=def_contr_avg, scale=def_contr_avg/2))), 0.0) if def_contr_avg > 0 else 0
+            player_dict[player]['Estimated DC points per Game'] = round(dc_points, 3)
 
             bonus_points = odds.get('Estimated Bonus Points', [])
             
@@ -1640,7 +1641,6 @@ def calc_points(player_dict: dict, saves_button: bool) -> None:
                 sum(ass_average1) * 3)
 
             player_dict[player]['xP by Bookmaker Odds'] = round(points, 3)
-            player_dict[player]['Estimated DC points per Game'] = round(dc_points, 3)
         except Exception as e:
             print(f"Could not calculate points for {player}: {e}")
 
@@ -1826,7 +1826,8 @@ if json_files:
     if upload_new_file_button:
         uploaded_file = st.file_uploader("Choose a file", type="json")
         if uploaded_file:
-            parts = uploaded_file.replace(filename, '').replace(".json", '').split('_')
+            uploaded_file_name = uploaded_file.name
+            parts = uploaded_file_name.replace(".json", '').split('_')
             timestamp = f"{parts[0][2:]}.{parts[0][:2]} {parts[1][:2]}:{parts[1][2:]}"
             latest_file_path = uploaded_file
             st.info(f"Using uploaded odds file with timestamp of {timestamp} instead of Github repository odds file with timestamp of {git_timestamp}")
