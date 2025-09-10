@@ -1316,8 +1316,8 @@ def calc_specific_probs(
         assisting_over_15_prob = odds.get("Over 1.5 Player Assists Probability", [])
         assisting_over_25_prob = odds.get("Over 2.5 Player Assists Probability", [])
 
-        ass_share = odds.get("Share of Assists by The Team", [0])[0]
-        goal_share = odds.get("Share of Goals by The Team", [0])[0]
+        ass_share = odds.get("Share of Assists by Current Team", [0])[0]
+        goal_share = odds.get("Share of Goals by Current Team", [0])[0]
         total_goals_historical = odds.get('Team xG by Historical Data', [])
 
         xa_per_game_24_25 = odds.get("24/25 Expected Assists per Game", [0])[0]
