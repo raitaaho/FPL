@@ -291,8 +291,8 @@ def player_dict_constructor(
         player_dict[player_name]['Recoveries per Game'] = [player["recoveries"] / games] if games > 0 else [0]
         player_dict[player_name]['Tackles per Game'] = [player["tackles"] / games] if games > 0 else [0]
         player_dict[player_name]['BPS per Game'] = [player['bps'] / games] if games > 0 else [0]
-        player_dict[player_name]['Expected Goals per Game'] = xg_per_game
-        player_dict[player_name]['Expected Assists per Game'] = xa_per_game
+        player_dict[player_name]['Expected Goals per Game'] = [xg_per_game]
+        player_dict[player_name]['Expected Assists per Game'] = [xa_per_game]
 
         player_dict[player_name]['24/25 Defensive Contributions P90'] = [def_contributions_24_25 / (minutes_24_25 / 90)] if minutes_24_25 > 0 else [0]
         player_dict[player_name]['24/25 BPS P90'] = [bps_24_25 / (minutes_24_25 / 90)] if minutes_24_25 > 0 else [0]
