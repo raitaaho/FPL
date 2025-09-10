@@ -1828,15 +1828,16 @@ if json_files:
         if uploaded_file:
             uploaded_file_name = uploaded_file.name
             parts = uploaded_file_name.replace(".json", '').split('_')
-            timestamp = f"{parts[0][2:]}.{parts[0][:2]} {parts[1][:2]}:{parts[1][2:]}"
+            timestamp = f"{parts[3][2:]}.{parts[3][:2]} {parts[4][:2]}:{parts[4][2:]}"
             latest_file_path = uploaded_file
             st.info(f"Using uploaded odds file with timestamp of {timestamp} instead of Github repository odds file with timestamp of {git_timestamp}")
 else:
     st.warning("Latest scraped odds file for next gameweek not found in Github repository, please upload odds file for the next gameweek.")
     uploaded_file = st.file_uploader("Choose a file", type="json")
     if uploaded_file:
-        parts = uploaded_file.replace(filename, '').replace(".json", '').split('_')
-        timestamp = f"{parts[0][2:]}.{parts[0][:2]} {parts[1][:2]}:{parts[1][2:]}"
+        uploaded_file_name = uploaded_file.name
+        parts = uploaded_file_name.replace(".json", '').split('_')
+        timestamp = f"{parts[3][2:]}.{parts[3][:2]} {parts[4][:2]}:{parts[4][2:]}"
         latest_file_path = uploaded_file
         st.info(f"Using uploaded odds file with timestamp of {timestamp}")
 try:
