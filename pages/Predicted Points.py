@@ -247,8 +247,8 @@ def player_dict_constructor(
             if fixture.get('minutes', 0) > 0:
                 games += 1
 
-        xg_per_game = player["expected_goals"] / games if games > 0 else 0
-        xa_per_game = player["expected_assists"] / games if games > 0 else 0
+        xg_per_game = float(player["expected_goals"]) / games if games > 0 else 0
+        xa_per_game = float(player["expected_assists"]) / games if games > 0 else 0
 
         minutes_24_25 = 0
         def_contributions_24_25 = 0
