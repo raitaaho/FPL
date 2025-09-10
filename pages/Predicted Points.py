@@ -1942,15 +1942,15 @@ saves_button = st.toggle(
     value=True
 )
 bps_button = st.toggle(
-    "Use Estimated Bonus Points in predicted points calculation",
+    "Include Estimated Bonus Points for predicted points calculation",
     value=False
 )
 
-gws_to_predict = st.slider("Select amount of gameweeks to calculate predicted points", min_value=1, max_value=10, value=1)
+gws_to_predict = st.slider("Select amount of gameweeks to calculate predicted points for", min_value=1, max_value=10, value=1)
 
 # Step 2: Load data only after user confirms
-if st.button("Calculate Points Predictions"):
-    with st.spinner("Calculating Points Predictions...", show_time=True):
+if st.button("Calculate Predicted Points"):
+    with st.spinner("Calculating Predicted Points...", show_time=True):
         st.session_state.df = initialize_predicted_points_df(all_odds_dict, fixtures, next_gw, saves_button, bps_button, gws_to_predict)
 
 # Step 3: Show filters and calculation only if data is loaded
@@ -1996,20 +1996,20 @@ if "df" in st.session_state:
         df_others = chart_df[chart_df["Position"] != "GKP"]
 
         # For goalkeepers, keep only one per team with highest predicted points
-        df_gk_sorted = df_gk.sort_values("Expected Points", ascending=False)
+        df_gk_sorted = df_gk.sort_values("xP by Bookmaker Odds", ascending=False)
         df_gk_one_per_team = df_gk_sorted.drop_duplicates(subset="Team", keep="first")
 
         # Combine and get top 5 per position
         df_combined = pd.concat([df_gk_one_per_team, df_others])
 
         # Get top 5 players per position
-        top_players = df_combined.groupby("Position", group_keys=False).apply(lambda x: x.nlargest(5, "Expected Points"))
+        top_players = df_combined.groupby("Position", group_keys=False).apply(lambda x: x.nlargest(5, "xP by Bookmaker Odds"))
 
         # Create chart
         fig = px.bar(
             top_players,
             x="Nickname",
-            y="Expected Points",
+            y="xP by Bookmaker Odds",
             color="Position",
             title="Top 5 FPL Players by Position",
             labels={"Predicted Points": "Predicted Points"},
