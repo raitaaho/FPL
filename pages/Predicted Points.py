@@ -1677,35 +1677,35 @@ def calc_points(player_dict: dict, saves_button: bool) -> None:
             # Calculate points
             if position in ('MID'):
                 points = chance_of_playing * (
-                number_of_games * (mins_played_points +
+                number_of_games * mins_played_points + number_of_games * dc_points + 
                 sum(goals_average) * 5 + sum(ass_average) * 3 +
                 min(mins_per_game/60, 1) * sum(cs_odds) + 
-                sum(bonus_points) + dc_points))
+                sum(bonus_points))
 
             if position in ('DEF'):
                 points = chance_of_playing * (
-                number_of_games * (mins_played_points +
+                number_of_games * mins_played_points + number_of_games * dc_points + 
                 sum(goals_average) * 6 + sum(ass_average) * 3 +
                 (min(mins_per_game/60, 1) * sum(cs_odds)) * 4
                 - (sum(goals_conceded_team)/2) +
-                sum(bonus_points) + dc_points))
+                sum(bonus_points))
 
             if position in ('GKP'):
                 points = chance_of_playing * (
-                number_of_games * (2 + sum(saves_average)/3
+                number_of_games * 2 + sum(saves_average)/3
                 + sum(cs_odds) * 4 - (sum(goals_conceded_team)/2) +
-                sum(bonus_points) + dc_points))
+                sum(bonus_points))
 
             if position in ('FWD'):
                 points = chance_of_playing * (
-                number_of_games * (mins_played_points +
+                number_of_games * mins_played_points + number_of_games * dc_points + 
                 sum(goals_average) * 4 + sum(ass_average) * 3 +
-                sum(bonus_points) + dc_points))
+                sum(bonus_points))
 
             if position in ('Unknown'):
                 points = chance_of_playing * (
-                number_of_games * (2 + sum(goals_average_bookmaker) * 4 +
-                sum(ass_average_bookmaker) * 3))
+                number_of_games * 2 + sum(goals_average_bookmaker) * 4 +
+                sum(ass_average_bookmaker) * 3)
 
             player_dict[player]['xP by Bookmaker Odds'] = round(points, 3)
             
