@@ -1535,8 +1535,8 @@ def calc_team_xgs(
     promoted_gc_h_average = 2.00
     promoted_gc_a_average = 2.10
 
-    home_pos_range = get_pos_range(team_stats_dict[home_team]['League Position'])
-    away_pos_range = get_pos_range(team_stats_dict[away_team]['League Position'])
+    home_pos_range_24_25 = get_pos_range(team_stats_dict[home_team]['24/25 League Position'])
+    away_pos_range_24_25 = get_pos_range(team_stats_dict[away_team]['24/25 League Position'])
     goals_p90_home = team_stats_dict[home_team]['Goals per Game']
     goals_p90_away = team_stats_dict[away_team]['Goals per Game']
     goals_conceded_p90_home = team_stats_dict[home_team]['Goals Conceded per Game']
@@ -1546,10 +1546,10 @@ def calc_team_xgs(
     home_goals_conceded_p90_24_25 = team_stats_dict[home_team]['24/25 Goals Conceded per Home Game']
     away_goals_conceded_p90_24_25 = team_stats_dict[away_team]['24/25 Goals Conceded per Away Game']
 
-    home_conceded_against_string = f"24/25 Goals Conceded per Home Game Against {away_pos_range}"
-    away_conceded_against_string = f"24/25 Goals Conceded per Away Game Against {home_pos_range}"
-    home_scored_against_string = f"24/25 Goals per Home Game Against {away_pos_range}"
-    away_scored_against_string = f"24/25 Goals per Away Game Against {home_pos_range}"
+    home_conceded_against_string = f"24/25 Goals Conceded per Home Game Against {away_pos_range_24_25}"
+    away_conceded_against_string = f"24/25 Goals Conceded per Away Game Against {home_pos_range_24_25}"
+    home_scored_against_string = f"24/25 Goals per Home Game Against {away_pos_range_24_25}"
+    away_scored_against_string = f"24/25 Goals per Away Game Against {home_pos_range_24_25}"
     
     home_goals = (4 * home_goals_p90_24_25 + goals_p90_home + 2 * team_stats_dict[home_team][home_scored_against_string]) / 7 if home_goals_p90_24_25 != 0 else (2 * promoted_g_h_average + goals_p90_home) / 3
     away_goals = (4 * away_goals_p90_24_25 + goals_p90_away + 2 * team_stats_dict[away_team][away_scored_against_string]) / 7 if away_goals_p90_24_25 != 0 else (2 * promoted_g_a_average + goals_p90_away) / 3
