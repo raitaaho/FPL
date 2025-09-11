@@ -1901,7 +1901,7 @@ if json_files:
             if next_gw == int(gw):
                 try:
                     all_odds_dict = json.load(uploaded_file)
-                    st.info(f"Using uploaded odds file with timestamp of {timestamp} instead of Github repository odds file with timestamp of {git_timestamp}")
+                    st.info(f"Using uploaded odds file with a timestamp of {timestamp} instead of Github repository odds file with timestamp of {git_timestamp}")
                 except Exception as e:
                     st.warning(f"Could not load all odds file {uploaded_file_name} into dictionary.")
                     all_odds_dict = {}
@@ -1912,6 +1912,7 @@ if json_files:
         try:
             with open(latest_file_path, 'r') as file:
                 all_odds_dict = json.load(file)
+                st.info(f"Using odds file with a timestamp of {git_timestamp}")
         except IOError:
             st.warning(f"Could not open all odds file {latest_file_path} found in Github repository.")
             all_odds_dict = {}
