@@ -148,7 +148,7 @@ def fetch_all_match_links(
         cookiebutton = wait.until(EC.element_to_be_clickable((By.XPATH, "//button[contains(text(), 'Accept') or contains(text(), 'Hyväksy')]")))
         # Click on the accept cookies button
         cookiebutton.click()
-        time.sleep(random.uniform(2, 3))
+        time.sleep(random.uniform(3, 5))
     except TimeoutException:
         print("Prompt for accepting Cookies did not pop up")
 
@@ -158,8 +158,19 @@ def fetch_all_match_links(
         # Click on the <span> element (Accessing outside UK pop-up)
         span_element.click()
         time.sleep(random.uniform(1, 2))
+
+        wait = WebDriverWait(driver, 2)
+        try:
+            close_ad = wait.until(EC.element_to_be_clickable((By.CLASS_NAME, 'webpush-swal2-close')))
+            # Click close ad button
+            close_ad.click()
+            time.sleep(random.uniform(1, 2))
+        except (TimeoutException, ElementClickInterceptedException):
+            print('Ad did not pop up or is not clickable')
+
     except (TimeoutException, ElementClickInterceptedException):
-        wait = WebDriverWait(driver, 1)
+        print('Prompt for accessing outside UK did not pop up or is not clickable')
+        wait = WebDriverWait(driver, 2)
         try:
             close_ad = wait.until(EC.element_to_be_clickable((By.CLASS_NAME, 'webpush-swal2-close')))
             # Click close ad button
