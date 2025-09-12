@@ -498,11 +498,14 @@ else:
 
 container = st.container()
 
+if 'start_button' in st.session_state and st.session_state.run_button == True:
+    st.session_state.scraping_started = True
+else:
+    st.session_state.scraping_started = False
+
 # Scraping trigger
 #scraping_button = container.button("Start scraping", disabled=start_button_disabled, icon=":material/screen_search_desktop:")
-if container.button("Start scraping", disabled=st.session_state.scraping_started, icon=":material/screen_search_desktop:"):
-    st.session_state.scraping_started = True
-
+if container.button("Start scraping", disabled=st.session_state.scraping_started, key="start_button", icon=":material/screen_search_desktop:"):
     data, teams_data, players_data, team_id_to_name, player_id_to_name = fetch_fpl_data()
     next_fixtures = get_next_fixtures(fixtures, next_gw)
     teams_positions_map = teams_league_positions_mapping(teams_data)
