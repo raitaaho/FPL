@@ -478,6 +478,8 @@ if "scraping_started" not in st.session_state:
     st.session_state.scraping_started = False
 if "scraping_done" not in st.session_state:
     st.session_state.scraping_done = False
+if 'start_button' not in st.session_state:
+    st.session_state.run_button = None
 
 fixtures = get_all_fixtures()
 next_gw = get_next_gws(fixtures)
@@ -498,7 +500,7 @@ else:
 
 container = st.container()
 
-if 'start_button' in st.session_state and st.session_state.run_button == True:
+if st.session_state.run_button == True:
     st.session_state.scraping_started = True
 else:
     st.session_state.scraping_started = False
