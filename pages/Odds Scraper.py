@@ -355,7 +355,6 @@ def scrape_all_matches(match_dict, driver):
     elapsed_time_text = st.empty()
     match_progress_text = st.empty()
     match_progress_bar = st.progress(0)
-    match_text = st.empty()
 
     # Loop through each match, fetch odds, calculate probabilities, and update player_dict.
     match_counter = 0
@@ -371,11 +370,11 @@ def scrape_all_matches(match_dict, driver):
 
         match_progress_text.markdown(f"## Scraping match {match_counter} of {total_matches}")
 
-        match_text = st.empty()
-        match_text.markdown(f"### Scraping odds for {match}")
+        expander = st.expander(f"{match}")
+        expander.markdown(f"### Scraping odds for {match}")
        
-        odd_progress_text = st.empty()
-        odd_progress_bar = st.progress(0)
+        odd_progress_text = expander.empty()
+        odd_progress_bar = expander.progress(0)
 
         elapsed = time.perf_counter() - start0
         elapsed_time_text.text(f"Total time elapsed: {round(elapsed/60, 2)} minutes")
@@ -420,7 +419,7 @@ def scrape_all_matches(match_dict, driver):
                         header.click()
                         time.sleep(random.uniform(1, 2))
                     except Exception as e:
-                        st.write("Couldn't collapse", header)
+                        expander.write("Couldn't collapse", header)
 
         elapsed = time.perf_counter() - start0
         elapsed_time_text.text(f"Total time elapsed: {round(elapsed/60, 2)} minutes")
@@ -430,10 +429,10 @@ def scrape_all_matches(match_dict, driver):
             odd_progress_text.text(f"Scraping odd type {odd_counter} of {total_odds} - {odd_type}")
             odds_dict = fetch_odds(match, odd_type, driver)
             if odds_dict:
-                st.success(f'Scraped odds for {odd_type}', icon="✅")
+                expander.success(f'Scraped odds for {odd_type}', icon="✅")
                 match_dict[match][odd_type] = odds_dict
             else:
-                st.warning(f'Could not scrape odds for {odd_type}', icon="⚠️")
+                expander.warning(f'Could not scrape odds for {odd_type}', icon="⚠️")
             
             odd_progress_bar.progress(int((odd_counter / total_odds) * 100))
 
@@ -473,7 +472,7 @@ st.set_page_config(page_title="Oddschecker.com Odds Scraper", page_icon="📈")
 st.markdown("# Oddschecker.com Odds Scraper")
 st.write(
     """This is a web scraper that scrapes odds from Oddschecker.com for Player Assists, Goalkeeper Saves, Anytime Goalscorer, To Score 2 Or More Goals, To Score A Hat-Trick, Total Home Goals and Total Away Goals markets for the next gameweek of the Premier League.
-    The odds are saved to a JSON file containing odds for every match of the next gameweek. These odds can be used to calculate probabilities for each player and team based on the odds provided by Oddschecker.com and these probabilities can be used to make predictions about the outcomes of matches."""
+    A JSON file containing the scraped odds for every match of the next gameweek is available for downloading after a successfull scraping."""
 )
 
 if "scraped_data" not in st.session_state:
@@ -500,60 +499,61 @@ if json_files:
 else:
     st.info(f"Latest scraped odds file for next gameweek (GW{next_gw}) not found in Github repository")
 
+container = st.container()
 
 # Scraping trigger
-if not st.session_state.scraping_done:
-    if st.button("Start scraping"):
-        data, teams_data, players_data, team_id_to_name, player_id_to_name = fetch_fpl_data()
-        next_fixtures = get_next_fixtures(fixtures, next_gw)
-        teams_positions_map = teams_league_positions_mapping(teams_data)
+scraping_button = container.button("Start scraping")
+if scraping_button:
+    data, teams_data, players_data, team_id_to_name, player_id_to_name = fetch_fpl_data()
+    next_fixtures = get_next_fixtures(fixtures, next_gw)
+    teams_positions_map = teams_league_positions_mapping(teams_data)
 
-        try: 
-            logpath=get_logpath()
+    try: 
+        logpath=get_logpath()
 
-            options = Options()
-            options.binary_location = "/usr/bin/chromium"
+        options = Options()
+        options.binary_location = "/usr/bin/chromium"
 
-            user_agents = [
-            "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36",
-            "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.0 Safari/605.1.15",
-            "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/123.0.0.0 Safari/537.36",
-            "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:125.0) Gecko/20100101 Firefox/125.0",
-            "Mozilla/5.0 (iPhone; CPU iPhone OS 17_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.0 Mobile/15E148 Safari/604.1",
-            "Mozilla/5.0 (Linux; Android 14; SM-G991B) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Mobile Safari/537.36",
-            "Mozilla/5.0 (iPad; CPU OS 17_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.0 Mobile/15E148 Safari/604.1",
-            "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Edge/124.0.2478.80",
-            "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/125.0.0.0 Safari/537.36",
-            "Mozilla/5.0 (Macintosh; Intel Mac OS X 13_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/125.0.0.0 Safari/537.36",
-            "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/125.0.0.0 Safari/537.36",
-            "Mozilla/5.0 (Linux; Android 13; Pixel 6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/125.0.0.0 Mobile Safari/537.36",
-            "Mozilla/5.0 (Linux; Android 14; Samsung Galaxy S22) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Mobile Safari/537.36",
-            "Mozilla/5.0 (Windows NT 11.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36",
-            "Mozilla/5.0 (Macintosh; Intel Mac OS X 14_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36",
-            "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/127.0.0.0 Safari/537.36",
-            "Mozilla/5.0 (Linux; Android 13; Xiaomi Mi 11) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/127.0.0.0 Mobile Safari/537.36",
-            "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/127.0.0.0 Safari/537.36"
-            ]
+        user_agents = [
+        "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36",
+        "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.0 Safari/605.1.15",
+        "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/123.0.0.0 Safari/537.36",
+        "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:125.0) Gecko/20100101 Firefox/125.0",
+        "Mozilla/5.0 (iPhone; CPU iPhone OS 17_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.0 Mobile/15E148 Safari/604.1",
+        "Mozilla/5.0 (Linux; Android 14; SM-G991B) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Mobile Safari/537.36",
+        "Mozilla/5.0 (iPad; CPU OS 17_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.0 Mobile/15E148 Safari/604.1",
+        "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Edge/124.0.2478.80",
+        "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/125.0.0.0 Safari/537.36",
+        "Mozilla/5.0 (Macintosh; Intel Mac OS X 13_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/125.0.0.0 Safari/537.36",
+        "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/125.0.0.0 Safari/537.36",
+        "Mozilla/5.0 (Linux; Android 13; Pixel 6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/125.0.0.0 Mobile Safari/537.36",
+        "Mozilla/5.0 (Linux; Android 14; Samsung Galaxy S22) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Mobile Safari/537.36",
+        "Mozilla/5.0 (Windows NT 11.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36",
+        "Mozilla/5.0 (Macintosh; Intel Mac OS X 14_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36",
+        "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/127.0.0.0 Safari/537.36",
+        "Mozilla/5.0 (Linux; Android 13; Xiaomi Mi 11) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/127.0.0.0 Mobile Safari/537.36",
+        "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/127.0.0.0 Safari/537.36"
+        ]
 
-            user_agent = random.choice(user_agents)
+        user_agent = random.choice(user_agents)
 
-            options.add_argument("--headless=new") 
-            options.add_argument("--no-sandbox")
-            options.add_argument("--disable-dev-shm-usage")
-            options.add_argument("--disable-gpu")
-            options.add_argument("--remote-debugging-port=9222")
-            options.add_argument("--start-maximized")
+        options.add_argument("--headless=new") 
+        options.add_argument("--no-sandbox")
+        options.add_argument("--disable-dev-shm-usage")
+        options.add_argument("--disable-gpu")
+        options.add_argument("--remote-debugging-port=9222")
+        options.add_argument("--start-maximized")
 
-            service = get_webdriver_service(logpath=logpath)
+        service = get_webdriver_service(logpath=logpath)
 
-            driver = webdriver.Chrome(options=options, service=service)
-            time.sleep(random.uniform(2, 3))
-        except Exception as e: 
-            st.write("Couldn't open Chrome")
-            quit()
+        driver = webdriver.Chrome(options=options, service=service)
+        time.sleep(random.uniform(2, 3))
+    except Exception as e: 
+        st.write("Couldn't open Chrome")
+        quit()
 
-        match_dict = fetch_all_match_links(next_fixtures, team_id_to_name, teams_positions_map, driver)
-        st.session_state.scraped_data, st.session_state.scraping_done, st.session_state.scrape_time = scrape_all_matches(match_dict, driver)
+    match_dict = fetch_all_match_links(next_fixtures, team_id_to_name, teams_positions_map, driver)
+    st.session_state.scraped_data, st.session_state.scraping_done, st.session_state.scrape_time = scrape_all_matches(match_dict, driver)
 
 # Show download button if scraping is done
 if st.session_state.scraping_done and st.session_state.scraped_data:
@@ -561,8 +561,8 @@ if st.session_state.scraping_done and st.session_state.scraped_data:
     current_time = datetime.now()
     filename = f"gw{next_gw}_all_odds_{current_time.strftime('%m')}{current_time.strftime('%d')}_{current_time.strftime('%H')}{current_time.strftime('%M')}.json"
 
-    st.success(f"✅ Scraping completed in {st.session_state.scrape_time} minutes.")
-    st.download_button(
+    container.success(f"✅ Scraping completed in {st.session_state.scrape_time} minutes.")
+    container.download_button(
         label="Download odds as JSON file",
         data=json_data,
         file_name=filename,
