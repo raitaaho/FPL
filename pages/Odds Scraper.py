@@ -352,7 +352,6 @@ def fetch_odds(match_name: str, odd_type: str, driver: "webdriver.Chrome") -> ty
 
 def scrape_all_matches(match_dict, driver):
     start0 = time.perf_counter()
-    elapsed_time_text = st.empty()
     match_progress_text = st.empty()
     match_progress_bar = st.progress(0)
 
@@ -363,21 +362,16 @@ def scrape_all_matches(match_dict, driver):
     odd_types = ['Player Assists', 'Goalkeeper Saves', 'To Score A Hat-Trick', 'Anytime Goalscorer', 'Total Home Goals', 'Total Away Goals', 'To Score 2 Or More Goals']
     total_odds= len(odd_types)
 
-    elapsed = time.perf_counter() - start0
     for match, details in match_dict.items():
         odd_counter = 0
         match_counter += 1
 
-        match_progress_text.markdown(f"## Scraping match {match_counter} of {total_matches}")
+        match_progress_text.markdown(f"### Scraping match {match_counter} of {total_matches} - {match}")
 
-        expander = st.expander(f"{match}")
-        expander.markdown(f"### Scraping odds for {match}")
+        expander = st.expander(match, icon=":material/data_thresholding:")
        
         odd_progress_text = expander.empty()
         odd_progress_bar = expander.progress(0)
-
-        elapsed = time.perf_counter() - start0
-        elapsed_time_text.text(f"Total time elapsed: {round(elapsed/60, 2)} minutes")
 
         home_team_name = details.get('home_team', 'Unknown')
         away_team_name = details.get('away_team', 'Unknown')
@@ -421,9 +415,6 @@ def scrape_all_matches(match_dict, driver):
                     except Exception as e:
                         expander.write("Couldn't collapse", header)
 
-        elapsed = time.perf_counter() - start0
-        elapsed_time_text.text(f"Total time elapsed: {round(elapsed/60, 2)} minutes")
-
         for odd_type in odd_types:
             odd_counter += 1
             odd_progress_text.text(f"Scraping odd type {odd_counter} of {total_odds} - {odd_type}")
@@ -436,16 +427,11 @@ def scrape_all_matches(match_dict, driver):
             
             odd_progress_bar.progress(int((odd_counter / total_odds) * 100))
 
-            elapsed = time.perf_counter() - start0
-            elapsed_time_text.text(f"Total time elapsed: {round(elapsed/60, 2)} minutes")
-
-        elapsed = time.perf_counter() - start0
-        elapsed_time_text.text(f"Total time elapsed: {round(elapsed/60, 2)} minutes")
         match_progress_bar.progress(int((match_counter / total_matches) * 100))
         odd_progress_text.text(f"Scraped all of {total_odds} odd types in match {match}")
 
     elapsed = time.perf_counter() - start0
-    match_progress_text.markdown(f"## Scraped all of {total_matches} matches in {round(elapsed/60, 2)} minutes") 
+    match_progress_text.markdown(f"## Scraped {total_matches}/{total_matches} matches in {round(elapsed/60, 2)} minutes") 
     driver.quit()
     
     st.session_state.scrape_time = round(elapsed / 60, 2)
@@ -479,8 +465,12 @@ if "scraped_data" not in st.session_state:
     st.session_state.scraped_data = None
 if "scrape_time" not in st.session_state:
     st.session_state.scrape_time = None
+if "scraping_started" not in st.session_state:
+    st.session_state.scraping_started = False
 if "scraping_done" not in st.session_state:
     st.session_state.scraping_done = False
+
+start_button_disabled = st.session_state.scraping_started
 
 fixtures = get_all_fixtures()
 next_gw = get_next_gws(fixtures)
@@ -502,8 +492,10 @@ else:
 container = st.container()
 
 # Scraping trigger
-scraping_button = container.button("Start scraping")
+scraping_button = container.button("Start scraping", disabled=start_button_disabled, icon=":material/screen_search_desktop:")
 if scraping_button:
+    st.session_state.scraping_started = True
+
     data, teams_data, players_data, team_id_to_name, player_id_to_name = fetch_fpl_data()
     next_fixtures = get_next_fixtures(fixtures, next_gw)
     teams_positions_map = teams_league_positions_mapping(teams_data)
@@ -553,10 +545,12 @@ if scraping_button:
         quit()
 
     match_dict = fetch_all_match_links(next_fixtures, team_id_to_name, teams_positions_map, driver)
-    st.session_state.scraped_data, st.session_state.scraping_done, st.session_state.scrape_time = scrape_all_matches(match_dict, driver)
+    with st.spinner("Scraping...", show_time=True):
+        st.session_state.scraped_data, st.session_state.scraping_done, st.session_state.scrape_time = scrape_all_matches(match_dict, driver)
 
 # Show download button if scraping is done
 if st.session_state.scraping_done and st.session_state.scraped_data:
+    st.session_state.scraping_started = False
     json_data = json.dumps(st.session_state.scraped_data, indent=4)
     current_time = datetime.now()
     filename = f"gw{next_gw}_all_odds_{current_time.strftime('%m')}{current_time.strftime('%d')}_{current_time.strftime('%H')}{current_time.strftime('%M')}.json"
