@@ -462,12 +462,16 @@ def get_webdriver_service(logpath) -> Service:
     )
     return service
 
+def start_scraping():
+    st.session_state.scraping_started = True
+    st.session_state.scraping_done = False
+
 st.set_page_config(page_title="Oddschecker.com Odds Scraper", page_icon="📈")
 
 st.markdown("# Oddschecker.com Odds Scraper")
 st.write(
     """This is a web scraper that scrapes odds from Oddschecker.com for Player Assists, Goalkeeper Saves, Anytime Goalscorer, To Score 2 Or More Goals, To Score A Hat-Trick, Total Home Goals and Total Away Goals markets for the next gameweek of the Premier League.
-    A JSON file containing the scraped odds for every match of the next gameweek is available for downloading after a successfull scraping."""
+    A JSON file containing the scraped odds for every match of the next gameweek is available for downloading after a successful ."""
 )
 
 if "scraped_data" not in st.session_state:
@@ -501,9 +505,9 @@ else:
 container = st.container()
 
 # Scraping trigger
-scraping_button = container.button("Start scraping", icon=":material/screen_search_desktop:", disabled=st.session_state.scraping_started and not st.session_state.scraping_done)
-if scraping_button and not st.session_state.scraping_started:
-    st.session_state.scraping_started = True  # Disable button immediately
+scraping_button = container.button("Start scraping", icon=":material/screen_search_desktop:", disabled=st.session_state.scraping_started and not st.session_state.scraping_done,
+                                   on_click=start_scraping)
+if st.session_state.scraping_started and not st.session_state.scraping_done:
     data, teams_data, players_data, team_id_to_name, player_id_to_name = fetch_fpl_data()
     next_fixtures = get_next_fixtures(fixtures, next_gw)
     teams_positions_map = teams_league_positions_mapping(teams_data)
