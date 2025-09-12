@@ -9,6 +9,7 @@ from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.common.exceptions import NoSuchElementException
 from selenium.common.exceptions import TimeoutException
+from selenium.common.exceptions import ElementClickInterceptedException
 import time
 from fractions import Fraction
 from collections import defaultdict
@@ -152,7 +153,7 @@ def fetch_all_match_links(
         print("Prompt for accepting Cookies did not pop up")
 
     try:
-        wait = WebDriverWait(driver, 3)
+        wait = WebDriverWait(driver, 5)
         matches_button = wait.until(EC.element_to_be_clickable((By.XPATH, "//button[contains(text(), 'Matches')]")))
         matches_button.click()
         time.sleep(random.uniform(1, 2))
@@ -173,6 +174,9 @@ def fetch_all_match_links(
                 time.sleep(random.uniform(1, 2))
             except TimeoutException:
                 print("Prompt for accessing outside UK did not pop up")
+        except ElementClickInterceptedException:
+            driver.save_screenshot('screenshot.png')
+            st.image("screenshot.png", caption="Screen")
         try:    
             wait = WebDriverWait(driver, 3)
             matches_button = wait.until(EC.element_to_be_clickable((By.XPATH, "//button[contains(text(), 'Matches')]")))
@@ -519,7 +523,7 @@ if st.button("Start scraping"):
             on_click="ignore",
             icon=":material/download:",
         )
-        
+
     data, teams_data, players_data, team_id_to_name, player_id_to_name = fetch_fpl_data()
     next_fixtures = get_next_fixtures(fixtures, next_gw)
     teams_positions_map = teams_league_positions_mapping(teams_data)
