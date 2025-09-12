@@ -479,8 +479,6 @@ if "scraping_started" not in st.session_state:
 if "scraping_done" not in st.session_state:
     st.session_state.scraping_done = False
 
-start_button_disabled = st.session_state.scraping_started
-
 fixtures = get_all_fixtures()
 next_gw = get_next_gws(fixtures)
 
@@ -501,8 +499,8 @@ else:
 container = st.container()
 
 # Scraping trigger
-scraping_button = container.button("Start scraping", disabled=start_button_disabled, icon=":material/screen_search_desktop:")
-if scraping_button:
+#scraping_button = container.button("Start scraping", disabled=start_button_disabled, icon=":material/screen_search_desktop:")
+if container.scraping_button("Start scraping", disabled=st.session_state.scraping_started, icon=":material/screen_search_desktop:"):
     st.session_state.scraping_started = True
 
     data, teams_data, players_data, team_id_to_name, player_id_to_name = fetch_fpl_data()
