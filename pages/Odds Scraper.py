@@ -366,7 +366,7 @@ def scrape_all_matches(match_dict, driver):
         scraped_odd_counter = 0
         match_counter += 1
 
-        status_container = st.status(f"{match} Odds", expanded=True)
+        status_container = st.status(f"{match}", expanded=True)
         odd_progress_text = status_container.empty()
         odd_progress_bar = status_container.progress(0)
 
@@ -410,25 +410,25 @@ def scrape_all_matches(match_dict, driver):
                         header.click()
                         time.sleep(random.uniform(1, 2))
                     except Exception as e:
-                        status_container.write("Couldn't collapse", header)
+                        status_container.write(f"Couldn't collapse **{header}**")
 
         for odd_type in odd_types:
             total_odd_counter += 1
-            odd_progress_text.markdown(f"Scraping odds for {odd_type}")
+            odd_progress_text.markdown(f"Scraping odds for **{odd_type}**")
             
             odds_dict = fetch_odds(match, odd_type, driver)
             if odds_dict:
                 scraped_odd_counter += 1
-                status_container.success(f'Scraped odds for {odd_type}', icon="✅")
+                status_container.success(f'Scraped odds for **{odd_type}**', icon="✅")
                 match_dict[match][odd_type] = odds_dict
             else:
-                status_container.warning(f'Could not scrape odds for {odd_type}', icon="⚠️")
+                status_container.warning(f'Could not scrape odds for **{odd_type}**', icon="⚠️")
             
             odd_progress_bar.progress(int((total_odd_counter / total_odds) * 100))
 
         match_progress_bar.progress(int((match_counter / total_matches) * 100))
-        odd_progress_text.markdown(f":material/check: Scraped {scraped_odd_counter} out of possible {total_odds} odd types")
-        status_container.update(label=f"{match} Odds", state="complete", expanded=False)
+        odd_progress_text.markdown(f":material/check: Scraped **{scraped_odd_counter} out of {total_odds}** odd types")
+        status_container.update(label=f"{match}", state="complete", expanded=False)
 
     elapsed = time.perf_counter() - start0
     driver.quit()
@@ -459,6 +459,7 @@ def start_scraping():
 def click_download():
     st.session_state.scraping_started = False
     st.session_state.scraping_done = False
+    st.success(f"✅ JSON file containing scraped odds successfully downloaded.")
 
 st.set_page_config(page_title="Oddschecker.com Odds Scraper", page_icon="📈")
 
@@ -492,9 +493,9 @@ if json_files:
     latest_file_path = max(json_files)
     latest_file = latest_file_path.replace(fixtures_dir, '')
     parts = latest_file.replace(".json", '').split('_')
-    st.info(f"Github repository's latest scraped odds file for next gameweek (GW{next_gw}) has a timestamp of {parts[3][2:]}.{parts[3][:2]} {parts[4][:2]}:{parts[4][2:]}")
+    st.info(f"Github repository's latest scraped odds file for next gameweek (**GW{next_gw}**) has a timestamp of **{parts[3][2:]}.{parts[3][:2]} {parts[4][:2]}:{parts[4][2:]}**")
 else:
-    st.info(f"Latest scraped odds file for next gameweek (GW{next_gw}) not found in Github repository")
+    st.info(f"Latest scraped odds file for next gameweek (**GW{next_gw}**) **not found** in Github repository")
 
 container = st.container()
 
@@ -548,7 +549,7 @@ if st.session_state.scraping_started and not st.session_state.scraping_done:
         time.sleep(random.uniform(2, 3))
 
         match_dict = fetch_all_match_links(next_fixtures, team_id_to_name, teams_positions_map, driver)
-        with st.spinner(f"Scraping odds for a total of {len(next_fixtures)} matches...", show_time=True):
+        with st.spinner(f"Scraping odds for a total of **{len(next_fixtures)}** matches...", show_time=True):
             st.session_state.scraped_data, st.session_state.scraping_done, st.session_state.scrape_time = scrape_all_matches(match_dict, driver)
 
     except Exception as e: 
@@ -561,7 +562,7 @@ if st.session_state.scraping_done and st.session_state.scraped_data:
     current_time = datetime.now()
     filename = f"gw{next_gw}_all_odds_{current_time.strftime('%m')}{current_time.strftime('%d')}_{current_time.strftime('%H')}{current_time.strftime('%M')}.json"
 
-    container.success(f"✅ Scraping completed in {st.session_state.scrape_time} minutes.")
+    container.success(f"✅ Scraping completed in **{st.session_state.scrape_time}** minutes.")
     container.download_button(
         label="Download odds as JSON file",
         data=json_data,
