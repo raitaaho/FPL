@@ -456,11 +456,6 @@ def start_scraping():
     st.session_state.scraping_started = True
     st.session_state.scraping_done = False
 
-def click_download():
-    st.session_state.scraping_started = False
-    st.session_state.scraping_done = False
-    st.success(f"✅ JSON file containing scraped odds successfully downloaded.")
-
 st.set_page_config(page_title="Oddschecker.com Odds Scraper", page_icon="📈")
 
 st.markdown("# Oddschecker.com Odds Scraper")
@@ -555,6 +550,11 @@ if st.session_state.scraping_started and not st.session_state.scraping_done:
     except Exception as e: 
         st.write("Couldn't open Chrome")
         st.session_state.scraping_started = False
+
+def click_download():
+    st.session_state.scraping_started = False
+    st.session_state.scraping_done = False
+    st.success(f"✅ JSON file containing scraped odds successfully downloaded.")
 
 # Show download button if scraping is done
 if st.session_state.scraping_done and st.session_state.scraped_data:
