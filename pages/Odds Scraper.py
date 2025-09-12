@@ -478,8 +478,8 @@ if "scraping_started" not in st.session_state:
     st.session_state.scraping_started = False
 if "scraping_done" not in st.session_state:
     st.session_state.scraping_done = False
-if 'start_button' not in st.session_state:
-    st.session_state.run_button = None
+
+
 
 fixtures = get_all_fixtures()
 next_gw = get_next_gws(fixtures)
@@ -500,14 +500,10 @@ else:
 
 container = st.container()
 
-if st.session_state.run_button == True:
-    st.session_state.scraping_started = True
-else:
-    st.session_state.scraping_started = False
-
 # Scraping trigger
-#scraping_button = container.button("Start scraping", disabled=start_button_disabled, icon=":material/screen_search_desktop:")
-if container.button("Start scraping", disabled=st.session_state.scraping_started, key="start_button", icon=":material/screen_search_desktop:"):
+scraping_button = container.button("Start scraping", icon=":material/screen_search_desktop:", disabled=st.session_state.scraping_started and not st.session_state.scraping_done)
+if scraping_button and not st.session_state.scraping_started:
+    st.session_state.scraping_started = True  # Disable button immediately
     data, teams_data, players_data, team_id_to_name, player_id_to_name = fetch_fpl_data()
     next_fixtures = get_next_fixtures(fixtures, next_gw)
     teams_positions_map = teams_league_positions_mapping(teams_data)
@@ -552,13 +548,14 @@ if container.button("Start scraping", disabled=st.session_state.scraping_started
 
         driver = webdriver.Chrome(options=options, service=service)
         time.sleep(random.uniform(2, 3))
+
+        match_dict = fetch_all_match_links(next_fixtures, team_id_to_name, teams_positions_map, driver)
+        with st.spinner("Scraping...", show_time=True):
+            st.session_state.scraped_data, st.session_state.scraping_done, st.session_state.scrape_time = scrape_all_matches(match_dict, driver)
+
     except Exception as e: 
         st.write("Couldn't open Chrome")
-        quit()
-
-    match_dict = fetch_all_match_links(next_fixtures, team_id_to_name, teams_positions_map, driver)
-    with st.spinner("Scraping...", show_time=True):
-        st.session_state.scraped_data, st.session_state.scraping_done, st.session_state.scrape_time = scrape_all_matches(match_dict, driver)
+        st.session_state.scraping_started = False
 
 # Show download button if scraping is done
 if st.session_state.scraping_done and st.session_state.scraped_data:
