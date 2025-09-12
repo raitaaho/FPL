@@ -362,7 +362,8 @@ def scrape_all_matches(match_dict, driver):
     total_odds= len(odd_types)
 
     for match, details in match_dict.items():
-        odd_counter = 0
+        total_odd_counter = 0
+        scraped_odd_counter = 0
         match_counter += 1
 
         status_container = st.status(f"{match} Odds", expanded=True)
@@ -412,20 +413,21 @@ def scrape_all_matches(match_dict, driver):
                         status_container.write("Couldn't collapse", header)
 
         for odd_type in odd_types:
-            odd_counter += 1
-            odd_progress_text.markdown(f":material/progress_activity: Scraping odd type {odd_counter} of {total_odds} - {odd_type}")
+            total_odd_counter += 1
+            odd_progress_text.markdown(f"Scraping odd type {total_odd_counter}/{total_odds} - {odd_type}")
             
             odds_dict = fetch_odds(match, odd_type, driver)
             if odds_dict:
+                scraped_odd_counter += 1
                 status_container.success(f'Scraped odds for {odd_type}', icon="✅")
                 match_dict[match][odd_type] = odds_dict
             else:
                 status_container.warning(f'Could not scrape odds for {odd_type}', icon="⚠️")
             
-            odd_progress_bar.progress(int((odd_counter / total_odds) * 100))
+            odd_progress_bar.progress(int((total_odd_counter / total_odds) * 100))
 
         match_progress_bar.progress(int((match_counter / total_matches) * 100))
-        odd_progress_text.markdown(f":material/check: Scraped all of {total_odds} odd types in match {match}")
+        odd_progress_text.markdown(f":material/check: Scraped {scraped_odd_counter}/{total_odds} odd types in match {match}")
         status_container.update(label=f"{match} Odds", state="complete", expanded=False)
 
     elapsed = time.perf_counter() - start0
