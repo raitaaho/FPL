@@ -414,7 +414,7 @@ def scrape_all_matches(match_dict, driver):
 
         for odd_type in odd_types:
             total_odd_counter += 1
-            odd_progress_text.markdown(f"Scraping odd type {total_odd_counter}/{total_odds} - {odd_type}")
+            odd_progress_text.markdown(f"Scraping odds for {odd_type}")
             
             odds_dict = fetch_odds(match, odd_type, driver)
             if odds_dict:
@@ -427,7 +427,7 @@ def scrape_all_matches(match_dict, driver):
             odd_progress_bar.progress(int((total_odd_counter / total_odds) * 100))
 
         match_progress_bar.progress(int((match_counter / total_matches) * 100))
-        odd_progress_text.markdown(f":material/check: Scraped {scraped_odd_counter}/{total_odds} odd types in match {match}")
+        odd_progress_text.markdown(f":material/check: Scraped {scraped_odd_counter} out of possible {total_odds} odd types")
         status_container.update(label=f"{match} Odds", state="complete", expanded=False)
 
     elapsed = time.perf_counter() - start0
@@ -454,6 +454,10 @@ def get_webdriver_service(logpath) -> Service:
 
 def start_scraping():
     st.session_state.scraping_started = True
+    st.session_state.scraping_done = False
+
+def click_download():
+    st.session_state.scraping_started = False
     st.session_state.scraping_done = False
 
 st.set_page_config(page_title="Oddschecker.com Odds Scraper", page_icon="📈")
@@ -495,7 +499,7 @@ else:
 container = st.container()
 
 # Scraping trigger
-scraping_button = container.button("Start scraping", icon=":material/screen_search_desktop:", disabled=st.session_state.scraping_started and not st.session_state.scraping_done,
+scraping_button = container.button("Start scraping", disabled=st.session_state.scraping_started and not st.session_state.scraping_done,
                                    on_click=start_scraping)
 if st.session_state.scraping_started and not st.session_state.scraping_done:
     data, teams_data, players_data, team_id_to_name, player_id_to_name = fetch_fpl_data()
@@ -553,7 +557,6 @@ if st.session_state.scraping_started and not st.session_state.scraping_done:
 
 # Show download button if scraping is done
 if st.session_state.scraping_done and st.session_state.scraped_data:
-    st.session_state.scraping_started = False
     json_data = json.dumps(st.session_state.scraped_data, indent=4)
     current_time = datetime.now()
     filename = f"gw{next_gw}_all_odds_{current_time.strftime('%m')}{current_time.strftime('%d')}_{current_time.strftime('%H')}{current_time.strftime('%M')}.json"
@@ -564,7 +567,7 @@ if st.session_state.scraping_done and st.session_state.scraped_data:
         data=json_data,
         file_name=filename,
         mime="text/json",
-        on_click="ignore",
+        on_click=click_download,
         icon=":material/download:",
     )
 
