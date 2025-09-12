@@ -352,7 +352,6 @@ def fetch_odds(match_name: str, odd_type: str, driver: "webdriver.Chrome") -> ty
 
 def scrape_all_matches(match_dict, driver):
     start0 = time.perf_counter()
-    match_progress_text = st.empty()
     match_progress_bar = st.progress(0)
 
     # Loop through each match, fetch odds, calculate probabilities, and update player_dict.
@@ -366,16 +365,9 @@ def scrape_all_matches(match_dict, driver):
         odd_counter = 0
         match_counter += 1
 
-        match_progress_text.markdown(f"### Scraping match {match_counter} of {total_matches} - {match}")
-
-        status_container = st.status(f"Scraping {match}", expanded=True)
+        status_container = st.status(f"{match} Odds", expanded=True)
         odd_progress_text = status_container.empty()
         odd_progress_bar = status_container.progress(0)
-
-        #expander = st.expander(match, icon=":material/data_thresholding:")
-       
-        #odd_progress_text = expander.empty()
-        #odd_progress_bar = expander.progress(0)
 
         home_team_name = details.get('home_team', 'Unknown')
         away_team_name = details.get('away_team', 'Unknown')
@@ -417,30 +409,26 @@ def scrape_all_matches(match_dict, driver):
                         header.click()
                         time.sleep(random.uniform(1, 2))
                     except Exception as e:
-                        #expander.write("Couldn't collapse", header)
                         status_container.write("Couldn't collapse", header)
 
         for odd_type in odd_types:
             odd_counter += 1
-            odd_progress_text.text(f"Scraping odd type {odd_counter} of {total_odds} - {odd_type}")
+            odd_progress_text.markdown(f":material/progress_activity: Scraping odd type {odd_counter} of {total_odds} - {odd_type}")
             
             odds_dict = fetch_odds(match, odd_type, driver)
             if odds_dict:
-                #expander.success(f'Scraped odds for {odd_type}', icon="✅")
                 status_container.success(f'Scraped odds for {odd_type}', icon="✅")
                 match_dict[match][odd_type] = odds_dict
             else:
-                #expander.warning(f'Could not scrape odds for {odd_type}', icon="⚠️")
                 status_container.warning(f'Could not scrape odds for {odd_type}', icon="⚠️")
             
             odd_progress_bar.progress(int((odd_counter / total_odds) * 100))
 
         match_progress_bar.progress(int((match_counter / total_matches) * 100))
-        odd_progress_text.text(f"Scraped all of {total_odds} odd types in match {match}")
-        status_container.update(label=f"Scraped match {match_counter}/{total_matches} - {match}", state="complete", expanded=False)
+        odd_progress_text.markdown(f":material/check: Scraped all of {total_odds} odd types in match {match}")
+        status_container.update(label=f"{match} Odds", state="complete", expanded=False)
 
     elapsed = time.perf_counter() - start0
-    match_progress_text.markdown(f"## Scraped {total_matches}/{total_matches} matches in {round(elapsed/60, 2)} minutes") 
     driver.quit()
     
     st.session_state.scrape_time = round(elapsed / 60, 2)
@@ -471,7 +459,7 @@ st.set_page_config(page_title="Oddschecker.com Odds Scraper", page_icon="📈")
 st.markdown("# Oddschecker.com Odds Scraper")
 st.write(
     """This is a web scraper that scrapes odds from Oddschecker.com for Player Assists, Goalkeeper Saves, Anytime Goalscorer, To Score 2 Or More Goals, To Score A Hat-Trick, Total Home Goals and Total Away Goals markets for the next gameweek of the Premier League.
-    A JSON file containing the scraped odds for every match of the next gameweek is available for downloading after a successful ."""
+    A JSON file containing the scraped odds for every match of the next gameweek is available for downloading after successfully running the scraper."""
 )
 
 if "scraped_data" not in st.session_state:
@@ -554,7 +542,7 @@ if st.session_state.scraping_started and not st.session_state.scraping_done:
         time.sleep(random.uniform(2, 3))
 
         match_dict = fetch_all_match_links(next_fixtures, team_id_to_name, teams_positions_map, driver)
-        with st.spinner("Scraping...", show_time=True):
+        with st.spinner(f"Scraping odds for a total of {len(next_fixtures)} matches...", show_time=True):
             st.session_state.scraped_data, st.session_state.scraping_done, st.session_state.scrape_time = scrape_all_matches(match_dict, driver)
 
     except Exception as e: 
