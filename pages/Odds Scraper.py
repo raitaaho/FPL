@@ -369,6 +369,8 @@ def scrape_all_matches(match_dict, driver):
         match_progress_text.markdown(f"### Scraping match {match_counter} of {total_matches} - {match}")
 
         status_container = st.status(f"Scraping {match}", expanded=True)
+        odd_progress_text = status_container.empty()
+        odd_progress_bar = status_container.progress(0)
 
         #expander = st.expander(match, icon=":material/data_thresholding:")
        
@@ -420,8 +422,8 @@ def scrape_all_matches(match_dict, driver):
 
         for odd_type in odd_types:
             odd_counter += 1
-            #odd_progress_text.text(f"Scraping odd type {odd_counter} of {total_odds} - {odd_type}")
-            status_container.update(label=f"Scraping odd type {odd_counter} of {total_odds} - {odd_type}", state="running", expanded=True)
+            odd_progress_text.text(f"Scraping odd type {odd_counter} of {total_odds} - {odd_type}")
+            
             odds_dict = fetch_odds(match, odd_type, driver)
             if odds_dict:
                 #expander.success(f'Scraped odds for {odd_type}', icon="✅")
@@ -431,11 +433,11 @@ def scrape_all_matches(match_dict, driver):
                 #expander.warning(f'Could not scrape odds for {odd_type}', icon="⚠️")
                 status_container.warning(f'Could not scrape odds for {odd_type}', icon="⚠️")
             
-            #odd_progress_bar.progress(int((odd_counter / total_odds) * 100))
+            odd_progress_bar.progress(int((odd_counter / total_odds) * 100))
 
         match_progress_bar.progress(int((match_counter / total_matches) * 100))
-        #odd_progress_text.text(f"Scraped all of {total_odds} odd types in match {match}")
-        status_container.update(label=f"Scraped all of {total_odds} odd types in match {match}", state="complete", expanded=False)
+        odd_progress_text.text(f"Scraped all of {total_odds} odd types in match {match}")
+        status_container.update(label=f"Scraped match {match_counter}/{total_matches} - {match}", state="complete", expanded=False)
 
     elapsed = time.perf_counter() - start0
     match_progress_text.markdown(f"## Scraped {total_matches}/{total_matches} matches in {round(elapsed/60, 2)} minutes") 
