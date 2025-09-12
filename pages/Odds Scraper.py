@@ -315,18 +315,18 @@ def fetch_odds(match_name: str, odd_type: str, driver: "webdriver.Chrome") -> ty
                                     # Convert fractional odds to decimal odds
                                     odd_decimal = float(odd_fraction + 1) if odd_fraction else 0
                                     odds_list.append(odd_decimal)
-                            if len(odds_list) > 2:
+                            if len(odds_list) > 1:
                                 mean = sum(odds_list) / len(odds_list)
                                 std = statistics.stdev(odds_list)
-                                # Filter out odds that are more than 2 standard deviations away from the mean
+                                # Filter out odds that are more than 3 standard deviations away from the mean
                                 old_len = len(odds_list)
-                                odds_list = [odd for odd in odds_list if abs(odd - mean) <= 3 * std]
+                                odds_list = [odd for odd in odds_list if abs(odd - mean) <= 3 * std and odd > 1.01]
                                 new_len = len(odds_list)
                                 if old_len > new_len:
-                                    print(f"Deleted {old_len - new_len} {list(odds_dict)[i]} {odd_type} odd(s) from total of {old_len} odds due to differing over 3 standard deviations from the mean")
+                                    print(f"Deleted {old_len - new_len} {list(odds_dict)[i]} {odd_type} odd(s) from total of {old_len} odds due to differing over 3 standard deviations from the mean or being less than 1.01 (extremely unlikely to be a true odd)")
                                 odds_dict[list(odds_dict)[i]] = odds_list
                             else:
-                                print(f"Skipped {list(odds_dict)[i]} {odd_type} since less than 3 odds available")
+                                print(f"Skipped {list(odds_dict)[i]} {odd_type} since only one odd available")
                             i += 1
                         print("Found odds for", odd_type)
                     except Exception as e:
