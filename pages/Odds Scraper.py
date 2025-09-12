@@ -148,41 +148,34 @@ def fetch_all_match_links(
         cookiebutton = wait.until(EC.element_to_be_clickable((By.XPATH, "//button[contains(text(), 'Accept') or contains(text(), 'Hyväksy')]")))
         # Click on the accept cookies button
         cookiebutton.click()
-        time.sleep(random.uniform(1, 2))
+        time.sleep(random.uniform(2, 3))
     except TimeoutException:
         print("Prompt for accepting Cookies did not pop up")
 
     try:
-        wait = WebDriverWait(driver, 5)
-        matches_button = wait.until(EC.element_to_be_clickable((By.XPATH, "//button[contains(text(), 'Matches')]")))
-        matches_button.click()
+        wait = WebDriverWait(driver, 2)
+        span_element = wait.until(EC.element_to_be_clickable((By.XPATH, "//span[starts-with(@class, 'PopupCloseIcon')]")))
+        # Click on the <span> element (Accessing outside UK pop-up)
+        span_element.click()
         time.sleep(random.uniform(1, 2))
-    except Exception as e:
-        wait = WebDriverWait(driver, 3)
+    except (TimeoutException, ElementClickInterceptedException):
+        wait = WebDriverWait(driver, 1)
         try:
             close_ad = wait.until(EC.element_to_be_clickable((By.CLASS_NAME, 'webpush-swal2-close')))
             # Click close ad button
             close_ad.click()
             time.sleep(random.uniform(1, 2))
-        except TimeoutException:
-            print('Ad did not pop up')
-            wait = WebDriverWait(driver, 3)
-            try:
-                span_element = wait.until(EC.element_to_be_clickable((By.XPATH, "//span[starts-with(@class, 'PopupCloseIcon')]")))
-                # Click on the <span> element (Accessing outside UK pop-up)
-                span_element.click()
-                time.sleep(random.uniform(1, 2))
-            except TimeoutException:
-                print("Prompt for accessing outside UK did not pop up")
-        except ElementClickInterceptedException:
-            driver.save_screenshot('screenshot.png')
-            st.image("screenshot.png", caption="Screen")
-        try:    
-            wait = WebDriverWait(driver, 3)
-            matches_button = wait.until(EC.element_to_be_clickable((By.XPATH, "//button[contains(text(), 'Matches')]")))
-            matches_button.click()
-        except Exception as e:  
-            print("Couldn't click Matches tab ", e)
+        except (TimeoutException, ElementClickInterceptedException):
+            print('Ad did not pop up or is not clickable')
+    
+    try:    
+        wait = WebDriverWait(driver, 5)
+        matches_button = wait.until(EC.element_to_be_clickable((By.XPATH, "//button[contains(text(), 'Matches')]")))
+        matches_button.click()
+    except Exception as e:  
+        print("Couldn't click Matches tab ", e)
+        driver.save_screenshot('screenshot.png')
+        st.image("screenshot.png", caption="Screen")
 
     matches_details = {}
     for fixture in next_fixtures:
@@ -230,7 +223,7 @@ def fetch_odds(match_name: str, odd_type: str, driver: "webdriver.Chrome") -> ty
     """
 
     odds_dict = {}
-    wait = WebDriverWait(driver, 4)
+    wait = WebDriverWait(driver, 1)
     try:
         # Find the section
         header = wait.until(EC.element_to_be_clickable((By.XPATH, "//h2[text() ='" + odd_type + "']")))
@@ -388,18 +381,9 @@ def scrape_all_matches(match_dict, driver):
             continue
         try:
             driver.get(link)
-            time.sleep(random.uniform(4, 6))
-            if match_counter == 1:
-                wait = WebDriverWait(driver, 5)
-                try:
-                    span_element = wait.until(EC.element_to_be_clickable((By.XPATH, "//span[starts-with(@class, 'UK')]")))
-                    # Click on the <span> element (Accessing outside UK pop-up)
-                    span_element.click()
-                    time.sleep(random.uniform(1, 2))
-                except TimeoutException:
-                    print("Prompt for accessing outside UK did not pop up")
+            time.sleep(random.uniform(3, 4))
             
-            wait = WebDriverWait(driver, 3)
+            wait = WebDriverWait(driver, 1)
             try:
                 close_ad = wait.until(EC.element_to_be_clickable((By.CLASS_NAME, 'webpush-swal2-close')))
                 # Click close ad button
@@ -411,9 +395,6 @@ def scrape_all_matches(match_dict, driver):
             print("Couldn't open link ", link, " ", e)
             match_progress_bar.progress(int((match_counter / total_matches) * 100))
             continue
-
-        #driver.execute_script("document.body.style.zoom='60%'")
-        time.sleep(random.uniform(1, 2))
 
         headers = driver.find_elements(By.XPATH, "//h2")
         for header in headers:
@@ -429,6 +410,7 @@ def scrape_all_matches(match_dict, driver):
                         time.sleep(random.uniform(1, 2))
                     except Exception as e:
                         st.write("Couldn't collapse", header)
+
         elapsed = time.perf_counter() - start0
         elapsed_time_text.text(f"Total time elapsed: {round(elapsed/60, 2)} minutes")
 
@@ -508,22 +490,6 @@ else:
     st.info(f"Latest scraped odds file for next gameweek (GW{next_gw}) not found in Github repository")
 
 if st.button("Start scraping"):
-    # Show download button if scraping is done
-    if st.session_state.scraping_done and st.session_state.scraped_data and st.session_state.scrape_time:
-        json_data = json.dumps(st.session_state.scraped_data, indent=4)
-        current_time = datetime.now()
-        filename = f"gw{next_gw}_all_odds_{current_time.strftime('%m')}{current_time.strftime('%d')}_{current_time.strftime('%H')}{current_time.strftime('%M')}.json"
-
-        st.success(f"✅ Scraping completed in {st.session_state.scrape_time} minutes.")
-        st.download_button(
-            label="Download odds as JSON file",
-            data=json_data,
-            file_name=filename,
-            mime="text/json",
-            on_click="ignore",
-            icon=":material/download:",
-        )
-
     data, teams_data, players_data, team_id_to_name, player_id_to_name = fetch_fpl_data()
     next_fixtures = get_next_fixtures(fixtures, next_gw)
     teams_positions_map = teams_league_positions_mapping(teams_data)
@@ -567,12 +533,28 @@ if st.button("Start scraping"):
         service = get_webdriver_service(logpath=logpath)
 
         driver = webdriver.Chrome(options=options, service=service)
-        time.sleep(random.uniform(10, 12))
+        time.sleep(random.uniform(2, 3))
     except Exception as e: 
         st.write("Couldn't open Chrome")
         quit()
 
     match_dict = fetch_all_match_links(next_fixtures, team_id_to_name, teams_positions_map, driver)
     st.session_state.scraped_data, st.session_state.scraping_done, st.session_state.scrape_time = scrape_all_matches(match_dict, driver)
+
+# Show download button if scraping is done
+if st.session_state.scraping_done and st.session_state.scraped_data and st.session_state.scrape_time:
+    json_data = json.dumps(st.session_state.scraped_data, indent=4)
+    current_time = datetime.now()
+    filename = f"gw{next_gw}_all_odds_{current_time.strftime('%m')}{current_time.strftime('%d')}_{current_time.strftime('%H')}{current_time.strftime('%M')}.json"
+
+    st.success(f"✅ Scraping completed in {st.session_state.scrape_time} minutes.")
+    st.download_button(
+        label="Download odds as JSON file",
+        data=json_data,
+        file_name=filename,
+        mime="text/json",
+        on_click="ignore",
+        icon=":material/download:",
+    )
 
 
