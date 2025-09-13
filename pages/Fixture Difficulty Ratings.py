@@ -745,11 +745,9 @@ if st.session_state.styled_attack_df is not None and st.session_state.styled_def
     col1, col2 = st.columns(2)
     with col1:
         st.markdown("## Attack FDR Table")
-        #st.markdown(st.session_state.styled_attack_df.to_html(), unsafe_allow_html=True)
         st.dataframe(st.session_state.styled_attack_df)
     with col2:
         st.markdown("## Defense FDR Table")
-        #st.markdown(st.session_state.styled_defense_df.to_html(), unsafe_allow_html=True)
         st.dataframe(st.session_state.styled_defense_df)
 
 st.session_state.enable_three_team_rotation = st.checkbox("Find best rotation among three teams")
