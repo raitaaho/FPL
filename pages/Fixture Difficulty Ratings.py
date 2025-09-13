@@ -189,10 +189,10 @@ def load_previous_seasons_csv_data(teams_api_data, finished_fixtures, team_id_to
         h_gc_25 = teams_dict[team]['25/26 Goals Conceded Home']
         a_gc_25 = teams_dict[team]['25/26 Goals Conceded Away']
 
-        g_per_home = (h_goals_24 + h_goals_25) / (h_games_24 + h_games_25) if h_games_24 != 0 else (((h_goals_25 + a_goals_25) / (h_games_25 + a_games_25)) + 2.2) / 3
-        g_per_away = (a_goals_24 + a_goals_25) / (a_games_24 + a_games_25) if a_games_24 != 0 else (((h_goals_25 + a_goals_25) / (h_games_25 + a_games_25)) + 2) / 3
-        gc_per_home = (h_gc_24 + h_gc_25) / (h_games_24 + h_games_25) if h_games_24 != 0 else (((h_gc_25 + a_gc_25) / (h_games_25 + a_games_25)) + 4) / 3
-        gc_per_away = (a_gc_24 + a_gc_25) / (a_games_24 + a_games_25) if a_games_24 != 0 else (((h_gc_25 + a_gc_25) / (h_games_25 + a_games_25)) + 4.4) / 3
+        g_per_home = (h_goals_24 + h_goals_25) / (h_games_24 + h_games_25) if h_games_24 != 0 else (((h_goals_25 + a_goals_25) / (h_games_25 + a_games_25)) + 3.3) / 4
+        g_per_away = (a_goals_24 + a_goals_25) / (a_games_24 + a_games_25) if a_games_24 != 0 else (((h_goals_25 + a_goals_25) / (h_games_25 + a_games_25)) + 3) / 4
+        gc_per_home = (h_gc_24 + h_gc_25) / (h_games_24 + h_games_25) if h_games_24 != 0 else (((h_gc_25 + a_gc_25) / (h_games_25 + a_games_25)) + 6) / 4
+        gc_per_away = (a_gc_24 + a_gc_25) / (a_games_24 + a_games_25) if a_games_24 != 0 else (((h_gc_25 + a_gc_25) / (h_games_25 + a_games_25)) + 6.6) / 4
 
         teams_dict[team]['Goals per Home Game'] = float(g_per_home)
         teams_dict[team]['Goals per Away Game'] = float(g_per_away)
@@ -320,6 +320,8 @@ def calc_team_strengths(teams_data, fixtures_data, next_gws, team_id_to_name_25_
         min_val = current_season_team_data[min_team][key]
         max_val = current_season_team_data[max_team][key]
         
+        st.write(f"Min {key} is {min_team}: {min_val}")
+        st.write(f"Max {key} is {max_team}: {max_val}")
         results[key] = {
             'min': (min_team, current_season_team_data[min_team][key]),
             'max': (max_team, current_season_team_data[max_team][key]),
