@@ -199,6 +199,17 @@ def load_previous_seasons_csv_data(teams_api_data, finished_fixtures, team_id_to
         teams_dict[team]['Goals Conceded per Home Game'] = float(gc_per_home)
         teams_dict[team]['Goals Conceded per Away Game'] = float(gc_per_away)
 
+    team_data_df = pd.DataFrame.from_dict(teams_dict, orient='index')
+    team_data_df.index.name = 'Team'
+
+    # Download button
+    csv = team_data_df.to_csv(index=False).encode('utf-8')
+    st.download_button(
+        label="Download",
+        data=csv,
+        file_name="teams_stats.csv",
+        mime="text/csv"
+    )
     return teams_dict
 
 def value_to_strength(value, min_val, max_val, type):
