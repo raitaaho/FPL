@@ -204,24 +204,23 @@ def load_previous_seasons_csv_data(teams_api_data, finished_fixtures, team_id_to
 def value_to_strength(value, min_val, max_val, type):
     if value is None:
         return 2  # Default strength if no data available
-    interval_len = (max_val - min_val) / 5
 
     if type == 'att':
-        if value <= min_val + interval_len:
+        if value <= min_val + ((max_val - min_val) / 5):
             return 2
-        elif max_val - interval_len <= value <= max_val:
+        elif max_val - ((max_val - min_val) / 5) <= value <= max_val:
             return 5
-        elif max_val - 2 * interval_len <= value <= max_val - interval_len:
+        elif max_val - 2 * ((max_val - min_val) / 4) <= value <= max_val - ((max_val - min_val) / 5):
             return 4   
         else:
             return 3
         
     else:
-        if value <= min_val + interval_len:
+        if value <= min_val + ((max_val - min_val) / 5):
             return 5
-        elif max_val - interval_len <= value <= max_val:
+        elif max_val - ((max_val - min_val) / 5) <= value <= max_val:
             return 2
-        elif min_val + interval_len <= value <= min_val + 2 * interval_len:
+        elif min_val + ((max_val - min_val) / 5) <= value <= min_val + 2 * ((max_val - min_val) / 4):
             return 4
         else:
             return 3
