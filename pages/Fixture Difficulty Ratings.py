@@ -204,7 +204,7 @@ def load_previous_seasons_csv_data(teams_api_data, finished_fixtures, team_id_to
 def value_to_strength(value, min_val, max_val, type):
     if value is None:
         return 2  # Default strength if no data available
-    interval_len = (max_val - min_val) / 4
+    interval_len = (max_val - min_val) / 5
 
     if type == 'att':
         if value <= min_val + interval_len:
@@ -324,7 +324,7 @@ def calc_team_strengths(teams_data, fixtures_data, next_gws, team_id_to_name_25_
         results[key] = {
             'min': (min_team, current_season_team_data[min_team][key]),
             'max': (max_team, current_season_team_data[max_team][key]),
-            'interval': (max_val - min_val) / 4
+            'interval': (max_val - min_val) / 5
         }
 
     max_goals = max(results['Goals per Home Game']['max'][1], results['Goals per Away Game']['max'][1])
