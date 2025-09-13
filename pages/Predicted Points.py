@@ -1359,17 +1359,16 @@ def calc_specific_probs(
             over_95_saves = odds.get("Over 9.5 Goalkeeper Saves Probability", [])
 
             for s95, s85, s75, s65, s55, s45, s35, s25, s15, s05 in zip_longest(over_95_saves, over_85_saves, over_75_saves, over_65_saves, over_55_saves, over_45_saves, over_35_saves, over_25_saves, over_15_saves, over_05_saves, fillvalue=0):
-                zero_saves_prob = 1 - s05
                 ten_saves_prob = s95 
-                one_saves_prob = s05 - s15 if s05 != 0 and s15 != 0 else max((1 - s15 - zero_saves_prob), 0)
-                two_saves_prob = s15 - s25 if s15 != 0 and s25 != 0 else max((1 - one_saves_prob - zero_saves_prob), 0)
-                three_saves_prob = s25 - s35 if s25 != 0 and s35 != 0 else max((1 - two_saves_prob - one_saves_prob - zero_saves_prob), 0) 
-                four_saves_prob = s35 - s45 if s35 != 0 and s45 != 0 else max((1 - three_saves_prob - two_saves_prob - one_saves_prob - zero_saves_prob), 0)
-                five_saves_prob = s45 - s55 if s45 != 0 and s55 != 0 else max((1 - four_saves_prob - three_saves_prob - two_saves_prob - one_saves_prob - zero_saves_prob), 0)
-                six_saves_prob = s55 - s65 if s55 != 0 and s65 != 0 else max((1 - five_saves_prob - four_saves_prob - three_saves_prob - two_saves_prob - one_saves_prob - zero_saves_prob), 0)
-                seven_saves_prob = s65 - s75 if s65 != 0 and s75 != 0 else max((1 - six_saves_prob - five_saves_prob - four_saves_prob - three_saves_prob - two_saves_prob - one_saves_prob - zero_saves_prob), 0)
-                eight_saves_prob = s75 - s85 if s75 != 0 and s85 != 0 else max((1 - seven_saves_prob - six_saves_prob - five_saves_prob - four_saves_prob - three_saves_prob - two_saves_prob - one_saves_prob - zero_saves_prob), 0)
-                nine_saves_prob = s85 - s95 if s85 != 0 and s95 != 0 else max((1 - eight_saves_prob - seven_saves_prob - six_saves_prob - five_saves_prob - four_saves_prob - three_saves_prob - two_saves_prob - one_saves_prob - zero_saves_prob), 0)
+                one_saves_prob = s05 - s15 if s05 != 0 and s15 != 0 else s05
+                two_saves_prob = s15 - s25 if s15 != 0 and s25 != 0 else s15
+                three_saves_prob = s25 - s35 if s25 != 0 and s35 != 0 else s25 
+                four_saves_prob = s35 - s45 if s35 != 0 and s45 != 0 else s35
+                five_saves_prob = s45 - s55 if s45 != 0 and s55 != 0 else s45
+                six_saves_prob = s55 - s65 if s55 != 0 and s65 != 0 else s55
+                seven_saves_prob = s65 - s75 if s65 != 0 and s75 != 0 else s65
+                eight_saves_prob = s75 - s85 if s75 != 0 and s85 != 0 else s75
+                nine_saves_prob = s85 - s95 if s85 != 0 and s95 != 0 else s85
             
                 saves_average = one_saves_prob + two_saves_prob * 2 + three_saves_prob * 3 + four_saves_prob * 4 + five_saves_prob * 5 + six_saves_prob * 6 + seven_saves_prob * 7 + eight_saves_prob * 8 + nine_saves_prob * 9 + ten_saves_prob * 10
                 player_dict[player]["xSaves by Bookmaker Odds"].append(saves_average)
