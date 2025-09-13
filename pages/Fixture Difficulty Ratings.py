@@ -301,6 +301,7 @@ def calc_team_strengths(teams_data, fixtures_data, next_gws, team_id_to_name_25_
             current_season_team_data[name] = {}
             current_season_team_data[name].update({'Goals per Home Game': teams_data[name]['Goals per Home Game'], 'Goals per Away Game': teams_data[name]['Goals per Away Game'], 'Goals Conceded per Home Game': teams_data[name]['Goals Conceded per Home Game'], 'Goals Conceded per Away Game': teams_data[name]['Goals Conceded per Away Game']})
 
+            st.write(f"{name} - Goals per Home Game: {teams_data[name]['Goals per Home Game']}, Goals per Away Game: {teams_data[name]['Goals per Away Game']}, Goals Conceded per Home Game: {teams_data[name]['Goals Conceded per Home Game']}, Goals Conceded per Away Game: {teams_data[name]['Goals Conceded per Away Game']}")
     keys = [
         'Goals per Home Game',
         'Goals per Away Game',
@@ -320,8 +321,6 @@ def calc_team_strengths(teams_data, fixtures_data, next_gws, team_id_to_name_25_
         min_val = current_season_team_data[min_team][key]
         max_val = current_season_team_data[max_team][key]
         
-        st.write(f"Min {key} is {min_team}: {min_val}")
-        st.write(f"Max {key} is {max_team}: {max_val}")
         results[key] = {
             'min': (min_team, current_season_team_data[min_team][key]),
             'max': (max_team, current_season_team_data[max_team][key]),
