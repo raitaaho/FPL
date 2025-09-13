@@ -1078,21 +1078,17 @@ def get_player_over_probs(
     if odd_type == "Player Assists":
         odds_for = ['Over 0.5', 'Over 1.5', 'Over 2.5']
     else:
-        odds_for = ['Over 0.5 Saves', 'Over 1.5 Saves', 'Over 2.5 Saves', 'Over 3.5 Saves', 'Over 4.5 Saves', 'Over 5.5 Saves', 'Over 6.5 Saves', 'Over 7.5 Saves', 'Over 8.5 Saves', 'Over 9.5 Saves']
+        odds_for = ['Over 0.5', 'Over 1.5', 'Over 2.5', 'Over 3.5', 'Over 4.5', 'Over 5.5', 'Over 6.5', 'Over 7.5', 'Over 8.5', 'Over 9.5']
     try:
         for player_odd, odds_list in odds_dict.items():
             index = player_odd.find("Over")
             odd_for = player_odd[index:].strip()
+            name = player_odd[:index].strip()
             if odd_for in odds_for:
                 if len(odds_list) > 0:
                     odd = (sum(odds_list)/len(odds_list)) / (1 - bookmaker_margin)
                 else:
                     odd = 0
-                if odd_type == "Goalkeeper Saves":
-                    name = player_odd[:index].replace("Saves", '').strip()
-                    odd_for = odd_for.replace("Saves", '').strip()
-                else:
-                    name = player_odd[:index].strip()
                 probability = 1/float(odd) if odd != 0 else 0
             else:
                 continue
