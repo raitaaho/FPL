@@ -182,7 +182,7 @@ def value_to_strength(value, min_val, max_val, type):
     interval_len = (max_val - min_val) / 5
 
     if type == 'att':
-        if value <= (min_val - 0.25) + interval_len:
+        if value <= (min_val - 0.2) + interval_len:
             return 2
         elif max_val - interval_len <= value <= max_val:
             return 5
@@ -194,7 +194,7 @@ def value_to_strength(value, min_val, max_val, type):
     else:
         if value <= min_val + interval_len:
             return 5
-        elif (max_val + 0.25) - interval_len <= value <= (max_val + 0.25):
+        elif (max_val + 0.2) - interval_len <= value <= max_val:
             return 2
         elif min_val + interval_len <= value <= min_val + 2 * interval_len:
             return 4
@@ -298,7 +298,7 @@ def calc_team_strengths(teams_data, fixtures_data, next_gws, team_id_to_name_25_
         results[key] = {
             'min': (min_team, current_season_team_data[min_team][key]),
             'max': (max_team, current_season_team_data[max_team][key]),
-            'interval': (max_val - min_val) / 4
+            'interval': (max_val - min_val) / 5
         }
 
     max_goals = max(results['Goals per Home Game']['max'][1], results['Goals per Away Game']['max'][1])
