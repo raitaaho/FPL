@@ -207,21 +207,21 @@ def value_to_strength(value, min_val, max_val, type):
 
     interval = (max_val - min_val) / 5
     if type == 'att':
-        if round(value, 2) <= min_val + interval:
+        if value <= min_val + interval:
             return 2
-        elif max_val - interval <= round(value, 2) <= max_val:
+        elif max_val - interval <= value <= max_val:
             return 5
-        elif max_val - 2 * interval <= round(value, 2) <= max_val - interval:
+        elif max_val - 2 * interval <= value <= max_val - interval:
             return 4   
         else:
             return 3
         
     else:
-        if round(value, 2) <= min_val + interval:
+        if value <= min_val + interval:
             return 5
-        elif max_val - interval <= round(value, 2) <= max_val:
+        elif max_val - interval <= value <= max_val:
             return 2
-        elif min_val + interval <= round(value, 2) <= min_val + 2 * interval:
+        elif min_val + interval <= value <= min_val + 2 * interval:
             return 4
         else:
             return 3
@@ -301,7 +301,6 @@ def calc_team_strengths(teams_data, fixtures_data, next_gws, team_id_to_name_25_
             current_season_team_data[name] = {}
             current_season_team_data[name].update({'Goals per Home Game': teams_data[name]['Goals per Home Game'], 'Goals per Away Game': teams_data[name]['Goals per Away Game'], 'Goals Conceded per Home Game': teams_data[name]['Goals Conceded per Home Game'], 'Goals Conceded per Away Game': teams_data[name]['Goals Conceded per Away Game']})
 
-            st.write(f"{name} - Goals per Home Game: {teams_data[name]['Goals per Home Game']}, Goals per Away Game: {teams_data[name]['Goals per Away Game']}, Goals Conceded per Home Game: {teams_data[name]['Goals Conceded per Home Game']}, Goals Conceded per Away Game: {teams_data[name]['Goals Conceded per Away Game']}")
     keys = [
         'Goals per Home Game',
         'Goals per Away Game',
@@ -334,11 +333,11 @@ def calc_team_strengths(teams_data, fixtures_data, next_gws, team_id_to_name_25_
     min_goals_conceded = min(results['Goals Conceded per Home Game']['min'][1], results['Goals Conceded per Away Game']['min'][1])
 
     for team in current_season_team_data:
-        home_att_strength = value_to_strength(current_season_team_data[team]['Goals per Home Game'], min_goals, max_goals, type='att')
-        away_att_strength = value_to_strength(current_season_team_data[team]['Goals per Away Game'], min_goals, max_goals, type='att')
+        home_att_strength = value_to_strength(round(current_season_team_data[team]['Goals per Home Game'], 2), round(min_goals, 2), round(max_goals, 2), type='att')
+        away_att_strength = value_to_strength(round(current_season_team_data[team]['Goals per Away Game'], 2), round(min_goals, 2), round(max_goals, 2), type='att')
 
-        home_def_strength = value_to_strength(current_season_team_data[team]['Goals Conceded per Home Game'], min_goals_conceded, max_goals_conceded, type='def')
-        away_def_strength = value_to_strength(current_season_team_data[team]['Goals Conceded per Away Game'], min_goals_conceded, max_goals_conceded, type='def')
+        home_def_strength = value_to_strength(round(current_season_team_data[team]['Goals Conceded per Home Game'], 2), round(min_goals_conceded, 2), round(max_goals_conceded, 2), type='def')
+        away_def_strength = value_to_strength(round(current_season_team_data[team]['Goals Conceded per Away Game'], 2), round(min_goals_conceded, 2), round(max_goals_conceded, 2), type='def')
 
         team_strengths[team]['Home Attack Strength'] = home_att_strength
         team_strengths[team]['Away Attack Strength'] = away_att_strength
