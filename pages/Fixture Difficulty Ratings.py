@@ -207,21 +207,21 @@ def value_to_strength(value, min_val, max_val, type):
 
     interval = (max_val - min_val) / 5
     if type == 'att':
-        if value <= min_val + interval:
+        if round(value, 2) <= min_val + interval:
             return 2
-        elif max_val - interval <= value <= max_val:
+        elif max_val - interval <= round(value, 2) <= max_val:
             return 5
-        elif max_val - 2 * interval <= value <= max_val - interval:
+        elif max_val - 2 * interval <= round(value, 2) <= max_val - interval:
             return 4   
         else:
             return 3
         
     else:
-        if value <= min_val + interval:
+        if round(value, 2) <= min_val + interval:
             return 5
-        elif max_val - interval <= value <= max_val:
+        elif max_val - interval <= round(value, 2) <= max_val:
             return 2
-        elif min_val + interval <= value <= min_val + 2 * interval:
+        elif min_val + interval <= round(value, 2) <= min_val + 2 * interval:
             return 4
         else:
             return 3
