@@ -705,6 +705,11 @@ if st.button("Fetch and Visualize FDR Data"):
     df_attack = df_attack.loc[sorted_idx]
     fdr_attack_df = fdr_attack_df.loc[sorted_idx]
 
+    df_attack = df_attack.apply(lambda col: [
+        fdr_attack_df.loc[df_attack.index[i], col.name] + ' ' + val if col.name != 'FDR Sum' else val
+        for i, val in enumerate(col)
+    ], axis=0)
+
     styled_attack_df = df_attack.style.apply(lambda col: [
         color_fdr_with_sum(val, fdr_attack_df.loc[df_attack.index[i], col.name] if col.name != 'FDR Sum' else None, col.name)
         for i, val in enumerate(col)
@@ -729,6 +734,8 @@ if st.button("Fetch and Visualize FDR Data"):
         color_fdr_with_sum(val, fdr_defense_df.loc[df_defense.index[i], col.name] if col.name != 'FDR Sum' else None, col.name)
         for i, val in enumerate(col)
     ], axis=0)
+
+
 
     # Store styled tables
     st.session_state.styled_attack_df = styled_attack_df
