@@ -13,12 +13,18 @@ def get_team_template():
             'ELO': 1000,
             'Home ELO': 1000,
             'Away ELO': 1000,
-            'Home Games': 0,
-            'Away Games': 0,
-            'Home Goals': 0,
-            'Away Goals': 0,
-            'Goals Conceded Home': 0,
-            'Goals Conceded Away': 0
+            '24/25 Home Games': 0,
+            '24/25 Away Games': 0,
+            '24/25 Home Goals': 0,
+            '24/25 Away Goals': 0,
+            '24/25 Goals Conceded Home': 0,
+            '24/25 Goals Conceded Away': 0,
+            '25/26 Home Games': 0,
+            '25/26 Away Games': 0,
+            '25/26 Home Goals': 0,
+            '25/26 Away Goals': 0,
+            '25/26 Goals Conceded Home': 0,
+            '25/26 Goals Conceded Away': 0
             }
     return team_template
 
@@ -97,8 +103,8 @@ def load_previous_seasons_csv_data(teams_api_data, finished_fixtures, team_id_to
         home_overall_elo_change = (actual_home - expected_home_overall)
         away_overall_elo_change = (actual_away - expected_away_overall)
 
-        teams_dict[home_team_name]['Home Games'] += 1
-        teams_dict[away_team_name]['Away Games'] += 1
+        teams_dict[home_team_name]['24/25 Home Games'] += 1
+        teams_dict[away_team_name]['24/25 Away Games'] += 1
 
         teams_dict[home_team_name]['Home ELO'] += 20 * home_elo_change
         teams_dict[away_team_name]['Away ELO'] += 20 * away_elo_change
@@ -106,11 +112,11 @@ def load_previous_seasons_csv_data(teams_api_data, finished_fixtures, team_id_to
         teams_dict[home_team_name]['ELO'] += 20 * home_overall_elo_change
         teams_dict[away_team_name]['ELO'] += 20 * away_overall_elo_change
 
-        teams_dict[home_team_name]['Home Goals'] += home_goals
-        teams_dict[away_team_name]['Away Goals'] += away_goals
+        teams_dict[home_team_name]['24/25 Home Goals'] += home_goals
+        teams_dict[away_team_name]['24/25 Away Goals'] += away_goals
 
-        teams_dict[home_team_name]['Goals Conceded Home'] += away_goals
-        teams_dict[away_team_name]['Goals Conceded Away'] += home_goals
+        teams_dict[home_team_name]['24/25 Goals Conceded Home'] += away_goals
+        teams_dict[away_team_name]['24/25 Goals Conceded Away'] += home_goals
 
     for fixture in finished_fixtures:
         home_team_id = int(fixture['team_h'])
@@ -153,8 +159,8 @@ def load_previous_seasons_csv_data(teams_api_data, finished_fixtures, team_id_to
         home_overall_elo_change = (actual_home - expected_home_overall)
         away_overall_elo_change = (actual_away - expected_away_overall)
 
-        teams_dict[home_team_name]['Home Games'] += 1
-        teams_dict[away_team_name]['Away Games'] += 1
+        teams_dict[home_team_name]['25/26 Home Games'] += 1
+        teams_dict[away_team_name]['25/26 Away Games'] += 1
 
         teams_dict[home_team_name]['Home ELO'] += 20 * home_elo_change
         teams_dict[away_team_name]['Away ELO'] += 20 * away_elo_change
@@ -162,17 +168,36 @@ def load_previous_seasons_csv_data(teams_api_data, finished_fixtures, team_id_to
         teams_dict[home_team_name]['ELO'] += 20 * home_overall_elo_change
         teams_dict[away_team_name]['ELO'] += 20 * away_overall_elo_change
 
-        teams_dict[home_team_name]['Home Goals'] += home_goals
-        teams_dict[away_team_name]['Away Goals'] += away_goals
+        teams_dict[home_team_name]['25/26 Home Goals'] += home_goals
+        teams_dict[away_team_name]['25/26 Away Goals'] += away_goals
 
-        teams_dict[home_team_name]['Goals Conceded Home'] += away_goals
-        teams_dict[away_team_name]['Goals Conceded Away'] += home_goals
+        teams_dict[home_team_name]['25/26 Goals Conceded Home'] += away_goals
+        teams_dict[away_team_name]['25/26 Goals Conceded Away'] += home_goals
 
     for team in teams_dict:
-        teams_dict[team]['Goals per Home Game'] = float(teams_dict[team]['Home Goals']/teams_dict[team]['Home Games']) if teams_dict[team]['Home Games'] > 3 else None
-        teams_dict[team]['Goals per Away Game'] = float(teams_dict[team]['Away Goals']/teams_dict[team]['Away Games']) if teams_dict[team]['Away Games'] > 3 else None
-        teams_dict[team]['Goals Conceded per Home Game'] = float(teams_dict[team]['Goals Conceded Home']/teams_dict[team]['Home Games']) if teams_dict[team]['Home Games'] > 3 else None
-        teams_dict[team]['Goals Conceded per Away Game'] = float(teams_dict[team]['Goals Conceded Away']/teams_dict[team]['Away Games']) if teams_dict[team]['Away Games'] > 3 else None
+        h_games_24 = teams_dict[team]['24/25 Home Games']
+        a_games_24 = teams_dict[team]['24/25 Away Games']
+        h_goals_24 = teams_dict[team]['24/25 Home Goals']
+        a_goals_24 = teams_dict[team]['24/25 Away Goals']
+        h_gc_24 = teams_dict[team]['24/25 Goals Conceded Home']
+        a_gc_24 = teams_dict[team]['24/25 Goals Conceded Away']
+
+        h_games_25 = teams_dict[team]['25/26 Home Games']
+        a_games_25 = teams_dict[team]['25/26 Away Games']
+        h_goals_25 = teams_dict[team]['25/26 Home Goals']
+        a_goals_25 = teams_dict[team]['25/26 Away Goals']
+        h_gc_25 = teams_dict[team]['25/26 Goals Conceded Home']
+        a_gc_25 = teams_dict[team]['25/26 Goals Conceded Away']
+
+        g_per_home = (h_goals_24 + h_goals_25) / (h_games_24 + h_games_25) if h_games_24 != 0 else (((h_goals_25 + a_goals_25) / (h_games_25 + a_games_25)) + 2.2) / 3
+        g_per_away = (a_goals_24 + a_goals_25) / (a_games_24 + a_games_25) if a_games_24 != 0 else (((h_goals_25 + a_goals_25) / (h_games_25 + a_games_25)) + 2) / 3
+        gc_per_home = (h_gc_24 + h_gc_25) / (h_games_24 + h_games_25) if h_games_24 != 0 else (((h_gc_25 + a_gc_25) / (h_games_25 + a_games_25)) + 4) / 3
+        gc_per_away = (a_gc_24 + a_gc_25) / (a_games_24 + a_games_25) if a_games_24 != 0 else (((h_gc_25 + a_gc_25) / (h_games_25 + a_games_25)) + 4.4) / 3
+
+        teams_dict[team]['Goals per Home Game'] = float(g_per_home)
+        teams_dict[team]['Goals per Away Game'] = float(g_per_away)
+        teams_dict[team]['Goals Conceded per Home Game'] = float(gc_per_home)
+        teams_dict[team]['Goals Conceded per Away Game'] = float(gc_per_away)
 
     return teams_dict
 
@@ -182,7 +207,7 @@ def value_to_strength(value, min_val, max_val, type):
     interval_len = (max_val - min_val) / 4
 
     if type == 'att':
-        if value <= (min_val - 0.2) + interval_len:
+        if value <= min_val + interval_len:
             return 2
         elif max_val - interval_len <= value <= max_val:
             return 5
@@ -194,7 +219,7 @@ def value_to_strength(value, min_val, max_val, type):
     else:
         if value <= min_val + interval_len:
             return 5
-        elif (max_val + 0.2) - interval_len <= value <= max_val:
+        elif max_val - interval_len <= value <= max_val:
             return 2
         elif min_val + interval_len <= value <= min_val + 2 * interval_len:
             return 4
