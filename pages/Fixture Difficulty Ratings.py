@@ -199,39 +199,29 @@ def load_previous_seasons_csv_data(teams_api_data, finished_fixtures, team_id_to
         teams_dict[team]['Goals Conceded per Home Game'] = float(gc_per_home)
         teams_dict[team]['Goals Conceded per Away Game'] = float(gc_per_away)
 
-    team_data_df = pd.DataFrame.from_dict(teams_dict, orient='index')
-    team_data_df.index.name = 'Team'
-
-    # Download button
-    csv = team_data_df.to_csv(index=True).encode('utf-8')
-    st.download_button(
-        label="Download",
-        data=csv,
-        file_name="teams_stats.csv",
-        mime="text/csv"
-    )
     return teams_dict
 
 def value_to_strength(value, min_val, max_val, type):
     if value is None:
         return 2  # Default strength if no data available
 
+    interval = (max_val - min_val) / 5
     if type == 'att':
-        if value <= min_val + ((max_val - min_val) / 5):
+        if value <= min_val + interval:
             return 2
-        elif max_val - ((max_val - min_val) / 5) <= value <= max_val:
+        elif max_val - interval <= value <= max_val:
             return 5
-        elif max_val - 2 * ((max_val - min_val) / 4) <= value <= max_val - ((max_val - min_val) / 5):
+        elif max_val - 2 * interval <= value <= max_val - interval:
             return 4   
         else:
             return 3
         
     else:
-        if value <= min_val + ((max_val - min_val) / 5):
+        if value <= min_val + interval:
             return 5
-        elif max_val - ((max_val - min_val) / 5) <= value <= max_val:
+        elif max_val - interval <= value <= max_val:
             return 2
-        elif min_val + ((max_val - min_val) / 5) <= value <= min_val + 2 * ((max_val - min_val) / 4):
+        elif min_val + interval <= value <= min_val + 2 * interval:
             return 4
         else:
             return 3
