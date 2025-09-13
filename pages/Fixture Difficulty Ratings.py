@@ -460,21 +460,28 @@ def visualize_fixture_ticker(all_gws_fdr, team_id_to_name_25_26, team_id_to_shor
 def create_fixture_ticker_df(all_gws_fdr, team_id_to_short_name_25_26):
     all_gws_fdr = all_gws_fdr
     # Create a DataFrame: rows=teams, columns=GW, values=opponent short name (capitalized for home, lowercase for away)
-    data = {}
+    att_data = {}
+    def_data = {}
     for team_id, fixtures in all_gws_fdr.items():
-        team_row = {}
+        att_team_row = {}
+        def_team_row = {}
         for fixture in fixtures:
             gw = f"GW {fixture['Gameweek']}"
             venue = fixture['Venue'][0]  # 'H' or 'A'
             opp = fixture['Opponent']
             if venue == 'H':
-                cell_value = opp.upper()
+                att_cell_value = f"{fixture['Attack FDR']}: {opp.upper()}"
+                def_cell_value = f"{fixture['Defense FDR']}: {opp.upper()}"
             else:
-                cell_value = opp.lower()
-            team_row[gw] = cell_value
-        data[team_id_to_short_name_25_26[team_id]] = team_row
-    df = pd.DataFrame.from_dict(data, orient='index')
-    return df
+                att_cell_value = f"{fixture['Attack FDR']}: {opp.lower()}"
+                def_cell_value = f"{fixture['Defense FDR']}: {opp.lower()}"
+            att_team_row[gw] = att_cell_value
+            def_team_row[gw] = def_cell_value
+        att_data[team_id_to_short_name_25_26[team_id]] = att_team_row
+        def_data[team_id_to_short_name_25_26[team_id]] = def_team_row
+    att_df = pd.DataFrame.from_dict(att_data, orient='index')
+    def_df = pd.DataFrame.from_dict(def_data, orient='index')
+    return att_df, def_df
 
 def get_best_rotation(all_gws_fdr: dict, gws: int):
     best_attack_pair = "Unknown"
@@ -690,7 +697,7 @@ if st.button("Fetch and Visualize FDR Data"):
     st.session_state.all_gws_fdr = st.session_state.all_gws_fdr
 
     # --- FDR Table Logic ---
-    df_attack = create_fixture_ticker_df(st.session_state.all_gws_fdr, team_id_to_short_name)
+    df_attack, df_defense = create_fixture_ticker_df(st.session_state.all_gws_fdr, team_id_to_short_name)
     fdr_attack_df = pd.DataFrame.from_dict({
         team_id_to_short_name[team_id]: {
             f"GW {fixture['Gameweek']}": fixture['Attack FDR']
@@ -705,17 +712,11 @@ if st.button("Fetch and Visualize FDR Data"):
     df_attack = df_attack.loc[sorted_idx]
     fdr_attack_df = fdr_attack_df.loc[sorted_idx]
 
-    df_attack = df_attack.apply(lambda col: [
-        fdr_attack_df.loc[df_attack.index[i], col.name] + ' ' + val if col.name != 'FDR Sum' else val
-        for i, val in enumerate(col)
-    ], axis=0)
-
     styled_attack_df = df_attack.style.apply(lambda col: [
         color_fdr_with_sum(val, fdr_attack_df.loc[df_attack.index[i], col.name] if col.name != 'FDR Sum' else None, col.name)
         for i, val in enumerate(col)
     ], axis=0)
 
-    df_defense = create_fixture_ticker_df(st.session_state.all_gws_fdr, team_id_to_short_name)
     fdr_defense_df = pd.DataFrame.from_dict({
         team_id_to_short_name[team_id]: {
             f"GW {fixture['Gameweek']}": fixture['Defense FDR']
@@ -734,8 +735,6 @@ if st.button("Fetch and Visualize FDR Data"):
         color_fdr_with_sum(val, fdr_defense_df.loc[df_defense.index[i], col.name] if col.name != 'FDR Sum' else None, col.name)
         for i, val in enumerate(col)
     ], axis=0)
-
-
 
     # Store styled tables
     st.session_state.styled_attack_df = styled_attack_df
