@@ -476,15 +476,6 @@ def create_fixture_ticker_df(all_gws_fdr, team_id_to_short_name_25_26):
     df = pd.DataFrame.from_dict(data, orient='index')
     return df
 
-def color_fdr(val, fdr):
-    # val is like "liv (A)|5"
-    if pd.isna(val):
-        return ""
-    color_map = {2: "#00C853", 3: "#E0E0E0", 4: "#FFFF00", 5: "#D50000"}
-    color = color_map.get(fdr, "#E0E0E0")
-    opp = val.split('|')[0]
-    return f'background-color: {color}; color: black'
-
 def get_best_rotation(all_gws_fdr: dict, gws: int):
     best_attack_pair = "Unknown"
     best_defense_pair = "Unknown"
@@ -640,6 +631,13 @@ def get_best_partner_for_one_team(all_gws_fdr: dict, gws: int, team1_name: str, 
         'defense_fdr_sum': min_defense_sum
     }
 
+def color_fdr_with_sum(val, fdr, col_name):
+    if col_name == 'FDR Sum':
+        return 'background-color: #FFF9C4; font-weight: bold; color: black'
+    color_map = {2: "#00C853", 3: "#E0E0E0", 4: "#FFFF00", 5: "#D50000"}
+    color = color_map.get(fdr, "#E0E0E0")
+    return f'background-color: {color}; color: black'
+
 # --- Initialize session state ---
 if "team_id_to_name" not in st.session_state:
     st.session_state.team_id_to_name = {}
@@ -707,11 +705,6 @@ if st.button("Fetch and Visualize FDR Data"):
     df_attack = df_attack.loc[sorted_idx]
     fdr_attack_df = fdr_attack_df.loc[sorted_idx]
 
-    def color_fdr_with_sum(val, fdr, col_name):
-        if col_name == 'FDR Sum':
-            return 'background-color: #FFF9C4; font-weight: bold; color: black'
-        return color_fdr(val, fdr)
-
     styled_attack_df = df_attack.style.apply(lambda col: [
         color_fdr_with_sum(val, fdr_attack_df.loc[df_attack.index[i], col.name] if col.name != 'FDR Sum' else None, col.name)
         for i, val in enumerate(col)
@@ -732,15 +725,8 @@ if st.button("Fetch and Visualize FDR Data"):
     df_defense = df_defense.loc[sorted_idx_def]
     fdr_defense_df = fdr_defense_df.loc[sorted_idx_def]
 
-    def color_def_fdr_with_sum(val, fdr, col_name):
-        if col_name == 'FDR Sum':
-            return 'background-color: #FFF9C4; font-weight: bold; color: black'
-        color_map = {2: "#00C853", 3: "#E0E0E0", 4: "#FFFF00", 5: "#D50000"}
-        color = color_map.get(fdr, "#E0E0E0")
-        return f'background-color: {color}; color: black'
-
     styled_defense_df = df_defense.style.apply(lambda col: [
-        color_def_fdr_with_sum(val, fdr_defense_df.loc[df_defense.index[i], col.name] if col.name != 'FDR Sum' else None, col.name)
+        color_fdr_with_sum(val, fdr_defense_df.loc[df_defense.index[i], col.name] if col.name != 'FDR Sum' else None, col.name)
         for i, val in enumerate(col)
     ], axis=0)
 
@@ -753,10 +739,12 @@ if st.session_state.styled_attack_df is not None and st.session_state.styled_def
     col1, col2 = st.columns(2)
     with col1:
         st.markdown("## Attack FDR Table")
-        st.markdown(st.session_state.styled_attack_df.to_html(), unsafe_allow_html=True)
+        #st.markdown(st.session_state.styled_attack_df.to_html(), unsafe_allow_html=True)
+        st.dataframe(st.session_state.styled_attack_df)
     with col2:
         st.markdown("## Defense FDR Table")
-        st.markdown(st.session_state.styled_defense_df.to_html(), unsafe_allow_html=True)
+        #st.markdown(st.session_state.styled_defense_df.to_html(), unsafe_allow_html=True)
+        st.dataframe(st.session_state.styled_defense_df)
 
 st.session_state.enable_three_team_rotation = st.checkbox("Find best rotation among three teams")
 
