@@ -189,10 +189,10 @@ def load_previous_seasons_csv_data(teams_api_data, finished_fixtures, team_id_to
         h_gc_25 = teams_dict[team]['25/26 Goals Conceded Home']
         a_gc_25 = teams_dict[team]['25/26 Goals Conceded Away']
 
-        g_per_home = (h_goals_24 + h_goals_25) / (h_games_24 + h_games_25) if h_games_24 != 0 else (((h_goals_25 + a_goals_25) / (h_games_25 + a_games_25)) + 3.3) / 4
-        g_per_away = (a_goals_24 + a_goals_25) / (a_games_24 + a_games_25) if a_games_24 != 0 else (((h_goals_25 + a_goals_25) / (h_games_25 + a_games_25)) + 3) / 4
-        gc_per_home = (h_gc_24 + h_gc_25) / (h_games_24 + h_games_25) if h_games_24 != 0 else (((h_gc_25 + a_gc_25) / (h_games_25 + a_games_25)) + 6) / 4
-        gc_per_away = (a_gc_24 + a_gc_25) / (a_games_24 + a_games_25) if a_games_24 != 0 else (((h_gc_25 + a_gc_25) / (h_games_25 + a_games_25)) + 6.6) / 4
+        g_per_home = (h_goals_24 + h_goals_25) / (h_games_24 + h_games_25) if h_games_24 != 0 else (((h_goals_25 + a_goals_25) / (h_games_25 + a_games_25)) + 3.6) / 5
+        g_per_away = (a_goals_24 + a_goals_25) / (a_games_24 + a_games_25) if a_games_24 != 0 else (((h_goals_25 + a_goals_25) / (h_games_25 + a_games_25)) + 3.2) / 5
+        gc_per_home = (h_gc_24 + h_gc_25) / (h_games_24 + h_games_25) if h_games_24 != 0 else (((h_gc_25 + a_gc_25) / (h_games_25 + a_games_25)) + 8) / 5
+        gc_per_away = (a_gc_24 + a_gc_25) / (a_games_24 + a_games_25) if a_games_24 != 0 else (((h_gc_25 + a_gc_25) / (h_games_25 + a_games_25)) + 8.8) / 5
 
         teams_dict[team]['Goals per Home Game'] = float(g_per_home)
         teams_dict[team]['Goals per Away Game'] = float(g_per_away)
@@ -724,6 +724,7 @@ if st.button("Fetch and Visualize FDR Data"):
 
     # --- FDR Table Logic ---
     df_attack, df_defense = create_fixture_ticker_df(st.session_state.all_gws_fdr, team_id_to_short_name)
+
     fdr_attack_df = pd.DataFrame.from_dict({
         team_id_to_short_name[team_id]: {
             f"GW {fixture['Gameweek']}": fixture['Attack FDR']
