@@ -203,7 +203,7 @@ def load_previous_seasons_csv_data(teams_api_data, finished_fixtures, team_id_to
     team_data_df.index.name = 'Team'
 
     # Download button
-    csv = team_data_df.to_csv(index=False).encode('utf-8')
+    csv = team_data_df.to_csv(index=True).encode('utf-8')
     st.download_button(
         label="Download",
         data=csv,
