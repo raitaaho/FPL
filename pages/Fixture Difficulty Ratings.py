@@ -674,7 +674,7 @@ def get_best_partner_for_one_team(all_gws_fdr: dict, gws: int, team1_name: str, 
 def color_fdr_with_sum(val, fdr, col_name):
     if col_name == 'FDR Sum':
         return 'background-color: #FFF9C4; font-weight: bold; color: black'
-    color_map = {1: "#00C853", 2: "#FFFF00", 3: "#ECD81D", 4: "#CFA01F", 5: "#D50000"}
+    color_map = {1: "#008000", 2: "#00FF00", 3: "#FFFF00", 4: "#FFBF00", 5: "#D50000"}
     color = color_map.get(fdr, "#E0E0E0")
     return f'background-color: {color}; color: black'
 
