@@ -743,7 +743,7 @@ if st.button("Fetch and Visualize FDR Data"):
         for team_id, fixtures in st.session_state.all_gws_fdr.items()
     }, orient='index')
 
-    df_attack = df_attack.iloc[:, :num_gws]
+    df_attack = df_attack.iloc[:, starting_gw-next_gw : starting_gw - next_gw + num_gws]
     df_attack['FDR Sum'] = fdr_attack_df.sum(axis=1)
     sorted_idx = df_attack['FDR Sum'].sort_values().index
     df_attack = df_attack.loc[sorted_idx]
@@ -762,7 +762,7 @@ if st.button("Fetch and Visualize FDR Data"):
         for team_id, fixtures in st.session_state.all_gws_fdr.items()
     }, orient='index')
 
-    df_defense = df_defense.iloc[:, :num_gws]
+    df_defense = df_defense.iloc[:, starting_gw-next_gw : starting_gw - next_gw + num_gws]
     df_defense['FDR Sum'] = fdr_defense_df.sum(axis=1)
     sorted_idx_def = df_defense['FDR Sum'].sort_values().index
     df_defense = df_defense.loc[sorted_idx_def]
