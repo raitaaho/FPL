@@ -369,7 +369,8 @@ def calc_team_strengths(teams_data, fixtures_data, next_gw, team_id_to_name_25_2
                     'Opponent': opponent_short_name,
                     'Attack FDR': attack_fdr,
                     'Defense FDR': defense_fdr,
-                    'Venue': 'Home'
+                    'Venue': 'Home',
+                    'is_home': True
                 })
                 
             else:
@@ -385,7 +386,8 @@ def calc_team_strengths(teams_data, fixtures_data, next_gw, team_id_to_name_25_2
                     'Opponent': opponent_short_name,
                     'Attack FDR': attack_fdr,
                     'Defense FDR': defense_fdr,
-                    'Venue': 'Away'
+                    'Venue': 'Away',
+                    'is_home': False
                 })
 
             if i < 3:
@@ -526,9 +528,16 @@ def get_best_rotation(all_gws_fdr: dict, gws: int):
         fixtures1 = all_gws_fdr[team1][:gws]
         fixtures2 = all_gws_fdr[team2][:gws]
 
+        
         for gw in range(gws):
-            attack_sum += min(fixtures1[gw]['Attack FDR'], fixtures2[gw]['Attack FDR'])
-            defense_sum += min(fixtures1[gw]['Defense FDR'], fixtures2[gw]['Defense FDR'])
+            fdrs_attack = [fixtures1[gw], fixtures2[gw]]
+            fdrs_defense = [fixtures1[gw], fixtures2[gw]]
+
+            min_attack = min(fdrs_attack, key=lambda f: (f['Attack FDR'], not f.get('is_home', False)))
+            min_defense = min(fdrs_defense, key=lambda f: (f['Defense FDR'], not f.get('is_home', False)))
+
+            attack_sum += min_attack['Attack FDR']
+            defense_sum += min_defense['Defense FDR']
 
         if attack_sum < min_attack_sum:
             min_attack_sum = attack_sum
@@ -537,6 +546,7 @@ def get_best_rotation(all_gws_fdr: dict, gws: int):
         if defense_sum < min_defense_sum:
             min_defense_sum = defense_sum
             best_defense_pair = (team1, team2)
+
 
     return {
         'best_attack_rotation': best_attack_pair,
@@ -561,9 +571,16 @@ def get_best_rotation_three_teams(all_gws_fdr: dict, gws: int):
         fixtures2 = all_gws_fdr[team2][:gws]
         fixtures3 = all_gws_fdr[team3][:gws]
 
+        
         for gw in range(gws):
-            attack_sum += min(fixtures1[gw]['Attack FDR'], fixtures2[gw]['Attack FDR'], fixtures3[gw]['Attack FDR'])
-            defense_sum += min(fixtures1[gw]['Defense FDR'], fixtures2[gw]['Defense FDR'], fixtures3[gw]['Defense FDR'])
+            fdrs_attack = [fixtures1[gw], fixtures2[gw], fixtures3[gw]]
+            fdrs_defense = [fixtures1[gw], fixtures2[gw], fixtures3[gw]]
+
+            min_attack = min(fdrs_attack, key=lambda f: (f['Attack FDR'], not f.get('is_home', False)))
+            min_defense = min(fdrs_defense, key=lambda f: (f['Defense FDR'], not f.get('is_home', False)))
+
+            attack_sum += min_attack['Attack FDR']
+            defense_sum += min_defense['Defense FDR']
 
         if attack_sum < min_attack_sum:
             min_attack_sum = attack_sum
@@ -572,6 +589,7 @@ def get_best_rotation_three_teams(all_gws_fdr: dict, gws: int):
         if defense_sum < min_defense_sum:
             min_defense_sum = defense_sum
             best_defense_triplet = (team1, team2, team3)
+
 
     return {
         'best_attack_rotation': best_attack_triplet,
@@ -605,8 +623,14 @@ def get_best_partner_for_two_teams(all_gws_fdr: dict, gws: int, team1_name: str,
         defense_sum = 0
 
         for gw in range(gws):
-            attack_sum += min(fixtures1[gw]['Attack FDR'], fixtures2[gw]['Attack FDR'], fixtures3[gw]['Attack FDR'])
-            defense_sum += min(fixtures1[gw]['Defense FDR'], fixtures2[gw]['Defense FDR'], fixtures3[gw]['Defense FDR'])
+                fdrs_attack = [fixtures1[gw], fixtures2[gw], fixtures3[gw]]
+                fdrs_defense = [fixtures1[gw], fixtures2[gw], fixtures3[gw]]
+
+                min_attack = min(fdrs_attack, key=lambda f: (f['Attack FDR'], not f.get('is_home', False)))
+                min_defense = min(fdrs_defense, key=lambda f: (f['Defense FDR'], not f.get('is_home', False)))
+
+                attack_sum += min_attack['Attack FDR']
+                defense_sum += min_defense['Defense FDR']
 
         if attack_sum < min_attack_sum:
             min_attack_sum = attack_sum
@@ -646,9 +670,16 @@ def get_best_partner_for_one_team(all_gws_fdr: dict, gws: int, team1_name: str, 
         attack_sum = 0
         defense_sum = 0
 
+        
         for gw in range(gws):
-            attack_sum += min(fixtures1[gw]['Attack FDR'], fixtures2[gw]['Attack FDR'])
-            defense_sum += min(fixtures1[gw]['Defense FDR'], fixtures2[gw]['Defense FDR'])
+            fdrs_attack = [fixtures1[gw], fixtures2[gw]]
+            fdrs_defense = [fixtures1[gw], fixtures2[gw]]
+
+            min_attack = min(fdrs_attack, key=lambda f: (f['Attack FDR'], not f.get('is_home', False)))
+            min_defense = min(fdrs_defense, key=lambda f: (f['Defense FDR'], not f.get('is_home', False)))
+
+            attack_sum += min_attack['Attack FDR']
+            defense_sum += min_defense['Defense FDR']
 
         if attack_sum < min_attack_sum:
             min_attack_sum = attack_sum
@@ -657,6 +688,7 @@ def get_best_partner_for_one_team(all_gws_fdr: dict, gws: int, team1_name: str, 
         if defense_sum < min_defense_sum:
             min_defense_sum = defense_sum
             best_defense_partner = other_team_id
+
 
     return {
         'team1': team1_name,
@@ -714,12 +746,8 @@ fixtures = get_all_fixtures()
 next_gw = get_next_gw(fixtures)
 
 # --- Gameweek Input ---
-starting_gw = st.number_input("Which gameweek to use as a starting point?", min_value=next_gw, max_value=38, value=next_gw, step=1)
+starting_gw = st.number_input("Visualize FDR from gameweek", min_value=next_gw, max_value=38, value=next_gw, step=1)
 num_gws = st.number_input("How many gameweeks to show?", min_value=1, max_value=38-(starting_gw-1), value=1, step=1)
-
-#gw_range = st.slider("Select gameweeks", next_gw, 38, (next_gw, 38))
-#num_gws = gw_range[1] - gw_range[0] + 1
-#starting_gw = gw_range[0]
 
 # --- Fetch and Visualize Button ---
 if st.button("Fetch and Visualize FDR Data"):
@@ -730,7 +758,6 @@ if st.button("Fetch and Visualize FDR Data"):
     # Store in session state
     st.session_state.team_id_to_name = team_id_to_name
     st.session_state.team_id_to_short_name = team_id_to_short_name
-    st.session_state.all_gws_fdr = st.session_state.all_gws_fdr
 
     # --- FDR Table Logic ---
     df_attack, df_defense = create_fixture_ticker_df(st.session_state.all_gws_fdr, team_id_to_short_name)
