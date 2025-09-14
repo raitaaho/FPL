@@ -251,16 +251,15 @@ def get_all_fixtures() -> list:
     # Get all fixtures from FPL API
     return response.json()
 
-def get_next_gws(fixtures: list, extra_gw: str = 'False') -> list:
+def get_next_gw(fixtures: list) -> int:
     """
     Find the next gameweek(s) that have not yet started.
 
     Args:
         fixtures (list): List of fixture dictionaries from the FPL API.
-        extra_gw (str): If 'True', return the next two gameweeks; otherwise, return only the next gameweek.
 
     Returns:
-        list: A list containing the next gameweek(s) as integers.
+        int: The next gameweek as a integer.
     """
     game_weeks = defaultdict(list)
     for fixture in fixtures:
@@ -272,10 +271,8 @@ def get_next_gws(fixtures: list, extra_gw: str = 'False') -> list:
             break
     if next_gameweek is None:
         raise Exception("No upcoming gameweek found.")
-    if extra_gw == 'True':
-        return [next_gameweek, next_gameweek + 1]
     else:
-        return [next_gameweek]
+        return next_gameweek
 
 def fetch_data_from_fpl_api():
     # Fetch data from the FPL API
@@ -283,14 +280,12 @@ def fetch_data_from_fpl_api():
     teams_api_data = teams_api['teams']
     fixtures_data = requests.get("https://fantasy.premierleague.com/api/fixtures/").json()
     finished_fixtures = [fixture for fixture in fixtures_data if (fixture['finished_provisional'] == True)]
-    fixtures = get_all_fixtures()
-    next_gws = get_next_gws(fixtures, extra_gw = 'False')
     team_id_to_name_25_26 = {int(team['id']): team['name'] for team in teams_api_data}
     team_id_to_short_name_25_26 = {int(team['id']): team['short_name'] for team in teams_api_data}
 
-    return teams_api_data, fixtures_data, finished_fixtures, next_gws, team_id_to_name_25_26, team_id_to_short_name_25_26
+    return teams_api_data, fixtures_data, finished_fixtures, team_id_to_name_25_26, team_id_to_short_name_25_26
 
-def calc_team_strengths(teams_data, fixtures_data, next_gws, team_id_to_name_25_26, team_id_to_short_name_25_26):
+def calc_team_strengths(teams_data, fixtures_data, next_gw, team_id_to_name_25_26, team_id_to_short_name_25_26):
     """
     Calculate team strengths based on goals scored and conceded per game.
     
@@ -358,7 +353,7 @@ def calc_team_strengths(teams_data, fixtures_data, next_gws, team_id_to_name_25_
     all_gws_fdr = {team_id: [] for team_id in team_id_to_short_name_25_26.keys()}
     for team_id in team_id_to_short_name_25_26.keys():
         team_fixtures = [f for f in fixtures_data if f['team_h'] == team_id or f['team_a'] == team_id]
-        team_fixtures = sorted(team_fixtures, key=lambda x: x['event'])[next_gws[0] - 1:]
+        team_fixtures = sorted(team_fixtures, key=lambda x: x['event'])[next_gw - 1:]
         
         for i, fixture in enumerate(team_fixtures):
             if fixture['team_h'] == team_id:
@@ -715,14 +710,18 @@ st.set_page_config(page_title="FPL Fixture Difficulty Ratings", page_icon="📈"
 st.title("📊 Fixture Difficulty Ratings (FDR) Visualization")
 st.write("This app fetches and visualizes the Fixture Difficulty Ratings (FDR) for Premier League teams based on their performance.")
 
+fixtures = get_all_fixtures()
+next_gw = get_next_gw(fixtures)
+
 # --- Gameweek Input ---
-num_gws = st.number_input("How many gameweeks to show?", min_value=1, max_value=10, value=5, step=1)
+starting_gw = st.number_input("Which gameweek to use as a starting point?", min_value=next_gw, max_value=38, value=next_gw, step=1)
+num_gws = st.number_input("How many gameweeks to show?", min_value=1, max_value=38-(next_gw-1), value=1, step=1)
 
 # --- Fetch and Visualize Button ---
 if st.button("Fetch and Visualize FDR Data"):
-    teams_api_data, fixtures_data, finished_fixtures, next_gws, team_id_to_name, team_id_to_short_name = fetch_data_from_fpl_api()
+    teams_api_data, fixtures_data, finished_fixtures, team_id_to_name, team_id_to_short_name = fetch_data_from_fpl_api()
     teams_data = load_previous_seasons_csv_data(teams_api_data, finished_fixtures, team_id_to_name)
-    combined_fdr, st.session_state.all_gws_fdr = calc_team_strengths(teams_data, fixtures_data, next_gws, team_id_to_name, team_id_to_short_name)
+    combined_fdr, st.session_state.all_gws_fdr = calc_team_strengths(teams_data, fixtures_data, next_gw, team_id_to_name, team_id_to_short_name)
 
     # Store in session state
     st.session_state.team_id_to_name = team_id_to_name
@@ -735,7 +734,7 @@ if st.button("Fetch and Visualize FDR Data"):
     fdr_attack_df = pd.DataFrame.from_dict({
         team_id_to_short_name[team_id]: {
             f"GW {fixture['Gameweek']}": fixture['Attack FDR']
-            for fixture in fixtures[:num_gws]
+            for fixture in fixtures[starting_gw-next_gw:num_gws]
         }
         for team_id, fixtures in st.session_state.all_gws_fdr.items()
     }, orient='index')
@@ -754,7 +753,7 @@ if st.button("Fetch and Visualize FDR Data"):
     fdr_defense_df = pd.DataFrame.from_dict({
         team_id_to_short_name[team_id]: {
             f"GW {fixture['Gameweek']}": fixture['Defense FDR']
-            for fixture in fixtures[:num_gws]
+            for fixture in fixtures[starting_gw-next_gw:num_gws]
         }
         for team_id, fixtures in st.session_state.all_gws_fdr.items()
     }, orient='index')
