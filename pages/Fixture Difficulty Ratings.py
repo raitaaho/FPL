@@ -208,21 +208,29 @@ def value_to_strength(value, min_val, max_val, type):
     interval = (max_val - min_val) / 5
     if type == 'att':
         if value <= min_val + interval:
+            return 1
+        elif min_val + interval <= value <= min_val + 2 * interval:
             return 2
+        elif min_val + 2 * interval <= value <= min_val + 3 * interval:
+            return 3
+        elif min_val + 3 * interval <= value <= min_val + 4 * interval:
+            return 4   
         elif max_val - interval <= value <= max_val:
             return 5
-        elif max_val - 2 * interval <= value <= max_val - interval:
-            return 4   
         else:
             return 3
         
     else:
-        if value <= min_val + interval:
-            return 5
-        elif max_val - interval <= value <= max_val:
+        if max_val - interval <= value <= max_val:
+            return 1
+        elif max_val - 2 * interval <= value <= max_val - interval:
             return 2
-        elif min_val + interval <= value <= min_val + 2 * interval:
+        elif max_val - 3 * interval <= value <= max_val - 2 * interval:
+            return 3
+        elif max_val - 4 * interval <= value <= max_val - 3 * interval:
             return 4
+        elif min_val <= value <= min_val + interval:
+            return 5
         else:
             return 3
     
@@ -666,7 +674,7 @@ def get_best_partner_for_one_team(all_gws_fdr: dict, gws: int, team1_name: str, 
 def color_fdr_with_sum(val, fdr, col_name):
     if col_name == 'FDR Sum':
         return 'background-color: #FFF9C4; font-weight: bold; color: black'
-    color_map = {2: "#00C853", 3: "#E0E0E0", 4: "#FFFF00", 5: "#D50000"}
+    color_map = {1: "#00C853", 2: "#FFFF00", 3: "#E0E0E0", 4: "#DBB039", 5: "#D50000"}
     color = color_map.get(fdr, "#E0E0E0")
     return f'background-color: {color}; color: black'
 
