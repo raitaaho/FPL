@@ -738,7 +738,7 @@ if st.button("Fetch and Visualize FDR Data"):
     fdr_attack_df = pd.DataFrame.from_dict({
         team_id_to_short_name[team_id]: {
             f"GW {fixture['Gameweek']}": fixture['Attack FDR']
-            for fixture in fixtures[starting_gw-next_gw:num_gws]
+            for fixture in fixtures[starting_gw - next_gw : starting_gw - next_gw + num_gws]
         }
         for team_id, fixtures in st.session_state.all_gws_fdr.items()
     }, orient='index')
@@ -757,7 +757,7 @@ if st.button("Fetch and Visualize FDR Data"):
     fdr_defense_df = pd.DataFrame.from_dict({
         team_id_to_short_name[team_id]: {
             f"GW {fixture['Gameweek']}": fixture['Defense FDR']
-            for fixture in fixtures[starting_gw-next_gw:num_gws]
+            for fixture in fixtures[starting_gw - next_gw : starting_gw - next_gw + num_gws]
         }
         for team_id, fixtures in st.session_state.all_gws_fdr.items()
     }, orient='index')
