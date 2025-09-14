@@ -715,7 +715,7 @@ next_gw = get_next_gw(fixtures)
 
 # --- Gameweek Input ---
 starting_gw = st.number_input("Which gameweek to use as a starting point?", min_value=next_gw, max_value=38, value=next_gw, step=1)
-num_gws = st.number_input("How many gameweeks to show?", min_value=1, max_value=38-(next_gw-1), value=1, step=1)
+num_gws = st.number_input("How many gameweeks to show?", min_value=1, max_value=38-(starting_gw-1), value=1, step=1)
 
 # --- Fetch and Visualize Button ---
 if st.button("Fetch and Visualize FDR Data"):
