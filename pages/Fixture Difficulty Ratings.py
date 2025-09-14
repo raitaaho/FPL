@@ -814,15 +814,37 @@ if st.session_state.styled_attack_df is not None and st.session_state.styled_def
         st.markdown("## Defense FDR Table")
         st.dataframe(st.session_state.styled_defense_df)
 
+
+# --- User Inputs ---
+excluded_teams = st.multiselect(
+    "Select teams to exclude from rotation analysis",
+    options=list(st.session_state.team_id_to_name.values()),
+    help="These teams will not be considered in best partner or rotation suggestions."
+)
+
+excluded_team_ids = {
+    team_id for team_id, name in st.session_state.team_id_to_name.items()
+    if name in excluded_teams
+}
+
+filtered_gws_fdr = {
+    team_id: data for team_id, data in st.session_state.all_gws_fdr.items()
+    if team_id not in excluded_team_ids
+}
+
+# --- Rotation Settings ---
 st.session_state.enable_three_team_rotation = st.checkbox("Find best rotation among three teams")
 
-team_names = list(st.session_state.team_id_to_name.values())
+
+team_names = [name for name in st.session_state.team_id_to_name.values() if name not in excluded_teams]
+
 st.session_state.team1_input = st.selectbox("Select first team", options=team_names)
 
 if st.session_state.enable_three_team_rotation:
     st.session_state.team2_input = st.selectbox("Select second team", options=[name for name in team_names if name != st.session_state.team1_input])
 else:
     st.session_state.team2_input = None
+
 # --- Rotation Analysis Button Below Tables ---
 if st.button("Run Rotation Analysis"):
     st.markdown("## 🔄 Rotation Analysis")
