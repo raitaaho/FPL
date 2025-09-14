@@ -1436,7 +1436,7 @@ def calc_avg_bps(
                 bps += tackles_per_game * 2     # Successful tackle
 
                 # Based on historical match data, roughly 25% of all goals scored in the Premier League end up being the winning goal. 
-                bps += (0.25 * xg) * 9 # Scoring the goal that wins a match
+                bps += (0.25 * xg) * 3 # Scoring the goal that wins a match
 
                 if minutes_per_game > 60:
                     bps += 6 # Playing over 60 minutes
