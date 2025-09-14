@@ -717,6 +717,10 @@ next_gw = get_next_gw(fixtures)
 starting_gw = st.number_input("Which gameweek to use as a starting point?", min_value=next_gw, max_value=38, value=next_gw, step=1)
 num_gws = st.number_input("How many gameweeks to show?", min_value=1, max_value=38-(starting_gw-1), value=1, step=1)
 
+#gw_range = st.slider("Select gameweeks", next_gw, 38, (next_gw, 38))
+#num_gws = gw_range[1] - gw_range[0] + 1
+#starting_gw = gw_range[0]
+
 # --- Fetch and Visualize Button ---
 if st.button("Fetch and Visualize FDR Data"):
     teams_api_data, fixtures_data, finished_fixtures, team_id_to_name, team_id_to_short_name = fetch_data_from_fpl_api()
@@ -739,7 +743,7 @@ if st.button("Fetch and Visualize FDR Data"):
         for team_id, fixtures in st.session_state.all_gws_fdr.items()
     }, orient='index')
 
-    df_attack = df_attack.iloc[:, :num_gws]
+    df_attack = df_attack.iloc[:, starting_gw-next_gw:num_gws]
     df_attack['FDR Sum'] = fdr_attack_df.sum(axis=1)
     sorted_idx = df_attack['FDR Sum'].sort_values().index
     df_attack = df_attack.loc[sorted_idx]
@@ -758,7 +762,7 @@ if st.button("Fetch and Visualize FDR Data"):
         for team_id, fixtures in st.session_state.all_gws_fdr.items()
     }, orient='index')
 
-    df_defense = df_defense.iloc[:, :num_gws]
+    df_defense = df_defense.iloc[:, starting_gw-next_gw:num_gws]
     df_defense['FDR Sum'] = fdr_defense_df.sum(axis=1)
     sorted_idx_def = df_defense['FDR Sum'].sort_values().index
     df_defense = df_defense.loc[sorted_idx_def]
