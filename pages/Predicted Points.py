@@ -1059,18 +1059,12 @@ def construct_team_and_player_data(
     for position, (team_name, _) in enumerate(sorted_teams, start=1):
         team_data[team_name]['Weighted Position'] = position
 
-    
-    for team_name, data in sorted_teams:
-        st.write(team_name, data['Weighted PPG'])
-
-
-
     for team in team_data:
         st.write(f"{team}: {team_data[team]['Weighted Goals per Home Game']} Goals per Home Game")
         st.write(f"{team}: {team_data[team]['Weighted Goals per Away Game']} Goals per Away Game")
         st.write(f"{team}: {team_data[team]['Weighted Goals Conceded per Home Game']} Goals Conceded per Home Game")
         st.write(f"{team}: {team_data[team]['Weighted Goals Conceded per Away Game']} Goals Conceded per Away Game")
-        st.write(f"{team} position is {team_data[team_name]['Weighted Position']}")
+        st.write(f"{team} position is {team_data[team]['Weighted Position']}")
         team_data[team]['HFA'] = float(team_data[team]['Home ELO'] - team_data[team]['Away ELO']) if team_data[team]['Away ELO'] != 0 else 0
 
         team_data[team]['25/26 Goalkeeper Saves per Home Game'] = float(team_data[team]['25/26 Home Goalkeeper Saves']/team_data[team]['25/26 Home Games Played']) if team_data[team]['25/26 Home Games Played'] != 0 else 0
