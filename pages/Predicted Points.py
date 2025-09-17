@@ -925,8 +925,14 @@ def construct_team_and_player_data(
     for fixture in fixtures_24_25:
         home_team_id = int(fixture['team_h'])
         away_team_id = int(fixture['team_a'])
-        home_team_name = TEAM_NAMES_ODDSCHECKER.get(team_id_to_name[home_team_id], team_id_to_name[home_team_id])
-        away_team_name = TEAM_NAMES_ODDSCHECKER.get(team_id_to_name[away_team_id], team_id_to_name[away_team_id])
+        if home_team_id is None or away_team_id is None:
+            continue
+        home_team_lookup = team_id_to_name_24_25.get(home_team_id, "Unknown")
+        away_team_lookup = team_id_to_name_24_25.get(away_team_id, "Unknown")
+        home_team_key = home_team_lookup if home_team_lookup is not None else ""
+        away_team_key = away_team_lookup if away_team_lookup is not None else ""
+        home_team_name = TEAM_NAMES_ODDSCHECKER.get(home_team_key, home_team_key)
+        away_team_name = TEAM_NAMES_ODDSCHECKER.get(away_team_key, away_team_key)
         
         home_goals = fixture['team_h_score']
         away_goals = fixture['team_a_score']
