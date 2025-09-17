@@ -1059,6 +1059,11 @@ def construct_team_and_player_data(
     for position, (team_name, _) in enumerate(sorted_teams, start=1):
         team_data[team_name]['Weighted Position'] = position
 
+    
+    for team_name, data in sorted_teams:
+        st.write(team_name, data['Weighted PPG'])
+
+
 
     for team in team_data:
         st.write(f"{team}: {team_data[team]['Weighted Goals per Home Game']} Goals per Home Game")
