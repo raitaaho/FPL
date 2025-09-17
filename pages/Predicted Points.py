@@ -948,7 +948,7 @@ def construct_team_and_player_data(
         home_games_25_26 = team_data[home_team_name]['25/26 Home Games Played'] + team_data[home_team_name]['25/26 Away Games Played']
         home_total_games = home_games_24_25 + home_games_25_26
         home_raw_weight_24_25 = 1 / home_games_24_25 if home_games_24_25 != 0 else 0
-        home_raw_weight_25_26 = 2 / home_games_25_26 if home_games_25_26 != 0 else 0
+        home_raw_weight_25_26 = 1.5 / home_games_25_26 if home_games_25_26 != 0 else 0
 
         home_total_raw_weight = home_raw_weight_24_25 * home_games_24_25 + home_raw_weight_25_26 * home_games_25_26
         home_scale = home_total_games / home_total_raw_weight if home_total_raw_weight != 0 else 1
@@ -957,7 +957,7 @@ def construct_team_and_player_data(
         away_games_25_26 = team_data[away_team_name]['25/26 Home Games Played'] + team_data[away_team_name]['25/26 Away Games Played']
         away_total_games = away_games_24_25 + away_games_25_26
         away_raw_weight_24_25 = 1 / away_games_24_25 if away_games_24_25 != 0 else 0
-        away_raw_weight_25_26 = 2 / away_games_25_26 if away_games_25_26 != 0 else 0
+        away_raw_weight_25_26 = 1.5 / away_games_25_26 if away_games_25_26 != 0 else 0
 
         away_total_raw_weight = away_raw_weight_24_25 * away_games_24_25 + away_raw_weight_25_26 * away_games_25_26
         away_scale = away_total_games / away_total_raw_weight if away_total_raw_weight != 0 else 1
@@ -983,7 +983,7 @@ def construct_team_and_player_data(
         home_games_25_26 = team_data[home_team_name]['25/26 Home Games Played'] + team_data[home_team_name]['25/26 Away Games Played']
         home_total_games = home_games_24_25 + home_games_25_26
         home_raw_weight_24_25 = 1 / home_games_24_25 if home_games_24_25 != 0 else 0
-        home_raw_weight_25_26 = 2 / home_games_25_26 if home_games_25_26 != 0 else 0
+        home_raw_weight_25_26 = 1.5 / home_games_25_26 if home_games_25_26 != 0 else 0
 
         home_total_raw_weight = home_raw_weight_24_25 * home_games_24_25 + home_raw_weight_25_26 * home_games_25_26
         home_scale = home_total_games / home_total_raw_weight
@@ -992,7 +992,7 @@ def construct_team_and_player_data(
         away_games_25_26 = team_data[away_team_name]['25/26 Home Games Played'] + team_data[away_team_name]['25/26 Away Games Played']
         away_total_games = away_games_24_25 + away_games_25_26
         away_raw_weight_24_25 = 1 / away_games_24_25 if away_games_24_25 != 0 else 0
-        away_raw_weight_25_26 = 2 / away_games_25_26 if away_games_25_26 != 0 else 0
+        away_raw_weight_25_26 = 1.5 / away_games_25_26 if away_games_25_26 != 0 else 0
 
         away_total_raw_weight = away_raw_weight_24_25 * away_games_24_25 + away_raw_weight_25_26 * away_games_25_26
         away_scale = away_total_games / away_total_raw_weight
