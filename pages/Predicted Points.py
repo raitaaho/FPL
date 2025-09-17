@@ -345,7 +345,9 @@ def get_team_template(pos_24_25: int, pos: int) -> dict:
     """
     team_template = {'League Position': pos,
         '24/25 League Position': pos_24_25,
-        'Weighted PPG': 0,                                                          
+        'Weighted PPG': 0, 
+        'Weighted Goals per Game': 0,
+        'Weighted Goals Conceded per Game': 0,                                                         
         'ELO': 1000,
         'Home ELO': 1000,
         'Away ELO': 1000,
@@ -944,7 +946,7 @@ def construct_team_and_player_data(
         home_goals = fixture['team_h_score']
         away_goals = fixture['team_a_score']
 
-        home_games_24_25 = 38
+        home_games_24_25 = team_data[home_team_name]['24/25 Home Games Played'] + team_data[home_team_name]['24/25 Away Games Played']
         home_games_25_26 = team_data[home_team_name]['25/26 Home Games Played'] + team_data[home_team_name]['25/26 Away Games Played']
         home_total_games = home_games_24_25 + home_games_25_26
         home_weight_24_25 = home_games_24_25 / home_games_25_26 if home_games_25_26 != 0 else 0
@@ -955,7 +957,7 @@ def construct_team_and_player_data(
         home_total_raw_weight = home_raw_weight_24_25 * home_games_24_25 + home_raw_weight_25_26 * home_games_25_26
         home_scale = home_total_games / home_total_raw_weight if home_total_raw_weight != 0 else 1
 
-        away_games_24_25 = 38
+        away_games_24_25 = team_data[away_team_name]['24/25 Home Games Played'] + team_data[away_team_name]['24/25 Away Games Played']
         away_games_25_26 = team_data[away_team_name]['25/26 Home Games Played'] + team_data[away_team_name]['25/26 Away Games Played']
         away_total_games = away_games_24_25 + away_games_25_26
         away_weight_24_25 = away_games_24_25 / away_games_25_26 if away_games_25_26 != 0 else 0
@@ -965,6 +967,12 @@ def construct_team_and_player_data(
 
         away_total_raw_weight = away_raw_weight_24_25 * away_games_24_25 + away_raw_weight_25_26 * away_games_25_26
         away_scale = away_total_games / away_total_raw_weight if away_total_raw_weight != 0 else 1
+
+        team_data[home_team_name]['Weighted Goals per Game'] += (home_scale * home_raw_weight_24_25 * home_goals) / home_total_games
+        team_data[away_team_name]['Weighted Goals per Game'] += (away_scale * away_raw_weight_24_25 * away_goals) / away_total_games
+
+        team_data[home_team_name]['Weighted Goals Conceded per Game'] += (home_scale * home_raw_weight_24_25 * away_goals) / home_total_games
+        team_data[away_team_name]['Weighted Goals Conceded per Game'] += (away_scale * away_raw_weight_24_25 * home_goals) / away_total_games
 
         if home_goals > away_goals:
             team_data[home_team_name]['Weighted PPG'] += (home_scale * home_raw_weight_24_25 * 3) / home_total_games
@@ -983,7 +991,7 @@ def construct_team_and_player_data(
         home_goals = fixture['team_h_score']
         away_goals = fixture['team_a_score']
 
-        home_games_24_25 = 38
+        home_games_24_25 = team_data[home_team_name]['24/25 Home Games Played'] + team_data[home_team_name]['24/25 Away Games Played']
         home_games_25_26 = team_data[home_team_name]['25/26 Home Games Played'] + team_data[home_team_name]['25/26 Away Games Played']
         home_total_games = home_games_24_25 + home_games_25_26
         home_weight_24_25 = home_games_24_25 / home_games_25_26 if home_games_25_26 != 0 else 0
@@ -994,7 +1002,7 @@ def construct_team_and_player_data(
         home_total_raw_weight = home_raw_weight_24_25 * home_games_24_25 + home_raw_weight_25_26 * home_games_25_26
         home_scale = home_total_games / home_total_raw_weight
 
-        away_games_24_25 = 38
+        away_games_24_25 = team_data[away_team_name]['24/25 Home Games Played'] + team_data[away_team_name]['24/25 Away Games Played']
         away_games_25_26 = team_data[away_team_name]['25/26 Home Games Played'] + team_data[away_team_name]['25/26 Away Games Played']
         away_total_games = away_games_24_25 + away_games_25_26
         away_weight_24_25 = away_games_24_25 / away_games_25_26 if away_games_25_26 != 0 else 0
@@ -1005,6 +1013,12 @@ def construct_team_and_player_data(
         away_total_raw_weight = away_raw_weight_24_25 * away_games_24_25 + away_raw_weight_25_26 * away_games_25_26
         away_scale = away_total_games / away_total_raw_weight
 
+        team_data[home_team_name]['Weighted Goals per Game'] += (home_scale * home_raw_weight_25_26 * home_goals) / home_total_games
+        team_data[away_team_name]['Weighted Goals per Game'] += (away_scale * away_raw_weight_25_26 * away_goals) / away_total_games
+
+        team_data[home_team_name]['Weighted Goals Conceded per Game'] += (home_scale * home_raw_weight_25_26 * away_goals) / home_total_games
+        team_data[away_team_name]['Weighted Goals Conceded per Game'] += (away_scale * away_raw_weight_25_26 * home_goals) / away_total_games
+
         if home_goals > away_goals:
             team_data[home_team_name]['Weighted PPG'] += (home_scale * home_raw_weight_25_26 * 3) / home_total_games
         elif away_goals > home_goals:
@@ -1014,7 +1028,8 @@ def construct_team_and_player_data(
             team_data[away_team_name]['Weighted PPG'] += (away_scale * away_raw_weight_25_26) / away_total_games
 
     for team in team_data:
-        st.write(f"{team}: {team_data[team]['Weighted PPG']} PPG")
+        st.write(f"{team}: {team_data[team]['Weighted Goals per Game']} Goals per Game")
+        st.write(f"{team}: {team_data[team]['Weighted Goals per Conceded Game']} Goals Conceded per Game")
         team_data[team]['HFA'] = float(team_data[team]['Home ELO'] - team_data[team]['Away ELO']) if team_data[team]['Away ELO'] != 0 else 0
 
         team_data[team]['25/26 Goalkeeper Saves per Home Game'] = float(team_data[team]['25/26 Home Goalkeeper Saves']/team_data[team]['25/26 Home Games Played']) if team_data[team]['25/26 Home Games Played'] != 0 else 0
