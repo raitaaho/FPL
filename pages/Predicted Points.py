@@ -645,6 +645,9 @@ def construct_team_and_player_data(
         home_pos_range = get_pos_range(home_pos_24_25)
         away_pos_range = get_pos_range(away_pos_24_25)
 
+        team_data[home_team_name]['24/25 Home Games Played'] += 1
+        team_data[away_team_name]['24/25 Away Games Played'] += 1
+
         home_games_against_string = f"24/25 Games Against {away_pos_range}"
         home_goals_against_string = f"24/25 Goals Against {away_pos_range}"
         home_goals_conceded_against_string = f"24/25 Goals Conceded Against {away_pos_range}"
