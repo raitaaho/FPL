@@ -1055,11 +1055,17 @@ def construct_team_and_player_data(
             team_data[home_team_name]['Weighted PPG'] += (home_total_scale * home_raw_total_weight_25_26) / home_total_games
             team_data[away_team_name]['Weighted PPG'] += (away_total_scale * away_raw_total_weight_25_26) / away_total_games
 
+    sorted_teams = sorted(team_data.items(), key=lambda x: x[1]['Weighted PPG'], reverse=True)
+    for position, (team_name, _) in enumerate(sorted_teams, start=1):
+        team_data[team_name]['Weighted Position'] = position
+
+
     for team in team_data:
         st.write(f"{team}: {team_data[team]['Weighted Goals per Home Game']} Goals per Home Game")
         st.write(f"{team}: {team_data[team]['Weighted Goals per Away Game']} Goals per Away Game")
         st.write(f"{team}: {team_data[team]['Weighted Goals Conceded per Home Game']} Goals Conceded per Home Game")
         st.write(f"{team}: {team_data[team]['Weighted Goals Conceded per Away Game']} Goals Conceded per Away Game")
+        st.write(f"{team} position is {team_data[team_name]['Weighted Position']}")
         team_data[team]['HFA'] = float(team_data[team]['Home ELO'] - team_data[team]['Away ELO']) if team_data[team]['Away ELO'] != 0 else 0
 
         team_data[team]['25/26 Goalkeeper Saves per Home Game'] = float(team_data[team]['25/26 Home Goalkeeper Saves']/team_data[team]['25/26 Home Games Played']) if team_data[team]['25/26 Home Games Played'] != 0 else 0
