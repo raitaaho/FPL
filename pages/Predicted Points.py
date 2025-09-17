@@ -1029,7 +1029,7 @@ def construct_team_and_player_data(
 
     for team in team_data:
         st.write(f"{team}: {team_data[team]['Weighted Goals per Game']} Goals per Game")
-        st.write(f"{team}: {team_data[team]['Weighted Goals per Conceded Game']} Goals Conceded per Game")
+        st.write(f"{team}: {team_data[team]['Weighted Goals Conceded per Game']} Goals Conceded per Game")
         team_data[team]['HFA'] = float(team_data[team]['Home ELO'] - team_data[team]['Away ELO']) if team_data[team]['Away ELO'] != 0 else 0
 
         team_data[team]['25/26 Goalkeeper Saves per Home Game'] = float(team_data[team]['25/26 Home Goalkeeper Saves']/team_data[team]['25/26 Home Games Played']) if team_data[team]['25/26 Home Games Played'] != 0 else 0
