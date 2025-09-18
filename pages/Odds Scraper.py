@@ -359,7 +359,7 @@ def scrape_all_matches(match_dict, driver):
     total_matches = len(match_dict)
 
     odd_types = ['Player Assists', 'Goalkeeper Saves', 'To Score A Hat-Trick', 'Anytime Goalscorer', 'Total Home Goals', 'Total Away Goals', 'To Score 2 Or More Goals']
-    total_odds= len(odd_types)
+    total_odds= len(odd_types) + 1
 
     for match, details in match_dict.items():
         total_odd_counter = 0
@@ -425,6 +425,33 @@ def scrape_all_matches(match_dict, driver):
                 status_container.warning(f'Could not scrape odds for **{odd_type}**', icon="⚠️")
             
             odd_progress_bar.progress(int((total_odd_counter / total_odds) * 100))
+
+        total_odd_counter += 1
+        odd_progress_text.markdown(f"Scraping odds for **Clean Sheet**")
+        try:
+            stats_betting_button = driver.find_element(By.XPATH, "//button[text()='Stats Betting']")
+            driver.execute_script("arguments[0].scrollIntoView()", stats_betting_button)
+            time.sleep(random.uniform(1, 2))
+            stats_betting_button.click()
+            time.sleep(random.uniform(1, 2))
+
+            odds_dict = fetch_odds(match, "Clean Sheet", driver)
+            if odds_dict:
+                scraped_odd_counter += 1
+                status_container.success(f'Scraped odds for **Clean Sheet**', icon="✅")
+                match_dict[match]["Clean Sheet"] = odds_dict
+            else:
+                status_container.warning(f'Could not scrape odds for **Clean Sheet**', icon="⚠️")
+
+                driver.save_screenshot('screenshot.png')
+                status_container.image("screenshot.png", caption="Screen")
+            
+            odd_progress_bar.progress(int((total_odd_counter / total_odds) * 100))
+        except Exception as e:
+            status_container.warning(f'Could not click on Stats Betting for **Clean Sheet** odds', icon="⚠️")
+
+            driver.save_screenshot('screenshot.png')
+            status_container.image("screenshot.png", caption="Screen")
 
         match_progress_bar.progress(int((match_counter / total_matches) * 100))
         odd_progress_text.markdown(f":material/check: Scraped **{scraped_odd_counter} out of {total_odds}** odd types")
