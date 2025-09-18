@@ -1071,12 +1071,12 @@ def construct_team_and_player_data(
                             player_data[player]['25/26 Goalkeeper Saves for Current Team'] += int(pair['value'])
 
     for team in team_data:
-        if team_data[team]['24/25 Home Games Played'] != 0 and team_data[team]['24/25 Away Games Played'] != 0:
-            team_data[home_team_name]['Weighted Goals per Home Game'] = (team_data[home_team_name]['Weighted Goals per Home Game'] + team_data[away_team_name]['Weighted Goals per Away Game']) / 2
-            team_data[away_team_name]['Weighted Goals per Away Game'] = (team_data[home_team_name]['Weighted Goals per Home Game'] + team_data[away_team_name]['Weighted Goals per Away Game']) / 2
+        if team_data[team]['24/25 Home Games Played'] == 0 and team_data[team]['24/25 Away Games Played'] == 0:
+            team_data[team]['Weighted Goals per Home Game'] = (team_data[team]['Weighted Goals per Home Game'] + team_data[team]['Weighted Goals per Away Game']) / 2
+            team_data[team]['Weighted Goals per Away Game'] = (team_data[team]['Weighted Goals per Home Game'] + team_data[team]['Weighted Goals per Away Game']) / 2
 
-            team_data[home_team_name]['Weighted Goals Conceded per Home Game'] = (team_data[home_team_name]['Weighted Goals Conceded per Home Game'] + team_data[away_team_name]['Weighted Goals Conceded per Away Game']) / 2
-            team_data[away_team_name]['Weighted Goals Conceded per Away Game'] = (team_data[home_team_name]['Weighted Goals Conceded per Home Game'] + team_data[away_team_name]['Weighted Goals Conceded per Away Game']) / 2
+            team_data[team]['Weighted Goals Conceded per Home Game'] = (team_data[team]['Weighted Goals Conceded per Home Game'] + team_data[team]['Weighted Goals Conceded per Away Game']) / 2
+            team_data[team]['Weighted Goals Conceded per Away Game'] = (team_data[team]['Weighted Goals Conceded per Home Game'] + team_data[team]['Weighted Goals Conceded per Away Game']) / 2
 
         st.write(f"{team} position is {team_data[team]['Weighted Position']}")
         st.write(f"{team} Goals per Home game is {team_data[team]['Weighted Goals per Home Game']}")
