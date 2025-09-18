@@ -1112,13 +1112,6 @@ def construct_team_and_player_data(
             team_data[team]['Goals Conceded per Game Against 13-16'] = float((team_data[team]['24/25 Goals Conceded Against 13-16'] + team_data[team]['25/26 Goals Conceded Against 13-16'])/(team_data[team]['24/25 Games Against 13-16'] + team_data[team]['25/26 Games Against 13-16'])) 
             team_data[team]['Goals per Game Against 17-20'] = float((team_data[team]['24/25 Goals Against 17-20'] + team_data[team]['25/26 Goals Against 17-20'])/(team_data[team]['24/25 Games Against 17-20'] + team_data[team]['25/26 Games Against 17-20']))
             team_data[team]['Goals Conceded per Game Against 17-20'] = float((team_data[team]['24/25 Goals Conceded Against 17-20'] + team_data[team]['25/26 Goals Conceded Against 17-20'])/(team_data[team]['24/25 Games Against 17-20'] + team_data[team]['25/26 Games Against 17-20'])) 
-            
-    for team in team_data:
-        st.write(f"{team} position is {team_data[team]['Weighted Position']} with {team_data[team]['Weighted PPG']} ppg")
-        st.write(f"{team} Goals per Home game is {team_data[team]['Weighted Goals per Home Game']}")
-        st.write(f"{team} Goals per Away game is {team_data[team]['Weighted Goals per Away Game']}")
-        st.write(f"{team} Goals Conceded per Home game is {team_data[team]['Weighted Goals Conceded per Home Game']}")
-        st.write(f"{team} Goals Conceded per Away game is {team_data[team]['Weighted Goals Conceded per Away Game']}")
         
     for player in player_data:
         games_played = max((player_data[player]['Home Games Played for Current Team'] + player_data[player]['Away Games Played for Current Team']), player_data[player]['Starts'])
