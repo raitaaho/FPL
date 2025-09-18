@@ -1284,8 +1284,6 @@ def get_total_goals_over_probs(odds_dict: dict, team: str) -> typing.Optional[di
                 team_6_goal_prob = team_over_55_prob
 
                 bookmaker_margin = (team_0_goal_prob + team_1_goal_prob + team_2_goal_prob + team_3_goal_prob + team_4_goal_prob + team_5_goal_prob + team_6_goal_prob) - 1
-
-                st.write(f"Bookmaker margin: {bookmaker_margin}")
                 
             except Exception as e:
                 print(f"Couldnt calculate probabilities for Total {team.capitalize()} Goals", e)
@@ -1862,6 +1860,22 @@ def initialize_predicted_points_df(all_odds_dict, fixtures, next_gw, saves_butto
 
             if odd_type == 'Total Away Goals':
                 total_away_goals_probs = get_total_goals_over_probs(odds, "away")
+
+            if odd_type == 'Clean Sheet':
+                home_cs_odds = odds.get(home_team, [])
+                away_cs_odds = odds.get(away_team, [])
+
+                ave_home_cs_odd = sum(home_cs_odds)/len(home_cs_odds) if len(home_cs_odds) != 0 else 0
+                ave_away_cs_odd = sum(away_cs_odds)/len(away_cs_odds) if len(away_cs_odds) != 0 else 0
+
+                home_cs_prob = 1 / ave_home_cs_odd if ave_home_cs_odd != 0 else 0
+                away_cs_prob = 1 / ave_away_cs_odd if ave_away_cs_odd != 0 else 0
+
+                for player in player_dict:
+                    if player_dict[player].get('Team', ['Unknown'])[0] == home_team:
+                        player_dict[player]['Clean Sheet Probability by Stats Betting Market'].append(home_cs_prob)
+                    if player_dict[player].get('Team', ['Unknown'])[0] == away_team:
+                        player_dict[player]['Clean Sheet Probability by Stats Betting Market'].append(away_cs_prob)
 
         total_combined_goals_dict = total_home_goals_probs | total_away_goals_probs if total_home_goals_probs and total_away_goals_probs else None
         if total_combined_goals_dict:
