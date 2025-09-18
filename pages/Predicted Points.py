@@ -1262,6 +1262,8 @@ def get_total_goals_over_probs(odds_dict: dict, team: str) -> typing.Optional[di
                 team_6_goal_prob = team_over_55_prob
 
                 bookmaker_margin = (team_0_goal_prob + team_1_goal_prob + team_2_goal_prob + team_3_goal_prob + team_4_goal_prob + team_5_goal_prob + team_6_goal_prob) - 1
+
+                st.write(f"Bookmaker margin: {bookmaker_margin}")
                 
             except Exception as e:
                 print(f"Couldnt calculate probabilities for Total {team.capitalize()} Goals", e)
