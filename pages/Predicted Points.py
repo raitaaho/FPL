@@ -1072,17 +1072,17 @@ def construct_team_and_player_data(
 
     for team in team_data:
         if team_data[team]['24/25 Home Games Played'] == 0 and team_data[team]['24/25 Away Games Played'] == 0:
-            team_data[team]['Weighted Goals per Home Game'] = (team_data[team]['Weighted Goals per Home Game'] + team_data[team]['Weighted Goals per Away Game']) / 2
-            team_data[team]['Weighted Goals per Away Game'] = (team_data[team]['Weighted Goals per Home Game'] + team_data[team]['Weighted Goals per Away Game']) / 2
+            weigh_g_per_home = team_data[team]['Weighted Goals per Home Game']
+            weigh_g_per_away = team_data[team]['Weighted Goals per Away Game']
+            weigh_gc_per_home = team_data[team]['Weighted Goals Conceded per Home Game']
+            weigh_gc_per_away = team_data[team]['Weighted Goals Conceded per Away Game']
 
-            team_data[team]['Weighted Goals Conceded per Home Game'] = (team_data[team]['Weighted Goals Conceded per Home Game'] + team_data[team]['Weighted Goals Conceded per Away Game']) / 2
-            team_data[team]['Weighted Goals Conceded per Away Game'] = (team_data[team]['Weighted Goals Conceded per Home Game'] + team_data[team]['Weighted Goals Conceded per Away Game']) / 2
+            team_data[team]['Weighted Goals per Home Game'] = (weigh_g_per_home + weigh_g_per_away) / 2
+            team_data[team]['Weighted Goals per Away Game'] = (weigh_g_per_home + weigh_g_per_away) / 2
 
-        st.write(f"{team} position is {team_data[team]['Weighted Position']}")
-        st.write(f"{team} Goals per Home game is {team_data[team]['Weighted Goals per Home Game']}")
-        st.write(f"{team} Goals per Away game is {team_data[team]['Weighted Goals per Away Game']}")
-        st.write(f"{team} Goals Conceded per Home game is {team_data[team]['Weighted Goals Conceded per Home Game']}")
-        st.write(f"{team} Goals Conceded per Away game is {team_data[team]['Weighted Goals Conceded per Away Game']}")
+            team_data[team]['Weighted Goals Conceded per Home Game'] = (weigh_gc_per_home + weigh_gc_per_away) / 2
+            team_data[team]['Weighted Goals Conceded per Away Game'] = (weigh_gc_per_home + weigh_gc_per_away) / 2
+
         team_data[team]['HFA'] = float(team_data[team]['Home ELO'] - team_data[team]['Away ELO']) if team_data[team]['Away ELO'] != 0 else 0
 
         team_data[team]['25/26 Goalkeeper Saves per Home Game'] = float(team_data[team]['25/26 Home Goalkeeper Saves']/team_data[team]['25/26 Home Games Played']) if team_data[team]['25/26 Home Games Played'] != 0 else 0
