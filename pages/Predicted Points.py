@@ -1144,7 +1144,7 @@ def get_player_over_probs(
         home_team (str): Home team name.
         away_team (str): Away team name.
     """
-    bookmaker_margin = 0.05
+    bookmaker_margin = 0.07
     if odd_type == "Player Assists":
         odds_for = ['Over 0.5', 'Over 1.5', 'Over 2.5']
     else:
@@ -1220,14 +1220,15 @@ def get_total_goals_over_probs(odds_dict: dict, team: str) -> typing.Optional[di
     Returns:
         dict: Probabilities for 0-6+ goals scored by the team.
     """
-    bookmaker_margin = 0.05
     try:
-        team_over_05_odd, team_over_15_odd, team_over_25_odd, team_over_35_odd, team_over_45_odd, team_over_55_odd = 0,0,0,0,0,0
+        team_under_05_odd, team_over_05_odd, team_over_15_odd, team_over_25_odd, team_over_35_odd, team_over_45_odd, team_over_55_odd = 0,0,0,0,0,0,0
         for team_odd, odds_list in odds_dict.items():
             if len(odds_list) != 0:
-                ave_odd = (sum(odds_list)/len(odds_list)) / (1 - bookmaker_margin)
+                ave_odd = sum(odds_list)/len(odds_list)
             else:
                 ave_odd = 0
+            if team_odd == "Under 0.5":
+                team_under_05_odd = ave_odd
             if team_odd == "Over 0.5":
                 team_over_05_odd = ave_odd
             if team_odd == "Over 1.5":
@@ -1243,6 +1244,7 @@ def get_total_goals_over_probs(odds_dict: dict, team: str) -> typing.Optional[di
 
         try:
             team_over_05_prob = 1/float(team_over_05_odd) if team_over_05_odd != 0 else 0
+            team_under_05_prob = 1/float(team_under_05_odd) if team_under_05_odd != 0 else 1 - team_over_05_prob
             team_over_15_prob = 1/float(team_over_15_odd) if team_over_15_odd != 0 else 0
             team_over_25_prob = 1/float(team_over_25_odd) if team_over_25_odd != 0 else 0
             team_over_35_prob = 1/float(team_over_35_odd) if team_over_35_odd != 0 else 0
@@ -1250,13 +1252,16 @@ def get_total_goals_over_probs(odds_dict: dict, team: str) -> typing.Optional[di
             team_over_55_prob = 1/float(team_over_55_odd) if team_over_55_odd != 0 else 0
 
             try:
-                team_0_goal_prob = 1 - team_over_05_prob if team_over_05_prob != 0 else 0
+                team_0_goal_prob = team_under_05_prob
                 team_6_goal_prob = team_over_55_prob
                 team_1_goal_prob = max(team_over_05_prob - team_over_15_prob, 0) if team_over_05_prob != 0 and team_over_15_prob != 0 else team_over_05_prob
                 team_2_goal_prob = max(team_over_15_prob - team_over_25_prob, 0) if team_over_15_prob != 0 and team_over_25_prob != 0 else team_over_15_prob
                 team_3_goal_prob = max(team_over_25_prob - team_over_35_prob, 0) if team_over_25_prob != 0 and team_over_35_prob != 0 else team_over_25_prob
                 team_4_goal_prob = max(team_over_35_prob - team_over_45_prob, 0) if team_over_35_prob != 0 and team_over_45_prob != 0 else team_over_35_prob
                 team_5_goal_prob = max(team_over_45_prob - team_over_55_prob, 0) if team_over_45_prob != 0 and team_over_55_prob != 0 else team_over_45_prob
+                team_6_goal_prob = team_over_55_prob
+
+                bookmaker_margin = (team_0_goal_prob + team_1_goal_prob + team_2_goal_prob + team_3_goal_prob + team_4_goal_prob + team_5_goal_prob + team_6_goal_prob) - 1
                 
             except Exception as e:
                 print(f"Couldnt calculate probabilities for Total {team.capitalize()} Goals", e)
@@ -1264,7 +1269,7 @@ def get_total_goals_over_probs(odds_dict: dict, team: str) -> typing.Optional[di
         except Exception as e:
             print(f"Couldnt calculate probabilities for Total {team.capitalize()} Over Goals", e)
             return None  
-        return {team + '_0_goal_prob': team_0_goal_prob, team + '_1_goal_prob': team_1_goal_prob, team + '_2_goals_prob': team_2_goal_prob, team + '_3_goals_prob': team_3_goal_prob, team + '_4_goals_prob': team_4_goal_prob, team + '_5_goals_prob': team_5_goal_prob, team + '_6_goals_prob': team_6_goal_prob}      
+        return {team + '_0_goal_prob': team_0_goal_prob/(1 + bookmaker_margin), team + '_1_goal_prob': team_1_goal_prob/(1 + bookmaker_margin), team + '_2_goals_prob': team_2_goal_prob/(1 + bookmaker_margin), team + '_3_goals_prob': team_3_goal_prob/(1 + bookmaker_margin), team + '_4_goals_prob': team_4_goal_prob/(1 + bookmaker_margin), team + '_5_goals_prob': team_5_goal_prob/(1 + bookmaker_margin), team + '_6_goals_prob': team_6_goal_prob/(1 + bookmaker_margin)}      
     except Exception as e:
         print(f"Couldnt find probabilities from odds_dict for Total {team.capitalize()} Over Goals", e)
         return None
@@ -1315,11 +1320,12 @@ def add_probs_to_dict(
         home_team (str): Home team name.
         away_team (str): Away team name.
     """
+    bookmaker_margin = 0.05
     try:
         for player_odd, odds_list in odds_dict.items():
             name = player_odd.strip()
             if len(odds_list) != 0:
-                odd = sum(odds_list)/len(odds_list)
+                odd = (sum(odds_list)/len(odds_list)) / (1 - bookmaker_margin)
             else:
                 odd = 0
             probability = 1/float(odd) if odd != 0 else 0
