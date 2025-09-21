@@ -1688,6 +1688,7 @@ def calc_points(player_dict: dict, saves_button: bool) -> None:
             ass_average_historical = odds.get("xA by Historical Data", []) 
             ass_average = []        
             cs_odds_bookmaker = odds.get("Clean Sheet Probability by Bookmaker Odds", [])
+            cs_odds_statsbetting = odds.get("Clean Sheet Probability by Stats Betting Market", [])
             cs_odds_historical = odds.get("Clean Sheet Probability by Historical Data", [])
             cs_odds = []
             position = odds.get("Position", ["Unknown"])[0]
@@ -1724,10 +1725,10 @@ def calc_points(player_dict: dict, saves_button: bool) -> None:
                 saves_avg = 0
 
             points_all_gws = []
-            for g1, g2, a1, a2, cs1, cs2, ga1, ga2, s1, bp1, opp in zip_longest(goals_average_bookmaker, goals_average_historical, ass_average_bookmaker, ass_average_historical, cs_odds_bookmaker, cs_odds_historical, goals_conceded_team_bookmaker, goals_conceded_team_historical, saves_average_bookmaker, bonus_points, opponents, fillvalue=-1):
+            for g1, g2, a1, a2, cs1, cs2, cs3, ga1, ga2, s1, bp1, opp in zip_longest(goals_average_bookmaker, goals_average_historical, ass_average_bookmaker, ass_average_historical, cs_odds_bookmaker, cs_odds_statsbetting, cs_odds_historical, goals_conceded_team_bookmaker, goals_conceded_team_historical, saves_average_bookmaker, bonus_points, opponents, fillvalue=-1):
                 goals_average.append(g1 if g1 != -1 else max(g2, 0))
                 ass_average.append(a1 if a1 != -1 else max(a2, 0))
-                cs_odds.append(cs1 if cs1 != -1 else max(cs2, 0))
+                cs_odds.append(cs1 if cs1 != -1 else cs2 if cs2 != -1 else max(cs3, 0))
                 goals_conceded_team.append(ga1 if ga1 != -1 else max(ga2, 0))
                 saves_average.append(s1 if s1 != -1 else saves_avg)
 
