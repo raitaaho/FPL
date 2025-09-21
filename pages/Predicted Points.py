@@ -1636,10 +1636,10 @@ def calc_team_xgs(
     home_goals_conceded_p90_24_25 = team_stats_dict[home_team]['24/25 Goals Conceded per Home Game']
     away_goals_conceded_p90_24_25 = team_stats_dict[away_team]['24/25 Goals Conceded per Away Game']
 
-    home_weighted_goals_p90 = team_stats_dict[home_team]['Weighed Goals per Home Game']
-    away_weighted_goals_p90 = team_stats_dict[away_team]['Weighed Goals per Away Game']
-    home_weighted_goals_conceded_p90 = team_stats_dict[home_team]['Weighed Goals Conceded per Home Game']
-    away_weighted_goals_conceded_p90 = team_stats_dict[away_team]['Weighed Goals Conceded per Away Game']
+    home_weighted_goals_p90 = team_stats_dict[home_team]['Weighted Goals per Home Game']
+    away_weighted_goals_p90 = team_stats_dict[away_team]['Weighted Goals per Away Game']
+    home_weighted_goals_conceded_p90 = team_stats_dict[home_team]['Weighted Goals Conceded per Home Game']
+    away_weighted_goals_conceded_p90 = team_stats_dict[away_team]['Weighted Goals Conceded per Away Game']
 
     home_conceded_against_string = f"Goals Conceded per Game Against {away_pos_range}"
     away_conceded_against_string = f"Goals Conceded per Game Against {home_pos_range}"
