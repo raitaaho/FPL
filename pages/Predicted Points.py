@@ -1242,6 +1242,7 @@ def get_total_goals_over_probs(odds_dict: dict, team: str) -> typing.Optional[di
     Returns:
         dict: Probabilities for 0-6+ goals scored by the team.
     """
+    bookmaker_margin = 0.05
     try:
         team_under_05_odd, team_over_05_odd, team_over_15_odd, team_over_25_odd, team_over_35_odd, team_over_45_odd, team_over_55_odd = 0,0,0,0,0,0,0
         for team_odd, odds_list in odds_dict.items():
@@ -1287,14 +1288,14 @@ def get_total_goals_over_probs(odds_dict: dict, team: str) -> typing.Optional[di
                 
             except Exception as e:
                 print(f"Couldnt calculate probabilities for Total {team.capitalize()} Goals", e)
-                return None  
+                return None, bookmaker_margin
         except Exception as e:
             print(f"Couldnt calculate probabilities for Total {team.capitalize()} Over Goals", e)
-            return None  
-        return {team + '_0_goal_prob': team_0_goal_prob/(1 + bookmaker_margin), team + '_1_goal_prob': team_1_goal_prob/(1 + bookmaker_margin), team + '_2_goals_prob': team_2_goal_prob/(1 + bookmaker_margin), team + '_3_goals_prob': team_3_goal_prob/(1 + bookmaker_margin), team + '_4_goals_prob': team_4_goal_prob/(1 + bookmaker_margin), team + '_5_goals_prob': team_5_goal_prob/(1 + bookmaker_margin), team + '_6_goals_prob': team_6_goal_prob/(1 + bookmaker_margin)}      
+            return None, bookmaker_margin 
+        return {team + '_0_goal_prob': team_0_goal_prob/(1 + bookmaker_margin), team + '_1_goal_prob': team_1_goal_prob/(1 + bookmaker_margin), team + '_2_goals_prob': team_2_goal_prob/(1 + bookmaker_margin), team + '_3_goals_prob': team_3_goal_prob/(1 + bookmaker_margin), team + '_4_goals_prob': team_4_goal_prob/(1 + bookmaker_margin), team + '_5_goals_prob': team_5_goal_prob/(1 + bookmaker_margin), team + '_6_goals_prob': team_6_goal_prob/(1 + bookmaker_margin)}, bookmaker_margin     
     except Exception as e:
         print(f"Couldnt find probabilities from odds_dict for Total {team.capitalize()} Over Goals", e)
-        return None
+        return None, bookmaker_margin
     
 def add_total_goals_probs_to_dict(
     probs_dict: dict,
@@ -1342,15 +1343,15 @@ def add_probs_to_dict(
         home_team (str): Home team name.
         away_team (str): Away team name.
     """
-    bookmaker_margin = 0.07
+    bookmaker_margin = 0.06
     try:
         for player_odd, odds_list in odds_dict.items():
             name = player_odd.strip()
             if len(odds_list) != 0:
-                odd = (sum(odds_list)/len(odds_list)) / (1 - bookmaker_margin)
+                odd = sum(odds_list)/len(odds_list)
             else:
                 odd = 0
-            probability = 1/float(odd) if odd != 0 else 0
+            probability = (1/float(odd)) / (1 + bookmaker_margin) if odd != 0 else 0
             matched_name = None  # Ensure matched_name is always defined
             for p in player_dict:
                 # Prepare the player name for comparison
@@ -1857,10 +1858,10 @@ def initialize_predicted_points_df(all_odds_dict, fixtures, next_gw, saves_butto
                     print("Error adding To Score 2 Or More Goals: home_team or away_team is None") 
 
             if odd_type == 'Total Home Goals':      
-                total_home_goals_probs = get_total_goals_over_probs(odds, "home") 
+                total_home_goals_probs, home_margin = get_total_goals_over_probs(odds, "home") 
 
             if odd_type == 'Total Away Goals':
-                total_away_goals_probs = get_total_goals_over_probs(odds, "away")
+                total_away_goals_probs, away_margin = get_total_goals_over_probs(odds, "away")
 
             if odd_type == 'Clean Sheet':
                 home_cs_odds = odds.get(home_team, [])
@@ -1869,8 +1870,8 @@ def initialize_predicted_points_df(all_odds_dict, fixtures, next_gw, saves_butto
                 ave_home_cs_odd = sum(home_cs_odds)/len(home_cs_odds) if len(home_cs_odds) != 0 else 0
                 ave_away_cs_odd = sum(away_cs_odds)/len(away_cs_odds) if len(away_cs_odds) != 0 else 0
 
-                home_cs_prob = 1 / ave_home_cs_odd if ave_home_cs_odd != 0 else 0
-                away_cs_prob = 1 / ave_away_cs_odd if ave_away_cs_odd != 0 else 0
+                home_cs_prob = (1 / float(ave_home_cs_odd)) / (1 + home_margin) if ave_home_cs_odd != 0 else 0
+                away_cs_prob = (1 / float(ave_away_cs_odd)) / (1 + away_margin) if ave_away_cs_odd != 0 else 0
 
                 for player in player_dict:
                     if player_dict[player].get('Team', ['Unknown'])[0] == home_team:
