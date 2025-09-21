@@ -1648,8 +1648,8 @@ def calc_team_xgs(
     
     home_goals = (2 * home_weighted_goals_p90 + team_stats_dict[home_team][home_scored_against_string]) / 3 if home_goals_p90_24_25 != 0 else (4 * promoted_g_h_average + home_weighted_goals_p90) / 5
     away_goals = (2 * away_weighted_goals_p90 + team_stats_dict[away_team][away_scored_against_string]) / 3 if away_goals_p90_24_25 != 0 else (4 * promoted_g_a_average + away_weighted_goals_p90) / 5
-    home_goals_conceded = (2 * home_weighted_goals_conceded_p90 + 2 * team_stats_dict[home_team][home_conceded_against_string]) / 3 if home_goals_conceded_p90_24_25 != 0 else (4 * promoted_gc_h_average + home_weighted_goals_conceded_p90) / 5
-    away_goals_conceded = (2 * away_weighted_goals_conceded_p90 + 2 * team_stats_dict[away_team][away_conceded_against_string]) / 3  if away_goals_conceded_p90_24_25 != 0 else (4 * promoted_gc_a_average + away_weighted_goals_conceded_p90) / 5
+    home_goals_conceded = (2 * home_weighted_goals_conceded_p90 + team_stats_dict[home_team][home_conceded_against_string]) / 3 if home_goals_conceded_p90_24_25 != 0 else (4 * promoted_gc_h_average + home_weighted_goals_conceded_p90) / 5
+    away_goals_conceded = (2 * away_weighted_goals_conceded_p90 + team_stats_dict[away_team][away_conceded_against_string]) / 3  if away_goals_conceded_p90_24_25 != 0 else (4 * promoted_gc_a_average + away_weighted_goals_conceded_p90) / 5
 
     home_xg = (home_goals + away_goals_conceded) / 2 
     away_xg = (away_goals + home_goals_conceded) / 2
