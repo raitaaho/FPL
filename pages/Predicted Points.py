@@ -1734,7 +1734,7 @@ def calc_points(player_dict: dict, saves_button: bool) -> None:
 
                 xg = g1 if g1 != -1 else max(g2, 0)
                 xa = a1 if a1 != -1 else max(a2, 0)
-                xcs = cs1 if cs1 != -1 else max(cs2, 0)
+                xcs = cs1 if cs1 != -1 else cs2 if cs2 != -1 else max(cs3, 0)
                 xgc = ga1 if ga1 != -1 else max(ga2, 0)
                 xsav = s1 if s1 != -1 else saves_avg
                 bp = bp1 if bp1 != -1 else 0
