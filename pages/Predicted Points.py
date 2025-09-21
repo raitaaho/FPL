@@ -1811,6 +1811,8 @@ def initialize_predicted_points_df(all_odds_dict, fixtures, next_gw, saves_butto
         away_team = TEAM_NAMES_ODDSCHECKER.get(away_team_name, away_team_name)
         total_home_goals_probs = None
         total_away_goals_probs = None
+        home_margin = 0.05
+        away_margin = 0.05
 
         if home_team is not None and away_team is not None:
             calc_team_xgs(home_team, away_team, team_stats_dict, player_dict)
