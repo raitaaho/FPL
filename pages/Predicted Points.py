@@ -244,8 +244,8 @@ def player_dict_constructor(
             if fixture.get('minutes', 0) > 0:
                 games += 1
 
-        xg_per_game = float(player["expected_goals"]) / games if games > 0 else 0
-        xa_per_game = float(player["expected_assists"]) / games if games > 0 else 0
+        xg_25_26 = float(player["expected_goals"])  
+        xa_25_26 = float(player["expected_assists"])
 
         minutes_24_25 = 0
         def_contributions_24_25 = 0
@@ -260,11 +260,12 @@ def player_dict_constructor(
                 continue
             else:
                 minutes_24_25 = season.get('minutes', 0)
+                games_24_25 = minutes_24_25 / 90
                 def_contributions_24_25 = season.get('defensive_contribution', 0) if minutes_24_25 > 900 else 0
                 saves_24_25 = season.get('saves', 0) if minutes_24_25 > 450 else 0
                 bps_24_25 = season.get('bps', 0) if minutes_24_25 > 450 else 0
-                xg_24_25 = season.get('expected_goals', 0) if minutes_24_25 > 450 else 0
-                xa_24_25 = season.get('expected_assists', 0) if minutes_24_25 > 450 else 0
+                xg_24_25 = season.get('expected_goals', 0) if minutes_24_25 > 0 else 0
+                xa_24_25 = season.get('expected_assists', 0) if minutes_24_25 > 0 else 0
                 goals_24_25 = season.get('goals_scored', 0)
                 assists_24_25 = season.get('assists', 0)
                 break
@@ -280,7 +281,7 @@ def player_dict_constructor(
         player_dict[player_name]['Team'] = [team]
         player_dict[player_name]['Price'] = [player['now_cost'] / 10]
         player_dict[player_name]['Minutes'] = [player['minutes']]
-        player_dict[player_name]['Games'] = [games]
+        player_dict[player_name]['25/26 Games Played'] = [games]
         player_dict[player_name]['Minutes per Game'] = [player['minutes'] / games] if games > 0 else [0]
         player_dict[player_name]['Chance of Playing'] = [player['chance_of_playing_next_round'] / 100] if player['chance_of_playing_next_round'] else [1] if player['status'] in ('a', 'd') else [0]
         player_dict[player_name]['25/26 Defensive Contributions'] = [player["defensive_contribution"]] if player["defensive_contribution"] != 0 else [0]
@@ -288,8 +289,8 @@ def player_dict_constructor(
         player_dict[player_name]['Recoveries per Game'] = [player["recoveries"] / games] if games > 0 else [0]
         player_dict[player_name]['Tackles per Game'] = [player["tackles"] / games] if games > 0 else [0]
         player_dict[player_name]['BPS per Game'] = [player['bps'] / games] if games > 0 else [0]
-        player_dict[player_name]['Expected Goals per Game'] = [xg_per_game]
-        player_dict[player_name]['Expected Assists per Game'] = [xa_per_game]
+        player_dict[player_name]['25/26 xG'] = [xg_25_26]
+        player_dict[player_name]['25/26 xA'] = [xa_25_26]
 
         player_dict[player_name]['24/25 Defensive Contributions'] = [def_contributions_24_25] if def_contributions_24_25 > 0 else [0]
         player_dict[player_name]['24/25 BPS P90'] = [bps_24_25 / (minutes_24_25 / 90)] if minutes_24_25 > 0 else [0]
@@ -301,9 +302,10 @@ def player_dict_constructor(
         player_dict[player_name]['Estimated BPS'] = []
         player_dict[player_name]['Estimated Bonus Points'] = []
 
+        player_dict[player_name]['24/25 Games Played'] = [games_24_25]
         player_dict[player_name]['24/25 Games Played for Current Team'] = [games_played_for_current_team_24_25]
-        player_dict[player_name]['24/25 Expected Goals per Game'] = [float(xg_24_25) / (minutes_24_25 / 90)] if minutes_24_25 > 0 else [0]
-        player_dict[player_name]['24/25 Expected Assists per Game'] = [float(xa_24_25) / (minutes_24_25 / 90)] if minutes_24_25 > 0 else [0]
+        player_dict[player_name]['24/25 xG'] = [float(xg_24_25)]
+        player_dict[player_name]['24/25 xA'] = [float(xa_24_25)]
         player_dict[player_name]['Share of Goals by Current Team'] = [share_of_goals_scored]
         player_dict[player_name]['Share of Assists by Current Team'] = [share_of_assists]
         
@@ -1185,50 +1187,31 @@ def construct_team_and_player_data(
         player_data[player]['Share of Assists by Current Team'] = float(share_of_team_assists)
 
         player_data[player]['Goals per Home Game'] = float(player_data[player]['Home Goals for Current Team']/player_data[player]['Home Games Played for Current Team']) if player_data[player]['Home Games Played for Current Team'] != 0 else 0
-        player_data[player]['Goals per Game Against 1-4'] = float(player_data[player]['Goals Against 1-4']/player_data[player]['Games Against 1-4']) if player_data[player]['Games Against 1-4'] != 0 else 0
         player_data[player]['Assists per Home Game'] = float(player_data[player]['Home Assists for Current Team']/player_data[player]['Home Games Played for Current Team']) if player_data[player]['Home Games Played for Current Team'] != 0 else 0
-        player_data[player]['Assists per Game Against 1-4'] = float(player_data[player]['Assists Against 1-4']/player_data[player]['Games Against 1-4']) if player_data[player]['Games Against 1-4'] != 0 else 0
-        player_data[player]['Goals per Game Against 5-8'] = float(player_data[player]['Goals Against 5-8']/player_data[player]['Games Against 5-8']) if player_data[player]['Games Against 5-8'] != 0 else 0
-        player_data[player]['Assists per Game Against 5-8'] = float(player_data[player]['Assists Against 5-8']/player_data[player]['Games Against 5-8']) if player_data[player]['Games Against 5-8'] != 0 else 0
-        player_data[player]['Goals per Game Against 9-12'] = float(player_data[player]['Goals Against 9-12']/player_data[player]['Games Against 9-12']) if player_data[player]['Games Against 9-12'] != 0 else 0
-        player_data[player]['Assists per Game Against 9-12'] = float(player_data[player]['Assists Against 9-12']/player_data[player]['Games Against 9-12']) if player_data[player]['Games Against 9-12'] != 0 else 0
-        player_data[player]['Goals per Game Against 13-16'] = float(player_data[player]['Goals Against 13-16']/player_data[player]['Games Against 13-16']) if player_data[player]['Games Against 13-16'] != 0 else 0
-        player_data[player]['Assists per Game Against 13-16'] = float(player_data[player]['Assists Against 13-16']/player_data[player]['Games Against 13-16']) if player_data[player]['Games Against 13-16'] != 0 else 0
-        player_data[player]['Goals per Game Against 17-20'] = float(player_data[player]['Goals Against 17-20']/player_data[player]['Games Against 17-20']) if player_data[player]['Games Against 17-20'] != 0 else 0
-        player_data[player]['Assists per Game Against 17-20'] = float(player_data[player]['Assists Against 17-20']/player_data[player]['Games Against 17-20']) if player_data[player]['Games Against 17-20'] != 0 else 0
         player_data[player]['Goals per Away Game'] = float(player_data[player]['Away Goals for Current Team']/player_data[player]['Away Games Played for Current Team']) if player_data[player]['Away Games Played for Current Team'] != 0 else 0
         player_data[player]['Assists per Away Game'] = float(player_data[player]['Away Assists for Current Team']/player_data[player]['Away Games Played for Current Team']) if player_data[player]['Away Games Played for Current Team'] != 0 else 0
         
         player_data[player]['24/25 Goals per Home Game'] = float(player_data[player]['24/25 Home Goals for Current Team']/player_data[player]['24/25 Home Games Played for Current Team']) if player_data[player]['24/25 Home Games Played for Current Team'] != 0 else 0
-        player_data[player]['24/25 Goals per Game Against 1-4'] = float(player_data[player]['24/25 Goals Against 1-4']/player_data[player]['24/25 Games Against 1-4']) if player_data[player]['24/25 Games Against 1-4'] != 0 else 0
         player_data[player]['24/25 Assists per Home Game'] = float(player_data[player]['24/25 Home Assists for Current Team']/player_data[player]['24/25 Home Games Played for Current Team']) if player_data[player]['24/25 Home Games Played for Current Team'] != 0 else 0
-        player_data[player]['24/25 Assists per Game Against 1-4'] = float(player_data[player]['24/25 Assists Against 1-4']/player_data[player]['24/25 Games Against 1-4']) if player_data[player]['24/25 Games Against 1-4'] != 0 else 0
-        player_data[player]['24/25 Goals per Game Against 5-8'] = float(player_data[player]['24/25 Goals Against 5-8']/player_data[player]['24/25 Games Against 5-8']) if player_data[player]['24/25 Games Against 5-8'] != 0 else 0
-        player_data[player]['24/25 Assists per Game Against 5-8'] = float(player_data[player]['24/25 Assists Against 5-8']/player_data[player]['24/25 Games Against 5-8']) if player_data[player]['24/25 Games Against 5-8'] != 0 else 0
-        player_data[player]['24/25 Goals per Game Against 9-12'] = float(player_data[player]['24/25 Goals Against 9-12']/player_data[player]['24/25 Games Against 9-12']) if player_data[player]['24/25 Games Against 9-12'] != 0 else 0
-        player_data[player]['24/25 Assists per me Game Against 9-12'] = float(player_data[player]['24/25 Assists Against 9-12']/player_data[player]['24/25 Games Against 9-12']) if player_data[player]['24/25 Games Against 9-12'] != 0 else 0
-        player_data[player]['24/25 Goals per Game Against 13-16'] = float(player_data[player]['24/25 Goals Against 13-16']/player_data[player]['24/25 Games Against 13-16']) if player_data[player]['24/25 Games Against 13-16'] != 0 else 0
-        player_data[player]['24/25 Assists per Game Against 13-16'] = float(player_data[player]['24/25 Assists Against 13-16']/player_data[player]['24/25 Games Against 13-16']) if player_data[player]['24/25 Games Against 13-16'] != 0 else 0
-        player_data[player]['24/25 Goals per Game Against 17-20'] = float(player_data[player]['24/25 Goals Against 17-20']/player_data[player]['24/25 Games Against 17-20']) if player_data[player]['24/25 Games Against 17-20'] != 0 else 0
-        player_data[player]['24/25 Assists per Game Against 17-20'] = float(player_data[player]['24/25 Assists Against 17-20']/player_data[player]['24/25 Games Against 17-20']) if player_data[player]['24/25 Games Against 17-20'] != 0 else 0
         player_data[player]['24/25 Goals per Away Game'] = float(player_data[player]['24/25 Away Goals for Current Team']/player_data[player]['24/25 Away Games Played for Current Team']) if player_data[player]['24/25 Away Games Played for Current Team'] != 0 else 0
         player_data[player]['24/25 Assists per Away Game'] = float(player_data[player]['24/25 Away Assists for Current Team']/player_data[player]['24/25 Away Games Played for Current Team']) if player_data[player]['24/25 Away Games Played for Current Team'] != 0 else 0
 
         player_data[player]['25/26 Goals per Home Game'] = float(player_data[player]['25/26 Home Goals for Current Team']/player_data[player]['25/26 Home Games Played for Current Team']) if player_data[player]['25/26 Home Games Played for Current Team'] != 0 else 0
-        player_data[player]['25/26 Goals per Game Against 1-4'] = float(player_data[player]['25/26 Goals Against 1-4']/player_data[player]['25/26 Games Against 1-4']) if player_data[player]['25/26 Games Against 1-4'] != 0 else 0
         player_data[player]['25/26 Assists per Home Game'] = float(player_data[player]['25/26 Home Assists for Current Team']/player_data[player]['25/26 Home Games Played for Current Team']) if player_data[player]['25/26 Home Games Played for Current Team'] != 0 else 0
-        player_data[player]['25/26 Assists per Game Against 1-4'] = float(player_data[player]['25/26 Assists Against 1-4']/player_data[player]['25/26 Games Against 1-4']) if player_data[player]['25/26 Games Against 1-4'] != 0 else 0
-        player_data[player]['25/26 Goals per Game Against 5-8'] = float(player_data[player]['25/26 Goals Against 5-8']/player_data[player]['25/26 Games Against 5-8']) if player_data[player]['25/26 Games Against 5-8'] != 0 else 0
-        player_data[player]['25/26 Assists per Game Against 5-8'] = float(player_data[player]['25/26 Assists Against 5-8']/player_data[player]['25/26 Games Against 5-8']) if player_data[player]['25/26 Games Against 5-8'] != 0 else 0
-        player_data[player]['25/26 Goals per Game Against 9-12'] = float(player_data[player]['25/26 Goals Against 9-12']/player_data[player]['25/26 Games Against 9-12']) if player_data[player]['25/26 Games Against 9-12'] != 0 else 0
-        player_data[player]['25/26 Assists per me Game Against 9-12'] = float(player_data[player]['25/26 Assists Against 9-12']/player_data[player]['25/26 Games Against 9-12']) if player_data[player]['25/26 Games Against 9-12'] != 0 else 0
-        player_data[player]['25/26 Goals per Game Against 13-16'] = float(player_data[player]['25/26 Goals Against 13-16']/player_data[player]['25/26 Games Against 13-16']) if player_data[player]['25/26 Games Against 13-16'] != 0 else 0
-        player_data[player]['25/26 Assists per Game Against 13-16'] = float(player_data[player]['25/26 Assists Against 13-16']/player_data[player]['25/26 Games Against 13-16']) if player_data[player]['25/26 Games Against 13-16'] != 0 else 0
-        player_data[player]['25/26 Goals per Game Against 17-20'] = float(player_data[player]['25/26 Goals Against 17-20']/player_data[player]['25/26 Games Against 17-20']) if player_data[player]['25/26 Games Against 17-20'] != 0 else 0
-        player_data[player]['25/26 Assists per Game Against 17-20'] = float(player_data[player]['25/26 Assists Against 17-20']/player_data[player]['25/26 Games Against 17-20']) if player_data[player]['25/26 Games Against 17-20'] != 0 else 0
         player_data[player]['25/26 Goals per Away Game'] = float(player_data[player]['25/26 Away Goals for Current Team']/player_data[player]['25/26 Away Games Played for Current Team']) if player_data[player]['25/26 Away Games Played for Current Team'] != 0 else 0
         player_data[player]['25/26 Assists per Away Game'] = float(player_data[player]['25/26 Away Assists for Current Team']/player_data[player]['25/26 Away Games Played for Current Team']) if player_data[player]['25/26 Away Games Played for Current Team'] != 0 else 0
         
+        player_data[player]['Goals per Game Against 1-4'] = float((player_data[player]['24/25 Goals Against 1-4'] + player_data[player]['25/26 Goals Against 1-4'])/(player_data[player]['24/25 Games Against 1-4'] + player_data[player]['25/26 Games Against 1-4'])) if player_data[player]['24/25 Games Against 1-4'] + player_data[player]['25/26 Games Against 1-4'] != 0 else 0 
+        player_data[player]['Goals Conceded per Game Against 1-4'] = float((player_data[player]['24/25 Goals Conceded Against 1-4'] + player_data[player]['25/26 Goals Conceded Against 1-4'])/(player_data[player]['24/25 Games Against 1-4'] + player_data[player]['25/26 Games Against 1-4'])) if player_data[player]['24/25 Games Against 1-4'] + player_data[player]['25/26 Games Against 1-4'] != 0 else 0 
+        player_data[player]['Goals per Game Against 5-8'] = float((player_data[player]['24/25 Goals Against 5-8'] + player_data[player]['25/26 Goals Against 5-8'])/(player_data[player]['24/25 Games Against 5-8'] + player_data[player]['25/26 Games Against 5-8'])) if player_data[player]['24/25 Games Against 5-8'] + player_data[player]['25/26 Games Against 5-8'] != 0 else 0 
+        player_data[player]['Goals Conceded per Game Against 5-8'] = float((player_data[player]['24/25 Goals Conceded Against 5-8'] + player_data[player]['25/26 Goals Conceded Against 5-8'])/(player_data[player]['24/25 Games Against 5-8'] + player_data[player]['25/26 Games Against 5-8'])) if player_data[player]['24/25 Games Against 5-8'] + player_data[player]['25/26 Games Against 5-8'] != 0 else 0 
+        player_data[player]['Goals per Game Against 9-12'] = float((player_data[player]['24/25 Goals Against 9-12'] + player_data[player]['25/26 Goals Against 9-12'])/(player_data[player]['24/25 Games Against 9-12'] + player_data[player]['25/26 Games Against 9-12'])) if player_data[player]['24/25 Games Against 9-12'] + player_data[player]['25/26 Games Against 9-12'] != 0 else 0
+        player_data[player]['Goals Conceded per Game Against 9-12'] = float((player_data[player]['24/25 Goals Conceded Against 9-12'] + player_data[player]['25/26 Goals Conceded Against 9-12'])/(player_data[player]['24/25 Games Against 9-12'] + player_data[player]['25/26 Games Against 9-12'])) if player_data[player]['24/25 Games Against 9-12'] + player_data[player]['25/26 Games Against 9-12'] != 0 else 0
+        player_data[player]['Goals per Game Against 13-16'] = float((player_data[player]['24/25 Goals Against 13-16'] + player_data[player]['25/26 Goals Against 13-16'])/(player_data[player]['24/25 Games Against 13-16'] + player_data[player]['25/26 Games Against 13-16'])) if player_data[player]['24/25 Games Against 13-16'] + player_data[player]['25/26 Games Against 13-16'] != 0 else 0
+        player_data[player]['Goals Conceded per Game Against 13-16'] = float((player_data[player]['24/25 Goals Conceded Against 13-16'] + player_data[player]['25/26 Goals Conceded Against 13-16'])/(player_data[player]['24/25 Games Against 13-16'] + player_data[player]['25/26 Games Against 13-16'])) if player_data[player]['24/25 Games Against 13-16'] + player_data[player]['25/26 Games Against 13-16'] != 0 else 0
+        player_data[player]['Goals per Game Against 17-20'] = float((player_data[player]['24/25 Goals Against 17-20'] + player_data[player]['25/26 Goals Against 17-20'])/(player_data[player]['24/25 Games Against 17-20'] + player_data[player]['25/26 Games Against 17-20'])) if player_data[player]['24/25 Games Against 17-20'] + player_data[player]['25/26 Games Against 17-20'] != 0 else 0
+        player_data[player]['Goals Conceded per Game Against 17-20'] = float((player_data[player]['24/25 Goals Conceded Against 17-20'] + player_data[player]['25/26 Goals Conceded Against 17-20'])/(player_data[player]['24/25 Games Against 17-20'] + player_data[player]['25/26 Games Against 17-20'])) if player_data[player]['24/25 Games Against 17-20'] + player_data[player]['25/26 Games Against 17-20'] != 0 else 0
+
     return team_data, player_data
 
 def get_player_over_probs(
@@ -1500,14 +1483,8 @@ def calc_specific_probs(
         goal_share = odds.get("Share of Goals by Current Team", [0])[0]
         total_goals_historical = odds.get('Team xG by Historical Data', [])
 
-        xa_per_game_24_25 = odds.get("24/25 Expected Assists per Game", [0])[0]
-        xg_per_game_24_25 = odds.get("24/25 Expected Goals per Game", [0])[0]
-
-        xa_per_game_current = odds.get("Expected Assists per Game", [0])[0]
-        xg_per_game_current = odds.get("Expected Goals per Game", [0])[0]
-
-        xa_per_game = (2 * xa_per_game_24_25 + xa_per_game_current) / 3 if xa_per_game_24_25 != 0 else xa_per_game_current
-        xg_per_game = (2 * xg_per_game_24_25 + xg_per_game_current) / 3 if xg_per_game_24_25 != 0 else xg_per_game_current
+        xa_per_game = (odds.get("24/25 xA", [0])[0] + odds.get("25/26 xA", [0])[0]) / (odds.get("24/25 Games Played", [0])[0] + odds.get("25/26 Games Played", [0])[0]) if odds.get("24/25 Games Played", [0])[0] + odds.get("25/26 Games Played", [0])[0] > 5 else 0
+        xg_per_game = (odds.get("24/25 xG", [0])[0] + odds.get("25/26 xG", [0])[0]) / (odds.get("24/25 Games Played", [0])[0] + odds.get("25/26 Games Played", [0])[0]) if odds.get("24/25 Games Played", [0])[0] + odds.get("25/26 Games Played", [0])[0] > 5 else 0
 
         if position in ['DEF', 'MID', 'FWD', 'Unknown']:
             for p25, p15, p05 in zip_longest(assisting_over_25_prob, assisting_over_15_prob, assisting_over_05_prob, fillvalue=0):
@@ -1792,9 +1769,7 @@ def calc_points(player_dict: dict, saves_button: bool) -> None:
 
             chance_of_playing = odds.get("Chance of Playing", [1])[0] if team != 'Unknown' else 1
 
-            def_contr_per_game = odds.get("Defensive Contributions per Game", [0])[0]
-            def_contr_p90_24_25 = odds.get("24/25 Defensive Contributions P90", [0])[0]
-            def_contr_avg = (2 * def_contr_p90_24_25 + def_contr_per_game) / 3 if def_contr_p90_24_25 > 0 else def_contr_per_game
+            def_contr_avg = (odds.get("25/26 Defensive Contributions", [0])[0] + odds.get("24/25 Defensive Contributions", [0])[0]) / (odds.get("25/26 Games Played", [0])[0] + odds.get("24/25 Games Played", [0])[0]) if odds.get("25/26 Games Played", [0])[0] + odds.get("24/25 Games Played", [0])[0] != 0 else 0
             threshold = 10 if position == 'DEF' else 12
             dc_points = max(float(2 * (norm.cdf(2 * def_contr_avg, loc=def_contr_avg, scale=def_contr_avg/2) - norm.cdf(threshold, loc=def_contr_avg, scale=def_contr_avg/2)) / (norm.cdf(2 * def_contr_avg, loc=def_contr_avg, scale=def_contr_avg/2) - norm.cdf(0, loc=def_contr_avg, scale=def_contr_avg/2))), 0.0) if def_contr_avg > 0 else 0
             player_dict[player]['Estimated DC points per Game'] = round(dc_points, 3)
