@@ -271,8 +271,8 @@ def player_dict_constructor(
 
         games_played_for_current_team_24_25 = player_stats_dict[player_name]['24/25 Home Games Played for Current Team'] + player_stats_dict[player_name]['24/25 Away Games Played for Current Team']
 
-        share_of_goals_scored = (goals_24_25 + player["goals_scored"]) / (goals_team_24_25 + goals_team) if goals_team_24_25 > 0 and games_played_for_current_team_24_25 > 0 else player["goals_scored"] / goals_team if goals_team > 0 else 0
-        share_of_assists = (assists_24_25 + player["assists"]) / (assists_team_24_25 + assists_team) if assists_team_24_25 > 0 and games_played_for_current_team_24_25 > 0 else player["assists"] / assists_team if assists_team > 0 else 0
+        share_of_goals_scored = [player_stats_dict[player_name]['Share of Goals by Current Team']]
+        share_of_assists = [player_stats_dict[player_name]['Share of Assists by Current Team']]
 
         player_dict[player_name]['Nickname'] = [nickname1.strip()] if nickname1 != None else ["Unknown"] 
         player_dict[player_name]['Nickname2'] = [nickname2.strip()] if nickname2 != None else ["Unknown"]
@@ -283,7 +283,7 @@ def player_dict_constructor(
         player_dict[player_name]['Games'] = [games]
         player_dict[player_name]['Minutes per Game'] = [player['minutes'] / games] if games > 0 else [0]
         player_dict[player_name]['Chance of Playing'] = [player['chance_of_playing_next_round'] / 100] if player['chance_of_playing_next_round'] else [1] if player['status'] in ('a', 'd') else [0]
-        player_dict[player_name]['Defensive Contributions per Game'] = [player["defensive_contribution"] / games] if games > 0 else [0]
+        player_dict[player_name]['25/26 Defensive Contributions'] = [player["defensive_contribution"]] if player["defensive_contribution"] != 0 else [0]
         player_dict[player_name]['CBI per Game'] = [player["clearances_blocks_interceptions"] / games] if games > 0 else [0]
         player_dict[player_name]['Recoveries per Game'] = [player["recoveries"] / games] if games > 0 else [0]
         player_dict[player_name]['Tackles per Game'] = [player["tackles"] / games] if games > 0 else [0]
@@ -291,7 +291,7 @@ def player_dict_constructor(
         player_dict[player_name]['Expected Goals per Game'] = [xg_per_game]
         player_dict[player_name]['Expected Assists per Game'] = [xa_per_game]
 
-        player_dict[player_name]['24/25 Defensive Contributions P90'] = [def_contributions_24_25 / (minutes_24_25 / 90)] if minutes_24_25 > 0 else [0]
+        player_dict[player_name]['24/25 Defensive Contributions'] = [def_contributions_24_25] if def_contributions_24_25 > 0 else [0]
         player_dict[player_name]['24/25 BPS P90'] = [bps_24_25 / (minutes_24_25 / 90)] if minutes_24_25 > 0 else [0]
 
         if element_types[player["element_type"]] == 'GKP':
@@ -1236,7 +1236,8 @@ def get_player_over_probs(
     odds_dict: dict,
     player_dict: dict,
     home_team: str,
-    away_team: str
+    away_team: str,
+    bookmaker_margin: float
 ) -> None:
     """
     Calculate player 'Over X' probabilities from odds and update player_dict.
@@ -1247,8 +1248,8 @@ def get_player_over_probs(
         player_dict (dict): Player details dictionary.
         home_team (str): Home team name.
         away_team (str): Away team name.
+        bookmaker_margin (float): Bookmaker margin to adjust odds.
     """
-    bookmaker_margin = 0.07
     if odd_type == "Player Assists":
         odds_for = ['Over 0.5', 'Over 1.5', 'Over 2.5']
     else:
@@ -1323,6 +1324,7 @@ def get_total_goals_over_probs(odds_dict: dict, team: str) -> typing.Optional[di
 
     Returns:
         dict: Probabilities for 0-6+ goals scored by the team.
+        float: Bookmaker margin.
     """
     bookmaker_margin = 0.05
     try:
@@ -1413,7 +1415,8 @@ def add_probs_to_dict(
     odds_dict: dict,
     player_dict: dict,
     home_team: str,
-    away_team: str
+    away_team: str,
+    bookmaker_margin: float
 ) -> None:
     """
     Add calculated probabilities for a specific odds market to player_dict.
@@ -1424,8 +1427,8 @@ def add_probs_to_dict(
         player_dict (dict): Player details dictionary.
         home_team (str): Home team name.
         away_team (str): Away team name.
+        bookmaker_margin (float): Bookmaker margin to adjust odds.
     """
-    bookmaker_margin = 0.06
     try:
         for player_odd, odds_list in odds_dict.items():
             name = player_odd.strip()
@@ -1905,47 +1908,57 @@ def initialize_predicted_points_df(all_odds_dict, fixtures, next_gw, saves_butto
             if player_dict[player].get('Team', ['Unknown'])[0] == away_team:
                 player_dict[player]['Opponent'].append(home_team)
 
+        if 'Total Home Goals' in details:    
+            total_home_goals_probs, home_margin = get_total_goals_over_probs(odds, "home") 
+
+        if 'Total Away Goals' in details:
+            total_away_goals_probs, away_margin = get_total_goals_over_probs(odds, "away")
+
+        total_combined_goals_dict = total_home_goals_probs | total_away_goals_probs if total_home_goals_probs and total_away_goals_probs else None
+        if total_combined_goals_dict:
+            if home_team is not None and away_team is not None:
+                add_total_goals_probs_to_dict(total_combined_goals_dict, home_team, away_team, player_dict)
+                bookmaker_margin = (home_margin + away_margin) / 2
+            else:
+                # Handle the case where home_team or away_team is None
+                print("Error adding Total Goals: home_team or away_team is None")
+                bookmaker_margin = 0.05
+
         for odd_type, odds in details.items():
             if odd_type == 'Player Assists':
                 if home_team is not None and away_team is not None:
-                    get_player_over_probs(odd_type, odds, player_dict, home_team, away_team)
+                    get_player_over_probs(odd_type, odds, player_dict, home_team, away_team, bookmaker_margin)
                 else:
                     # Handle the case where home_team or away_team is None
                     print("Error adding Player Assists: home_team or away_team is None")
 
             if odd_type == 'Goalkeeper Saves':
                 if home_team is not None and away_team is not None:
-                    get_player_over_probs(odd_type, odds, player_dict, home_team, away_team)
+                    get_player_over_probs(odd_type, odds, player_dict, home_team, away_team, bookmaker_margin)
                 else:
                     # Handle the case where home_team or away_team is None
                     print("Error adding Goalkeeper Saves: home_team or away_team is None")
 
             if odd_type == 'To Score A Hat-Trick':
                 if home_team is not None and away_team is not None:
-                    add_probs_to_dict(odd_type, odds, player_dict, home_team, away_team)
+                    add_probs_to_dict(odd_type, odds, player_dict, home_team, away_team, bookmaker_margin)
                 else:
                     # Handle the case where home_team or away_team is None
                     print("Error adding To Score A Hat-Trick: home_team or away_team is None")
 
             if odd_type == 'Anytime Goalscorer':
                 if home_team is not None and away_team is not None:
-                    add_probs_to_dict(odd_type, odds, player_dict, home_team, away_team)
+                    add_probs_to_dict(odd_type, odds, player_dict, home_team, away_team, bookmaker_margin)
                 else:
                     # Handle the case where home_team or away_team is None
                     print("Error adding Anytime Goalscorer: home_team or away_team is None")
 
             if odd_type == 'To Score 2 Or More Goals':
                 if home_team is not None and away_team is not None:
-                    add_probs_to_dict(odd_type, odds, player_dict, home_team, away_team)
+                    add_probs_to_dict(odd_type, odds, player_dict, home_team, away_team, bookmaker_margin)
                 else:
                     # Handle the case where home_team or away_team is None
                     print("Error adding To Score 2 Or More Goals: home_team or away_team is None") 
-
-            if odd_type == 'Total Home Goals':      
-                total_home_goals_probs, home_margin = get_total_goals_over_probs(odds, "home") 
-
-            if odd_type == 'Total Away Goals':
-                total_away_goals_probs, away_margin = get_total_goals_over_probs(odds, "away")
 
             if odd_type == 'Clean Sheet':
                 home_cs_odds = odds.get(home_team, [])
@@ -2025,11 +2038,15 @@ def initialize_predicted_points_df(all_odds_dict, fixtures, next_gw, saves_butto
     # Create and save DataFrames with all player data and a summary of expected points.
     player_data_df = pd.DataFrame.from_dict(player_dict, orient='index')
     player_data_df.index.name = 'Player'
+    team_stats_df = pd.DataFrame.from_dict(team_stats_dict, orient='index')
+    team_stats_df.index.name = 'Team'
+    player_stats_df = pd.DataFrame.from_dict(player_stats_dict, orient='index')
+    player_stats_df.index.name = 'Player'
     # Convert all columns: if value is a list of length 1, replace with the value contained in the list.
     for col in player_data_df.columns:
         player_data_df[col] = player_data_df[col].apply(lambda x: x[0] if isinstance(x, list) and len(x) == 1 else x)
 
-    return player_data_df
+    return player_data_df, player_stats_df, team_stats_df
 
 st.set_page_config(page_title="FPL Predicted Points", page_icon="📈")
 
@@ -2114,8 +2131,27 @@ gws_to_predict = st.slider("Select amount of gameweeks to calculate predicted po
 # Step 2: Load data only after user confirms
 if st.button("Calculate Predicted Points"):
     with st.spinner("Calculating Predicted Points...", show_time=True):
-        st.session_state.df = initialize_predicted_points_df(all_odds_dict, fixtures, next_gw, saves_button, bps_button, gws_to_predict)
+        st.session_state.df, st.session_state.player_stats_df, st.session_state.team_stats_df = initialize_predicted_points_df(all_odds_dict, fixtures, next_gw, saves_button, bps_button, gws_to_predict)
 
+if "player_stats_df" in st.session_state:
+    st.subheader("Player Statistics Data")
+    player_stats_csv = st.session_state.player_stats_df.to_csv(index=False).encode('utf-8')
+    st.download_button(
+        label="Download Player Statistics as CSV",
+        data=player_stats_csv,
+        file_name=f"gw{next_gw}_player_statistics.csv",
+        mime="text/csv"
+    )
+
+if "team_stats_df" in st.session_state:
+    st.subheader("Team Statistics Data")
+    team_stats_csv = st.session_state.team_stats_df.to_csv(index=False).encode('utf-8')
+    st.download_button(
+        label="Download Team Statistics as CSV",
+        data=team_stats_csv,
+        file_name=f"gw{next_gw}_team_statistics.csv",
+        mime="text/csv"
+    )
 # Step 3: Show filters and calculation only if data is loaded
 if "df" in st.session_state:
     df = st.session_state.df
@@ -2146,10 +2182,10 @@ if "df" in st.session_state:
         st.dataframe(df)
 
         # Download button
-        csv = df.to_csv(index=False).encode('utf-8')
+        df_csv = df.to_csv(index=False).encode('utf-8')
         st.download_button(
             label="Download Predicted Points as CSV",
-            data=csv,
+            data=df_csv,
             file_name=f"gw{next_gw}_filtered_predicted_points.csv",
             mime="text/csv"
         )
