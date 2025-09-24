@@ -1181,8 +1181,8 @@ def construct_team_and_player_data(
             share_of_team_goals = ((goals_for_team_24_25 + goals_for_team_25_26) * (1 + (((38 + team_games_25_26) - (games_for_team_24_25 + games_for_team_25_26)) / (38 + team_games_25_26)))) / (team_goals_24_25 + team_goals_25_26) if team_games_25_26 != 0 and team_goals_24_25 + team_goals_25_26 != 0 else 0
             share_of_team_assists = ((assists_for_team_24_25 + assists_for_team_25_26) * (1 + (((38 + team_games_25_26) - (games_for_team_24_25 + games_for_team_25_26)) / (38 + team_games_25_26)))) / (team_assists_24_25 + team_assists_25_26) if team_games_25_26 != 0 and team_assists_24_25 + team_assists_25_26 != 0 else 0
 
-        player_data[player]['Share of Goals by Current Team'] = share_of_team_goals
-        player_data[player]['Share of Assists by Current Team'] = share_of_team_assists
+        player_data[player]['Share of Goals by Current Team'] = float(share_of_team_goals)
+        player_data[player]['Share of Assists by Current Team'] = float(share_of_team_assists)
 
         player_data[player]['Goals per Home Game'] = float(player_data[player]['Home Goals for Current Team']/player_data[player]['Home Games Played for Current Team']) if player_data[player]['Home Games Played for Current Team'] != 0 else 0
         player_data[player]['Goals per Game Against 1-4'] = float(player_data[player]['Goals Against 1-4']/player_data[player]['Games Against 1-4']) if player_data[player]['Games Against 1-4'] != 0 else 0
