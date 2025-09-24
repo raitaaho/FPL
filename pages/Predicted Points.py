@@ -2135,7 +2135,7 @@ if st.button("Calculate Predicted Points"):
 
 if "player_stats_df" in st.session_state:
     st.subheader("Player Statistics Data")
-    player_stats_csv = st.session_state.player_stats_df.to_csv(index=False).encode('utf-8')
+    player_stats_csv = st.session_state.player_stats_df.to_csv(index=True).encode('utf-8')
     st.download_button(
         label="Download Player Statistics as CSV",
         data=player_stats_csv,
@@ -2145,7 +2145,7 @@ if "player_stats_df" in st.session_state:
 
 if "team_stats_df" in st.session_state:
     st.subheader("Team Statistics Data")
-    team_stats_csv = st.session_state.team_stats_df.to_csv(index=False).encode('utf-8')
+    team_stats_csv = st.session_state.team_stats_df.to_csv(index=True).encode('utf-8')
     st.download_button(
         label="Download Team Statistics as CSV",
         data=team_stats_csv,
