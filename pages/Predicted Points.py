@@ -2027,7 +2027,7 @@ def initialize_predicted_points_df(all_odds_dict, fixtures, next_gw, saves_butto
                 match_bps_list = match_bps_dict.get(team, [[0]])
                 player_bps = player_dict[player].get('Estimated BPS', [0])
                 for match_bps, p_bps in zip_longest(match_bps_list, player_bps):
-                    if p_bps is None:
+                    if p_bps is None or match_bps is None:
                         continue
                     #player_bonus_points = calculate_bonus_points(match_bps, p_bps)
                     player_bonus_points = max((p_bps / (sum(match_bps) + p_bps)) * 6, 0) if team != 'Unknown' or p_bps != 0 else 0.0
