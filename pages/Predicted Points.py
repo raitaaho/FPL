@@ -2151,6 +2151,12 @@ if "df" in st.session_state:
         selected_price_range = st.slider("Select Price Range (in £m)", min_value=min_price, max_value=max_price, value=(min_price, max_price))
         df = df[(df["Price"] >= selected_price_range[0]) & (df["Price"] <= selected_price_range[1])]
 
+    if "Estimated Bonus Points" in df.columns:
+        df["Estimated Bonus Points"] = df["Estimated Bonus Points"].apply(
+            lambda x: x if isinstance(x, list) and len(x) == gws_to_predict
+            else [0] * gws_to_predict
+        )
+
     # Final calculation and display
     if st.button("Show Predicted Points"):
         st.subheader("Predicted Points for Filtered Players")
