@@ -1909,10 +1909,10 @@ def initialize_predicted_points_df(all_odds_dict, fixtures, next_gw, saves_butto
                 player_dict[player]['Opponent'].append(home_team)
 
         if 'Total Home Goals' in details:    
-            total_home_goals_probs, home_margin = get_total_goals_over_probs(odds, "home") 
+            total_home_goals_probs, home_margin = get_total_goals_over_probs(details['Total Home Goals'], "home") 
 
         if 'Total Away Goals' in details:
-            total_away_goals_probs, away_margin = get_total_goals_over_probs(odds, "away")
+            total_away_goals_probs, away_margin = get_total_goals_over_probs(details['Total Away Goals'], "away")
 
         total_combined_goals_dict = total_home_goals_probs | total_away_goals_probs if total_home_goals_probs and total_away_goals_probs else None
         if total_combined_goals_dict:
