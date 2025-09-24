@@ -2007,8 +2007,9 @@ def initialize_predicted_points_df(all_odds_dict, fixtures, next_gw, saves_butto
                         player_dict[player]['Estimated Bonus Points'].append(player_bonus_points)
                         continue
                     #player_bonus_points = calculate_bonus_points(match_bps, p_bps)
-                    player_bonus_points = max((p_bps / (sum(match_bps) + p_bps)) * 6, 0) if team != 'Unknown' and p_bps != 0 else 0.0
-                    player_dict[player]['Estimated Bonus Points'].append(player_bonus_points)
+                    else:
+                        player_bonus_points = max((p_bps / (sum(match_bps) + p_bps)) * 6, 0) if team != 'Unknown' and p_bps + sum(match_bps) != 0 else 0.0
+                        player_dict[player]['Estimated Bonus Points'].append(player_bonus_points)
 
     calc_points(player_dict, saves_button)
 
