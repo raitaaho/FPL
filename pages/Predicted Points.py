@@ -271,8 +271,8 @@ def player_dict_constructor(
 
         games_played_for_current_team_24_25 = player_stats_dict[player_name]['24/25 Home Games Played for Current Team'] + player_stats_dict[player_name]['24/25 Away Games Played for Current Team']
 
-        share_of_goals_scored = [player_stats_dict[player_name]['Share of Goals by Current Team']]
-        share_of_assists = [player_stats_dict[player_name]['Share of Assists by Current Team']]
+        share_of_goals_scored = player_stats_dict[player_name]['Share of Goals by Current Team']
+        share_of_assists = player_stats_dict[player_name]['Share of Assists by Current Team']
 
         player_dict[player_name]['Nickname'] = [nickname1.strip()] if nickname1 != None else ["Unknown"] 
         player_dict[player_name]['Nickname2'] = [nickname2.strip()] if nickname2 != None else ["Unknown"]
