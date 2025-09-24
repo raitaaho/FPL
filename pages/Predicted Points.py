@@ -1547,9 +1547,7 @@ def calc_avg_bps(
         try:
             # Get probabilities
             team = odds.get("Team", ["Unknown"])[0]
-            if team == 'Unknown':
-                player_dict[player]['Estimated BPS'].append(0.0)
-                continue
+    
             opponents = odds.get("Opponent", [])
             number_of_games = len(odds.get("Opponent", [])) if team != 'Unknown' else 1
             goals_average_bookmaker = odds.get("xG by Bookmaker Odds", [])
@@ -1583,7 +1581,6 @@ def calc_avg_bps(
             # If there are more probability/average entries than number of games in the gameweek for a player, skip the player
             if len(goals_average_bookmaker) > number_of_games or len(ass_average_bookmaker) > number_of_games or len(saves_average_bookmaker) > number_of_games:
                 print(f"Calculating BPS for {player} skipped due to data entries being higher than number of games the player is playing")
-                player_dict[player]['Estimated BPS'].append(0.0)
                 continue
 
             for g1, g2, a1, a2, cs1, cs2, ga1, ga2, s1, opp in zip_longest(goals_average_bookmaker, goals_average_historical, ass_average_bookmaker, ass_average_historical, cs_odds_bookmaker, cs_odds_historical, goals_conceded_team_bookmaker, goals_conceded_team_historical, saves_average_bookmaker, opponents, fillvalue=-1):
