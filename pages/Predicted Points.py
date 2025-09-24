@@ -1178,8 +1178,8 @@ def construct_team_and_player_data(
             share_of_team_goals = (goals_for_team_25_26 * (1 + ((team_games_25_26 - games_for_team_25_26) / team_games_25_26))) / team_goals_25_26 if team_games_25_26 != 0 and team_goals_25_26 != 0 else 0
             share_of_team_assists = (assists_for_team_25_26 * (1 + ((team_games_25_26 - games_for_team_25_26) / team_games_25_26))) / team_assists_25_26 if team_games_25_26 != 0 and team_assists_25_26 != 0 else 0
         else:
-            share_of_team_goals = ((games_for_team_24_25 + goals_for_team_25_26) * (1 + (((38 + team_games_25_26) - (games_for_team_24_25 + games_for_team_25_26)) / (38 + team_games_25_26)))) / (team_goals_24_25 + team_goals_25_26) if team_games_25_26 != 0 and team_goals_24_25 + team_goals_25_26 != 0 else 0
-            share_of_team_assists = ((games_for_team_24_25 + assists_for_team_25_26) * (1 + (((38 + team_games_25_26) - (games_for_team_24_25 + games_for_team_25_26)) / (38 + team_games_25_26)))) / (team_assists_24_25 + team_assists_25_26) if team_games_25_26 != 0 and team_assists_24_25 + team_assists_25_26 != 0 else 0
+            share_of_team_goals = ((goals_for_team_24_25 + goals_for_team_25_26) * (1 + (((38 + team_games_25_26) - (games_for_team_24_25 + games_for_team_25_26)) / (38 + team_games_25_26)))) / (team_goals_24_25 + team_goals_25_26) if team_games_25_26 != 0 and team_goals_24_25 + team_goals_25_26 != 0 else 0
+            share_of_team_assists = ((assists_for_team_24_25 + assists_for_team_25_26) * (1 + (((38 + team_games_25_26) - (games_for_team_24_25 + games_for_team_25_26)) / (38 + team_games_25_26)))) / (team_assists_24_25 + team_assists_25_26) if team_games_25_26 != 0 and team_assists_24_25 + team_assists_25_26 != 0 else 0
 
         player_data[player]['Share of Goals by Current Team'] = share_of_team_goals
         player_data[player]['Share of Assists by Current Team'] = share_of_team_assists
@@ -1908,10 +1908,10 @@ def initialize_predicted_points_df(all_odds_dict, fixtures, next_gw, saves_butto
             if player_dict[player].get('Team', ['Unknown'])[0] == away_team:
                 player_dict[player]['Opponent'].append(home_team)
 
-        if 'Total Home Goals' in details:    
+        if details.get('Total Home Goals', 'Unknown') != 'Unknown':    
             total_home_goals_probs, home_margin = get_total_goals_over_probs(details['Total Home Goals'], "home") 
 
-        if 'Total Away Goals' in details:
+        if details.get('Total Away Goals', 'Unknown') != 'Unknown':
             total_away_goals_probs, away_margin = get_total_goals_over_probs(details['Total Away Goals'], "away")
 
         total_combined_goals_dict = total_home_goals_probs | total_away_goals_probs if total_home_goals_probs and total_away_goals_probs else None
