@@ -1947,14 +1947,6 @@ def initialize_predicted_points_df(all_odds_dict, fixtures, next_gw, saves_butto
                         player_dict[player]['Clean Sheet Probability by Stats Betting Market'].append(home_cs_prob)
                     if player_dict[player].get('Team', ['Unknown'])[0] == away_team:
                         player_dict[player]['Clean Sheet Probability by Stats Betting Market'].append(away_cs_prob)
-
-        total_combined_goals_dict = total_home_goals_probs | total_away_goals_probs if total_home_goals_probs and total_away_goals_probs else None
-        if total_combined_goals_dict:
-            if home_team is not None and away_team is not None:
-                add_total_goals_probs_to_dict(total_combined_goals_dict, home_team, away_team, player_dict)
-            else:
-                # Handle the case where home_team or away_team is None
-                print("Error adding Total Goals: home_team or away_team is None")
     
     calc_specific_probs(player_dict)
     if bps_button:
