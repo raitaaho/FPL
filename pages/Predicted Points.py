@@ -2091,7 +2091,7 @@ if player_stats_json_files:
     upload_new_player_stats_button = st.toggle("Upload more recent player statistics file for predicted points calculation",
     value=False)
     if upload_new_player_stats_button:
-        uploaded_player_stats = st.file_uploader("Choose a file", type="json")
+        uploaded_player_stats = st.file_uploader("Choose a file", type="json", key="player_stats_uploader")
         if uploaded_player_stats:
             uploaded_player_stats_name = uploaded_player_stats.name
             player_stats_parts = uploaded_player_stats_name.replace(".json", '').split('_')
@@ -2126,7 +2126,7 @@ if team_stats_json_files:
     upload_new_team_stats_button = st.toggle("Upload more recent team statistics file for predicted points calculation",
     value=False)
     if upload_new_team_stats_button:
-        uploaded_team_stats = st.file_uploader("Choose a file", type="json")
+        uploaded_team_stats = st.file_uploader("Choose a file", type="json", key="team_stats_uploader")
         if uploaded_team_stats:
             uploaded_team_stats_name = uploaded_team_stats.name
             team_stats_parts = uploaded_team_stats_name.replace(".json", '').split('_')
@@ -2156,7 +2156,7 @@ calc_stats_button = st.toggle(
     value=False
 )
 if st.button("Fetch FPL Data"):
-    with st.spinner("Fetching latest Statistics...", show_time=True):
+    with st.spinner("Fetching FPL Data...", show_time=True):
         data, teams_data, players_data, team_id_to_name, player_id_to_name = fetch_fpl_data()
         element_types = position_mapping(data)
         if calc_stats_button or 'player_stats_dict' not in st.session_state or 'team_stats_dict' not in st.session_state:
@@ -2165,7 +2165,7 @@ if st.button("Fetch FPL Data"):
             st.session_state.new_player_stats_fetched = True
             st.session_state.team_stats_dict = team_stats_dict
             st.session_state.new_team_stats_fetched = True
-        st.success("Player and Team Statistics Fetched Successfully!")
+        st.success("FPL Data Fetched Successfully!")
 
 current_time = datetime.now()
 
@@ -2188,17 +2188,17 @@ if "new_team_stats_fetched" in st.session_state:
         mime="text/json"
     )
 
-st.header("Select metrics to use in predicted points calculations")
+st.header("Select Metrics to Use in Predicted Points Calculations")
 saves_button = st.toggle(
-    "Use Saves per Game in predicted points calculation for goalkeepers if odds for Goalkeeper Saves are not available",
+    "Use Saves per Game in Predicted Points Calculation for Goalkeepers if Odds for Goalkeeper Saves are not Available",
     value=True
 )
 bps_button = st.toggle(
-    "Include Estimated Bonus Points for predicted points calculation",
+    "Include Estimated Bonus Points for Predicted Points Calculation",
     value=False
 )
 
-gws_to_predict = st.slider("Select amount of gameweeks to calculate predicted points for", min_value=1, max_value=10, value=1)
+gws_to_predict = st.slider("Select Amount of Gameweeks to Calculate Predicted Points for", min_value=1, max_value=10, value=1)
 
 if "player_stats_dict" in st.session_state and "team_stats_dict" in st.session_state:
     st.subheader("Predicted Points Calculation")      
