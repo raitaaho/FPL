@@ -1810,13 +1810,10 @@ def calc_points(player_dict: dict, saves_button: bool) -> None:
         except Exception as e:
             print(f"Could not calculate points for {player}: {e}")
 
-def initialize_predicted_points_df(all_odds_dict, fixtures, player_stats_dict, team_stats_dict, next_gw, saves_button: bool, bps_button: bool, gws: int):
+def initialize_predicted_points_df(all_odds_dict, fixtures, data, teams_data, players_data, team_id_to_name, player_id_to_name, player_stats_dict, team_stats_dict, next_gw, saves_button: bool, bps_button: bool, gws: int):
 
     gws_to_predict = [next_gw + i for i in range(1, gws)]
     next_fixtures = [fixture for fixture in fixtures if (fixture['event'] in gws_to_predict) and (fixture['started'] == False)]
-
-    data, teams_data, players_data, team_id_to_name, player_id_to_name = fetch_fpl_data()
-    element_types = position_mapping(data)
 
     player_dict = player_dict_constructor(players_data, team_stats_dict, player_stats_dict, element_types, team_id_to_name)
 
@@ -2087,7 +2084,7 @@ if player_stats_json_files:
     latest_player_stats_path = max(player_stats_json_files)
     latest_player_stats_name = latest_player_stats_path.replace(stats_dir, '')
     player_stats_git_parts = latest_player_stats_name.replace(".json", '').split('_')
-    player_stats_git_timestamp = f"{player_stats_git_parts[2][2:]}.{player_stats_git_parts[2][:2]} {player_stats_git_parts[3][:2]}:{player_stats_git_parts[3][2:]}"
+    player_stats_git_timestamp = f"{player_stats_git_parts[3][2:]}.{player_stats_git_parts[3][:2]} {player_stats_git_parts[4][:2]}:{player_stats_git_parts[4][2:]}"
     st.info(f"Github repository's latest player statistics file has a timestamp of {player_stats_git_timestamp}")
     upload_new_player_stats_button = st.toggle("Upload more recent player statistics file for predicted points calculation",
     value=False)
@@ -2097,7 +2094,7 @@ if player_stats_json_files:
             uploaded_player_stats_name = uploaded_player_stats.name
             player_stats_parts = uploaded_player_stats_name.replace(".json", '').split('_')
             gw = player_stats_parts[0].replace("gw", '')
-            player_stats_timestamp = f"{player_stats_parts[2][2:]}.{player_stats_parts[2][:2]} {player_stats_parts[3][:2]}:{player_stats_parts[3][2:]}"
+            player_stats_timestamp = f"{player_stats_parts[3][2:]}.{player_stats_parts[3][:2]} {player_stats_parts[4][:2]}:{player_stats_parts[4][2:]}"
             
             try:
                 player_stats_dict = json.load(uploaded_player_stats)
@@ -2120,7 +2117,7 @@ if team_stats_json_files:
     latest_team_stats_path = max(team_stats_json_files)
     latest_team_stats_name = latest_team_stats_path.replace(stats_dir, '')
     team_stats_git_parts = latest_team_stats_name.replace(".json", '').split('_')
-    team_stats_git_timestamp = f"{team_stats_git_parts[2][2:]}.{team_stats_git_parts[2][:2]} {team_stats_git_parts[3][:2]}:{team_stats_git_parts[3][2:]}"
+    team_stats_git_timestamp = f"{team_stats_git_parts[3][2:]}.{team_stats_git_parts[3][:2]} {team_stats_git_parts[4][:2]}:{team_stats_git_parts[4][2:]}"
     st.info(f"Github repository's latest team statistics file has a timestamp of {team_stats_git_timestamp}")
     upload_new_team_stats_button = st.toggle("Upload more recent team statistics file for predicted points calculation",
     value=False)
@@ -2130,7 +2127,7 @@ if team_stats_json_files:
             uploaded_team_stats_name = uploaded_team_stats.name
             team_stats_parts = uploaded_team_stats_name.replace(".json", '').split('_')
             gw = team_stats_parts[0].replace("gw", '')
-            team_stats_timestamp = f"{team_stats_parts[2][2:]}.{team_stats_parts[2][:2]} {team_stats_parts[3][:2]}:{team_stats_parts[3][2:]}"
+            team_stats_timestamp = f"{team_stats_parts[3][2:]}.{team_stats_parts[3][:2]} {team_stats_parts[4][:2]}:{team_stats_parts[4][2:]}"
             try:
                 team_stats_dict = json.load(uploaded_team_stats)
                 st.session_state.team_stats_dict = team_stats_dict
@@ -2161,7 +2158,7 @@ bps_button = st.toggle(
 gws_to_predict = st.slider("Select amount of gameweeks to calculate predicted points for", min_value=1, max_value=10, value=1)
 
 calc_stats_button = st.toggle(
-    "Calculate player and team statistics according to most recent fixtures from FPL API (this may take a few minutes)",
+    "Calculate Player and Team Statistics According to Most Recent Fixtures from FPL API (This May Take a Few Minutes)",
     value=False
 )
 
@@ -2175,10 +2172,9 @@ if st.button("Fetch Latest Player and Team Statistics"):
             st.session_state.team_stats_dict = team_stats_dict
         st.success("Player and Team Statistics Fetched Successfully!")
 
-current_time = datetime.now()
-
-if "player_stats_dict" in st.session_state:
-    st.subheader("Player Statistics Data")
+if "player_stats_dict" in st.session_state and "team_stats_dict" in st.session_state:
+    current_time = datetime.now()
+    st.subheader("Player and Team Statistics Data")
     player_stats_json = json.dumps(st.session_state.player_stats_dict, indent=4).encode('utf-8')
     player_stats_filename = f"gw{next_gw}_player_statistics_{current_time.strftime('%m')}{current_time.strftime('%d')}_{current_time.strftime('%H')}{current_time.strftime('%M')}.json"
     st.download_button(
@@ -2188,8 +2184,6 @@ if "player_stats_dict" in st.session_state:
         mime="text/json"
     )
 
-if "team_stats_dict" in st.session_state:
-    st.subheader("Team Statistics Data")
     team_stats_json = json.dumps(st.session_state.team_stats_dict, indent=4).encode('utf-8')
     team_stats_filename = f"gw{next_gw}_team_statistics_{current_time.strftime('%m')}{current_time.strftime('%d')}_{current_time.strftime('%H')}{current_time.strftime('%M')}.json"
     st.download_button(
@@ -2198,79 +2192,79 @@ if "team_stats_dict" in st.session_state:
         file_name=team_stats_filename,
         mime="text/json"
     )
-        
-# Step 2: Load data only after user confirms
-if st.button("Calculate Predicted Points"):
-    with st.spinner("Calculating Predicted Points...", show_time=True):
-        st.session_state.df = initialize_predicted_points_df(all_odds_dict, fixtures, st.session_state.player_stats_dict, st.session_state.team_stats_dict, next_gw, saves_button, bps_button, gws_to_predict)
+    st.subheader("Predicted Points Calculation")      
+    # Step 2: Load data only after user confirms
+    if st.button("Calculate Predicted Points"):
+        with st.spinner("Calculating Predicted Points...", show_time=True):
+            st.session_state.df = initialize_predicted_points_df(all_odds_dict, fixtures, data, teams_data, players_data, team_id_to_name, player_id_to_name, st.session_state.player_stats_dict, st.session_state.team_stats_dict, next_gw, saves_button, bps_button, gws_to_predict)
 
-current_time = datetime.now()
+    current_time = datetime.now()
 
-# Step 3: Show filters and calculation only if data is loaded
-if "df" in st.session_state:
-    df = st.session_state.df
-    chart_df = df
+    # Step 3: Show filters and calculation only if data is loaded
+    if "df" in st.session_state:
+        df = st.session_state.df
+        chart_df = df
 
-    columns = df.columns.tolist()
-    column_names = st.multiselect("Select Columns to Display", columns, default=columns)
-    if column_names:
-        df = df.loc[:, column_names]
+        columns = df.columns.tolist()
+        column_names = st.multiselect("Select Columns to Display", columns, default=columns)
+        if column_names:
+            df = df.loc[:, column_names]
 
-    # Position filter
-    if "Position" in df.columns:
-        all_positions = sorted(df["Position"].dropna().unique())
-        selected_positions = st.multiselect("Select Player Position(s)", all_positions)
-        if selected_positions:
-            df = df[df["Position"].isin(selected_positions)]
+        # Position filter
+        if "Position" in df.columns:
+            all_positions = sorted(df["Position"].dropna().unique())
+            selected_positions = st.multiselect("Select Player Position(s)", all_positions)
+            if selected_positions:
+                df = df[df["Position"].isin(selected_positions)]
 
-    # Price filter
-    if "Price" in df.columns:
-        min_price = float(df["Price"].min())
-        max_price = float(df["Price"].max())
-        selected_price_range = st.slider("Select Price Range (in £m)", min_value=min_price, max_value=max_price, value=(min_price, max_price))
-        df = df[(df["Price"] >= selected_price_range[0]) & (df["Price"] <= selected_price_range[1])]
+        # Price filter
+        if "Price" in df.columns:
+            min_price = float(df["Price"].min())
+            max_price = float(df["Price"].max())
+            selected_price_range = st.slider("Select Price Range (in £m)", min_value=min_price, max_value=max_price, value=(min_price, max_price))
+            df = df[(df["Price"] >= selected_price_range[0]) & (df["Price"] <= selected_price_range[1])]
 
-    # Final calculation and display
-    if st.button("Show Predicted Points"):
-        st.subheader("Predicted Points for Filtered Players")
-        st.dataframe(df)
+        # Final calculation and display
+        if st.button("Show Predicted Points"):
+            st.subheader("Predicted Points for Filtered Players")
+            st.dataframe(df)
 
-        # Download button
-        df_csv = df.to_csv(index=False).encode('utf-8')
-        pred_points_filename = f"gw{next_gw}_filtered_predicted_points_{current_time.strftime('%m')}{current_time.strftime('%d')}_{current_time.strftime('%H')}{current_time.strftime('%M')}.csv"
-        st.download_button(
-            label="Download Predicted Points as CSV",
-            data=df_csv,
-            file_name=pred_points_filename,
-            mime="text/csv"
-        )
-        
-        # Separate goalkeepers and others
-        df_gk = chart_df[chart_df["Position"] == "GKP"]
-        df_others = chart_df[chart_df["Position"] != "GKP"]
+            # Download button
+            df_csv = df.to_csv(index=False).encode('utf-8')
+            pred_points_filename = f"gw{next_gw}_filtered_predicted_points_{current_time.strftime('%m')}{current_time.strftime('%d')}_{current_time.strftime('%H')}{current_time.strftime('%M')}.csv"
+            st.download_button(
+                label="Download Predicted Points as CSV",
+                data=df_csv,
+                file_name=pred_points_filename,
+                mime="text/csv"
+            )
+            
+            # Separate goalkeepers and others
+            df_gk = chart_df[chart_df["Position"] == "GKP"]
+            df_others = chart_df[chart_df["Position"] != "GKP"]
 
-        # For goalkeepers, keep only one per team with highest predicted points
-        df_gk_sorted = df_gk.sort_values("Expected Points Sum", ascending=False)
-        df_gk_one_per_team = df_gk_sorted.drop_duplicates(subset="Team", keep="first")
+            # For goalkeepers, keep only one per team with highest predicted points
+            df_gk_sorted = df_gk.sort_values("Expected Points Sum", ascending=False)
+            df_gk_one_per_team = df_gk_sorted.drop_duplicates(subset="Team", keep="first")
 
-        # Combine and get top 5 per position
-        df_combined = pd.concat([df_gk_one_per_team, df_others])
+            # Combine and get top 5 per position
+            df_combined = pd.concat([df_gk_one_per_team, df_others])
 
-        # Get top 5 players per position
-        top_players = df_combined.groupby("Position", group_keys=False).apply(lambda x: x.nlargest(5, "Expected Points Sum"))
+            # Get top 5 players per position
+            top_players = df_combined.groupby("Position", group_keys=False).apply(lambda x: x.nlargest(5, "Expected Points Sum"))
 
-        # Create chart
-        fig = px.bar(
-            top_players,
-            x="Nickname",
-            y="Expected Points Sum",
-            color="Position",
-            title="Top 5 FPL Players by Position",
-            labels={"Predicted Points": "Expected Points Sum"},
-            hover_data=["Minutes per Game", "Team"]
-        )
+            # Create chart
+            fig = px.bar(
+                top_players,
+                x="Nickname",
+                y="Expected Points Sum",
+                color="Position",
+                title="Top 5 FPL Players by Position",
+                labels={"Predicted Points": "Expected Points Sum"},
+                hover_data=["Minutes per Game", "Team"]
+            )
 
-        # Display in Streamlit
-        st.plotly_chart(fig, use_container_width=True)
+            # Display in Streamlit
+            st.plotly_chart(fig, use_container_width=True)
 
 
