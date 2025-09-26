@@ -1810,11 +1810,15 @@ def calc_points(player_dict: dict, saves_button: bool) -> None:
         except Exception as e:
             print(f"Could not calculate points for {player}: {e}")
 
-def initialize_predicted_points_df(all_odds_dict, fixtures, data, teams_data, players_data, team_id_to_name, player_id_to_name, player_stats_dict, team_stats_dict, element_types, next_gw, saves_button: bool, bps_button: bool, gws: int):
+def initialize_predicted_points_df(all_odds_dict, fixtures, next_gw, saves_button: bool, bps_button: bool, gws: int):
 
     gws_to_predict = [next_gw + i for i in range(1, gws)]
     next_fixtures = [fixture for fixture in fixtures if (fixture['event'] in gws_to_predict) and (fixture['started'] == False)]
 
+    data, teams_data, players_data, team_id_to_name, player_id_to_name = fetch_fpl_data()
+    element_types = position_mapping(data)
+
+    team_stats_dict, player_stats_dict = construct_team_and_player_data(data, team_id_to_name, player_id_to_name, fixtures)
     player_dict = player_dict_constructor(players_data, team_stats_dict, player_stats_dict, element_types, team_id_to_name)
 
     for fixture in next_fixtures:
@@ -1927,8 +1931,8 @@ def initialize_predicted_points_df(all_odds_dict, fixtures, data, teams_data, pl
                 home_cs_prob = (1 / float(ave_home_cs_odd)) if ave_home_cs_odd != 0 else 0
                 away_cs_prob = (1 / float(ave_away_cs_odd)) if ave_away_cs_odd != 0 else 0
 
-                home_no_cs_prob = (1 / float(ave_home_no_cs_odd)) if ave_home_no_cs_odd != 0 else 0
-                away_no_cs_prob = (1 / float(ave_away_no_cs_odd)) if ave_away_no_cs_odd != 0 else 0
+                home_no_cs_prob = (1 / float(ave_home_no_cs_odd)) if ave_home_cs_odd != 0 else 0
+                away_no_cs_prob = (1 / float(ave_away_no_cs_odd)) if ave_away_cs_odd != 0 else 0
 
                 if home_cs_prob != 0 and home_no_cs_prob != 0:
                     home_margin = (home_cs_prob + home_no_cs_prob) - 1
@@ -2005,7 +2009,7 @@ def initialize_predicted_points_df(all_odds_dict, fixtures, data, teams_data, pl
     for col in player_data_df.columns:
         player_data_df[col] = player_data_df[col].apply(lambda x: x[0] if isinstance(x, list) and len(x) == 1 else x)
 
-    return player_data_df
+    return player_data_df, player_stats_dict, team_stats_dict
 
 st.set_page_config(page_title="FPL Predicted Points", page_icon="📈")
 
@@ -2014,70 +2018,45 @@ st.write(
     """This is a FPL Predicted Points tool for viewing Fantasy Premier League predicted points according to the bookmaker odds scraped from Oddschecker.com"""
 )
 
-if "all_odds_dict" not in st.session_state:
-    st.session_state.all_odds_dict = {}
-if "fixtures" not in st.session_state:
-    st.session_state.fixtures = []
-if "next_gw" not in st.session_state:
-    st.session_state.next_gw = None
-if "player_stats_dict" not in st.session_state:
-    st.session_state.player_stats_dict = {}
-if "new_player_stats_uploaded" not in st.session_state:
-    st.session_state.new_player_stats_uploaded = False
-if "team_stats_dict" not in st.session_state:
-    st.session_state.team_stats_dict = {}
-if "saves_button" not in st.session_state:
-    st.session_state.saves_button = False
-if "bps_button" not in st.session_state:
-    st.session_state.bps_button = False
-if "gws" not in st.session_state:
-    st.session_state.gws = 1
-
-st.session_state.fixtures = get_all_fixtures()
-st.session_state.next_gw = get_next_gw(st.session_state.fixtures)
+fixtures = get_all_fixtures()
+next_gw = get_next_gw(fixtures)
 
 cur_dir = os.getcwd()
 fixtures_dir = os.path.join(cur_dir, "data", "fixture_data")
-stats_dir = os.path.join(cur_dir, "data", "historical_statistics")
-odds_filename = os.path.join(fixtures_dir, f"gw{st.session_state.next_gw}_all_odds_")
-player_stats_filename = os.path.join(stats_dir, f"gw{st.session_state.next_gw}_player_statistics_")
-team_stats_filename = os.path.join(stats_dir, f"gw{st.session_state.next_gw}_team_statistics_")
+odds_filename = os.path.join(fixtures_dir, f"gw{next_gw}_all_odds_")
 
 odds_json_files = glob.glob(f"{odds_filename}*.json")
-player_stats_json_files = glob.glob(f"{player_stats_filename}*.json")
-team_stats_json_files = glob.glob(f"{team_stats_filename}*.json")
 
-st.markdown("### Odds JSON File Upload")
 if odds_json_files:
     latest_odds_path = max(odds_json_files)
     latest_odds_name = latest_odds_path.replace(fixtures_dir, '')
-    odds_git_parts = latest_odds_name.replace(".json", '').split('_')
-    odds_git_timestamp = f"{odds_git_parts[3][2:]}.{odds_git_parts[3][:2]} {odds_git_parts[4][:2]}:{odds_git_parts[4][2:]}"
-    st.info(f"Github repository's latest scraped odds file for next gameweek has a timestamp of {odds_git_timestamp}")
+    git_parts = latest_odds_name.replace(".json", '').split('_')
+    git_timestamp = f"{git_parts[3][2:]}.{git_parts[3][:2]} {git_parts[4][:2]}:{git_parts[4][2:]}"
+    st.info(f"Github repository's latest scraped odds file for next gameweek has a timestamp of {git_timestamp}")
     upload_new_odds_button = st.toggle("Upload more recent odds file for predicted points calculation",
     value=False)
     if upload_new_odds_button:
         uploaded_odds = st.file_uploader("Choose a file", type="json")
         if uploaded_odds:
             uploaded_odds_name = uploaded_odds.name
-            odds_parts = uploaded_odds_name.replace(".json", '').split('_')
-            gw = odds_parts[0].replace("gw", '')
-            odds_timestamp = f"{odds_parts[3][2:]}.{odds_parts[3][:2]} {odds_parts[4][:2]}:{odds_parts[4][2:]}"
-            if st.session_state.next_gw == int(gw):
+            parts = uploaded_odds_name.replace(".json", '').split('_')
+            gw = parts[0].replace("gw", '')
+            timestamp = f"{parts[3][2:]}.{parts[3][:2]} {parts[4][:2]}:{parts[4][2:]}"
+            if next_gw == int(gw):
                 try:
                     all_odds_dict = json.load(uploaded_odds)
-                    st.info(f"Using uploaded odds file with a timestamp of {odds_timestamp} instead of Github repository odds file with timestamp of {odds_git_timestamp}")
+                    st.info(f"Using uploaded odds file with a timestamp of {timestamp} instead of Github repository odds file with timestamp of {git_timestamp}")
                 except Exception as e:
                     st.warning(f"Could not load all odds file {uploaded_odds_name} into dictionary.")
                     all_odds_dict = {}
             else:
-                st.warning(f"Odds in uploaded file {uploaded_odds_name} are not for the next gameweek ({st.session_state.next_gw}).")
+                st.warning(f"Odds in uploaded file {uploaded_odds_name} are not for the next gameweek ({next_gw}).")
                 all_odds_dict = {}
     else:
         try:
             with open(latest_odds_path, 'r') as file:
                 all_odds_dict = json.load(file)
-                st.info(f"Using odds file with a timestamp of {odds_git_timestamp}")
+                st.info(f"Using odds file with a timestamp of {git_timestamp}")
         except IOError:
             st.warning(f"Could not open all odds file {latest_odds_path} found in Github repository.")
             all_odds_dict = {}
@@ -2086,172 +2065,64 @@ else:
     uploaded_odds = st.file_uploader("Choose a file", type="json")
     if uploaded_odds:
         uploaded_odds_name = uploaded_odds.name
-        odds_parts = uploaded_odds_name.replace(".json", '').split('_')
-        gw = odds_parts[0].replace("gw", '')
-        odds_timestamp = f"{odds_parts[3][2:]}.{odds_parts[3][:2]} {odds_parts[4][:2]}:{odds_parts[4][2:]}"
-        if st.session_state.next_gw == int(gw):
+        parts = uploaded_odds_name.replace(".json", '').split('_')
+        gw = parts[0].replace("gw", '')
+        timestamp = f"{parts[3][2:]}.{parts[3][:2]} {parts[4][:2]}:{parts[4][2:]}"
+        if next_gw == int(gw):
             try:
                 all_odds_dict = json.load(uploaded_odds)
-                st.info(f"Using uploaded odds file with timestamp of {odds_timestamp}")
+                st.info(f"Using uploaded odds file with timestamp of {timestamp}")
             except Exception as e:
                 st.warning(f"Could not load all odds file {uploaded_odds_name} into dictionary.")
                 all_odds_dict = {}
         else:
-            st.warning(f"Odds in uploaded file {uploaded_odds_name} are not for the next gameweek ({st.session_state.next_gw}).")
+            st.warning(f"Odds in uploaded file {uploaded_odds_name} are not for the next gameweek ({next_gw}).")
             all_odds_dict = {}
 
-st.session_state.all_odds_dict = all_odds_dict
-st.session_state.fixtures = st.session_state.fixtures
-st.session_state.next_gw = st.session_state.next_gw
-
-
-st.markdown("### Player Statistics JSON File Upload")
-if player_stats_json_files:
-    latest_player_stats_path = max(player_stats_json_files)
-    latest_player_stats_name = latest_player_stats_path.replace(stats_dir, '')
-    player_stats_git_parts = latest_player_stats_name.replace(".json", '').split('_')
-    player_stats_git_timestamp = f"{player_stats_git_parts[3][2:]}.{player_stats_git_parts[3][:2]} {player_stats_git_parts[4][:2]}:{player_stats_git_parts[4][2:]}"
-    st.info(f"Github repository's latest player statistics file has a timestamp of {player_stats_git_timestamp}")
-    upload_new_player_stats_button = st.toggle("Upload more recent player statistics file for predicted points calculation",
-    value=False)
-    if upload_new_player_stats_button:
-        uploaded_player_stats = st.file_uploader("Choose a file", type="json", key="player_stats_uploader")
-        if uploaded_player_stats:
-            uploaded_player_stats_name = uploaded_player_stats.name
-            player_stats_parts = uploaded_player_stats_name.replace(".json", '').split('_')
-            gw = player_stats_parts[0].replace("gw", '')
-            player_stats_timestamp = f"{player_stats_parts[3][2:]}.{player_stats_parts[3][:2]} {player_stats_parts[4][:2]}:{player_stats_parts[4][2:]}"
-            
-            try:
-                player_stats_dict = json.load(uploaded_player_stats)
-                st.session_state.player_stats_dict = player_stats_dict
-                st.session_state.new_player_stats_uploaded = True
-                st.info(f"Using uploaded player statistics file with a timestamp of {player_stats_timestamp} instead of Github repository player statistics file with timestamp of {player_stats_git_timestamp}")
-            except Exception as e:
-                st.warning(f"Could not load player statistics file {uploaded_player_stats_name} into dictionary.")
-            if st.session_state.next_gw != int(gw):
-                st.warning(f"Player statistics in uploaded file {uploaded_player_stats_name} do not include previous gameweek ({st.session_state.next_gw - 1}).")
-    else:
-        try:
-            with open(latest_player_stats_path, 'r') as file:
-                player_stats_dict = json.load(file)
-                st.session_state.player_stats_dict = player_stats_dict
-                st.info(f"Using player statistics file with a timestamp of {player_stats_git_timestamp}")
-        except IOError:
-            st.warning(f"Could not open player statistics file {latest_player_stats_path} found in Github repository.")
-
-st.markdown("### Team Statistics JSON File Upload")
-if team_stats_json_files:
-    latest_team_stats_path = max(team_stats_json_files)
-    latest_team_stats_name = latest_team_stats_path.replace(stats_dir, '')
-    team_stats_git_parts = latest_team_stats_name.replace(".json", '').split('_')
-    team_stats_git_timestamp = f"{team_stats_git_parts[3][2:]}.{team_stats_git_parts[3][:2]} {team_stats_git_parts[4][:2]}:{team_stats_git_parts[4][2:]}"
-    st.info(f"Github repository's latest team statistics file has a timestamp of {team_stats_git_timestamp}")
-    upload_new_team_stats_button = st.toggle("Upload more recent team statistics file for predicted points calculation",
-    value=False)
-    if upload_new_team_stats_button:
-        uploaded_team_stats = st.file_uploader("Choose a file", type="json", key="team_stats_uploader")
-        if uploaded_team_stats:
-            uploaded_team_stats_name = uploaded_team_stats.name
-            team_stats_parts = uploaded_team_stats_name.replace(".json", '').split('_')
-            gw = team_stats_parts[0].replace("gw", '')
-            team_stats_timestamp = f"{team_stats_parts[3][2:]}.{team_stats_parts[3][:2]} {team_stats_parts[4][:2]}:{team_stats_parts[4][2:]}"
-            try:
-                team_stats_dict = json.load(uploaded_team_stats)
-                st.session_state.team_stats_dict = team_stats_dict
-                st.session_state.new_team_stats_uploaded = True
-                st.info(f"Using uploaded team statistics file with a timestamp of {team_stats_timestamp} instead of Github repository player statistics file with timestamp of {team_stats_git_timestamp}")
-            except Exception as e:
-                st.warning(f"Could not load team statistics file {uploaded_team_stats_name} into dictionary.")
-            if st.session_state.next_gw != int(gw):
-                st.warning(f"Team statistics in uploaded file {uploaded_team_stats_name} are not for the next gameweek ({st.session_state.next_gw}).")
-    else:
-        try:
-            with open(latest_team_stats_path, 'r') as file:
-                team_stats_dict = json.load(file)
-                st.session_state.team_stats_dict = team_stats_dict
-                st.info(f"Using team statistics file with a timestamp of {team_stats_git_timestamp}")
-        except IOError:
-            st.warning(f"Could not open team statistics file {latest_team_stats_path} found in Github repository.")
-
-st.header("Fetch FPL Data for Predicted Points Calculations")
-calc_stats_button = st.toggle(
-    "Fetch Player and Team Statistics According to Most Recent Fixtures from FPL API (This May Take a Few Minutes)",
-    value=False
-)
-if "data" not in st.session_state:
-    st.session_state.data = None
-if "teams_data" not in st.session_state:
-    st.session_state.teams_data = None
-if "players_data" not in st.session_state:
-    st.session_state.players_data = None
-if "team_id_to_name" not in st.session_state:
-    st.session_state.team_id_to_name = None
-if "player_id_to_name" not in st.session_state:
-    st.session_state.player_id_to_name = None
-if "element_types" not in st.session_state:
-    st.session_state.element_types = None
-            
-if st.button("Fetch FPL Data"):
-    with st.spinner("Fetching FPL Data...", show_time=True):
-        data, teams_data, players_data, team_id_to_name, player_id_to_name = fetch_fpl_data()
-        element_types = position_mapping(data)
-        st.session_state.data = data
-        st.session_state.teams_data = teams_data
-        st.session_state.players_data = players_data
-        st.session_state.team_id_to_name = team_id_to_name
-        st.session_state.player_id_to_name = player_id_to_name
-        st.session_state.element_types = element_types
-        if calc_stats_button or 'player_stats_dict' not in st.session_state or 'team_stats_dict' not in st.session_state:
-            team_stats_dict, player_stats_dict = construct_team_and_player_data(data, team_id_to_name, player_id_to_name, st.session_state.fixtures)
-            st.session_state.player_stats_dict = player_stats_dict
-            st.session_state.new_player_stats_fetched = True
-            st.session_state.team_stats_dict = team_stats_dict
-            st.session_state.new_team_stats_fetched = True
-
-        st.success("FPL Data Fetched Successfully!")
-
-current_time = datetime.now()
-
-if "new_player_stats_fetched" in st.session_state:
-    player_stats_json = json.dumps(st.session_state.player_stats_dict, indent=4)
-    player_stats_filename = f"gw{st.session_state.next_gw}_player_statistics_{current_time.strftime('%m')}{current_time.strftime('%d')}_{current_time.strftime('%H')}{current_time.strftime('%M')}.json"
-    st.download_button(
-        label="Download Fetched Player Statistics as JSON",
-        data=player_stats_json,
-        file_name=player_stats_filename,
-        mime="text/json"
-    )
-if "new_team_stats_fetched" in st.session_state:
-    team_stats_json = json.dumps(st.session_state.team_stats_dict, indent=4)
-    team_stats_filename = f"gw{st.session_state.next_gw}_team_statistics_{current_time.strftime('%m')}{current_time.strftime('%d')}_{current_time.strftime('%H')}{current_time.strftime('%M')}.json"
-    st.download_button(
-        label="Download Fetched Team Statistics as JSON",
-        data=team_stats_json,
-        file_name=team_stats_filename,
-        mime="text/json"
-    )
-
-st.header("Select Metrics to Use in Predicted Points Calculations")
+st.header("Step 1: Select metrics to use in predicted points calculations")
 saves_button = st.toggle(
-    "Use Saves per Game in Predicted Points Calculation for Goalkeepers if Odds for Goalkeeper Saves are not Available",
+    "Use Saves per Game in predicted points calculation for goalkeepers if odds for Goalkeeper Saves are not available",
     value=True
 )
 bps_button = st.toggle(
-    "Include Estimated Bonus Points for Predicted Points Calculation",
+    "Include Estimated Bonus Points for predicted points calculation",
     value=False
 )
 
-gws_to_predict = st.slider("Select Amount of Gameweeks to Calculate Predicted Points for", min_value=1, max_value=10, value=1)
+gws_to_predict = st.slider("Select amount of gameweeks to calculate predicted points for", min_value=1, max_value=10, value=1)
 
-st.subheader("Predicted Points Calculation")      
+if st.button("Fetch Latest Player and Team Statistics"):
+    with st.spinner("Fetching latest Statistics...", show_time=True):
+        data, teams_data, players_data, team_id_to_name, player_id_to_name = fetch_fpl_data()
+        element_types = position_mapping(data)
+        team_stats_dict, player_stats_dict = construct_team_and_player_data(data, team_id_to_name, player_id_to_name, fixtures)
+        st.session_state.player_stats_dict = player_stats_dict
+        st.session_state.team_stats_dict = team_stats_dict
+        st.success("Player and Team Statistics Fetched Successfully!")
 # Step 2: Load data only after user confirms
 if st.button("Calculate Predicted Points"):
     with st.spinner("Calculating Predicted Points...", show_time=True):
-        st.session_state.df = initialize_predicted_points_df(st.session_state.all_odds_dict, st.session_state.fixtures, st.session_state.data, st.session_state.teams_data, st.session_state.players_data, st.session_state.team_id_to_name, st.session_state.player_id_to_name, st.session_state.player_stats_dict, st.session_state.team_stats_dict, st.session_state.element_types, st.session_state.next_gw, saves_button, bps_button, gws_to_predict)
+        st.session_state.df, st.session_state.player_stats_dict, st.session_state.team_stats_dict = initialize_predicted_points_df(all_odds_dict, fixtures, next_gw, saves_button, bps_button, gws_to_predict)
 
-current_time = datetime.now()
+if "player_stats_dict" in st.session_state:
+    st.subheader("Player Statistics Data")
+    player_stats_json = json.dumps(st.session_state.player_stats_dict, indent=4).encode('utf-8')
+    st.download_button(
+        label="Download Player Statistics as JSON",
+        data=player_stats_json,
+        file_name=f"gw{next_gw}_player_statistics.json",
+        mime="text/json"
+    )
 
+if "team_stats_dict" in st.session_state:
+    st.subheader("Team Statistics Data")
+    team_stats_json = json.dumps(st.session_state.team_stats_dict, indent=4).encode('utf-8')
+    st.download_button(
+        label="Download Team Statistics as JSON",
+        data=team_stats_json,
+        file_name=f"gw{next_gw}_team_statistics.json",
+        mime="text/json"
+    )
 # Step 3: Show filters and calculation only if data is loaded
 if "df" in st.session_state:
     df = st.session_state.df
@@ -2283,11 +2154,10 @@ if "df" in st.session_state:
 
         # Download button
         df_csv = df.to_csv(index=False).encode('utf-8')
-        pred_points_filename = f"gw{st.session_state.next_gw}_filtered_predicted_points_{current_time.strftime('%m')}{current_time.strftime('%d')}_{current_time.strftime('%H')}{current_time.strftime('%M')}.csv"
         st.download_button(
             label="Download Predicted Points as CSV",
             data=df_csv,
-            file_name=pred_points_filename,
+            file_name=f"gw{next_gw}_filtered_predicted_points.csv",
             mime="text/csv"
         )
         
