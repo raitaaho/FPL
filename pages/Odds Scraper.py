@@ -446,6 +446,7 @@ def scrape_all_matches(match_dict, driver):
             
             odd_progress_bar.progress(int((total_odd_counter / total_odds) * 100))
         except Exception as e:
+            print(f"Could not click on Stats Betting for Clean Sheet odds: {e}")
             status_container.warning(f'Could not click on Stats Betting for **Clean Sheet** odds', icon="⚠️")
 
             driver.save_screenshot('screenshot.png')
