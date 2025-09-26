@@ -2028,6 +2028,9 @@ odds_json_files = glob.glob(f"{odds_filename}*.json")
 player_stats_json_files = glob.glob(f"{player_stats_filename}*.json")
 team_stats_json_files = glob.glob(f"{team_stats_filename}*.json")
 
+if "all_odds_dict" not in st.session_state:
+    st.session_state.all_odds_dict = {}
+    
 st.markdown("### Odds JSON File Upload")
 if odds_json_files:
     latest_odds_path = max(odds_json_files)
@@ -2080,6 +2083,8 @@ else:
         else:
             st.warning(f"Odds in uploaded file {uploaded_odds_name} are not for the next gameweek ({next_gw}).")
             all_odds_dict = {}
+
+st.session_state.all_odds_dict = all_odds_dict
 
 st.markdown("### Player Statistics JSON File Upload")
 if player_stats_json_files:
