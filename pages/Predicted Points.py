@@ -2110,32 +2110,32 @@ if st.button("Fetch Latest Player and Team Statistics"):
         data, teams_data, players_data, team_id_to_name, player_id_to_name = fetch_fpl_data()
         element_types = position_mapping(data)
         team_stats_dict, player_stats_dict = construct_team_and_player_data(data, team_id_to_name, player_id_to_name, fixtures)
-        st.session_state.player_stats_df = pd.DataFrame.from_dict(player_stats_dict, orient='index')
-        st.session_state.team_stats_df = pd.DataFrame.from_dict(team_stats_dict, orient='index')
+        st.session_state.player_stats_dict = player_stats_dict
+        st.session_state.team_stats_dict = team_stats_dict
         st.success("Player and Team Statistics Fetched Successfully!")
 # Step 2: Load data only after user confirms
 if st.button("Calculate Predicted Points"):
     with st.spinner("Calculating Predicted Points...", show_time=True):
-        st.session_state.df, st.session_state.player_stats_df, st.session_state.team_stats_df = initialize_predicted_points_df(all_odds_dict, fixtures, next_gw, saves_button, bps_button, gws_to_predict)
+        st.session_state.df, st.session_state.player_stats_dict, st.session_state.team_stats_dict = initialize_predicted_points_df(all_odds_dict, fixtures, next_gw, saves_button, bps_button, gws_to_predict)
 
-if "player_stats_df" in st.session_state:
+if "player_stats_dict" in st.session_state:
     st.subheader("Player Statistics Data")
-    player_stats_csv = st.session_state.player_stats_df.to_csv(index=True).encode('utf-8')
+    player_stats_json = json.dumps(st.session_state.player_stats_dict, indent=4).encode('utf-8')
     st.download_button(
-        label="Download Player Statistics as CSV",
-        data=player_stats_csv,
-        file_name=f"gw{next_gw}_player_statistics.csv",
-        mime="text/csv"
+        label="Download Player Statistics as JSON",
+        data=player_stats_json,
+        file_name=f"gw{next_gw}_player_statistics.json",
+        mime="text/json"
     )
 
-if "team_stats_df" in st.session_state:
+if "team_stats_dict" in st.session_state:
     st.subheader("Team Statistics Data")
-    team_stats_csv = st.session_state.team_stats_df.to_csv(index=True).encode('utf-8')
+    team_stats_json = json.dumps(st.session_state.team_stats_dict, indent=4).encode('utf-8')
     st.download_button(
-        label="Download Team Statistics as CSV",
-        data=team_stats_csv,
-        file_name=f"gw{next_gw}_team_statistics.csv",
-        mime="text/csv"
+        label="Download Team Statistics as JSON",
+        data=team_stats_json,
+        file_name=f"gw{next_gw}_team_statistics.json",
+        mime="text/json"
     )
 # Step 3: Show filters and calculation only if data is loaded
 if "df" in st.session_state:
