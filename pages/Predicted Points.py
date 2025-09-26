@@ -2161,6 +2161,12 @@ if st.button("Fetch FPL Data"):
         element_types = position_mapping(data)
         if calc_stats_button or 'player_stats_dict' not in st.session_state or 'team_stats_dict' not in st.session_state:
             team_stats_dict, player_stats_dict = construct_team_and_player_data(data, team_id_to_name, player_id_to_name, fixtures)
+            st.session_state.data = data
+            st.session_state.teams_data = teams_data
+            st.session_state.players_data = players_data
+            st.session_state.team_id_to_name = team_id_to_name
+            st.session_state.player_id_to_name = player_id_to_name
+            st.session_state.element_types = element_types
             st.session_state.player_stats_dict = player_stats_dict
             st.session_state.new_player_stats_fetched = True
             st.session_state.team_stats_dict = team_stats_dict
@@ -2205,7 +2211,7 @@ if "player_stats_dict" in st.session_state and "team_stats_dict" in st.session_s
     # Step 2: Load data only after user confirms
     if st.button("Calculate Predicted Points"):
         with st.spinner("Calculating Predicted Points...", show_time=True):
-            st.session_state.df = initialize_predicted_points_df(all_odds_dict, fixtures, data, teams_data, players_data, team_id_to_name, player_id_to_name, st.session_state.player_stats_dict, st.session_state.team_stats_dict, next_gw, saves_button, bps_button, gws_to_predict)
+            st.session_state.df = initialize_predicted_points_df(all_odds_dict, fixtures, st.session_state.data, st.session_state.teams_data, st.session_state.players_data, st.session_state.team_id_to_name, st.session_state.player_id_to_name, st.session_state.player_stats_dict, st.session_state.team_stats_dict, next_gw, saves_button, bps_button, gws_to_predict)
 
     current_time = datetime.now()
 
