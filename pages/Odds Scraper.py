@@ -430,7 +430,7 @@ def scrape_all_matches(match_dict, driver):
             driver.execute_script("window.scrollTo(0, 0)")
             stats_betting_button = driver.find_element(By.XPATH, "//button[contains(text(), 'Stats Betting')]")
             time.sleep(random.uniform(1, 2))
-            stats_betting_button.click()
+            driver.execute_script('arguments[0].click()', stats_betting_button)
             time.sleep(random.uniform(1, 2))
 
             odds_dict = fetch_odds(match, "Clean Sheet", driver)
