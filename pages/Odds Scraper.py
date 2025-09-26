@@ -151,33 +151,22 @@ def fetch_all_match_links(
         time.sleep(random.uniform(3, 5))
     except TimeoutException:
         print("Prompt for accepting Cookies did not pop up")
-
+        try:
+            wait = WebDriverWait(driver, 2)
+            span_element = wait.until(EC.element_to_be_clickable((By.XPATH, "//span[starts-with(@class, 'UKFlag')]")))
+            # Click on the <span> element (Accessing outside UK pop-up)
+            span_element.click()
+            time.sleep(random.uniform(1, 2))
+        except (TimeoutException, ElementClickInterceptedException):
+            print('Prompt for accessing outside UK did not pop up or is not clickable')
+    wait = WebDriverWait(driver, 2)
     try:
-        wait = WebDriverWait(driver, 2)
-        span_element = wait.until(EC.element_to_be_clickable((By.XPATH, "//span[starts-with(@class, 'PopupCloseIcon')]")))
-        # Click on the <span> element (Accessing outside UK pop-up)
-        span_element.click()
+        close_ad = wait.until(EC.element_to_be_clickable((By.CLASS_NAME, 'webpush-swal2-close')))
+        # Click close ad button
+        close_ad.click()
         time.sleep(random.uniform(1, 2))
-
-        wait = WebDriverWait(driver, 2)
-        try:
-            close_ad = wait.until(EC.element_to_be_clickable((By.CLASS_NAME, 'webpush-swal2-close')))
-            # Click close ad button
-            close_ad.click()
-            time.sleep(random.uniform(1, 2))
-        except (TimeoutException, ElementClickInterceptedException):
-            print('Ad did not pop up or is not clickable')
-
     except (TimeoutException, ElementClickInterceptedException):
-        print('Prompt for accessing outside UK did not pop up or is not clickable')
-        wait = WebDriverWait(driver, 2)
-        try:
-            close_ad = wait.until(EC.element_to_be_clickable((By.CLASS_NAME, 'webpush-swal2-close')))
-            # Click close ad button
-            close_ad.click()
-            time.sleep(random.uniform(1, 2))
-        except (TimeoutException, ElementClickInterceptedException):
-            print('Ad did not pop up or is not clickable')
+        print('Ad did not pop up or is not clickable')
     
     try:    
         wait = WebDriverWait(driver, 5)
@@ -382,9 +371,18 @@ def scrape_all_matches(match_dict, driver):
             continue
         try:
             driver.get(link)
-            time.sleep(random.uniform(3, 4))
-            
-            wait = WebDriverWait(driver, 1)
+            time.sleep(random.uniform(2, 3))
+
+            if match_counter == 1:
+                try:
+                    wait = WebDriverWait(driver, 3)
+                    outside_uk_element = wait.until(EC.element_to_be_clickable((By.XPATH, "//span[starts-with(@class, 'UKFlag')]")))
+                    # Click on the <span> element (Accessing outside UK pop-up)
+                    outside_uk_element.click()
+                    time.sleep(random.uniform(1, 2))
+                except TimeoutException:
+                    print("Prompt for accessing outside UK did not pop up")
+            wait = WebDriverWait(driver, 3)
             try:
                 close_ad = wait.until(EC.element_to_be_clickable((By.CLASS_NAME, 'webpush-swal2-close')))
                 # Click close ad button
