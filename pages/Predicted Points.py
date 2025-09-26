@@ -2155,6 +2155,19 @@ calc_stats_button = st.toggle(
     "Fetch Player and Team Statistics According to Most Recent Fixtures from FPL API (This May Take a Few Minutes)",
     value=False
 )
+if "data" not in st.session_state:
+    st.session_state.data = None
+if "teams_data" not in st.session_state:
+    st.session_state.teams_data = None
+if "players_data" not in st.session_state:
+    st.session_state.players_data = None
+if "team_id_to_name" not in st.session_state:
+    st.session_state.team_id_to_name = None
+if "player_id_to_name" not in st.session_state:
+    st.session_state.player_id_to_name = None
+if "element_types" not in st.session_state:
+    st.session_state.element_types = None
+            
 if st.button("Fetch FPL Data"):
     with st.spinner("Fetching FPL Data...", show_time=True):
         data, teams_data, players_data, team_id_to_name, player_id_to_name = fetch_fpl_data()
