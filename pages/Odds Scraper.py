@@ -502,8 +502,6 @@ if "scraping_started" not in st.session_state:
 if "scraping_done" not in st.session_state:
     st.session_state.scraping_done = False
 
-
-
 fixtures = get_all_fixtures()
 next_gw = get_next_gws(fixtures)
 
