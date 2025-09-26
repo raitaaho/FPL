@@ -235,40 +235,9 @@ def player_dict_constructor(
         goals_team = team_stats_dict[team]['Home Goals'] + team_stats_dict[team]['Away Goals']
         assists_team = team_stats_dict[team]['Home Assists'] + team_stats_dict[team]['Away Assists']
 
-        response = requests.get(f"https://fantasy.premierleague.com/api/element-summary/{player['id']}/")
-        history_data = response.json()
-        prev_seasons_data = history_data.get('history_past', [])
-        prev_fixtures_data = history_data.get('history', [])
-        games = 0
-        for fixture in prev_fixtures_data:
-            if fixture.get('minutes', 0) > 0:
-                games += 1
-
         xg_25_26 = float(player["expected_goals"])  
         xa_25_26 = float(player["expected_assists"])
-
-        minutes_24_25 = 0
-        def_contributions_24_25 = 0
-        saves_24_25 = 0
-        bps_24_25 = 0
-        goals_24_25 = 0
-        assists_24_25 = 0
-        xg_24_25 = 0
-        xa_24_25 = 0
-        for season in prev_seasons_data:
-            if season['season_name'] != '2024/25':
-                continue
-            else:
-                minutes_24_25 = season.get('minutes', 0)
-                games_24_25 = minutes_24_25 / 90
-                def_contributions_24_25 = season.get('defensive_contribution', 0)
-                saves_24_25 = season.get('saves', 0) 
-                bps_24_25 = season.get('bps', 0) 
-                xg_24_25 = season.get('expected_goals', 0) 
-                xa_24_25 = season.get('expected_assists', 0)
-                goals_24_25 = season.get('goals_scored', 0)
-                assists_24_25 = season.get('assists', 0)
-                break
+        saves_25_26 = float(player.get("saves", 0))
 
         games_played_for_current_team_24_25 = player_stats_dict[player_name]['24/25 Home Games Played for Current Team'] + player_stats_dict[player_name]['24/25 Away Games Played for Current Team']
 
@@ -281,31 +250,29 @@ def player_dict_constructor(
         player_dict[player_name]['Team'] = [team]
         player_dict[player_name]['Price'] = [player['now_cost'] / 10]
         player_dict[player_name]['Minutes'] = [player['minutes']]
-        player_dict[player_name]['25/26 Games Played'] = [games]
-        player_dict[player_name]['Minutes per Game'] = [player['minutes'] / games] if games > 0 else [0]
+        player_dict[player_name]['25/26 Games Played'] = [player_stats_dict[player_name]['25/26 Games Played']]
+        player_dict[player_name]['Minutes per Game'] = [player['minutes'] / player_stats_dict[player_name]['25/26 Games Played']] if player_stats_dict[player_name]['25/26 Games Played'] > 0 else [0]
         player_dict[player_name]['Chance of Playing'] = [player['chance_of_playing_next_round'] / 100] if player['chance_of_playing_next_round'] else [1] if player['status'] in ('a', 'd') else [0]
         player_dict[player_name]['25/26 Defensive Contributions'] = [player["defensive_contribution"]] if player["defensive_contribution"] != 0 else [0]
-        player_dict[player_name]['CBI per Game'] = [player["clearances_blocks_interceptions"] / games] if games > 0 else [0]
-        player_dict[player_name]['Recoveries per Game'] = [player["recoveries"] / games] if games > 0 else [0]
-        player_dict[player_name]['Tackles per Game'] = [player["tackles"] / games] if games > 0 else [0]
-        player_dict[player_name]['BPS per Game'] = [player['bps'] / games] if games > 0 else [0]
+        player_dict[player_name]['CBI per Game'] = [player["clearances_blocks_interceptions"] / player_stats_dict[player_name]['25/26 Games Played']] if player_stats_dict[player_name]['25/26 Games Played'] > 0 else [0]
+        player_dict[player_name]['Recoveries per Game'] = [player["recoveries"] / player_stats_dict[player_name]['25/26 Games Played']] if player_stats_dict[player_name]['25/26 Games Played'] > 0 else [0]
+        player_dict[player_name]['Tackles per Game'] = [player["tackles"] / player_stats_dict[player_name]['25/26 Games Played']] if player_stats_dict[player_name]['25/26 Games Played'] > 0 else [0]
         player_dict[player_name]['25/26 xG'] = [xg_25_26]
         player_dict[player_name]['25/26 xA'] = [xa_25_26]
 
-        player_dict[player_name]['24/25 Defensive Contributions'] = [def_contributions_24_25] if def_contributions_24_25 > 0 else [0]
-        player_dict[player_name]['24/25 BPS'] = [bps_24_25]
+        player_dict[player_name]['24/25 Defensive Contributions'] = [player_stats_dict[player_name]['24/25 Defensive Contributions']]
 
         if element_types[player["element_type"]] == 'GKP':
-            player_dict[player_name]['Saves per Game'] = [player["saves"] / games] if games > 0 else [0]
-            player_dict[player_name]['24/25 Saves P90'] = [saves_24_25 / (minutes_24_25 / 90)] if minutes_24_25 > 0 else [0]
+            player_dict[player_name]['24/25 Saves'] = [player_stats_dict[player_name]['24/25 Saves']]
+            player_dict[player_name]['25/26 Saves'] = [saves_25_26]
 
         player_dict[player_name]['Estimated BPS'] = []
         player_dict[player_name]['Estimated Bonus Points'] = []
 
-        player_dict[player_name]['24/25 Games Played'] = [games_24_25]
+        player_dict[player_name]['24/25 Games Played'] = [player_stats_dict[player_name]['24/25 Games Played']]
         player_dict[player_name]['24/25 Games Played for Current Team'] = [games_played_for_current_team_24_25]
-        player_dict[player_name]['24/25 xG'] = [float(xg_24_25)]
-        player_dict[player_name]['24/25 xA'] = [float(xa_24_25)]
+        player_dict[player_name]['24/25 xG'] = [player_stats_dict[player_name]['24/25 xG']]
+        player_dict[player_name]['24/25 xA'] = [player_stats_dict[player_name]['24/25 xA']]
         player_dict[player_name]['Share of Goals by Current Team'] = [share_of_goals_scored]
         player_dict[player_name]['Share of Assists by Current Team'] = [share_of_assists]
         
@@ -433,7 +400,7 @@ def get_team_template(pos_24_25: int, pos: int) -> dict:
         }
     return team_template
 
-def get_player_template(team_name: str, minutes: int, games: int) -> dict:
+def get_player_template(team_name: str, games: int) -> dict:
     """
     Create a template dictionary for storing player statistics, initialized to default values.
 
@@ -447,8 +414,7 @@ def get_player_template(team_name: str, minutes: int, games: int) -> dict:
     """
     player_template = {
         'Team': team_name,
-        'Minutes 25/26': minutes,
-        'Games 25/26': games,
+        '25/26 Games Played': games,
         'Home Games Played for Current Team': 0,
         'Away Games Played for Current Team': 0,
         'Home Goals for Current Team': 0,
@@ -611,7 +577,6 @@ def construct_team_and_player_data(
         team_name = TEAM_NAMES_ODDSCHECKER.get(team_name_lookup, team_name_lookup)
         if team_name is None:
             team_name = ""
-        minutes = player['minutes']
 
         response = requests.get(f"https://fantasy.premierleague.com/api/element-summary/{player['id']}/")
         history_data = response.json()
@@ -635,14 +600,23 @@ def construct_team_and_player_data(
                 continue
             else:
                 minutes_24_25 = season.get('minutes', 0)
-                def_contributions_24_25 = season.get('defensive_contribution', 0) if minutes_24_25 > 900 else 0
-                xg_24_25 = season.get('expected_goals', 0) if minutes_24_25 > 450 else 0
-                xa_24_25 = season.get('expected_assists', 0) if minutes_24_25 > 450 else 0
+                games_24_25 = math.floor(minutes_24_25 / 90)
+                def_contributions_24_25 = season.get('defensive_contribution', 0)
+                xg_24_25 = season.get('expected_goals', 0)
+                xa_24_25 = season.get('expected_assists', 0)
                 goals_24_25 = season.get('goals_scored', 0)
                 assists_24_25 = season.get('assists', 0)
+                saves_24_25 = season.get('saves', 0)
                 break
         player_data[name] = defaultdict(float)
-        player_data[name].update(get_player_template(team_name, minutes, games_25_26))
+        player_data[name].update(get_player_template(team_name, games_25_26))
+        player_data[name]['24/25 Defensive Contributions'] = def_contributions_24_25
+        player_data[name]['24/25 xG'] = xg_24_25
+        player_data[name]['24/25 xA'] = xa_24_25
+        player_data[name]['24/25 Games Played'] = games_24_25
+        player_data[name]['24/25 Goals'] = goals_24_25
+        player_data[name]['24/25 Assists'] = assists_24_25
+        player_data[name]['24/25 Saves'] = saves_24_25
 
     k_factor = 20 # K-factor for ELO rating system
 
@@ -1566,9 +1540,11 @@ def calc_avg_bps(
             minutes_per_game = odds.get("Minutes per Game", [0])[0]
 
             if saves_button and position == 'GKP':
-                saves_per_game = odds.get('Saves per Game', [0])[0]
-                saves_p90_24_25 = odds.get('24/25 Saves P90', [0])[0]
-                saves_avg = (2 * saves_p90_24_25 + saves_per_game) / 3 if saves_p90_24_25 > 0 else saves_per_game
+                games_24_25 = odds.get('24/25 Games Played', [0])[0]
+                games_25_26 = odds.get('25/26 Games Played', [0])[0]
+                saves_24_25 = odds.get('24/25 Saves', [0])[0]
+                saves_25_26 = odds.get('24/25 Saves P90', [0])[0]
+                saves_avg = (saves_24_25 + saves_25_26) / (games_24_25 + games_25_26)
 
             else:
                 saves_avg = 0
@@ -1773,9 +1749,11 @@ def calc_points(player_dict: dict, saves_button: bool) -> None:
             bonus_points = odds.get('Estimated Bonus Points', [])
 
             if saves_button and position == 'GKP':
-                saves_per_game = odds.get('Saves per Game', [0])[0]
-                saves_p90_24_25 = odds.get('24/25 Saves P90', [0])[0]
-                saves_avg = (2 * saves_p90_24_25 + saves_per_game) / 3 if saves_p90_24_25 > 0 else saves_per_game
+                games_24_25 = odds.get('24/25 Games Played', [0])[0]
+                games_25_26 = odds.get('25/26 Games Played', [0])[0]
+                saves_24_25 = odds.get('24/25 Saves', [0])[0]
+                saves_25_26 = odds.get('24/25 Saves P90', [0])[0]
+                saves_avg = (saves_24_25 + saves_25_26) / (games_24_25 + games_25_26)
 
                 player_dict[player]['Saves per Game by Historical Data'] = round(saves_avg, 3)
             else:
@@ -2009,6 +1987,9 @@ def initialize_predicted_points_df(all_odds_dict, fixtures, next_gw, saves_butto
                 team = player_dict[player].get('Team', ['Unknown'])[0]
                 match_bps_list = match_bps_dict.get(team, [[0.0]])
                 player_bps = player_dict[player].get('Estimated BPS', [0.0])
+                if len(player_bps) != gws:
+                    player_dict[player]['Estimated Bonus Points'] = [0.0] * gws
+                    continue
                 for match_bps, p_bps in zip_longest(match_bps_list, player_bps):
                     if match_bps is None:
                         continue
