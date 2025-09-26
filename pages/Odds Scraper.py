@@ -223,6 +223,7 @@ def fetch_odds(match_name: str, odd_type: str, driver: "webdriver.Chrome") -> ty
     """
 
     odds_dict = {}
+    error = None
     wait = WebDriverWait(driver, 1)
     try:
         # Find the section
@@ -283,7 +284,7 @@ def fetch_odds(match_name: str, odd_type: str, driver: "webdriver.Chrome") -> ty
                             compare_odds.click()
                             print("Successfully expanded compare all after scrolling into view and 100 pixels up")
                             time.sleep(random.uniform(2, 3))
-            try:
+            
                 outcomes = driver.find_elements(By.XPATH, "//h4[(text() ='" + odd_type + "')]/following::span[@class='BetRowLeftBetName_b1m53rgx']")
                 odds_columns = driver.find_elements(By.XPATH, "//h4[(text() ='" + odd_type + "')]/following::div[@class='oddsAreaWrapper_o17xb9rs RowLayout_refg9ta']")
                 try:
@@ -319,12 +320,13 @@ def fetch_odds(match_name: str, odd_type: str, driver: "webdriver.Chrome") -> ty
                             i += 1
                         print("Found odds for", odd_type)
                     except Exception as e:
+                        error = "Couldn't get odds"
                         print("Couldn't get odds for", odd_type, e)
                 except Exception as e:
+                    error = f"Couldn't get innerText-attribute for {outcome}"
                     print("Couldn't get innerText-attribute for", odd_type, "outcome", e)                  
-            except Exception as e:
-                print("Couldn't find", odd_type, " All Odds Section", e)
         except Exception as e:
+            error = "Couldn't click Compare All Odds"
             print("Couldn't click Compare All Odds on", odd_type, e)
         try:
             if header.get_attribute("aria-expanded") == "true":
@@ -333,11 +335,12 @@ def fetch_odds(match_name: str, odd_type: str, driver: "webdriver.Chrome") -> ty
         except Exception as e:
             print("Couldn't collapse", header)
     except Exception as e:
+        error = "Couldn't find or expand section"
         print("Couldn't find or expand section:", odd_type)
         #driver.save_screenshot('screenshot.png')
         #st.image("screenshot.png", caption="Screen")
 
-    return odds_dict
+    return odds_dict, error
 
 def scrape_all_matches(match_dict, driver):
     start0 = time.perf_counter()
@@ -414,13 +417,13 @@ def scrape_all_matches(match_dict, driver):
             total_odd_counter += 1
             odd_progress_text.markdown(f"Scraping odds for **{odd_type}**")
             
-            odds_dict = fetch_odds(match, odd_type, driver)
+            odds_dict, error = fetch_odds(match, odd_type, driver)
             if odds_dict:
                 scraped_odd_counter += 1
                 status_container.success(f'Scraped odds for **{odd_type}**', icon="✅")
                 match_dict[match][odd_type] = odds_dict
             else:
-                status_container.warning(f'Could not scrape odds for **{odd_type}**', icon="⚠️")
+                status_container.warning(f'Could not scrape odds for **{odd_type}**: {error}', icon="⚠️")
             
             odd_progress_bar.progress(int((total_odd_counter / total_odds) * 100))
 
@@ -433,13 +436,13 @@ def scrape_all_matches(match_dict, driver):
             driver.execute_script('arguments[0].click()', stats_betting_button)
             time.sleep(random.uniform(1, 2))
 
-            odds_dict = fetch_odds(match, "Clean Sheet", driver)
+            odds_dict, error = fetch_odds(match, "Clean Sheet", driver)
             if odds_dict:
                 scraped_odd_counter += 1
                 status_container.success(f'Scraped odds for **Clean Sheet**', icon="✅")
                 match_dict[match]["Clean Sheet"] = odds_dict
             else:
-                status_container.warning(f'Could not scrape odds for **Clean Sheet**', icon="⚠️")
+                status_container.warning(f'Could not scrape odds for **Clean Sheet**: {error}', icon="⚠️")
 
                 driver.save_screenshot('screenshot.png')
                 status_container.image("screenshot.png", caption="Screen")
