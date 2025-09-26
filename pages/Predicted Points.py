@@ -2030,7 +2030,7 @@ team_stats_json_files = glob.glob(f"{team_stats_filename}*.json")
 
 if "all_odds_dict" not in st.session_state:
     st.session_state.all_odds_dict = {}
-    
+
 st.markdown("### Odds JSON File Upload")
 if odds_json_files:
     latest_odds_path = max(odds_json_files)
@@ -2230,7 +2230,7 @@ if "player_stats_dict" in st.session_state and "team_stats_dict" in st.session_s
     # Step 2: Load data only after user confirms
     if st.button("Calculate Predicted Points"):
         with st.spinner("Calculating Predicted Points...", show_time=True):
-            st.session_state.df = initialize_predicted_points_df(all_odds_dict, fixtures, st.session_state.data, st.session_state.teams_data, st.session_state.players_data, st.session_state.team_id_to_name, st.session_state.player_id_to_name, st.session_state.player_stats_dict, st.session_state.team_stats_dict, st.session_state.element_types, next_gw, saves_button, bps_button, gws_to_predict)
+            st.session_state.df = initialize_predicted_points_df(st.session_state.all_odds_dict, fixtures, st.session_state.data, st.session_state.teams_data, st.session_state.players_data, st.session_state.team_id_to_name, st.session_state.player_id_to_name, st.session_state.player_stats_dict, st.session_state.team_stats_dict, st.session_state.element_types, next_gw, saves_button, bps_button, gws_to_predict)
 
     current_time = datetime.now()
 
