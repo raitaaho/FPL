@@ -1927,8 +1927,8 @@ def initialize_predicted_points_df(all_odds_dict, fixtures, data, teams_data, pl
                 home_cs_prob = (1 / float(ave_home_cs_odd)) if ave_home_cs_odd != 0 else 0
                 away_cs_prob = (1 / float(ave_away_cs_odd)) if ave_away_cs_odd != 0 else 0
 
-                home_no_cs_prob = (1 / float(ave_home_no_cs_odd)) if ave_home_cs_odd != 0 else 0
-                away_no_cs_prob = (1 / float(ave_away_no_cs_odd)) if ave_away_cs_odd != 0 else 0
+                home_no_cs_prob = (1 / float(ave_home_no_cs_odd)) if ave_home_no_cs_odd != 0 else 0
+                away_no_cs_prob = (1 / float(ave_away_no_cs_odd)) if ave_away_no_cs_odd != 0 else 0
 
                 if home_cs_prob != 0 and home_no_cs_prob != 0:
                     home_margin = (home_cs_prob + home_no_cs_prob) - 1
