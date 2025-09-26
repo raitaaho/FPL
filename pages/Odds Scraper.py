@@ -427,8 +427,8 @@ def scrape_all_matches(match_dict, driver):
         total_odd_counter += 1
         odd_progress_text.markdown(f"Scraping odds for **Clean Sheet**")
         try:
-            stats_betting_button = driver.find_element(By.XPATH, "//button[contains(text(), 'Stats Betting')]")
             driver.execute_script("window.scrollTo(0, 0)")
+            stats_betting_button = driver.find_element(By.XPATH, "//button[contains(text(), 'Stats Betting')]")
             time.sleep(random.uniform(1, 2))
             stats_betting_button.click()
             time.sleep(random.uniform(1, 2))
