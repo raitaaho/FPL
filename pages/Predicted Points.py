@@ -1814,7 +1814,8 @@ def initialize_predicted_points_df(all_odds_dict, fixtures, data, teams_data, pl
 
     gws_to_predict = [next_gw + i for i in range(1, gws)]
     next_fixtures = [fixture for fixture in fixtures if (fixture['event'] in gws_to_predict) and (fixture['started'] == False)]
-
+    element_types = position_mapping(data)
+    
     player_dict = player_dict_constructor(players_data, team_stats_dict, player_stats_dict, element_types, team_id_to_name)
 
     for fixture in next_fixtures:
