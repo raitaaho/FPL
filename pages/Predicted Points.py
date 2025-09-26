@@ -586,11 +586,13 @@ def construct_team_and_player_data(
         games_25_26 = 0
 
         minutes_24_25 = 0
+        games_24_25 = 0
         def_contributions_24_25 = 0
         goals_24_25 = 0
         assists_24_25 = 0
         xg_24_25 = 0
         xa_24_25 = 0
+        saves_24_25 = 0
         for fixture in prev_fixtures_data:
             if fixture.get('minutes', 0) > 0:
                 games_25_26 += 1
