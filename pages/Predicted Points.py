@@ -2198,7 +2198,7 @@ if st.button("Fetch FPL Data"):
 current_time = datetime.now()
 
 if "new_player_stats_fetched" in st.session_state:
-    player_stats_json = json.dumps(st.session_state.player_stats_dict, indent=4).encode('utf-8')
+    player_stats_json = json.dumps(st.session_state.player_stats_dict, indent=4)
     player_stats_filename = f"gw{next_gw}_player_statistics_{current_time.strftime('%m')}{current_time.strftime('%d')}_{current_time.strftime('%H')}{current_time.strftime('%M')}.json"
     st.download_button(
         label="Download Fetched Player Statistics as JSON",
@@ -2207,7 +2207,7 @@ if "new_player_stats_fetched" in st.session_state:
         mime="text/json"
     )
 if "new_team_stats_fetched" in st.session_state:
-    team_stats_json = json.dumps(st.session_state.team_stats_dict, indent=4).encode('utf-8')
+    team_stats_json = json.dumps(st.session_state.team_stats_dict, indent=4)
     team_stats_filename = f"gw{next_gw}_team_statistics_{current_time.strftime('%m')}{current_time.strftime('%d')}_{current_time.strftime('%H')}{current_time.strftime('%M')}.json"
     st.download_button(
         label="Download Fetched Team Statistics as JSON",
