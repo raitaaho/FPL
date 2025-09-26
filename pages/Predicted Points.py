@@ -2005,29 +2005,25 @@ def initialize_predicted_points_df(all_odds_dict, fixtures, next_gw, saves_butto
                 match_bps_list = match_bps_dict.get(team, [[0]])
                 player_bps = player_dict[player].get('Estimated BPS', [0])
                 for match_bps, p_bps in zip_longest(match_bps_list, player_bps):
-                    if p_bps is None or match_bps is None or sum(match_bps) == 0:
-                        player_bonus_points = 0.0
-                        player_dict[player]['Estimated Bonus Points'].append(player_bonus_points)
+                    if match_bps is None:
                         continue
-                    #player_bonus_points = calculate_bonus_points(match_bps, p_bps)
+                    if p_bps == 0 or sum(match_bps) == 0:
+                        player_bonus_points = 0.0
                     else:
-                        player_bonus_points = max((p_bps / (sum(match_bps) + p_bps)) * 6, 0) if team != 'Unknown' and p_bps + sum(match_bps) != 0 else 0.0
-                        player_dict[player]['Estimated Bonus Points'].append(player_bonus_points)
+                        player_bonus_points = max((p_bps / (sum(match_bps) + p_bps)) * 6, 0)
+                    player_dict[player]['Estimated Bonus Points'].append(player_bonus_points)
 
     calc_points(player_dict, saves_button)
 
     # Create and save DataFrames with all player data and a summary of expected points.
     player_data_df = pd.DataFrame.from_dict(player_dict, orient='index')
     player_data_df.index.name = 'Player'
-    team_stats_df = pd.DataFrame.from_dict(team_stats_dict, orient='index')
-    team_stats_df.index.name = 'Team'
-    player_stats_df = pd.DataFrame.from_dict(player_stats_dict, orient='index')
-    player_stats_df.index.name = 'Player'
+    
     # Convert all columns: if value is a list of length 1, replace with the value contained in the list.
     for col in player_data_df.columns:
         player_data_df[col] = player_data_df[col].apply(lambda x: x[0] if isinstance(x, list) and len(x) == 1 else x)
 
-    return player_data_df, player_stats_df, team_stats_df
+    return player_data_df, player_stats_dict, team_stats_dict
 
 st.set_page_config(page_title="FPL Predicted Points", page_icon="📈")
 
@@ -2041,60 +2037,60 @@ next_gw = get_next_gw(fixtures)
 
 cur_dir = os.getcwd()
 fixtures_dir = os.path.join(cur_dir, "data", "fixture_data")
-filename = os.path.join(fixtures_dir, f"gw{next_gw}_all_odds_")
+odds_filename = os.path.join(fixtures_dir, f"gw{next_gw}_all_odds_")
 
-json_files = glob.glob(f"{filename}*.json")
+odds_json_files = glob.glob(f"{odds_filename}*.json")
 
-if json_files:
-    latest_file_path = max(json_files)
-    latest_file_name = latest_file_path.replace(fixtures_dir, '')
-    git_parts = latest_file_name.replace(".json", '').split('_')
+if odds_json_files:
+    latest_odds_path = max(odds_json_files)
+    latest_odds_name = latest_odds_path.replace(fixtures_dir, '')
+    git_parts = latest_odds_name.replace(".json", '').split('_')
     git_timestamp = f"{git_parts[3][2:]}.{git_parts[3][:2]} {git_parts[4][:2]}:{git_parts[4][2:]}"
     st.info(f"Github repository's latest scraped odds file for next gameweek has a timestamp of {git_timestamp}")
-    upload_new_file_button = st.toggle("Upload more recent odds file for predicted points calculation",
+    upload_new_odds_button = st.toggle("Upload more recent odds file for predicted points calculation",
     value=False)
-    if upload_new_file_button:
-        uploaded_file = st.file_uploader("Choose a file", type="json")
-        if uploaded_file:
-            uploaded_file_name = uploaded_file.name
-            parts = uploaded_file_name.replace(".json", '').split('_')
+    if upload_new_odds_button:
+        uploaded_odds = st.file_uploader("Choose a file", type="json")
+        if uploaded_odds:
+            uploaded_odds_name = uploaded_odds.name
+            parts = uploaded_odds_name.replace(".json", '').split('_')
             gw = parts[0].replace("gw", '')
             timestamp = f"{parts[3][2:]}.{parts[3][:2]} {parts[4][:2]}:{parts[4][2:]}"
             if next_gw == int(gw):
                 try:
-                    all_odds_dict = json.load(uploaded_file)
+                    all_odds_dict = json.load(uploaded_odds)
                     st.info(f"Using uploaded odds file with a timestamp of {timestamp} instead of Github repository odds file with timestamp of {git_timestamp}")
                 except Exception as e:
-                    st.warning(f"Could not load all odds file {uploaded_file_name} into dictionary.")
+                    st.warning(f"Could not load all odds file {uploaded_odds_name} into dictionary.")
                     all_odds_dict = {}
             else:
-                st.warning(f"Odds in uploaded file {uploaded_file_name} are not for the next gameweek ({next_gw}).")
+                st.warning(f"Odds in uploaded file {uploaded_odds_name} are not for the next gameweek ({next_gw}).")
                 all_odds_dict = {}
     else:
         try:
-            with open(latest_file_path, 'r') as file:
+            with open(latest_odds_path, 'r') as file:
                 all_odds_dict = json.load(file)
                 st.info(f"Using odds file with a timestamp of {git_timestamp}")
         except IOError:
-            st.warning(f"Could not open all odds file {latest_file_path} found in Github repository.")
+            st.warning(f"Could not open all odds file {latest_odds_path} found in Github repository.")
             all_odds_dict = {}
 else:
     st.warning("Latest scraped odds file for next gameweek not found in Github repository, please upload odds file for the next gameweek.")
-    uploaded_file = st.file_uploader("Choose a file", type="json")
-    if uploaded_file:
-        uploaded_file_name = uploaded_file.name
-        parts = uploaded_file_name.replace(".json", '').split('_')
+    uploaded_odds = st.file_uploader("Choose a file", type="json")
+    if uploaded_odds:
+        uploaded_odds_name = uploaded_odds.name
+        parts = uploaded_odds_name.replace(".json", '').split('_')
         gw = parts[0].replace("gw", '')
         timestamp = f"{parts[3][2:]}.{parts[3][:2]} {parts[4][:2]}:{parts[4][2:]}"
         if next_gw == int(gw):
             try:
-                all_odds_dict = json.load(uploaded_file)
+                all_odds_dict = json.load(uploaded_odds)
                 st.info(f"Using uploaded odds file with timestamp of {timestamp}")
             except Exception as e:
-                st.warning(f"Could not load all odds file {uploaded_file_name} into dictionary.")
+                st.warning(f"Could not load all odds file {uploaded_odds_name} into dictionary.")
                 all_odds_dict = {}
         else:
-            st.warning(f"Odds in uploaded file {uploaded_file_name} are not for the next gameweek ({next_gw}).")
+            st.warning(f"Odds in uploaded file {uploaded_odds_name} are not for the next gameweek ({next_gw}).")
             all_odds_dict = {}
 
 st.header("Step 1: Select metrics to use in predicted points calculations")
@@ -2109,6 +2105,14 @@ bps_button = st.toggle(
 
 gws_to_predict = st.slider("Select amount of gameweeks to calculate predicted points for", min_value=1, max_value=10, value=1)
 
+if st.button("Fetch Latest Player and Team Statistics"):
+    with st.spinner("Fetching latest Statistics...", show_time=True):
+        data, teams_data, players_data, team_id_to_name, player_id_to_name = fetch_fpl_data()
+        element_types = position_mapping(data)
+        team_stats_dict, player_stats_dict = construct_team_and_player_data(data, team_id_to_name, player_id_to_name, fixtures)
+        st.session_state.player_stats_df = pd.DataFrame.from_dict(player_stats_dict, orient='index')
+        st.session_state.team_stats_df = pd.DataFrame.from_dict(team_stats_dict, orient='index')
+        st.success("Player and Team Statistics Fetched Successfully!")
 # Step 2: Load data only after user confirms
 if st.button("Calculate Predicted Points"):
     with st.spinner("Calculating Predicted Points...", show_time=True):
