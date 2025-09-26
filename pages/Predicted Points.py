@@ -2162,8 +2162,32 @@ if st.button("Fetch Latest Player and Team Statistics"):
         if calc_stats_button or 'player_stats_dict' not in st.session_state or 'team_stats_dict' not in st.session_state:
             team_stats_dict, player_stats_dict = construct_team_and_player_data(data, team_id_to_name, player_id_to_name, fixtures)
             st.session_state.player_stats_dict = player_stats_dict
+            st.session_state.new_player_stats_fetched = True
             st.session_state.team_stats_dict = team_stats_dict
+            st.session_state.new_team_stats_fetched = True
         st.success("Player and Team Statistics Fetched Successfully!")
+
+current_time = datetime.now()
+st.subheader("Download Fetched Player and Team Statistics Data")
+if "new_player_stats_fetched" in st.session_state:
+    player_stats_json = json.dumps(st.session_state.player_stats_dict, indent=4).encode('utf-8')
+    player_stats_filename = f"gw{next_gw}_player_statistics_{current_time.strftime('%m')}{current_time.strftime('%d')}_{current_time.strftime('%H')}{current_time.strftime('%M')}.json"
+    st.download_button(
+        label="Download Player Statistics as JSON",
+        data=player_stats_json,
+        file_name=player_stats_filename,
+        mime="text/json"
+    )
+if "new_team_stats_fetched" in st.session_state:
+    team_stats_json = json.dumps(st.session_state.team_stats_dict, indent=4).encode('utf-8')
+    team_stats_filename = f"gw{next_gw}_team_statistics_{current_time.strftime('%m')}{current_time.strftime('%d')}_{current_time.strftime('%H')}{current_time.strftime('%M')}.json"
+    st.download_button(
+        label="Download Team Statistics as JSON",
+        data=team_stats_json,
+        file_name=team_stats_filename,
+        mime="text/json"
+    )
+    
 st.header("Select metrics to use in predicted points calculations")
 saves_button = st.toggle(
     "Use Saves per Game in predicted points calculation for goalkeepers if odds for Goalkeeper Saves are not available",
@@ -2177,26 +2201,6 @@ bps_button = st.toggle(
 gws_to_predict = st.slider("Select amount of gameweeks to calculate predicted points for", min_value=1, max_value=10, value=1)
 
 if "player_stats_dict" in st.session_state and "team_stats_dict" in st.session_state:
-    current_time = datetime.now()
-    st.subheader("Player and Team Statistics Data")
-    if "new_player_stats_uploaded" in st.session_state:
-        player_stats_json = json.dumps(st.session_state.player_stats_dict, indent=4).encode('utf-8')
-        player_stats_filename = f"gw{next_gw}_player_statistics_{current_time.strftime('%m')}{current_time.strftime('%d')}_{current_time.strftime('%H')}{current_time.strftime('%M')}.json"
-        st.download_button(
-            label="Download Player Statistics as JSON",
-            data=player_stats_json,
-            file_name=player_stats_filename,
-            mime="text/json"
-        )
-    if "new_team_stats_uploaded" in st.session_state:
-        team_stats_json = json.dumps(st.session_state.team_stats_dict, indent=4).encode('utf-8')
-        team_stats_filename = f"gw{next_gw}_team_statistics_{current_time.strftime('%m')}{current_time.strftime('%d')}_{current_time.strftime('%H')}{current_time.strftime('%M')}.json"
-        st.download_button(
-            label="Download Team Statistics as JSON",
-            data=team_stats_json,
-            file_name=team_stats_filename,
-            mime="text/json"
-        )
     st.subheader("Predicted Points Calculation")      
     # Step 2: Load data only after user confirms
     if st.button("Calculate Predicted Points"):
