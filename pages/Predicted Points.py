@@ -261,11 +261,11 @@ def player_dict_constructor(
             else:
                 minutes_24_25 = season.get('minutes', 0)
                 games_24_25 = minutes_24_25 / 90
-                def_contributions_24_25 = season.get('defensive_contribution', 0) if minutes_24_25 > 900 else 0
-                saves_24_25 = season.get('saves', 0) if minutes_24_25 > 450 else 0
-                bps_24_25 = season.get('bps', 0) if minutes_24_25 > 450 else 0
-                xg_24_25 = season.get('expected_goals', 0) if minutes_24_25 > 0 else 0
-                xa_24_25 = season.get('expected_assists', 0) if minutes_24_25 > 0 else 0
+                def_contributions_24_25 = season.get('defensive_contribution', 0)
+                saves_24_25 = season.get('saves', 0) 
+                bps_24_25 = season.get('bps', 0) 
+                xg_24_25 = season.get('expected_goals', 0) 
+                xa_24_25 = season.get('expected_assists', 0)
                 goals_24_25 = season.get('goals_scored', 0)
                 assists_24_25 = season.get('assists', 0)
                 break
@@ -293,7 +293,7 @@ def player_dict_constructor(
         player_dict[player_name]['25/26 xA'] = [xa_25_26]
 
         player_dict[player_name]['24/25 Defensive Contributions'] = [def_contributions_24_25] if def_contributions_24_25 > 0 else [0]
-        player_dict[player_name]['24/25 BPS P90'] = [bps_24_25 / (minutes_24_25 / 90)] if minutes_24_25 > 0 else [0]
+        player_dict[player_name]['24/25 BPS'] = [bps_24_25]
 
         if element_types[player["element_type"]] == 'GKP':
             player_dict[player_name]['Saves per Game'] = [player["saves"] / games] if games > 0 else [0]
@@ -1936,17 +1936,31 @@ def initialize_predicted_points_df(all_odds_dict, fixtures, next_gw, saves_butto
                 home_cs_odds = odds.get(home_team, [])
                 away_cs_odds = odds.get(away_team, [])
 
+                home_no_cs_odds = odds.get(f"{home_team} - No", [])
+                away_no_cs_odds = odds.get(f"{away_team} - No", [])
+
                 ave_home_cs_odd = sum(home_cs_odds)/len(home_cs_odds) if len(home_cs_odds) != 0 else 0
                 ave_away_cs_odd = sum(away_cs_odds)/len(away_cs_odds) if len(away_cs_odds) != 0 else 0
 
-                home_cs_prob = (1 / float(ave_home_cs_odd)) / (1 + home_margin) if ave_home_cs_odd != 0 else 0
-                away_cs_prob = (1 / float(ave_away_cs_odd)) / (1 + away_margin) if ave_away_cs_odd != 0 else 0
+                ave_home_no_cs_odd = sum(home_no_cs_odds)/len(home_no_cs_odds) if len(home_no_cs_odds) != 0 else 0
+                ave_away_no_cs_odd = sum(away_no_cs_odds)/len(away_no_cs_odds) if len(away_no_cs_odds) != 0 else 0
+
+                home_cs_prob = (1 / float(ave_home_cs_odd)) if ave_home_cs_odd != 0 else 0
+                away_cs_prob = (1 / float(ave_away_cs_odd)) if ave_away_cs_odd != 0 else 0
+
+                home_no_cs_prob = (1 / float(ave_home_no_cs_odd)) if ave_home_cs_odd != 0 else 0
+                away_no_cs_prob = (1 / float(ave_away_no_cs_odd)) if ave_away_cs_odd != 0 else 0
+
+                if home_cs_prob != 0 and home_no_cs_prob != 0:
+                    home_margin = (home_cs_prob + home_no_cs_prob) - 1
+                if away_cs_prob != 0 and away_no_cs_prob != 0:
+                    away_margin = (away_cs_prob + away_no_cs_prob) - 1
 
                 for player in player_dict:
                     if player_dict[player].get('Team', ['Unknown'])[0] == home_team:
-                        player_dict[player]['Clean Sheet Probability by Stats Betting Market'].append(home_cs_prob)
+                        player_dict[player]['Clean Sheet Probability by Stats Betting Market'].append(home_cs_prob / (1 + home_margin))
                     if player_dict[player].get('Team', ['Unknown'])[0] == away_team:
-                        player_dict[player]['Clean Sheet Probability by Stats Betting Market'].append(away_cs_prob)
+                        player_dict[player]['Clean Sheet Probability by Stats Betting Market'].append(away_cs_prob / (1 + away_margin))
     
     calc_specific_probs(player_dict)
     if bps_button:
