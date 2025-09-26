@@ -2101,6 +2101,7 @@ if player_stats_json_files:
             try:
                 player_stats_dict = json.load(uploaded_player_stats)
                 st.session_state.player_stats_dict = player_stats_dict
+                st.session_state.new_player_stats_uploaded = True
                 st.info(f"Using uploaded player statistics file with a timestamp of {player_stats_timestamp} instead of Github repository player statistics file with timestamp of {player_stats_git_timestamp}")
             except Exception as e:
                 st.warning(f"Could not load player statistics file {uploaded_player_stats_name} into dictionary.")
@@ -2134,6 +2135,7 @@ if team_stats_json_files:
             try:
                 team_stats_dict = json.load(uploaded_team_stats)
                 st.session_state.team_stats_dict = team_stats_dict
+                st.session_state.new_team_stats_uploaded = True
                 st.info(f"Using uploaded team statistics file with a timestamp of {team_stats_timestamp} instead of Github repository player statistics file with timestamp of {team_stats_git_timestamp}")
             except Exception as e:
                 st.warning(f"Could not load team statistics file {uploaded_team_stats_name} into dictionary.")
@@ -2177,23 +2179,24 @@ gws_to_predict = st.slider("Select amount of gameweeks to calculate predicted po
 if "player_stats_dict" in st.session_state and "team_stats_dict" in st.session_state:
     current_time = datetime.now()
     st.subheader("Player and Team Statistics Data")
-    player_stats_json = json.dumps(st.session_state.player_stats_dict, indent=4).encode('utf-8')
-    player_stats_filename = f"gw{next_gw}_player_statistics_{current_time.strftime('%m')}{current_time.strftime('%d')}_{current_time.strftime('%H')}{current_time.strftime('%M')}.json"
-    st.download_button(
-        label="Download Player Statistics as JSON",
-        data=player_stats_json,
-        file_name=player_stats_filename,
-        mime="text/json"
-    )
-
-    team_stats_json = json.dumps(st.session_state.team_stats_dict, indent=4).encode('utf-8')
-    team_stats_filename = f"gw{next_gw}_team_statistics_{current_time.strftime('%m')}{current_time.strftime('%d')}_{current_time.strftime('%H')}{current_time.strftime('%M')}.json"
-    st.download_button(
-        label="Download Team Statistics as JSON",
-        data=team_stats_json,
-        file_name=team_stats_filename,
-        mime="text/json"
-    )
+    if "new_player_stats_uploaded" in st.session_state:
+        player_stats_json = json.dumps(st.session_state.player_stats_dict, indent=4).encode('utf-8')
+        player_stats_filename = f"gw{next_gw}_player_statistics_{current_time.strftime('%m')}{current_time.strftime('%d')}_{current_time.strftime('%H')}{current_time.strftime('%M')}.json"
+        st.download_button(
+            label="Download Player Statistics as JSON",
+            data=player_stats_json,
+            file_name=player_stats_filename,
+            mime="text/json"
+        )
+    if "new_team_stats_uploaded" in st.session_state:
+        team_stats_json = json.dumps(st.session_state.team_stats_dict, indent=4).encode('utf-8')
+        team_stats_filename = f"gw{next_gw}_team_statistics_{current_time.strftime('%m')}{current_time.strftime('%d')}_{current_time.strftime('%H')}{current_time.strftime('%M')}.json"
+        st.download_button(
+            label="Download Team Statistics as JSON",
+            data=team_stats_json,
+            file_name=team_stats_filename,
+            mime="text/json"
+        )
     st.subheader("Predicted Points Calculation")      
     # Step 2: Load data only after user confirms
     if st.button("Calculate Predicted Points"):
