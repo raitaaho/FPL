@@ -2180,18 +2180,18 @@ if st.button("Fetch FPL Data"):
     with st.spinner("Fetching FPL Data...", show_time=True):
         data, teams_data, players_data, team_id_to_name, player_id_to_name = fetch_fpl_data()
         element_types = position_mapping(data)
-        if calc_stats_button or 'player_stats_dict' not in st.session_state or 'team_stats_dict' not in st.session_state:
-            team_stats_dict, player_stats_dict = construct_team_and_player_data(data, team_id_to_name, player_id_to_name, fixtures)
-            st.session_state.player_stats_dict = player_stats_dict
-            st.session_state.new_player_stats_fetched = True
-            st.session_state.team_stats_dict = team_stats_dict
-            st.session_state.new_team_stats_fetched = True
         st.session_state.data = data
         st.session_state.teams_data = teams_data
         st.session_state.players_data = players_data
         st.session_state.team_id_to_name = team_id_to_name
         st.session_state.player_id_to_name = player_id_to_name
         st.session_state.element_types = element_types
+        if calc_stats_button or 'player_stats_dict' not in st.session_state or 'team_stats_dict' not in st.session_state:
+            team_stats_dict, player_stats_dict = construct_team_and_player_data(data, team_id_to_name, player_id_to_name, fixtures)
+            st.session_state.player_stats_dict = player_stats_dict
+            st.session_state.new_player_stats_fetched = True
+            st.session_state.team_stats_dict = team_stats_dict
+            st.session_state.new_team_stats_fetched = True
 
         st.success("FPL Data Fetched Successfully!")
 
