@@ -1752,7 +1752,7 @@ def calc_points(player_dict: dict, saves_button: bool) -> None:
                 games_24_25 = odds.get('24/25 Games Played', [0])[0]
                 games_25_26 = odds.get('25/26 Games Played', [0])[0]
                 saves_24_25 = odds.get('24/25 Saves', [0])[0]
-                saves_25_26 = odds.get('24/25 Saves', [0])[0]
+                saves_25_26 = odds.get('25/26 Saves', [0])[0]
                 saves_avg = (saves_24_25 + saves_25_26) / (games_24_25 + games_25_26)
 
                 player_dict[player]['Saves per Game by Historical Data'] = round(saves_avg, 3)
