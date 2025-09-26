@@ -2007,7 +2007,7 @@ def initialize_predicted_points_df(all_odds_dict, fixtures, next_gw, saves_butto
                 for match_bps, p_bps in zip_longest(match_bps_list, player_bps):
                     if match_bps is None:
                         continue
-                    if p_bps == 0 or sum(match_bps) == 0:
+                    if p_bps == 0 or p_bps is None or sum(match_bps) == 0:
                         player_bonus_points = 0.0
                     else:
                         player_bonus_points = max((p_bps / (sum(match_bps) + p_bps)) * 6, 0)
