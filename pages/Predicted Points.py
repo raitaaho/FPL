@@ -2152,10 +2152,10 @@ if team_stats_json_files:
 
 st.header("Fetch FPL Data for Predicted Points Calculations")
 calc_stats_button = st.toggle(
-    "Calculate Player and Team Statistics According to Most Recent Fixtures from FPL API (This May Take a Few Minutes)",
+    "Fetch Player and Team Statistics According to Most Recent Fixtures from FPL API (This May Take a Few Minutes)",
     value=False
 )
-if st.button("Fetch Latest Player and Team Statistics"):
+if st.button("Fetch FPL Data"):
     with st.spinner("Fetching latest Statistics...", show_time=True):
         data, teams_data, players_data, team_id_to_name, player_id_to_name = fetch_fpl_data()
         element_types = position_mapping(data)
@@ -2168,12 +2168,12 @@ if st.button("Fetch Latest Player and Team Statistics"):
         st.success("Player and Team Statistics Fetched Successfully!")
 
 current_time = datetime.now()
-st.subheader("Download Fetched Player and Team Statistics Data")
+
 if "new_player_stats_fetched" in st.session_state:
     player_stats_json = json.dumps(st.session_state.player_stats_dict, indent=4).encode('utf-8')
     player_stats_filename = f"gw{next_gw}_player_statistics_{current_time.strftime('%m')}{current_time.strftime('%d')}_{current_time.strftime('%H')}{current_time.strftime('%M')}.json"
     st.download_button(
-        label="Download Player Statistics as JSON",
+        label="Download Fetched Player Statistics as JSON",
         data=player_stats_json,
         file_name=player_stats_filename,
         mime="text/json"
@@ -2182,12 +2182,12 @@ if "new_team_stats_fetched" in st.session_state:
     team_stats_json = json.dumps(st.session_state.team_stats_dict, indent=4).encode('utf-8')
     team_stats_filename = f"gw{next_gw}_team_statistics_{current_time.strftime('%m')}{current_time.strftime('%d')}_{current_time.strftime('%H')}{current_time.strftime('%M')}.json"
     st.download_button(
-        label="Download Team Statistics as JSON",
+        label="Download Fetched Team Statistics as JSON",
         data=team_stats_json,
         file_name=team_stats_filename,
         mime="text/json"
     )
-    
+
 st.header("Select metrics to use in predicted points calculations")
 saves_button = st.toggle(
     "Use Saves per Game in predicted points calculation for goalkeepers if odds for Goalkeeper Saves are not available",
