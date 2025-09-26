@@ -599,14 +599,14 @@ def construct_team_and_player_data(
             if season['season_name'] != '2024/25':
                 continue
             else:
-                minutes_24_25 = season.get('minutes', 0)
+                minutes_24_25 = int(season.get('minutes', 0))
                 games_24_25 = math.floor(minutes_24_25 / 90)
-                def_contributions_24_25 = season.get('defensive_contribution', 0)
-                xg_24_25 = season.get('expected_goals', 0)
-                xa_24_25 = season.get('expected_assists', 0)
-                goals_24_25 = season.get('goals_scored', 0)
-                assists_24_25 = season.get('assists', 0)
-                saves_24_25 = season.get('saves', 0)
+                def_contributions_24_25 = int(season.get('defensive_contribution', 0))
+                xg_24_25 = float(season.get('expected_goals', 0))
+                xa_24_25 = float(season.get('expected_assists', 0))
+                goals_24_25 = int(season.get('goals_scored', 0))
+                assists_24_25 = int(season.get('assists', 0))
+                saves_24_25 = int(season.get('saves', 0))
                 break
         player_data[name] = defaultdict(float)
         player_data[name].update(get_player_template(team_name, games_25_26))
