@@ -2028,6 +2028,7 @@ odds_json_files = glob.glob(f"{odds_filename}*.json")
 player_stats_json_files = glob.glob(f"{player_stats_filename}*.json")
 team_stats_json_files = glob.glob(f"{team_stats_filename}*.json")
 
+st.markdown("### Odds JSON File Upload")
 if odds_json_files:
     latest_odds_path = max(odds_json_files)
     latest_odds_name = latest_odds_path.replace(fixtures_dir, '')
@@ -2080,6 +2081,7 @@ else:
             st.warning(f"Odds in uploaded file {uploaded_odds_name} are not for the next gameweek ({next_gw}).")
             all_odds_dict = {}
 
+st.markdown("### Player Statistics JSON File Upload")
 if player_stats_json_files:
     latest_player_stats_path = max(player_stats_json_files)
     latest_player_stats_name = latest_player_stats_path.replace(stats_dir, '')
@@ -2113,6 +2115,7 @@ if player_stats_json_files:
         except IOError:
             st.warning(f"Could not open player statistics file {latest_player_stats_path} found in Github repository.")
 
+st.markdown("### Team Statistics JSON File Upload")
 if team_stats_json_files:
     latest_team_stats_path = max(team_stats_json_files)
     latest_team_stats_name = latest_team_stats_path.replace(stats_dir, '')
@@ -2145,7 +2148,21 @@ if team_stats_json_files:
         except IOError:
             st.warning(f"Could not open team statistics file {latest_team_stats_path} found in Github repository.")
 
-st.header("Step 1: Select metrics to use in predicted points calculations")
+st.header("Fetch FPL Data for Predicted Points Calculations")
+calc_stats_button = st.toggle(
+    "Calculate Player and Team Statistics According to Most Recent Fixtures from FPL API (This May Take a Few Minutes)",
+    value=False
+)
+if st.button("Fetch Latest Player and Team Statistics"):
+    with st.spinner("Fetching latest Statistics...", show_time=True):
+        data, teams_data, players_data, team_id_to_name, player_id_to_name = fetch_fpl_data()
+        element_types = position_mapping(data)
+        if calc_stats_button or 'player_stats_dict' not in st.session_state or 'team_stats_dict' not in st.session_state:
+            team_stats_dict, player_stats_dict = construct_team_and_player_data(data, team_id_to_name, player_id_to_name, fixtures)
+            st.session_state.player_stats_dict = player_stats_dict
+            st.session_state.team_stats_dict = team_stats_dict
+        st.success("Player and Team Statistics Fetched Successfully!")
+st.header("Select metrics to use in predicted points calculations")
 saves_button = st.toggle(
     "Use Saves per Game in predicted points calculation for goalkeepers if odds for Goalkeeper Saves are not available",
     value=True
@@ -2156,21 +2173,6 @@ bps_button = st.toggle(
 )
 
 gws_to_predict = st.slider("Select amount of gameweeks to calculate predicted points for", min_value=1, max_value=10, value=1)
-
-calc_stats_button = st.toggle(
-    "Calculate Player and Team Statistics According to Most Recent Fixtures from FPL API (This May Take a Few Minutes)",
-    value=False
-)
-
-if st.button("Fetch Latest Player and Team Statistics"):
-    with st.spinner("Fetching latest Statistics...", show_time=True):
-        data, teams_data, players_data, team_id_to_name, player_id_to_name = fetch_fpl_data()
-        element_types = position_mapping(data)
-        if calc_stats_button or 'player_stats_dict' not in st.session_state or 'team_stats_dict' not in st.session_state:
-            team_stats_dict, player_stats_dict = construct_team_and_player_data(data, team_id_to_name, player_id_to_name, fixtures)
-            st.session_state.player_stats_dict = player_stats_dict
-            st.session_state.team_stats_dict = team_stats_dict
-        st.success("Player and Team Statistics Fetched Successfully!")
 
 if "player_stats_dict" in st.session_state and "team_stats_dict" in st.session_state:
     current_time = datetime.now()
