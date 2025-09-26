@@ -1570,7 +1570,6 @@ def calc_avg_bps(
                 saves_p90_24_25 = odds.get('24/25 Saves P90', [0])[0]
                 saves_avg = (2 * saves_p90_24_25 + saves_per_game) / 3 if saves_p90_24_25 > 0 else saves_per_game
 
-                player_dict[player]['Saves per Game by Historical Data'] = round(saves_avg, 3)
             else:
                 saves_avg = 0
 
@@ -1866,6 +1865,18 @@ def initialize_predicted_points_df(all_odds_dict, fixtures, next_gw, saves_butto
         away_team_name = details.get('away_team', 'Unknown')
         home_team = TEAM_NAMES_ODDSCHECKER.get(home_team_name, home_team_name)
         away_team = TEAM_NAMES_ODDSCHECKER.get(away_team_name, away_team_name)
+        for player in player_dict:
+            if player_dict[player].get('Team', ['Unknown'])[0] == home_team:
+                player_dict[player]['Opponent'].append(away_team)
+            if player_dict[player].get('Team', ['Unknown'])[0] == away_team:
+                player_dict[player]['Opponent'].append(home_team)
+
+    for match, details in all_odds_dict.items():
+        home_team_name = details.get('home_team', 'Unknown')
+        away_team_name = details.get('away_team', 'Unknown')
+        home_team = TEAM_NAMES_ODDSCHECKER.get(home_team_name, home_team_name)
+        away_team = TEAM_NAMES_ODDSCHECKER.get(away_team_name, away_team_name)
+        
         total_home_goals_probs = None
         total_away_goals_probs = None
         home_margin = 0.05
@@ -1873,12 +1884,6 @@ def initialize_predicted_points_df(all_odds_dict, fixtures, next_gw, saves_butto
 
         if home_team is not None and away_team is not None:
             calc_team_xgs(home_team, away_team, team_stats_dict, player_dict)
-
-        for player in player_dict:
-            if player_dict[player].get('Team', ['Unknown'])[0] == home_team:
-                player_dict[player]['Opponent'].append(away_team)
-            if player_dict[player].get('Team', ['Unknown'])[0] == away_team:
-                player_dict[player]['Opponent'].append(home_team)
 
         if details.get('Total Home Goals', 'Unknown') != 'Unknown':    
             total_home_goals_probs, home_margin = get_total_goals_over_probs(details['Total Home Goals'], "home") 
@@ -1994,23 +1999,23 @@ def initialize_predicted_points_df(all_odds_dict, fixtures, next_gw, saves_butto
                         if opp_index != -1 and len(player_dict[player].get('Estimated BPS', [])) > opp_index:
                             match_bps_away.append(player_dict[player].get('Estimated BPS', [])[opp_index])
 
-                match_bps_home = sorted(match_bps_home, reverse=True)[:11]
-                match_bps_away = sorted(match_bps_away, reverse=True)[:11]
+                match_bps_home = sorted(match_bps_home, reverse=True)[:12]
+                match_bps_away = sorted(match_bps_away, reverse=True)[:12]
                 match_bps = match_bps_home + match_bps_away
-                match_bps_dict[home_team].append(sorted(match_bps, reverse=True)[:21])
-                match_bps_dict[away_team].append(sorted(match_bps, reverse=True)[:21])
+                match_bps_dict[home_team].append(sorted(match_bps, reverse=True)[:22])
+                match_bps_dict[away_team].append(sorted(match_bps, reverse=True)[:22])
 
             for player in player_dict:
                 team = player_dict[player].get('Team', ['Unknown'])[0]
-                match_bps_list = match_bps_dict.get(team, [[0]])
-                player_bps = player_dict[player].get('Estimated BPS', [0])
+                match_bps_list = match_bps_dict.get(team, [[0.0]])
+                player_bps = player_dict[player].get('Estimated BPS', [0.0])
                 for match_bps, p_bps in zip_longest(match_bps_list, player_bps):
                     if match_bps is None:
                         continue
-                    if p_bps == 0 or p_bps is None or sum(match_bps) == 0:
+                    if p_bps == 0.0 or p_bps is None or sum(match_bps) == 0.0:
                         player_bonus_points = 0.0
                     else:
-                        player_bonus_points = max((p_bps / (sum(match_bps) + p_bps)) * 6, 0)
+                        player_bonus_points = max((p_bps / (sum(match_bps) + p_bps)) * 6, 0.0)
                     player_dict[player]['Estimated Bonus Points'].append(player_bonus_points)
 
     calc_points(player_dict, saves_button)
