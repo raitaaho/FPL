@@ -782,7 +782,7 @@ def construct_team_and_player_data(
                     for player in player_data:
                         if all(token in old_name_tokens for token in prepare_name(player)) or all(token in prepare_name(player) for token in old_name_tokens):
                             if player_data[player]["Team"] == away_team_name:
-                                player_data[player]['24/25 Goalkeeper Saves for Current Team'] += int(pair['value'])
+                                player_data[player]['24/25 Away Goalkeeper Saves for Current Team'] += int(pair['value'])
 
                 for pair in stat['h']:
                     team_data[home_team_name]['24/25 Home Goalkeeper Saves'] += int(pair['value'])
@@ -790,7 +790,7 @@ def construct_team_and_player_data(
                     for player in player_data:
                         if all(token in old_name_tokens for token in prepare_name(player)) or all(token in prepare_name(player) for token in old_name_tokens):
                             if player_data[player]["Team"] == home_team_name:
-                                player_data[player]['24/25 Goalkeeper Saves for Current Team'] += int(pair['value'])
+                                player_data[player]['24/25 Home Goalkeeper Saves for Current Team'] += int(pair['value'])
 
     # Process each gameweek
     for fixture in fixtures:
@@ -1082,14 +1082,14 @@ def construct_team_and_player_data(
                         continue
                     for player in player_data:
                         if player_data[player]["Team"] == away_team_name and player == " ".join(prepare_name(player_id_to_name[pair['element']])):
-                            player_data[player]['25/26 Goalkeeper Saves for Current Team'] += int(pair['value'])
+                            player_data[player]['25/26 Away Goalkeeper Saves for Current Team'] += int(pair['value'])
                 for pair in stat['h']:
                     team_data[home_team_name]['25/26 Home Goalkeeper Saves'] += int(pair['value'])
                     if player_data.get(" ".join(prepare_name(player_id_to_name[pair['element']]))) == None:
                         continue
                     for player in player_data:
                         if player_data[player]["Team"] == home_team_name and player == " ".join(prepare_name(player_id_to_name[pair['element']])):
-                            player_data[player]['25/26 Goalkeeper Saves for Current Team'] += int(pair['value'])
+                            player_data[player]['25/26 Home Goalkeeper Saves for Current Team'] += int(pair['value'])
 
     for team in team_data:
         if team_data[team]['24/25 Home Games Played'] == 0 and team_data[team]['24/25 Away Games Played'] == 0:
@@ -1106,6 +1106,9 @@ def construct_team_and_player_data(
 
         team_data[team]['HFA'] = float(team_data[team]['Home ELO'] - team_data[team]['Away ELO']) if team_data[team]['Away ELO'] != 0 else 0
 
+        team_data[team]['Goalkeeper Saves per Home Game'] = float((team_data[team]['24/25 Home Goalkeeper Saves'] + team_data[team]['25/26 Home Goalkeeper Saves'])/(team_data[team]['24/25 Home Games Played'] + team_data[team]['25/26 Home Games Played'])) if (team_data[team]['24/25 Home Games Played'] + team_data[team]['25/26 Home Games Played']) != 0 else 0
+        team_data[team]['Goalkeeper Saves per Away Game'] = float((team_data[team]['24/25 Away Goalkeeper Saves'] + team_data[team]['25/26 Away Goalkeeper Saves'])/(team_data[team]['24/25 Away Games Played'] + team_data[team]['25/26 Away Games Played'])) if (team_data[team]['24/25 Away Games Played'] + team_data[team]['25/26 Away Games Played']) != 0 else 0
+
         team_data[team]['25/26 Goalkeeper Saves per Home Game'] = float(team_data[team]['25/26 Home Goalkeeper Saves']/team_data[team]['25/26 Home Games Played']) if team_data[team]['25/26 Home Games Played'] != 0 else 0
         team_data[team]['25/26 Goalkeeper Saves per Away Game'] = float(team_data[team]['25/26 Away Goalkeeper Saves']/team_data[team]['25/26 Away Games Played']) if team_data[team]['25/26 Away Games Played'] != 0 else 0
         team_data[team]['25/26 Goals per Game'] = float((team_data[team]['25/26 Home Goals'] + team_data[team]['25/26 Away Goals'])/(team_data[team]['25/26 Home Games Played'] + team_data[team]['25/26 Away Games Played'])) if (team_data[team]['25/26 Home Games Played'] + team_data[team]['25/26 Away Games Played']) != 0 else 0
@@ -1116,13 +1119,6 @@ def construct_team_and_player_data(
         team_data[team]['25/26 Goals Conceded per Away Game'] = float(team_data[team]['25/26 Goals Conceded Away']/team_data[team]['25/26 Away Games Played']) if team_data[team]['25/26 Away Games Played'] != 0 else 0
 
         if team_data[team]['24/25 Home Games Played'] != 0 and team_data[team]['24/25 Away Games Played'] != 0:
-            team_data[team]['24/25 Goalkeeper Saves per Home Game'] = float(team_data[team]['24/25 Home Goalkeeper Saves']/team_data[team]['24/25 Home Games Played'])
-            team_data[team]['24/25 Goalkeeper Saves per Away Game'] = float(team_data[team]['24/25 Away Goalkeeper Saves']/team_data[team]['24/25 Away Games Played'])
-            team_data[team]['24/25 Goals per Home Game'] = float(team_data[team]['24/25 Home Goals']/team_data[team]['24/25 Home Games Played'])
-            team_data[team]['24/25 Goals per Away Game'] = float(team_data[team]['24/25 Away Goals']/team_data[team]['24/25 Away Games Played'])
-            team_data[team]['24/25 Goals Conceded per Home Game'] = float(team_data[team]['24/25 Goals Conceded Home']/team_data[team]['24/25 Home Games Played'])
-            team_data[team]['24/25 Goals Conceded per Away Game'] = float(team_data[team]['24/25 Goals Conceded Away']/team_data[team]['24/25 Away Games Played'])
-
             team_data[team]['Goals per Game Against 1-4'] = float((team_data[team]['24/25 Goals Against 1-4'] + team_data[team]['25/26 Goals Against 1-4'])/(team_data[team]['24/25 Games Against 1-4'] + team_data[team]['25/26 Games Against 1-4']))
             team_data[team]['Goals Conceded per Game Against 1-4'] = float((team_data[team]['24/25 Goals Conceded Against 1-4'] + team_data[team]['25/26 Goals Conceded Against 1-4'])/(team_data[team]['24/25 Games Against 1-4'] + team_data[team]['25/26 Games Against 1-4']))
             team_data[team]['Goals per Game Against 5-8'] = float((team_data[team]['24/25 Goals Against 5-8'] + team_data[team]['25/26 Goals Against 5-8'])/(team_data[team]['24/25 Games Against 5-8'] + team_data[team]['25/26 Games Against 5-8']))
@@ -1136,6 +1132,7 @@ def construct_team_and_player_data(
         
     for player in player_data:
         team = player_data[player]['Team']
+        pos = player_data[player]['Position']
         team_games_25_26 = team_data[team]['25/26 Home Games Played'] + team_data[team]['25/26 Away Games Played']
         team_goals_24_25 = team_data[team]['24/25 Home Goals'] + team_data[team]['24/25 Away Goals']
         team_goals_25_26 = team_data[team]['25/26 Home Goals'] + team_data[team]['25/26 Away Goals']
@@ -1167,16 +1164,9 @@ def construct_team_and_player_data(
         player_data[player]['Goals per Away Game'] = float(player_data[player]['Away Goals for Current Team']/player_data[player]['Away Games Played for Current Team']) if player_data[player]['Away Games Played for Current Team'] != 0 else 0
         player_data[player]['Assists per Away Game'] = float(player_data[player]['Away Assists for Current Team']/player_data[player]['Away Games Played for Current Team']) if player_data[player]['Away Games Played for Current Team'] != 0 else 0
         
-        player_data[player]['24/25 Goals per Home Game'] = float(player_data[player]['24/25 Home Goals for Current Team']/player_data[player]['24/25 Home Games Played for Current Team']) if player_data[player]['24/25 Home Games Played for Current Team'] != 0 else 0
-        player_data[player]['24/25 Assists per Home Game'] = float(player_data[player]['24/25 Home Assists for Current Team']/player_data[player]['24/25 Home Games Played for Current Team']) if player_data[player]['24/25 Home Games Played for Current Team'] != 0 else 0
-        player_data[player]['24/25 Goals per Away Game'] = float(player_data[player]['24/25 Away Goals for Current Team']/player_data[player]['24/25 Away Games Played for Current Team']) if player_data[player]['24/25 Away Games Played for Current Team'] != 0 else 0
-        player_data[player]['24/25 Assists per Away Game'] = float(player_data[player]['24/25 Away Assists for Current Team']/player_data[player]['24/25 Away Games Played for Current Team']) if player_data[player]['24/25 Away Games Played for Current Team'] != 0 else 0
+        player_data[player]['Saves per Home Game'] = float(player_data[player]['Home Goalkeeper Saves for Current Team']/player_data[player]['Home Games Played for Current Team']) if player_data[player]['Home Games Played for Current Team'] != 0 else 0
+        player_data[player]['Saves per Away Game'] = float(player_data[player]['Away Goalkeeper Saves for Current Team']/player_data[player]['Away Games Played for Current Team']) if player_data[player]['Away Games Played for Current Team'] != 0 else 0
 
-        player_data[player]['25/26 Goals per Home Game'] = float(player_data[player]['25/26 Home Goals for Current Team']/player_data[player]['25/26 Home Games Played for Current Team']) if player_data[player]['25/26 Home Games Played for Current Team'] != 0 else 0
-        player_data[player]['25/26 Assists per Home Game'] = float(player_data[player]['25/26 Home Assists for Current Team']/player_data[player]['25/26 Home Games Played for Current Team']) if player_data[player]['25/26 Home Games Played for Current Team'] != 0 else 0
-        player_data[player]['25/26 Goals per Away Game'] = float(player_data[player]['25/26 Away Goals for Current Team']/player_data[player]['25/26 Away Games Played for Current Team']) if player_data[player]['25/26 Away Games Played for Current Team'] != 0 else 0
-        player_data[player]['25/26 Assists per Away Game'] = float(player_data[player]['25/26 Away Assists for Current Team']/player_data[player]['25/26 Away Games Played for Current Team']) if player_data[player]['25/26 Away Games Played for Current Team'] != 0 else 0
-        
         player_data[player]['Goals per Game Against 1-4'] = float((player_data[player]['24/25 Goals Against 1-4'] + player_data[player]['25/26 Goals Against 1-4'])/(player_data[player]['24/25 Games Against 1-4'] + player_data[player]['25/26 Games Against 1-4'])) if player_data[player]['24/25 Games Against 1-4'] + player_data[player]['25/26 Games Against 1-4'] != 0 else 0 
         player_data[player]['Goals Conceded per Game Against 1-4'] = float((player_data[player]['24/25 Goals Conceded Against 1-4'] + player_data[player]['25/26 Goals Conceded Against 1-4'])/(player_data[player]['24/25 Games Against 1-4'] + player_data[player]['25/26 Games Against 1-4'])) if player_data[player]['24/25 Games Against 1-4'] + player_data[player]['25/26 Games Against 1-4'] != 0 else 0 
         player_data[player]['Goals per Game Against 5-8'] = float((player_data[player]['24/25 Goals Against 5-8'] + player_data[player]['25/26 Goals Against 5-8'])/(player_data[player]['24/25 Games Against 5-8'] + player_data[player]['25/26 Games Against 5-8'])) if player_data[player]['24/25 Games Against 5-8'] + player_data[player]['25/26 Games Against 5-8'] != 0 else 0 
@@ -1478,8 +1468,8 @@ def calc_specific_probs(
                 player_dict[player]["xG by Bookmaker Odds"].append(expected_goals)
 
             for t_gsa, opp in zip_longest(total_goals_historical, opponents, fillvalue=0):
-                ave_ass = (ass_share * t_gsa + xa_per_game) / 2 if ass_share != 0 else xa_per_game
-                ave_g = (goal_share * t_gsa + xg_per_game) / 2 if goal_share != 0 else xg_per_game
+                ave_ass = ((ass_share * t_gsa) + 2 * xa_per_game) / 3 if ass_share != 0 else xa_per_game
+                ave_g = ((goal_share * t_gsa) + 2 * xg_per_game) / 3 if goal_share != 0 else xg_per_game
                 player_dict[player]["xA by Historical Data"].append(ave_ass)
                 player_dict[player]["xG by Historical Data"].append(ave_g)
 
@@ -1511,7 +1501,8 @@ def calc_specific_probs(
                 player_dict[player]["xSaves by Bookmaker Odds"].append(saves_average)
 
 def calc_avg_bps(
-    player_dict: dict
+    player_dict: dict,
+    saves_button: bool
 ) -> None:
     """
     Calculate and add predicted bonus points per game for each player.
@@ -1531,6 +1522,8 @@ def calc_avg_bps(
             cs_odds_bookmaker = odds.get("Clean Sheet Probability by Bookmaker Odds", [])
             position = odds.get("Position", ["Unknown"])[0]
             saves_average_bookmaker = odds.get("xSaves by Bookmaker Odds", [])
+            saves_average_historical = odds.get("Saves by Historical Data", [])
+            team_saves_average = odds.get("Team Saves by Historical Data", [])
 
             goals_conceded_team_bookmaker = odds.get('Goals Conceded by Team on Average', [])
             goals_conceded_team_historical = odds.get('Team xGC by Historical Data', [])
@@ -1541,16 +1534,6 @@ def calc_avg_bps(
 
             minutes_per_game = odds.get("Minutes per Game", [0])[0]
 
-            if saves_button and position == 'GKP':
-                games_24_25 = odds.get('24/25 Games Played', [0])[0]
-                games_25_26 = odds.get('25/26 Games Played', [0])[0]
-                saves_24_25 = odds.get('24/25 Saves', [0])[0]
-                saves_25_26 = odds.get('24/25 Saves', [0])[0]
-                saves_avg = (saves_24_25 + saves_25_26) / (games_24_25 + games_25_26)
-
-            else:
-                saves_avg = 0
-
             cbi_per_game = odds.get("CBI per Game", [0])[0]
             recoveries_per_game = odds.get("Recoveries per Game", [0])[0]
             tackles_per_game = odds.get("Tackles per Game", [0])[0]
@@ -1560,11 +1543,16 @@ def calc_avg_bps(
                 print(f"Calculating BPS for {player} skipped due to data entries being higher than number of games the player is playing")
                 continue
 
-            for g1, g2, a1, a2, cs1, cs2, ga1, ga2, s1, opp in zip_longest(goals_average_bookmaker, goals_average_historical, ass_average_bookmaker, ass_average_historical, cs_odds_bookmaker, cs_odds_historical, goals_conceded_team_bookmaker, goals_conceded_team_historical, saves_average_bookmaker, opponents, fillvalue=-1):
+            for g1, g2, a1, a2, cs1, cs2, ga1, ga2, s1, s2, s3, opp in zip_longest(goals_average_bookmaker, goals_average_historical, ass_average_bookmaker, ass_average_historical, cs_odds_bookmaker, cs_odds_historical, goals_conceded_team_bookmaker, goals_conceded_team_historical, saves_average_bookmaker, saves_average_historical, team_saves_average, opponents, fillvalue=-1):
                 xg = g1 if g1 != -1 else max(g2, 0)
                 xa = a1 if a1 != -1 else max(a2, 0)
                 xcs = cs1 if cs1 != -1 else max(cs2, 0)
                 xgc = ga1 if ga1 != -1 else max(ga2, 0)
+
+                if saves_button:
+                    saves_avg = (s2 + 2 * s3) / 3 if s2 != -1 and s3 != -1 else 0
+                else:
+                    saves_avg = 0
                 xsav = s1 if s1 != -1 else saves_avg
 
                 bps = 0.0
@@ -1690,15 +1678,29 @@ def calc_team_xgs(
     home_xg = (home_goals + away_goals_conceded) / 2 
     away_xg = (away_goals + home_goals_conceded) / 2
 
+    home_team_saves = team_stats_dict[home_team]['Goalkeeper Saves per Home Game']
+    away_team_saves = team_stats_dict[away_team]['Goalkeeper Saves per Away Game']
+
     for player, stats in player_dict.items():
         if stats['Team'][0] == home_team:
             player_dict[player]['Team xG by Historical Data'].append(home_xg)
             player_dict[player]['Team xGC by Historical Data'].append(away_xg)
             player_dict[player]["Clean Sheet Probability by Historical Data"].append(math.exp(-away_xg))
+
+            if player_dict[player]['Position'][0] == 'GKP':
+                gkp_saves = player_dict[player].get('Saves per Home Game', 0)
+                player_dict[player]['Saves by Historical Data'].append(gkp_saves)
+                player_dict[player]['Team Saves by Historical Data'].append(home_team_saves)
+
         if stats['Team'][0] == away_team:
             player_dict[player]['Team xG by Historical Data'].append(away_xg)
             player_dict[player]['Team xGC by Historical Data'].append(home_xg)
             player_dict[player]["Clean Sheet Probability by Historical Data"].append(math.exp(-home_xg))
+
+            if player_dict[player]['Position'][0] == 'GKP':
+                gkp_saves = player_dict[player].get('Saves per Away Game', 0)
+                player_dict[player]['Saves by Historical Data'].append(gkp_saves)
+                player_dict[player]['Team Saves by Historical Data'].append(away_team_saves)
 
 def calc_points(player_dict: dict, saves_button: bool) -> None:
     """
@@ -1730,7 +1732,9 @@ def calc_points(player_dict: dict, saves_button: bool) -> None:
             cs_odds = []
             position = odds.get("Position", ["Unknown"])[0]
             saves_average_bookmaker = odds.get("xSaves by Bookmaker Odds", [])
+            saves_average_historical = odds.get("Saves by Historical Data", [])
             saves_average = []
+            team_saves_average = odds.get("Team Saves by Historical Data", [])
 
             # If there are more probability/average entries than number of games in the gameweek for a player, skip the player
             if len(goals_average_bookmaker) > number_of_games or len(ass_average_bookmaker) > number_of_games or len(saves_average_bookmaker) > number_of_games:
@@ -1750,23 +1754,18 @@ def calc_points(player_dict: dict, saves_button: bool) -> None:
 
             bonus_points = odds.get('Estimated Bonus Points', [])
 
-            if saves_button and position == 'GKP':
-                games_24_25 = odds.get('24/25 Games Played', [0])[0]
-                games_25_26 = odds.get('25/26 Games Played', [0])[0]
-                saves_24_25 = odds.get('24/25 Saves', [0])[0]
-                saves_25_26 = odds.get('25/26 Saves', [0])[0]
-                saves_avg = (saves_24_25 + saves_25_26) / (games_24_25 + games_25_26)
-
-                player_dict[player]['Saves per Game by Historical Data'] = round(saves_avg, 3)
-            else:
-                saves_avg = 0
-
             points_all_gws = []
-            for g1, g2, a1, a2, cs1, cs2, cs3, ga1, ga2, s1, bp1, opp in zip_longest(goals_average_bookmaker, goals_average_historical, ass_average_bookmaker, ass_average_historical, cs_odds_bookmaker, cs_odds_statsbetting, cs_odds_historical, goals_conceded_team_bookmaker, goals_conceded_team_historical, saves_average_bookmaker, bonus_points, opponents, fillvalue=-1):
+            for g1, g2, a1, a2, cs1, cs2, cs3, ga1, ga2, s1, s2, s3, bp1, opp in zip_longest(goals_average_bookmaker, goals_average_historical, ass_average_bookmaker, ass_average_historical, cs_odds_bookmaker, cs_odds_statsbetting, cs_odds_historical, goals_conceded_team_bookmaker, goals_conceded_team_historical, saves_average_bookmaker, saves_average_historical, team_saves_average, bonus_points, opponents, fillvalue=-1):
                 goals_average.append(g1 if g1 != -1 else max(g2, 0))
                 ass_average.append(a1 if a1 != -1 else max(a2, 0))
                 cs_odds.append(cs1 if cs1 != -1 else cs2 if cs2 != -1 else max(cs3, 0))
                 goals_conceded_team.append(ga1 if ga1 != -1 else max(ga2, 0))
+
+                if saves_button:
+                    saves_avg = (s2 + 2 * s3) / 3 if s2 != -1 and s3 != - 1 else 0
+                else:
+                    saves_avg = 0
+                player_dict[player]['Expected Saves by Historical Data'].append(saves_avg)
                 saves_average.append(s1 if s1 != -1 else saves_avg)
 
                 xg = g1 if g1 != -1 else max(g2, 0)
@@ -1950,7 +1949,7 @@ def initialize_predicted_points_df(all_odds_dict, fixtures, next_gw, saves_butto
     calc_specific_probs(player_dict)
     if bps_button:
         with st.spinner("Calculating predicted bonus points..."):
-            calc_avg_bps(player_dict)
+            calc_avg_bps(player_dict, saves_button)
             match_bps_dict = defaultdict(list)
             for match, details in all_odds_dict.items():
                 match_bps_home = []
