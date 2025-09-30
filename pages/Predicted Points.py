@@ -482,7 +482,7 @@ def get_player_template(team_name: str, games: int) -> dict:
         '25/26 Assists Against 13-16': 0,
         '25/26 Games Against 17-20': 0,
         '25/26 Goals Against 17-20': 0,
-        '25/26 Assists Against 17-20': 0
+        '25/26 Goals Conceded Against 17-20': 0
         }
     return player_template
 
@@ -968,7 +968,7 @@ def construct_team_and_player_data(
         away_weight_25_26 = 3
         away_raw_total_weight_24_25 = away_total_weight_24_25 / away_total_games_24_25 if away_total_games_24_25 != 0 else 0
         away_raw_total_weight_25_26 = away_weight_25_26 / away_total_games_25_26 if away_total_games_25_26 != 0 else 0
-        away_raw_away_weight_24_25 = away_weight_away_24_25 / team_data[away_team_name]['24/25 Away Games Played'] if team_data[away_team_name]['24/25 Away Games Played'] != 0 else 0
+        away_raw_away_weight_24_25 = away_weight_away_24_25 / team_data[away_team_name]['24/25 Away Games Played'] if team_data[home_team_name]['24/25 Away Games Played'] != 0 else 0
         away_raw_away_weight_25_26 = away_weight_25_26 / team_data[away_team_name]['25/26 Away Games Played'] if team_data[away_team_name]['25/26 Away Games Played'] != 0 else 0
 
         away_total_raw_weight = away_raw_total_weight_24_25 * away_total_games_24_25 + away_raw_total_weight_25_26 * away_total_games_25_26
@@ -1516,7 +1516,7 @@ def calc_avg_bps(
 
     Args:
         player_dict (dict): Player details dictionary.
-    """
+    """     
     for player, odds in player_dict.items():
         try:
             # Get probabilities
@@ -1743,11 +1743,6 @@ def calc_points(player_dict: dict, saves_button: bool) -> None:
             saves_average = []
             team_saves_average = odds.get("Team Saves by Historical Data", [])
 
-            # If there are more probability/average entries than number of games in the gameweek for a player, skip the player
-            if len(goals_average_bookmaker) > number_of_games or len(ass_average_bookmaker) > number_of_games or len(saves_average_bookmaker) > number_of_games:
-                print(f"{player} skipped due to data entries being higher than number of games the player is playing")
-                continue
-
             goals_conceded_team_bookmaker = odds.get('Goals Conceded by Team on Average', [])
             goals_conceded_team_historical = odds.get('Team xGC by Historical Data', [])
             goals_conceded_team = []
@@ -1769,7 +1764,7 @@ def calc_points(player_dict: dict, saves_button: bool) -> None:
                 goals_conceded_team.append(ga1 if ga1 != -1 else max(ga2, 0))
 
                 if saves_button:
-                    saves_avg = (s2 + 2 * s3) / 3 if s2 != -1 and s3 != - 1 else 0
+                    saves_avg = (s2 + 2 * s3) / 3 if s2 != -1 and s3 != -1 else 0
                 else:
                     saves_avg = 0
                 player_dict[player]['Expected Saves by Historical Data'].append(saves_avg)
@@ -2099,7 +2094,7 @@ bps_button = st.toggle(
 
 # User input for starting gameweek (move here)
 if "df" in st.session_state:
-    min_gw = int(st.session_state.df["Gameweek"].min()) if "Gameweek" in st.session_state.df.columns else 1
+    min_gw = int(st.session_state.df["Gameweek"].min()) if "Gameweek" in st.session_state.df.columns else next_gw
     max_gw = int(st.session_state.df["Gameweek"].max()) if "Gameweek" in st.session_state.df.columns else 38
 else:
     min_gw = next_gw
@@ -2117,10 +2112,16 @@ if st.button("Fetch Latest Player and Team Statistics"):
         st.session_state.player_stats_dict = player_stats_dict
         st.session_state.team_stats_dict = team_stats_dict
         st.success("Player and Team Statistics Fetched Successfully!")
-# Step 2: Load data only after user confirms
+# Use start_gw instead of next_gw for calculation range
+gw_start = start_gw
+# Ensure gws_to_predict does not exceed available gameweeks
+gw_end = min(gw_start + gws_to_predict - 1, 38)
+
 if st.button("Calculate Predicted Points"):
     with st.spinner("Calculating Predicted Points...", show_time=True):
-        st.session_state.df, st.session_state.player_stats_dict, st.session_state.team_stats_dict = initialize_predicted_points_df(all_odds_dict, fixtures, start_gw, saves_button, bps_button, gws_to_predict)
+        st.session_state.df, st.session_state.player_stats_dict, st.session_state.team_stats_dict = initialize_predicted_points_df(
+            all_odds_dict, fixtures, gw_start, saves_button, bps_button, gws_to_predict
+        )
 
 if "player_stats_dict" in st.session_state:
     st.subheader("Player Statistics Data")
@@ -2145,9 +2146,6 @@ if "team_stats_dict" in st.session_state:
 if "df" in st.session_state:
     df = st.session_state.df
     chart_df = df
-
-
-
 
     columns = df.columns.tolist()
     column_names = st.multiselect("Select Columns to Display", columns, default=columns)
