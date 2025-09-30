@@ -1695,7 +1695,7 @@ def calc_team_xgs(
             player_dict[player]["Clean Sheet Probability by Historical Data"].append(math.exp(-away_xg))
 
             if player_dict[player]['Position'][0] == 'GKP':
-                gkp_saves = player_dict[player].get('Saves per Home Game', 0)
+                gkp_saves = player_dict[player].get('Saves per Home Game', [0])[0]
                 player_dict[player]['Saves by Historical Data'].append(gkp_saves)
                 player_dict[player]['Team Saves by Historical Data'].append(home_team_saves)
 
@@ -1705,7 +1705,7 @@ def calc_team_xgs(
             player_dict[player]["Clean Sheet Probability by Historical Data"].append(math.exp(-home_xg))
 
             if player_dict[player]['Position'][0] == 'GKP':
-                gkp_saves = player_dict[player].get('Saves per Away Game', 0)
+                gkp_saves = player_dict[player].get('Saves per Away Game', [0])[0]
                 player_dict[player]['Saves by Historical Data'].append(gkp_saves)
                 player_dict[player]['Team Saves by Historical Data'].append(away_team_saves)
 
