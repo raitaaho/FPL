@@ -2094,7 +2094,7 @@ bps_button = st.toggle(
     
 start_gw = st.number_input("Select starting gameweek for predictions", min_value=next_gw, max_value=38, value=next_gw, step=1)
 
-gws_to_predict = st.slider("Select amount of gameweeks to calculate predicted points for", min_value=1, max_value=10, value=1)
+gws_to_predict = st.slider("Select amount of gameweeks to calculate predicted points for", min_value=1, max_value=(38 - start_gw) + 1, value=1)
 
 if st.button("Fetch Latest Player and Team Statistics"):
     with st.spinner("Fetching latest Statistics...", show_time=True):
