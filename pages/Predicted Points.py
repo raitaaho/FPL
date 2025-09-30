@@ -1818,9 +1818,9 @@ def calc_points(player_dict: dict, saves_button: bool) -> None:
         except Exception as e:
             print(f"Could not calculate points for {player}: {e}")
 
-def initialize_predicted_points_df(all_odds_dict, fixtures, next_gw, saves_button: bool, bps_button: bool, gws: int):
+def initialize_predicted_points_df(all_odds_dict, fixtures, start_gw, saves_button: bool, bps_button: bool, gws: int):
 
-    gws_to_predict = [next_gw + i for i in range(1, gws)]
+    gws_to_predict = [start_gw + i for i in range(1, gws)]
     next_fixtures = [fixture for fixture in fixtures if (fixture['event'] in gws_to_predict) and (fixture['started'] == False)]
 
     data, teams_data, players_data, team_id_to_name, player_id_to_name = fetch_fpl_data()
@@ -2105,7 +2105,7 @@ else:
     min_gw = next_gw
     max_gw = 38
     
-start_gw = st.number_input("Select starting gameweek for predictions", min_value=min_gw, max_value=max_gw, value=min_gw, step=1)
+start_gw = st.number_input("Select starting gameweek for predictions", min_value=next_gw, max_value=max_gw, value=next_gw, step=1)
 
 gws_to_predict = st.slider("Select amount of gameweeks to calculate predicted points for", min_value=1, max_value=10, value=1)
 
@@ -2120,7 +2120,7 @@ if st.button("Fetch Latest Player and Team Statistics"):
 # Step 2: Load data only after user confirms
 if st.button("Calculate Predicted Points"):
     with st.spinner("Calculating Predicted Points...", show_time=True):
-        st.session_state.df, st.session_state.player_stats_dict, st.session_state.team_stats_dict = initialize_predicted_points_df(all_odds_dict, fixtures, next_gw, saves_button, bps_button, gws_to_predict)
+        st.session_state.df, st.session_state.player_stats_dict, st.session_state.team_stats_dict = initialize_predicted_points_df(all_odds_dict, fixtures, start_gw, saves_button, bps_button, gws_to_predict)
 
 if "player_stats_dict" in st.session_state:
     st.subheader("Player Statistics Data")
