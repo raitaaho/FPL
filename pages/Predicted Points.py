@@ -2097,6 +2097,14 @@ bps_button = st.toggle(
     value=False
 )
 
+# User input for starting gameweek (move here)
+if "df" in st.session_state:
+    min_gw = int(st.session_state.df["Gameweek"].min()) if "Gameweek" in st.session_state.df.columns else 1
+    max_gw = int(st.session_state.df["Gameweek"].max()) if "Gameweek" in st.session_state.df.columns else 38
+else:
+    min_gw = next_gw
+    max_gw = 38
+    
 start_gw = st.number_input("Select starting gameweek for predictions", min_value=min_gw, max_value=max_gw, value=min_gw, step=1)
 
 gws_to_predict = st.slider("Select amount of gameweeks to calculate predicted points for", min_value=1, max_value=10, value=1)
@@ -2132,20 +2140,14 @@ if "team_stats_dict" in st.session_state:
         data=team_stats_json,
         file_name=f"gw{next_gw}_team_statistics.json",
         mime="text/json"
-
-# User input for starting gameweek (move here)
-if "df" in st.session_state:
-    min_gw = int(st.session_state.df["Gameweek"].min()) if "Gameweek" in st.session_state.df.columns else 1
-    max_gw = int(st.session_state.df["Gameweek"].max()) if "Gameweek" in st.session_state.df.columns else 38
-else:
-    min_gw = next_gw
-    max_gw = 38
     )
-    
 # Step 3: Show filters and calculation only if data is loaded
 if "df" in st.session_state:
     df = st.session_state.df
     chart_df = df
+
+
+
 
     columns = df.columns.tolist()
     column_names = st.multiselect("Select Columns to Display", columns, default=columns)
