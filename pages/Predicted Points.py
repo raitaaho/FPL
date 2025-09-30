@@ -2096,14 +2096,6 @@ bps_button = st.toggle(
     "Include Estimated Bonus Points for predicted points calculation",
     value=False
 )
-saves_button = st.toggle(
-    "Use Saves per Game in predicted points calculation for goalkeepers if odds for Goalkeeper Saves are not available",
-    value=True
-)
-bps_button = st.toggle(
-    "Include Estimated Bonus Points for predicted points calculation",
-    value=False
-)
 
 # User input for starting gameweek (move here)
 if "df" in st.session_state:
