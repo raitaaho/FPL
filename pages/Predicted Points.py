@@ -2136,6 +2136,12 @@ if "df" in st.session_state:
     df = st.session_state.df
     chart_df = df
 
+
+    # User input for starting gameweek
+    min_gw = int(df["Gameweek"].min()) if "Gameweek" in df.columns else 1
+    max_gw = int(df["Gameweek"].max()) if "Gameweek" in df.columns else 38
+    start_gw = st.number_input("Select starting gameweek for predictions", min_value=min_gw, max_value=max_gw, value=min_gw, step=1)
+
     columns = df.columns.tolist()
     column_names = st.multiselect("Select Columns to Display", columns, default=columns)
     if column_names:
@@ -2158,6 +2164,9 @@ if "df" in st.session_state:
     # Final calculation and display
     if st.button("Show Predicted Points"):
         st.subheader("Predicted Points for Filtered Players")
+        # Filter df to only include rows from start_gw onwards if Gameweek column exists
+        if "Gameweek" in df.columns:
+            df = df[df["Gameweek"] >= start_gw]
         st.dataframe(df)
 
         # Download button
@@ -2165,7 +2174,7 @@ if "df" in st.session_state:
         st.download_button(
             label="Download Predicted Points as CSV",
             data=df_csv,
-            file_name=f"gw{next_gw}_filtered_predicted_points.csv",
+            file_name=f"gw{start_gw}_filtered_predicted_points.csv",
             mime="text/csv"
         )
         
