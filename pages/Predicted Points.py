@@ -2024,6 +2024,11 @@ st.write(
 fixtures = get_all_fixtures()
 next_gw = get_next_gw(fixtures)
 
+if "start_gw" not in st.session_state:
+    st.session.start_gw = next_gw
+if "gws_to_predict" not in st.session_state:
+    st.session.gws_to_predict = 1
+
 cur_dir = os.getcwd()
 fixtures_dir = os.path.join(cur_dir, "data", "fixture_data")
 odds_filename = os.path.join(fixtures_dir, f"gw{next_gw}_all_odds_")
@@ -2091,11 +2096,6 @@ bps_button = st.toggle(
     "Include Estimated Bonus Points for predicted points calculation",
     value=False
 )
-
-if "start_gw" not in st.session_state:
-    st.session.start_gw = next_gw
-if "gws_to_predict" not in st.session_state:
-    st.session.gws_to_predict = 1
     
 st.session.start_gw = st.number_input("Select starting gameweek for predictions", min_value=next_gw, max_value=38, value=next_gw, step=1)
 
