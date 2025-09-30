@@ -2102,8 +2102,9 @@ if "df" in st.session_state:
     min_gw = int(st.session_state.df["Gameweek"].min()) if "Gameweek" in st.session_state.df.columns else 1
     max_gw = int(st.session_state.df["Gameweek"].max()) if "Gameweek" in st.session_state.df.columns else 38
 else:
-    min_gw = 1
+    min_gw = next_gw
     max_gw = 38
+    
 start_gw = st.number_input("Select starting gameweek for predictions", min_value=min_gw, max_value=max_gw, value=min_gw, step=1)
 
 gws_to_predict = st.slider("Select amount of gameweeks to calculate predicted points for", min_value=1, max_value=10, value=1)
