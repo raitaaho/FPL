@@ -265,6 +265,8 @@ def player_dict_constructor(
         if element_types[player["element_type"]] == 'GKP':
             player_dict[player_name]['24/25 Saves'] = [player_stats_dict[player_name]['24/25 Saves']]
             player_dict[player_name]['25/26 Saves'] = [saves_25_26]
+            player_dict[player_name]['Saves per Home Game'] = [player_stats_dict[player_name]['Saves per Home Game']]
+            player_dict[player_name]['Saves per Away Game'] = [player_stats_dict[player_name]['Saves per Away Game']]
 
         player_dict[player_name]['Estimated BPS'] = []
         player_dict[player_name]['Estimated Bonus Points'] = []
@@ -1123,7 +1125,7 @@ def construct_team_and_player_data(
             team_data[team]['24/25 Goals per Away Game'] = float(team_data[team]['24/25 Away Goals']/team_data[team]['24/25 Away Games Played'])
             team_data[team]['24/25 Goals Conceded per Home Game'] = float(team_data[team]['24/25 Goals Conceded Home']/team_data[team]['24/25 Home Games Played'])
             team_data[team]['24/25 Goals Conceded per Away Game'] = float(team_data[team]['24/25 Goals Conceded Away']/team_data[team]['24/25 Away Games Played'])
-            
+
             team_data[team]['Goals per Game Against 1-4'] = float((team_data[team]['24/25 Goals Against 1-4'] + team_data[team]['25/26 Goals Against 1-4'])/(team_data[team]['24/25 Games Against 1-4'] + team_data[team]['25/26 Games Against 1-4']))
             team_data[team]['Goals Conceded per Game Against 1-4'] = float((team_data[team]['24/25 Goals Conceded Against 1-4'] + team_data[team]['25/26 Goals Conceded Against 1-4'])/(team_data[team]['24/25 Games Against 1-4'] + team_data[team]['25/26 Games Against 1-4']))
             team_data[team]['Goals per Game Against 5-8'] = float((team_data[team]['24/25 Goals Against 5-8'] + team_data[team]['25/26 Goals Against 5-8'])/(team_data[team]['24/25 Games Against 5-8'] + team_data[team]['25/26 Games Against 5-8']))
@@ -1137,7 +1139,7 @@ def construct_team_and_player_data(
         
     for player in player_data:
         team = player_data[player]['Team']
-        pos = player_data[player]['Position']
+
         team_games_25_26 = team_data[team]['25/26 Home Games Played'] + team_data[team]['25/26 Away Games Played']
         team_goals_24_25 = team_data[team]['24/25 Home Goals'] + team_data[team]['24/25 Away Goals']
         team_goals_25_26 = team_data[team]['25/26 Home Goals'] + team_data[team]['25/26 Away Goals']
