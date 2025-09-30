@@ -968,7 +968,7 @@ def construct_team_and_player_data(
         away_weight_25_26 = 3
         away_raw_total_weight_24_25 = away_total_weight_24_25 / away_total_games_24_25 if away_total_games_24_25 != 0 else 0
         away_raw_total_weight_25_26 = away_weight_25_26 / away_total_games_25_26 if away_total_games_25_26 != 0 else 0
-        away_raw_away_weight_24_25 = away_weight_away_24_25 / team_data[away_team_name]['24/25 Away Games Played'] if team_data[home_team_name]['24/25 Away Games Played'] != 0 else 0
+        away_raw_away_weight_24_25 = away_weight_away_24_25 / team_data[away_team_name]['24/25 Away Games Played'] if team_data[away_team_name]['24/25 Away Games Played'] != 0 else 0
         away_raw_away_weight_25_26 = away_weight_25_26 / team_data[away_team_name]['25/26 Away Games Played'] if team_data[away_team_name]['25/26 Away Games Played'] != 0 else 0
 
         away_total_raw_weight = away_raw_total_weight_24_25 * away_total_games_24_25 + away_raw_total_weight_25_26 * away_total_games_25_26
