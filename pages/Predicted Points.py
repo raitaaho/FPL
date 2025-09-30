@@ -2113,7 +2113,7 @@ if st.button("Fetch Latest Player and Team Statistics"):
         st.session_state.team_stats_dict = team_stats_dict
         st.success("Player and Team Statistics Fetched Successfully!")
 # Use start_gw instead of next_gw for calculation range
-gw_start = start_gw
+gw_start = start_gw + 1
 # Ensure gws_to_predict does not exceed available gameweeks
 gw_end = min(gw_start + gws_to_predict - 1, 38)
 
