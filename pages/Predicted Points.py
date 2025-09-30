@@ -2115,7 +2115,7 @@ if st.button("Fetch Latest Player and Team Statistics"):
 # Use start_gw instead of next_gw for calculation range
 gw_start = start_gw + 1
 # Ensure gws_to_predict does not exceed available gameweeks
-gw_end = min(gw_start + gws_to_predict - 1, 38)
+gw_end = min(gw_start + gws_to_predict - 2, 38)
 
 if st.button("Calculate Predicted Points"):
     with st.spinner("Calculating Predicted Points...", show_time=True):
