@@ -2091,10 +2091,15 @@ bps_button = st.toggle(
     "Include Estimated Bonus Points for predicted points calculation",
     value=False
 )
-    
-start_gw = st.number_input("Select starting gameweek for predictions", min_value=next_gw, max_value=38, value=next_gw, step=1)
 
-gws_to_predict = st.slider("Select amount of gameweeks to calculate predicted points for", min_value=1, max_value=(38 - start_gw) + 1, value=1)
+if "start_gw" not in st.session_state:
+    st.session.start_gw = next_gw
+if "gws_to_predict" not in st.session_state:
+    st.session.gws_to_predict = 1
+    
+st.session.start_gw = st.number_input("Select starting gameweek for predictions", min_value=next_gw, max_value=38, value=next_gw, step=1)
+
+st.session.gws_to_predict = st.slider("Select amount of gameweeks to calculate predicted points for", min_value=1, max_value=38 - st.session.start_gw + 1, value=1)
 
 if st.button("Fetch Latest Player and Team Statistics"):
     with st.spinner("Fetching latest Statistics...", show_time=True):
@@ -2108,7 +2113,7 @@ if st.button("Fetch Latest Player and Team Statistics"):
 if st.button("Calculate Predicted Points"):
     with st.spinner("Calculating Predicted Points...", show_time=True):
         st.session_state.df, st.session_state.player_stats_dict, st.session_state.team_stats_dict = initialize_predicted_points_df(
-            all_odds_dict, fixtures, start_gw, saves_button, bps_button, gws_to_predict
+            all_odds_dict, fixtures, st.session.start_gw, saves_button, bps_button, st.session.gws_to_predict
         )
 
 if "player_stats_dict" in st.session_state:
@@ -2159,7 +2164,7 @@ if "df" in st.session_state:
         st.subheader("Predicted Points for Filtered Players")
         # Filter df to only include rows from start_gw onwards if Gameweek column exists
         if "Gameweek" in df.columns:
-            df = df[df["Gameweek"] >= start_gw]
+            df = df[df["Gameweek"] >= st.session.start_gw]
         st.dataframe(df)
 
         # Download button
@@ -2167,7 +2172,7 @@ if "df" in st.session_state:
         st.download_button(
             label="Download Predicted Points as CSV",
             data=df_csv,
-            file_name=f"gw{start_gw}_filtered_predicted_points.csv",
+            file_name=f"gw{st.session.start_gw}_filtered_predicted_points.csv",
             mime="text/csv"
         )
         
