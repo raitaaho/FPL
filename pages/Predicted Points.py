@@ -2162,7 +2162,8 @@ if "df" in st.session_state:
         st.subheader("Predicted Points for Filtered Players")
         # Filter df to only include rows from start_gw onwards if Gameweek column exists
         if "Gameweek" in df.columns:
-            df = df[df["Gameweek"] >= st.session.start_gw]
+            selected_gws = [st.session_state.start_gw + i for i in range(st.session_state.gws_to_predict)]
+            df = df[df["Gameweek"].isin(selected_gws)]
         st.dataframe(df)
 
         # Download button
