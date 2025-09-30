@@ -2170,7 +2170,7 @@ if "df" in st.session_state:
         st.download_button(
             label="Download Predicted Points as CSV",
             data=df_csv,
-            file_name=f"gw{st.session.start_gw}_filtered_predicted_points.csv",
+            file_name=f"gw{st.session_state.start_gw}_filtered_predicted_points.csv",
             mime="text/csv"
         )
         
