@@ -2096,6 +2096,23 @@ bps_button = st.toggle(
     "Include Estimated Bonus Points for predicted points calculation",
     value=False
 )
+saves_button = st.toggle(
+    "Use Saves per Game in predicted points calculation for goalkeepers if odds for Goalkeeper Saves are not available",
+    value=True
+)
+bps_button = st.toggle(
+    "Include Estimated Bonus Points for predicted points calculation",
+    value=False
+)
+
+# User input for starting gameweek (move here)
+if "df" in st.session_state:
+    min_gw = int(st.session_state.df["Gameweek"].min()) if "Gameweek" in st.session_state.df.columns else 1
+    max_gw = int(st.session_state.df["Gameweek"].max()) if "Gameweek" in st.session_state.df.columns else 38
+else:
+    min_gw = 1
+    max_gw = 38
+start_gw = st.number_input("Select starting gameweek for predictions", min_value=min_gw, max_value=max_gw, value=min_gw, step=1)
 
 gws_to_predict = st.slider("Select amount of gameweeks to calculate predicted points for", min_value=1, max_value=10, value=1)
 
@@ -2137,10 +2154,7 @@ if "df" in st.session_state:
     chart_df = df
 
 
-    # User input for starting gameweek
-    min_gw = int(df["Gameweek"].min()) if "Gameweek" in df.columns else 1
-    max_gw = int(df["Gameweek"].max()) if "Gameweek" in df.columns else 38
-    start_gw = st.number_input("Select starting gameweek for predictions", min_value=min_gw, max_value=max_gw, value=min_gw, step=1)
+
 
     columns = df.columns.tolist()
     column_names = st.multiselect("Select Columns to Display", columns, default=columns)
