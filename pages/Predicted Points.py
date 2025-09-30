@@ -1815,7 +1815,7 @@ def calc_points(player_dict: dict, saves_button: bool) -> None:
 
 def initialize_predicted_points_df(all_odds_dict, fixtures, start_gw, saves_button: bool, bps_button: bool, gws: int):
 
-    gws_to_predict = [start_gw + i for i in range(1, gws)]
+    gws_to_predict = [start_gw + i for i in range(gws)]
     next_fixtures = [fixture for fixture in fixtures if (fixture['event'] in gws_to_predict) and (fixture['started'] == False)]
 
     data, teams_data, players_data, team_id_to_name, player_id_to_name = fetch_fpl_data()
@@ -2139,7 +2139,7 @@ if "team_stats_dict" in st.session_state:
     st.download_button(
         label="Download Team Statistics as JSON",
         data=team_stats_json,
-        file_name=f"gw{next_gw}_team_statistics.json",
+               file_name=f"gw{next_gw}_team_statistics.json",
         mime="text/json"
     )
 # Step 3: Show filters and calculation only if data is loaded
