@@ -2024,8 +2024,6 @@ st.write(
 fixtures = get_all_fixtures()
 next_gw = get_next_gw(fixtures)
 
-if "start_gw" not in st.session_state:
-    st.session_state.start_gw = None
 if "gws_to_predict" not in st.session_state:
     st.session_state.gws_to_predict = 1
 
