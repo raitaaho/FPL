@@ -2025,9 +2025,9 @@ fixtures = get_all_fixtures()
 next_gw = get_next_gw(fixtures)
 
 if "start_gw" not in st.session_state:
-    st.session.start_gw = None
+    st.session_stat.start_gw = None
 if "gws_to_predict" not in st.session_state:
-    st.session.gws_to_predict = 1
+    st.session_state.gws_to_predict = 1
 
 cur_dir = os.getcwd()
 fixtures_dir = os.path.join(cur_dir, "data", "fixture_data")
