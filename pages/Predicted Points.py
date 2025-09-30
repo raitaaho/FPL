@@ -2091,16 +2091,8 @@ bps_button = st.toggle(
     "Include Estimated Bonus Points for predicted points calculation",
     value=False
 )
-
-# User input for starting gameweek (move here)
-if "df" in st.session_state:
-    min_gw = int(st.session_state.df["Gameweek"].min()) if "Gameweek" in st.session_state.df.columns else next_gw
-    max_gw = int(st.session_state.df["Gameweek"].max()) if "Gameweek" in st.session_state.df.columns else 38
-else:
-    min_gw = next_gw
-    max_gw = 38
     
-start_gw = st.number_input("Select starting gameweek for predictions", min_value=next_gw, max_value=max_gw, value=next_gw, step=1)
+start_gw = st.number_input("Select starting gameweek for predictions", min_value=next_gw, max_value=38, value=next_gw, step=1)
 
 gws_to_predict = st.slider("Select amount of gameweeks to calculate predicted points for", min_value=1, max_value=10, value=1)
 
