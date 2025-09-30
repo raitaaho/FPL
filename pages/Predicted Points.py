@@ -2112,15 +2112,11 @@ if st.button("Fetch Latest Player and Team Statistics"):
         st.session_state.player_stats_dict = player_stats_dict
         st.session_state.team_stats_dict = team_stats_dict
         st.success("Player and Team Statistics Fetched Successfully!")
-# Use start_gw instead of next_gw for calculation range
-gw_start = start_gw + 1
-# Ensure gws_to_predict does not exceed available gameweeks
-gw_end = min(gw_start + gws_to_predict - 2, 38)
 
 if st.button("Calculate Predicted Points"):
     with st.spinner("Calculating Predicted Points...", show_time=True):
         st.session_state.df, st.session_state.player_stats_dict, st.session_state.team_stats_dict = initialize_predicted_points_df(
-            all_odds_dict, fixtures, gw_start, saves_button, bps_button, gws_to_predict
+            all_odds_dict, fixtures, start_gw, saves_button, bps_button, gws_to_predict
         )
 
 if "player_stats_dict" in st.session_state:
