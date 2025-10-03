@@ -2111,7 +2111,7 @@ if st.button("Fetch Latest Player and Team Statistics"):
 if st.button("Calculate Predicted Points"):
     with st.spinner("Calculating Predicted Points...", show_time=True):
         st.session_state.df, st.session_state.player_stats_dict, st.session_state.team_stats_dict = initialize_predicted_points_df(
-            all_odds_dict, fixtures, st.session_state.start_gw, saves_button, bps_button, st.session_state.gws_to_predict
+            all_odds_dict, fixtures, next_gw, saves_button, bps_button, st.session_state.gws_to_predict
         )
 
 if "player_stats_dict" in st.session_state:
