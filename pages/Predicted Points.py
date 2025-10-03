@@ -968,7 +968,7 @@ def construct_team_and_player_data(
         away_weight_25_26 = 3
         away_raw_total_weight_24_25 = away_total_weight_24_25 / away_total_games_24_25 if away_total_games_24_25 != 0 else 0
         away_raw_total_weight_25_26 = away_weight_25_26 / away_total_games_25_26 if away_total_games_25_26 != 0 else 0
-        away_raw_away_weight_24_25 = away_weight_away_24_25 / team_data[away_team_name]['24/25 Away Games Played'] if team_data[away_team_name]['24/25 Away Games Played'] != 0 else 0
+        away_raw_away_weight_24_25 = away_weight_away_24_25 / team_data[away_team_name]['24/25 Away Games Played'] if team_data[home_team_name]['24/25 Away Games Played'] != 0 else 0
         away_raw_away_weight_25_26 = away_weight_25_26 / team_data[away_team_name]['25/26 Away Games Played'] if team_data[away_team_name]['25/26 Away Games Played'] != 0 else 0
 
         away_total_raw_weight = away_raw_total_weight_24_25 * away_total_games_24_25 + away_raw_total_weight_25_26 * away_total_games_25_26
@@ -2085,6 +2085,10 @@ else:
             st.warning(f"Odds in uploaded file {uploaded_odds_name} are not for the next gameweek ({next_gw}).")
             all_odds_dict = {}
 
+# Remove user input for starting gameweek and use next_gw
+# start_gw = st.number_input(...)  # REMOVE THIS LINE
+start_gw = next_gw  # Always use next_gw as the starting gameweek
+
 st.header("Step 1: Select metrics to use in predicted points calculations")
 saves_button = st.toggle(
     "Use Saves per Game in predicted points calculation for goalkeepers if odds for Goalkeeper Saves are not available",
@@ -2095,9 +2099,7 @@ bps_button = st.toggle(
     value=False
 )
     
-st.session_state.start_gw = st.number_input("Select starting gameweek for predictions", min_value=next_gw, max_value=38, value=next_gw, step=1)
-
-st.session_state.gws_to_predict = st.slider("Select amount of gameweeks to calculate predicted points for", min_value=1, max_value=38 - st.session_state.start_gw + 1, value=1)
+st.session_state.gws_to_predict = st.slider("Select amount of gameweeks to calculate predicted points for", min_value=1, max_value=38 - start_gw + 1, value=1)
 
 if st.button("Fetch Latest Player and Team Statistics"):
     with st.spinner("Fetching latest Statistics...", show_time=True):
@@ -2111,7 +2113,7 @@ if st.button("Fetch Latest Player and Team Statistics"):
 if st.button("Calculate Predicted Points"):
     with st.spinner("Calculating Predicted Points...", show_time=True):
         st.session_state.df, st.session_state.player_stats_dict, st.session_state.team_stats_dict = initialize_predicted_points_df(
-            all_odds_dict, fixtures, next_gw, saves_button, bps_button, st.session_state.gws_to_predict
+            all_odds_dict, fixtures, start_gw, saves_button, bps_button, st.session_state.gws_to_predict
         )
 
 if "player_stats_dict" in st.session_state:
@@ -2161,9 +2163,11 @@ if "df" in st.session_state:
     if st.button("Show Predicted Points"):
         st.subheader("Predicted Points for Filtered Players")
         # Filter df to only include rows from start_gw onwards if Gameweek column exists
+        def get_selected_gws():
+            return [next_gw + i for i in range(st.session_state.gws_to_predict)]
+
         if "Gameweek" in df.columns:
-            selected_gws = [st.session_state.start_gw + i for i in range(st.session_state.gws_to_predict)]
-            df = df[df["Gameweek"].isin(selected_gws)]
+            df = df[df["Gameweek"].isin(get_selected_gws())]
         st.dataframe(df)
 
         # Download button
