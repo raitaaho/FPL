@@ -2024,9 +2024,6 @@ st.write(
 fixtures = get_all_fixtures()
 next_gw = get_next_gw(fixtures)
 
-if "gws_to_predict" not in st.session_state:
-    st.session_state.gws_to_predict = 1
-
 cur_dir = os.getcwd()
 fixtures_dir = os.path.join(cur_dir, "data", "fixture_data")
 odds_filename = os.path.join(fixtures_dir, f"gw{next_gw}_all_odds_")
@@ -2085,10 +2082,6 @@ else:
             st.warning(f"Odds in uploaded file {uploaded_odds_name} are not for the next gameweek ({next_gw}).")
             all_odds_dict = {}
 
-# Remove user input for starting gameweek and use next_gw
-# start_gw = st.number_input(...)  # REMOVE THIS LINE
-start_gw = next_gw  # Always use next_gw as the starting gameweek
-
 st.header("Step 1: Select metrics to use in predicted points calculations")
 saves_button = st.toggle(
     "Use Saves per Game in predicted points calculation for goalkeepers if odds for Goalkeeper Saves are not available",
@@ -2099,7 +2092,7 @@ bps_button = st.toggle(
     value=False
 )
     
-st.session_state.gws_to_predict = st.slider("Select amount of gameweeks to calculate predicted points for", min_value=1, max_value=38 - start_gw + 1, value=1)
+st.session_state.gws_to_predict = st.slider("Select amount of gameweeks to calculate predicted points for", min_value=1, max_value=38 - next_gw + 1, value=1)
 
 if st.button("Fetch Latest Player and Team Statistics"):
     with st.spinner("Fetching latest Statistics...", show_time=True):
@@ -2113,7 +2106,7 @@ if st.button("Fetch Latest Player and Team Statistics"):
 if st.button("Calculate Predicted Points"):
     with st.spinner("Calculating Predicted Points...", show_time=True):
         st.session_state.df, st.session_state.player_stats_dict, st.session_state.team_stats_dict = initialize_predicted_points_df(
-            all_odds_dict, fixtures, start_gw, saves_button, bps_button, st.session_state.gws_to_predict
+            all_odds_dict, fixtures, next_gw, saves_button, bps_button, st.session_state.gws_to_predict
         )
 
 if "player_stats_dict" in st.session_state:
@@ -2162,12 +2155,6 @@ if "df" in st.session_state:
     # Final calculation and display
     if st.button("Show Predicted Points"):
         st.subheader("Predicted Points for Filtered Players")
-        # Filter df to only include rows from start_gw onwards if Gameweek column exists
-        def get_selected_gws():
-            return [next_gw + i for i in range(st.session_state.gws_to_predict)]
-
-        if "Gameweek" in df.columns:
-            df = df[df["Gameweek"].isin(get_selected_gws())]
         st.dataframe(df)
 
         # Download button
