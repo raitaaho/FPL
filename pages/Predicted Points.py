@@ -2100,7 +2100,7 @@ bps_button = st.toggle(
     value=False
 )
     
-st.session_state.gws_to_predict = st.slider("Select amount of gameweeks to calculate predicted points for", min_value=1, max_value=38 - next_gw + 1, value=1)
+gws_to_predict = st.slider("Select amount of gameweeks to calculate predicted points for", min_value=1, max_value=38 - next_gw + 1, value=1)
 
 if st.button("Fetch Latest Player and Team Statistics"):
     with st.spinner("Fetching latest Statistics...", show_time=True):
@@ -2114,7 +2114,7 @@ if st.button("Fetch Latest Player and Team Statistics"):
 if st.button("Calculate Predicted Points"):
     with st.spinner("Calculating Predicted Points...", show_time=True):
         st.session_state.df, st.session_state.player_stats_dict, st.session_state.team_stats_dict = initialize_predicted_points_df(
-            all_odds_dict, fixtures, next_gw, saves_button, bps_button, st.session_state.gws_to_predict
+            all_odds_dict, fixtures, next_gw, saves_button, bps_button, gws_to_predict
         )
 
 if "player_stats_dict" in st.session_state:
