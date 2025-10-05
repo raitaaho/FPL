@@ -1816,9 +1816,8 @@ def calc_points(player_dict: dict, saves_button: bool) -> None:
             st.write(f"[DEBUG] Error calculating points for player {player}: {e}")
 
 def initialize_predicted_points_df(all_odds_dict, fixtures, start_gw, saves_button: bool, bps_button: bool, gws: int):
-    import streamlit as st
-    gws_to_predict = [start_gw + i for i in range(gws)]
-    next_fixtures = [fixture for fixture in fixtures if (fixture['event'] in gws_to_predict) and (fixture['started'] == False)]
+    extra_gws_to_predict = [start_gw + i for i in range(1, gws)]
+    extra_fixtures = [fixture for fixture in fixtures if (fixture['event'] in extra_gws_to_predict) and (fixture['started'] == False)]
 
     data, teams_data, players_data, team_id_to_name, player_id_to_name = fetch_fpl_data()
     element_types = position_mapping(data)
@@ -1826,7 +1825,7 @@ def initialize_predicted_points_df(all_odds_dict, fixtures, start_gw, saves_butt
     team_stats_dict, player_stats_dict = construct_team_and_player_data(data, team_id_to_name, player_id_to_name, fixtures)
     player_dict = player_dict_constructor(players_data, team_stats_dict, player_stats_dict, element_types, team_id_to_name)
 
-    for fixture in next_fixtures:
+    for fixture in extra_fixtures:
         home_team_id = fixture['team_h']
         away_team_id = fixture['team_a']
         home_team_name = team_id_to_name.get(home_team_id, "Unknown Team")
@@ -1839,11 +1838,6 @@ def initialize_predicted_points_df(all_odds_dict, fixtures, start_gw, saves_butt
             away_team = away_team_name
         match_title = home_team + " v " + away_team
 
-        if match_title not in all_odds_dict:
-            st.write(f"[DEBUG] Odds not found for match: {match_title}")
-        else:
-            st.write(f"[DEBUG] Odds found for match: {match_title}")
-
         all_odds_dict[match_title] = {}
         all_odds_dict[match_title]['home_team'] = home_team
         all_odds_dict[match_title]['away_team'] = away_team
@@ -1854,11 +1848,10 @@ def initialize_predicted_points_df(all_odds_dict, fixtures, start_gw, saves_butt
         home_team = TEAM_NAMES_ODDSCHECKER.get(home_team_name, home_team_name)
         away_team = TEAM_NAMES_ODDSCHECKER.get(away_team_name, away_team_name)
         for player in player_dict:
-            try:
-                # ...existing code for player odds usage...
-                pass
-            except Exception as e:
-                st.write(f"[DEBUG] Error calculating points for player {player} in match {match}: {e}")
+            if player_dict[player].get('Team', ['Unknown'])[0] == home_team:
+                player_dict[player]['Opponent'].append(away_team)
+            if player_dict[player].get('Team', ['Unknown'])[0] == away_team:
+                player_dict[player]['Opponent'].append(home_team)
 
     for match, details in all_odds_dict.items():
         home_team_name = details.get('home_team', 'Unknown')
