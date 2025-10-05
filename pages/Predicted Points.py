@@ -1018,7 +1018,7 @@ def construct_team_and_player_data(
         away_goals_against_string = f"25/26 Goals Against {home_pos_range}"
         away_goals_conceded_against_string = f"25/26 Goals Conceded Against {home_pos_range}"
         away_assists_against_string = f"25/26 Assists Against {home_pos_range}"
-        
+
         team_data[away_team_name][away_games_against_string] += 1
         team_data[away_team_name][away_goals_against_string] += away_goals
         team_data[away_team_name][away_goals_conceded_against_string] += home_goals
@@ -1525,8 +1525,12 @@ def calc_avg_bps(
             opponents = odds.get("Opponent", [])
             number_of_games = len(odds.get("Opponent", [])) if team != 'Unknown' else 1
             goals_average_bookmaker = odds.get("xG by Bookmaker Odds", [])
-            ass_average_bookmaker = odds.get("xA by Bookmaker Odds", [])        
+            goals_average_historical = odds.get("xG by Historical Data", [])
+            ass_average_bookmaker = odds.get("xA by Bookmaker Odds", [])
+            ass_average_historical = odds.get("xA by Historical Data", [])       
             cs_odds_bookmaker = odds.get("Clean Sheet Probability by Bookmaker Odds", [])
+            cs_odds_statsbetting = odds.get("Clean Sheet Probability by Stats Betting Market", [])
+            cs_odds_historical = odds.get("Clean Sheet Probability by Historical Data", [])
             position = odds.get("Position", ["Unknown"])[0]
             saves_average_bookmaker = odds.get("xSaves by Bookmaker Odds", [])
             saves_average_historical = odds.get("Saves by Historical Data", [])
@@ -1534,10 +1538,6 @@ def calc_avg_bps(
 
             goals_conceded_team_bookmaker = odds.get('Goals Conceded by Team on Average', [])
             goals_conceded_team_historical = odds.get('Team xGC by Historical Data', [])
-
-            goals_average_historical = odds.get("xG by Historical Data", [])
-            ass_average_historical = odds.get("xA by Historical Data", []) 
-            cs_odds_historical = odds.get("Clean Sheet Probability by Historical Data", [])
 
             minutes_per_game = odds.get("Minutes per Game", [0])[0]
 
@@ -1550,10 +1550,10 @@ def calc_avg_bps(
                 print(f"Calculating BPS for {player} skipped due to data entries being higher than number of games the player is playing")
                 continue
 
-            for g1, g2, a1, a2, cs1, cs2, ga1, ga2, s1, s2, s3, opp in zip_longest(goals_average_bookmaker, goals_average_historical, ass_average_bookmaker, ass_average_historical, cs_odds_bookmaker, cs_odds_historical, goals_conceded_team_bookmaker, goals_conceded_team_historical, saves_average_bookmaker, saves_average_historical, team_saves_average, opponents, fillvalue=-1):
+            for g1, g2, a1, a2, cs1, cs2, cs3, ga1, ga2, s1, s2, s3, opp in zip_longest(goals_average_bookmaker, goals_average_historical, ass_average_bookmaker, ass_average_historical, cs_odds_bookmaker, cs_odds_statsbetting, cs_odds_historical, goals_conceded_team_bookmaker, goals_conceded_team_historical, saves_average_bookmaker, saves_average_historical, team_saves_average, opponents, fillvalue=-1):
                 xg = g1 if g1 != -1 else max(g2, 0)
                 xa = a1 if a1 != -1 else max(a2, 0)
-                xcs = cs1 if cs1 != -1 else max(cs2, 0)
+                xcs = cs1 if cs1 != -1 else cs2 if cs1 != -1 else max(cs3, 0)
                 xgc = ga1 if ga1 != -1 else max(ga2, 0)
 
                 if saves_button:
@@ -1723,6 +1723,7 @@ def calc_points(player_dict: dict, saves_button: bool) -> None:
         try:
             # Get probabilities
             team = odds.get("Team", ["Unknown"])[0]
+    
             opponents = odds.get("Opponent", [])
             number_of_games = len(odds.get("Opponent", [])) if team != 'Unknown' else 1
             mins_per_game = odds.get("Minutes per Game", [90])[0]
@@ -1812,9 +1813,10 @@ def calc_points(player_dict: dict, saves_button: bool) -> None:
             
         except Exception as e:
             print(f"Could not calculate points for {player}: {e}")
+            st.write(f"[DEBUG] Error calculating points for player {player}: {e}")
 
 def initialize_predicted_points_df(all_odds_dict, fixtures, start_gw, saves_button: bool, bps_button: bool, gws: int):
-
+    import streamlit as st
     gws_to_predict = [start_gw + i for i in range(gws)]
     next_fixtures = [fixture for fixture in fixtures if (fixture['event'] in gws_to_predict) and (fixture['started'] == False)]
 
@@ -1831,11 +1833,16 @@ def initialize_predicted_points_df(all_odds_dict, fixtures, start_gw, saves_butt
         away_team_name = team_id_to_name.get(away_team_id, "Unknown Team")
         home_team = TEAM_NAMES_ODDSCHECKER.get(home_team_name, home_team_name)
         away_team = TEAM_NAMES_ODDSCHECKER.get(away_team_name, away_team_name)
-        if home_team == None:
+        if home_team is None:
             home_team = home_team_name
-        if away_team == None:
+        if away_team is None:
             away_team = away_team_name
         match_title = home_team + " v " + away_team
+
+        if match_title not in all_odds_dict:
+            st.write(f"[DEBUG] Odds not found for match: {match_title}")
+        else:
+            st.write(f"[DEBUG] Odds found for match: {match_title}")
 
         all_odds_dict[match_title] = {}
         all_odds_dict[match_title]['home_team'] = home_team
@@ -1847,10 +1854,11 @@ def initialize_predicted_points_df(all_odds_dict, fixtures, start_gw, saves_butt
         home_team = TEAM_NAMES_ODDSCHECKER.get(home_team_name, home_team_name)
         away_team = TEAM_NAMES_ODDSCHECKER.get(away_team_name, away_team_name)
         for player in player_dict:
-            if player_dict[player].get('Team', ['Unknown'])[0] == home_team:
-                player_dict[player]['Opponent'].append(away_team)
-            if player_dict[player].get('Team', ['Unknown'])[0] == away_team:
-                player_dict[player]['Opponent'].append(home_team)
+            try:
+                # ...existing code for player odds usage...
+                pass
+            except Exception as e:
+                st.write(f"[DEBUG] Error calculating points for player {player} in match {match}: {e}")
 
     for match, details in all_odds_dict.items():
         home_team_name = details.get('home_team', 'Unknown')
