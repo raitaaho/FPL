@@ -1027,6 +1027,9 @@ def construct_team_and_player_data(
         team_data[home_team_name][home_goals_against_string] += home_goals
         team_data[home_team_name][home_goals_conceded_against_string] += away_goals
 
+        home_players_appeared = []
+        away_players_appeared = []
+
         # Add values to both dictionaries by fixture
         for stat in fixture['stats']:
             if stat['identifier'] == 'bps':
@@ -1035,15 +1038,27 @@ def construct_team_and_player_data(
                         continue
                     for player in player_data:
                         if player_data[player]["Team"] == away_team_name and player == " ".join(prepare_name(player_id_to_name[pair['element']])):
-                            player_data[player]['25/26 Away Games Played for Current Team'] += 1
-                            player_data[player][away_games_against_string] += 1
+                            away_players_appeared.append(player)
                 for pair in stat['h']:
                     if player_data.get(" ".join(prepare_name(player_id_to_name[pair['element']]))) == None:
                         continue
                     for player in player_data:
                         if player_data[player]["Team"] == home_team_name and player == " ".join(prepare_name(player_id_to_name[pair['element']])):
-                            player_data[player]['25/26 Home Games Played for Current Team'] += 1
-                            player_data[player][home_games_against_string] += 1
+                            home_players_appeared.append(player)
+
+            if stat['identifier'] == 'defensive_contribution':
+                for pair in stat['a']:
+                    if player_data.get(" ".join(prepare_name(player_id_to_name[pair['element']]))) == None:
+                        continue
+                    for player in player_data:
+                        if player_data[player]["Team"] == away_team_name and player == " ".join(prepare_name(player_id_to_name[pair['element']])):
+                            away_players_appeared.append(player)
+                for pair in stat['h']:
+                    if player_data.get(" ".join(prepare_name(player_id_to_name[pair['element']]))) == None:
+                        continue
+                    for player in player_data:
+                        if player_data[player]["Team"] == home_team_name and player == " ".join(prepare_name(player_id_to_name[pair['element']])):
+                            home_players_appeared.append(player)
                             
             if stat['identifier'] == 'goals_scored':
                 for pair in stat['a']:
@@ -1092,6 +1107,13 @@ def construct_team_and_player_data(
                     for player in player_data:
                         if player_data[player]["Team"] == home_team_name and player == " ".join(prepare_name(player_id_to_name[pair['element']])):
                             player_data[player]['25/26 Home Goalkeeper Saves for Current Team'] += int(pair['value'])
+
+        for player in list(set(away_players_appeared)):
+            player_data[player]['25/26 Away Games Played for Current Team'] += 1
+            player_data[player][away_games_against_string] += 1
+        for player in list(set(home_players_appeared)):
+            player_data[player]['25/26 Home Games Played for Current Team'] += 1
+            player_data[player][home_games_against_string] += 1
 
     for team in team_data:
         if team_data[team]['24/25 Home Games Played'] == 0 and team_data[team]['24/25 Away Games Played'] == 0:
@@ -1157,12 +1179,12 @@ def construct_team_and_player_data(
         assists_for_team_25_26 = player_data[player]['25/26 Home Assists for Current Team'] + player_data[player]['25/26 Away Assists for Current Team']
 
         if games_for_team_24_25 == 0:
-            share_of_team_goals = (goals_for_team_25_26 * (1 + ((team_games_25_26 - games_for_team_25_26) / team_games_25_26))) / team_goals_25_26 if team_games_25_26 != 0 and team_goals_25_26 != 0 else 0
-            share_of_team_assists = (assists_for_team_25_26 * (1 + ((team_games_25_26 - games_for_team_25_26) / team_games_25_26))) / team_assists_25_26 if team_games_25_26 != 0 and team_assists_25_26 != 0 else 0
+            share_of_team_goals = goals_for_team_25_26 / team_goals_25_26 if team_games_25_26 != 0 and team_goals_25_26 != 0 else 0
+            share_of_team_assists = assists_for_team_25_26 / team_assists_25_26 if team_games_25_26 != 0 and team_assists_25_26 != 0 else 0
         else:
             share_of_team_goals = ((goals_for_team_24_25 + goals_for_team_25_26) * (1 + (((38 + team_games_25_26) - (games_for_team_24_25 + games_for_team_25_26)) / (38 + team_games_25_26)))) / (team_goals_24_25 + team_goals_25_26) if team_games_25_26 != 0 and team_goals_24_25 + team_goals_25_26 != 0 else 0
             share_of_team_assists = ((assists_for_team_24_25 + assists_for_team_25_26) * (1 + (((38 + team_games_25_26) - (games_for_team_24_25 + games_for_team_25_26)) / (38 + team_games_25_26)))) / (team_assists_24_25 + team_assists_25_26) if team_games_25_26 != 0 and team_assists_24_25 + team_assists_25_26 != 0 else 0
-
+            
         player_data[player]['Share of Goals by Current Team'] = float(share_of_team_goals)
         player_data[player]['Share of Assists by Current Team'] = float(share_of_team_assists)
 
@@ -1475,7 +1497,8 @@ def calc_specific_probs(
                 player_dict[player]["xG by Bookmaker Odds"].append(expected_goals)
 
             for t_gsa, opp in zip_longest(total_goals_historical, opponents, fillvalue=0):
-                ave_ass = ((ass_share * t_gsa) + 2 * xa_per_game) / 3 if ass_share != 0 else xa_per_game
+                # On average, the assists per goals scored ratio is rougly 0.70 in the Premier League 
+                ave_ass = ((ass_share * 0.70 * t_gsa) + 3 * xa_per_game) / 4 if ass_share != 0 else xa_per_game
                 ave_g = ((goal_share * t_gsa) + 2 * xg_per_game) / 3 if goal_share != 0 else xg_per_game
                 player_dict[player]["xA by Historical Data"].append(ave_ass)
                 player_dict[player]["xG by Historical Data"].append(ave_g)
@@ -2094,6 +2117,7 @@ bps_button = st.toggle(
 )
     
 gws_to_predict = st.slider("Select amount of gameweeks to calculate predicted points for", min_value=1, max_value=38 - next_gw + 1, value=1)
+current_time = datetime.now()
 
 if st.button("Fetch Latest Player and Team Statistics"):
     with st.spinner("Fetching latest Statistics...", show_time=True):
@@ -2116,7 +2140,7 @@ if "player_stats_dict" in st.session_state:
     st.download_button(
         label="Download Player Statistics as JSON",
         data=player_stats_json,
-        file_name=f"gw{next_gw}_player_statistics.json",
+        file_name=f"gw{next_gw}_{current_time.strftime('%m')}{current_time.strftime('%d')}_{current_time.strftime('%H')}{current_time.strftime('%M')}_player_statistics.json",
         mime="text/json"
     )
 
@@ -2126,7 +2150,7 @@ if "team_stats_dict" in st.session_state:
     st.download_button(
         label="Download Team Statistics as JSON",
         data=team_stats_json,
-               file_name=f"gw{next_gw}_team_statistics.json",
+               file_name=f"gw{next_gw}_{current_time.strftime('%m')}{current_time.strftime('%d')}_{current_time.strftime('%H')}{current_time.strftime('%M')}_team_statistics.json",
         mime="text/json"
     )
 # Step 3: Show filters and calculation only if data is loaded
