@@ -1179,8 +1179,8 @@ def construct_team_and_player_data(
         assists_for_team_25_26 = player_data[player]['25/26 Home Assists for Current Team'] + player_data[player]['25/26 Away Assists for Current Team']
 
         if games_for_team_24_25 == 0:
-            share_of_team_goals = goals_for_team_25_26 / team_goals_25_26 if team_games_25_26 != 0 and team_goals_25_26 != 0 else 0
-            share_of_team_assists = assists_for_team_25_26 / team_assists_25_26 if team_games_25_26 != 0 and team_assists_25_26 != 0 else 0
+            share_of_team_goals = (goals_for_team_25_26 * (1 + ((team_games_25_26 - games_for_team_25_26) / team_games_25_26))) / team_goals_25_26 if team_games_25_26 != 0 and team_goals_25_26 != 0 else 0
+            share_of_team_assists = (assists_for_team_25_26 * (1 + ((team_games_25_26 - games_for_team_25_26) / team_games_25_26))) / team_assists_25_26 if team_games_25_26 != 0 and team_assists_25_26 != 0 else 0
         else:
             share_of_team_goals = ((goals_for_team_24_25 + goals_for_team_25_26) * (1 + (((38 + team_games_25_26) - (games_for_team_24_25 + games_for_team_25_26)) / (38 + team_games_25_26)))) / (team_goals_24_25 + team_goals_25_26) if team_games_25_26 != 0 and team_goals_24_25 + team_goals_25_26 != 0 else 0
             share_of_team_assists = ((assists_for_team_24_25 + assists_for_team_25_26) * (1 + (((38 + team_games_25_26) - (games_for_team_24_25 + games_for_team_25_26)) / (38 + team_games_25_26)))) / (team_assists_24_25 + team_assists_25_26) if team_games_25_26 != 0 and team_assists_24_25 + team_assists_25_26 != 0 else 0
