@@ -228,13 +228,6 @@ def player_dict_constructor(
         nickname1, nickname2 = prepare_nickname(nickname)
         team = TEAM_NAMES_ODDSCHECKER.get(team_id_to_name[player["team"]], team_id_to_name[player["team"]])
 
-        goals_team_24_25 = team_stats_dict[team]['24/25 Home Goals'] + team_stats_dict[team]['24/25 Away Goals']
-        assists_team_24_25 = team_stats_dict[team]['24/25 Home Assists'] + team_stats_dict[team]['24/25 Away Assists']
-
-        games_played_team = team_stats_dict[team]['Home Games Played'] + team_stats_dict[team]['Away Games Played']
-        goals_team = team_stats_dict[team]['Home Goals'] + team_stats_dict[team]['Away Goals']
-        assists_team = team_stats_dict[team]['Home Assists'] + team_stats_dict[team]['Away Assists']
-
         xg_25_26 = float(player["expected_goals"])  
         xa_25_26 = float(player["expected_assists"])
         saves_25_26 = float(player.get("saves", 0))
@@ -874,16 +867,6 @@ def construct_team_and_player_data(
         else:
             team_data[home_team_name]['Weighted PPG'] += (home_total_scale * home_raw_total_weight_24_25) / home_total_games
             team_data[away_team_name]['Weighted PPG'] += (away_total_scale * away_raw_total_weight_24_25) / away_total_games
-
-        home_games_against_string = f"Games Against {away_pos_range}"
-        home_goals_against_string = f"Weighted Goals Against {away_pos_range}"
-        home_goals_conceded_against_string = f"Weighted Goals Conceded Against {away_pos_range}"
-        home_assists_against_string = f"Weighted Assists Against {away_pos_range}"
-
-        away_games_against_string = f"Games Against {home_pos_range}"
-        away_goals_against_string = f"Weighted Goals Against {home_pos_range}"
-        away_goals_conceded_against_string = f"Weighted Goals Conceded Against {home_pos_range}"
-        away_assists_against_string = f"Weighted Assists Against {home_pos_range}"
 
     for fixture in fixtures:
         home_team_id = int(fixture['team_h'])
