@@ -956,7 +956,7 @@ def construct_team_and_player_data(
         games_24_25 = details.get('24/25 Home Games Played', 0) + details.get('24/25 Away Games Played', 0)
         if games_24_25 == 0:
             ppg = details.get('Weighted PPG', 0)
-            teams_data[team]['Weighted PPG'] = (ppg + 4 * 0.60) / 5
+            team_data[team]['Weighted PPG'] = (ppg + 4 * 0.60) / 5
 
     sorted_teams = sorted(team_data.items(), key=lambda x: x[1]['Weighted PPG'], reverse=True)
     for position, (team_name, _) in enumerate(sorted_teams, start=1):
