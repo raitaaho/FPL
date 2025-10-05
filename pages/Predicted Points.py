@@ -939,7 +939,7 @@ def construct_team_and_player_data(
         games_24_25 = details.get('24/25 Home Games Played', 0) + details.get('24/25 Away Games Played', 0)
         if games_24_25 == 0:
             ppg = details.get('Weighted PPG', 0)
-            team_data[team]['Weighted PPG'] = (ppg + 3 * 0.60) / 4
+            team_data[team]['Weighted PPG'] = (ppg + 2 * 0.60) / 3
 
     sorted_teams = sorted(team_data.items(), key=lambda x: x[1]['Weighted PPG'], reverse=True)
     for position, (team_name, _) in enumerate(sorted_teams, start=1):
@@ -1642,10 +1642,10 @@ def calc_team_xgs(
     home_scored_against_string = f"Goals per Game Against {away_pos_range}"
     away_scored_against_string = f"Goals per Game Against {home_pos_range}"
     
-    home_goals = (2 * home_weighted_goals_p90 + team_stats_dict[home_team][home_scored_against_string]) / 3 if home_goals_p90_24_25 != 0 else (3 * promoted_g_h_average + home_weighted_goals_p90) / 4
-    away_goals = (2 * away_weighted_goals_p90 + team_stats_dict[away_team][away_scored_against_string]) / 3 if away_goals_p90_24_25 != 0 else (3 * promoted_g_a_average + away_weighted_goals_p90) / 4
-    home_goals_conceded = (2 * home_weighted_goals_conceded_p90 + team_stats_dict[home_team][home_conceded_against_string]) / 3 if home_goals_conceded_p90_24_25 != 0 else (3 * promoted_gc_h_average + home_weighted_goals_conceded_p90) / 4
-    away_goals_conceded = (2 * away_weighted_goals_conceded_p90 + team_stats_dict[away_team][away_conceded_against_string]) / 3 if away_goals_conceded_p90_24_25 != 0 else (3 * promoted_gc_a_average + away_weighted_goals_conceded_p90) / 4
+    home_goals = (2 * home_weighted_goals_p90 + team_stats_dict[home_team][home_scored_against_string]) / 3 if home_goals_p90_24_25 != 0 else (2 * promoted_g_h_average + home_weighted_goals_p90) / 3
+    away_goals = (2 * away_weighted_goals_p90 + team_stats_dict[away_team][away_scored_against_string]) / 3 if away_goals_p90_24_25 != 0 else (2 * promoted_g_a_average + away_weighted_goals_p90) / 3
+    home_goals_conceded = (2 * home_weighted_goals_conceded_p90 + team_stats_dict[home_team][home_conceded_against_string]) / 3 if home_goals_conceded_p90_24_25 != 0 else (2 * promoted_gc_h_average + home_weighted_goals_conceded_p90) / 3
+    away_goals_conceded = (2 * away_weighted_goals_conceded_p90 + team_stats_dict[away_team][away_conceded_against_string]) / 3 if away_goals_conceded_p90_24_25 != 0 else (2 * promoted_gc_a_average + away_weighted_goals_conceded_p90) / 3
 
     home_xg = (home_goals + away_goals_conceded) / 2 
     away_xg = (away_goals + home_goals_conceded) / 2
@@ -1692,7 +1692,7 @@ def calc_points(player_dict: dict, saves_button: bool) -> None:
             opponents = odds.get("Opponent", [])
             number_of_games = len(odds.get("Opponent", [])) if team != 'Unknown' else 1
             mins_per_game = odds.get("Minutes per Game", [90])[0]
-            mins_played_points = 1 + min(mins_per_game/90, 1) if mins_per_game >= 60 else 1 if mins_per_game > 0 else 0
+            mins_played_points = 1 + min(mins_per_game/70, 1) if mins_per_game >= 60 else 1 if mins_per_game > 0 else 0
             goals_average_bookmaker = odds.get("xG by Bookmaker Odds", [])
             goals_average_historical = odds.get("xG by Historical Data", [])
             goals_average = []
