@@ -550,7 +550,6 @@ def construct_team_and_player_data(
                 continue
             else:
                 minutes_24_25 = int(season.get('minutes', 0))
-                games_24_25 = math.floor(minutes_24_25 / 90)
                 def_contributions_24_25 = int(season.get('defensive_contribution', 0))
                 xg_24_25 = float(season.get('expected_goals', 0))
                 xa_24_25 = float(season.get('expected_assists', 0))
@@ -563,7 +562,7 @@ def construct_team_and_player_data(
         player_data[name]['24/25 Defensive Contributions'] = def_contributions_24_25
         player_data[name]['24/25 xG'] = xg_24_25
         player_data[name]['24/25 xA'] = xa_24_25
-        player_data[name]['24/25 Games Played'] = games_24_25
+        player_data[name]['24/25 Minutes Played'] = minutes_24_25
         player_data[name]['24/25 Goals'] = goals_24_25
         player_data[name]['24/25 Assists'] = assists_24_25
         player_data[name]['24/25 Saves'] = saves_24_25
@@ -1113,6 +1112,9 @@ def construct_team_and_player_data(
 
         games_for_team_24_25 = player_data[player]['24/25 Home Games Played for Current Team'] + player_data[player]['24/25 Away Games Played for Current Team'] 
         games_for_team_25_26 = player_data[player]['25/26 Home Games Played for Current Team'] + player_data[player]['25/26 Away Games Played for Current Team']
+
+        full_90s_played_24_25 = math.floor(player_data[player].get('24/25 Minutes Played', 0) / 90)
+        player_data[player]['24/25 Games Played'] = max(full_90s_played_24_25, games_for_team_24_25)
 
         goals_for_team_24_25 = player_data[player]['24/25 Home Goals for Current Team'] + player_data[player]['24/25 Away Goals for Current Team']
         goals_for_team_25_26 = player_data[player]['25/26 Home Goals for Current Team'] + player_data[player]['25/26 Away Goals for Current Team']
