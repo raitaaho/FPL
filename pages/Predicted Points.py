@@ -283,18 +283,16 @@ def get_pos_range(position: int) -> str:
     Returns:
         str: Position range as string.
     """
-    if position <= 4:
-        return '1-4'
-    elif position <= 8:
-        return '5-8'
-    elif position <= 12:
-        return '9-12'   
-    elif position <= 16:
-        return '13-16'
+    if position <= 5:
+        return '1-5'
+    elif position <= 10:
+        return '6-10'
+    elif position <= 15:
+        return '11-15'   
     elif position <= 20:
-        return '17-20'
+        return '16-20'
     else:
-        return '17-20'
+        return '16-20'
     
 def get_team_template(pos_24_25: int, pos: int) -> dict:
     """
@@ -327,21 +325,18 @@ def get_team_template(pos_24_25: int, pos: int) -> dict:
         '24/25 Away Games Played': 0,
         '24/25 Home Goalkeeper Saves': 0,
         '24/25 Away Goalkeeper Saves': 0,
-        '24/25 Games Against 1-4': 0,
-        '24/25 Goals Against 1-4': 0,
-        '24/25 Goals Conceded Against 1-4': 0,
-        '24/25 Games Against 5-8': 0,
-        '24/25 Goals Against 5-8': 0,
-        '24/25 Goals Conceded Against 5-8': 0,
-        '24/25 Games Against 9-12': 0,
-        '24/25 Goals Against 9-12': 0,
-        '24/25 Goals Conceded Against 9-12': 0,
-        '24/25 Games Against 13-16': 0,
-        '24/25 Goals Against 13-16': 0,
-        '24/25 Goals Conceded Against 13-16': 0,
-        '24/25 Games Against 17-20': 0,
-        '24/25 Goals Against 17-20': 0,
-        '24/25 Goals Conceded Against 17-20': 0,
+        '24/25 Games Against 1-5': 0,
+        '24/25 Goals Against 1-5': 0,
+        '24/25 Goals Conceded Against 1-5': 0,
+        '24/25 Games Against 6-10': 0,
+        '24/25 Goals Against 6-10': 0,
+        '24/25 Goals Conceded Against 6-10': 0,
+        '24/25 Games Against 11-15': 0,
+        '24/25 Goals Against 11-15': 0,
+        '24/25 Goals Conceded Against 11-15': 0,
+        '24/25 Games Against 16-20': 0,
+        '24/25 Goals Against 16-20': 0,
+        '24/25 Goals Conceded Against 16-20': 0,
         '25/26 Home Goals': 0,
         '25/26 Away Goals': 0,
         '25/26 Home Assists': 0,
@@ -352,21 +347,18 @@ def get_team_template(pos_24_25: int, pos: int) -> dict:
         '25/26 Away Games Played': 0,
         '25/26 Home Goalkeeper Saves': 0,
         '25/26 Away Goalkeeper Saves': 0,
-        '25/26 Games Against 1-4': 0,
-        '25/26 Goals Against 1-4': 0,
-        '25/26 Goals Conceded Against 1-4': 0,
-        '25/26 Games Against 5-8': 0,
-        '25/26 Goals Against 5-8': 0,
-        '25/26 Goals Conceded Against 5-8': 0,
-        '25/26 Games Against 9-12': 0,
-        '25/26 Goals Against 9-12': 0,
-        '25/26 Goals Conceded Against 9-12': 0,
-        '25/26 Games Against 13-16': 0,
-        '25/26 Goals Against 13-16': 0,
-        '25/26 Goals Conceded Against 13-16': 0,
-        '25/26 Games Against 17-20': 0,
-        '25/26 Goals Against 17-20': 0,
-        '25/26 Goals Conceded Against 17-20': 0
+        '25/26 Games Against 1-5': 0,
+        '25/26 Goals Against 1-5': 0,
+        '25/26 Goals Conceded Against 1-5': 0,
+        '25/26 Games Against 6-10': 0,
+        '25/26 Goals Against 6-10': 0,
+        '25/26 Goals Conceded Against 6-10': 0,
+        '25/26 Games Against 11-15': 0,
+        '25/26 Goals Against 11-15': 0,
+        '25/26 Goals Conceded Against 11-15': 0,
+        '25/26 Games Against 16-20': 0,
+        '25/26 Goals Against 16-20': 0,
+        '25/26 Goals Conceded Against 16-20': 0
         }
     return team_template
 
@@ -392,21 +384,18 @@ def get_player_template(team_name: str, games: int) -> dict:
         '24/25 Home Assists for Current Team': 0,
         '24/25 Away Assists for Current Team': 0,
         '24/25 Goalkeeper Saves for Current Team': 0,
-        '24/25 Games Against 1-4': 0,
-        '24/25 Goals Against 1-4': 0,
-        '24/25 Assists Against 1-4': 0,
-        '24/25 Games Against 5-8': 0,
-        '24/25 Goals Against 5-8': 0,
-        '24/25 Assists Against 5-8': 0,
-        '24/25 Games Against 9-12': 0,
-        '24/25 Goals Against 9-12': 0,
-        '24/25 Assists Against 9-12': 0,
-        '24/25 Games Against 13-16': 0,
-        '24/25 Goals Against 13-16': 0,
-        '24/25 Assists Against 13-16': 0,
-        '24/25 Games Against 17-20': 0,
-        '24/25 Goals Against 17-20': 0,
-        '24/25 Assists Against 17-20': 0,
+        '24/25 Games Against 1-5': 0,
+        '24/25 Goals Against 1-5': 0,
+        '24/25 Assists Against 1-5': 0,
+        '24/25 Games Against 6-10': 0,
+        '24/25 Goals Against 6-10': 0,
+        '24/25 Assists Against 6-10': 0,
+        '24/25 Games Against 11-15': 0,
+        '24/25 Goals Against 11-15': 0,
+        '24/25 Assists Against 11-15': 0,
+        '24/25 Games Against 16-20': 0,
+        '24/25 Goals Against 16-20': 0,
+        '24/25 Assists Against 16-20': 0,
         '25/26 Home Games Played for Current Team': 0,
         '25/26 Away Games Played for Current Team': 0,
         '25/26 Home Goals for Current Team': 0,
@@ -414,21 +403,18 @@ def get_player_template(team_name: str, games: int) -> dict:
         '25/26 Home Assists for Current Team': 0,
         '25/26 Away Assists for Current Team': 0,
         '25/26 Goalkeeper Saves for Current Team': 0,
-        '25/26 Games Against 1-4': 0,
-        '25/26 Goals Against 1-4': 0,
-        '25/26 Assists Against 1-4': 0,
-        '25/26 Games Against 5-8': 0,
-        '25/26 Goals Against 5-8': 0,
-        '25/26 Assists Against 5-8': 0,
-        '25/26 Games Against 9-12': 0,
-        '25/26 Goals Against 9-12': 0,
-        '25/26 Assists Against 9-12': 0,
-        '25/26 Games Against 13-16': 0,
-        '25/26 Goals Against 13-16': 0,
-        '25/26 Assists Against 13-16': 0,
-        '25/26 Games Against 17-20': 0,
-        '25/26 Goals Against 17-20': 0,
-        '25/26 Goals Conceded Against 17-20': 0
+        '25/26 Games Against 1-5': 0,
+        '25/26 Goals Against 1-5': 0,
+        '25/26 Assists Against 1-5': 0,
+        '25/26 Games Against 6-10': 0,
+        '25/26 Goals Against 6-10': 0,
+        '25/26 Assists Against 6-10': 0,
+        '25/26 Games Against 11-15': 0,
+        '25/26 Goals Against 11-15': 0,
+        '25/26 Assists Against 11-15': 0,
+        '25/26 Games Against 16-20': 0,
+        '25/26 Goals Against 16-20': 0,
+        '25/26 Assists Against 16-20': 0
         }
     return player_template
 
@@ -1089,16 +1075,14 @@ def construct_team_and_player_data(
             team_data[team]['24/25 Goals Conceded per Home Game'] = float(team_data[team]['24/25 Goals Conceded Home']/team_data[team]['24/25 Home Games Played'])
             team_data[team]['24/25 Goals Conceded per Away Game'] = float(team_data[team]['24/25 Goals Conceded Away']/team_data[team]['24/25 Away Games Played'])
 
-        team_data[team]['Goals per Game Against 1-4'] = float((team_data[team]['24/25 Goals Against 1-4'] + team_data[team]['25/26 Goals Against 1-4'])/(team_data[team]['24/25 Games Against 1-4'] + team_data[team]['25/26 Games Against 1-4'])) if team_data[team]['24/25 Games Against 1-4'] + team_data[team]['25/26 Games Against 1-4'] != 0 else 0
-        team_data[team]['Goals Conceded per Game Against 1-4'] = float((team_data[team]['24/25 Goals Conceded Against 1-4'] + team_data[team]['25/26 Goals Conceded Against 1-4'])/(team_data[team]['24/25 Games Against 1-4'] + team_data[team]['25/26 Games Against 1-4'])) if team_data[team]['24/25 Games Against 1-4'] + team_data[team]['25/26 Games Against 1-4'] != 0 else 0
-        team_data[team]['Goals per Game Against 5-8'] = float((team_data[team]['24/25 Goals Against 5-8'] + team_data[team]['25/26 Goals Against 5-8'])/(team_data[team]['24/25 Games Against 5-8'] + team_data[team]['25/26 Games Against 5-8'])) if team_data[team]['24/25 Games Against 5-8'] + team_data[team]['25/26 Games Against 5-8'] != 0 else 0
-        team_data[team]['Goals Conceded per Game Against 5-8'] = float((team_data[team]['24/25 Goals Conceded Against 5-8'] + team_data[team]['25/26 Goals Conceded Against 5-8'])/(team_data[team]['24/25 Games Against 5-8'] + team_data[team]['25/26 Games Against 5-8'])) if team_data[team]['24/25 Games Against 5-8'] + team_data[team]['25/26 Games Against 5-8'] != 0 else 0
-        team_data[team]['Goals per Game Against 9-12'] = float((team_data[team]['24/25 Goals Against 9-12'] + team_data[team]['25/26 Goals Against 9-12'])/(team_data[team]['24/25 Games Against 9-12'] + team_data[team]['25/26 Games Against 9-12'])) if team_data[team]['24/25 Games Against 9-12'] + team_data[team]['25/26 Games Against 9-12'] != 0 else 0
-        team_data[team]['Goals Conceded per Game Against 9-12'] = float((team_data[team]['24/25 Goals Conceded Against 9-12'] + team_data[team]['25/26 Goals Conceded Against 9-12'])/(team_data[team]['24/25 Games Against 9-12'] + team_data[team]['25/26 Games Against 9-12'])) if team_data[team]['24/25 Games Against 9-12'] + team_data[team]['25/26 Games Against 9-12'] != 0 else 0
-        team_data[team]['Goals per Game Against 13-16'] = float((team_data[team]['24/25 Goals Against 13-16'] + team_data[team]['25/26 Goals Against 13-16'])/(team_data[team]['24/25 Games Against 13-16'] + team_data[team]['25/26 Games Against 13-16'])) if team_data[team]['24/25 Games Against 13-16'] + team_data[team]['25/26 Games Against 13-16'] != 0 else 0
-        team_data[team]['Goals Conceded per Game Against 13-16'] = float((team_data[team]['24/25 Goals Conceded Against 13-16'] + team_data[team]['25/26 Goals Conceded Against 13-16'])/(team_data[team]['24/25 Games Against 13-16'] + team_data[team]['25/26 Games Against 13-16'])) if team_data[team]['24/25 Games Against 13-16'] + team_data[team]['25/26 Games Against 13-16'] != 0 else 0
-        team_data[team]['Goals per Game Against 17-20'] = float((team_data[team]['24/25 Goals Against 17-20'] + team_data[team]['25/26 Goals Against 17-20'])/(team_data[team]['24/25 Games Against 17-20'] + team_data[team]['25/26 Games Against 17-20'])) if team_data[team]['24/25 Games Against 17-20'] + team_data[team]['25/26 Games Against 17-20'] != 0 else 0
-        team_data[team]['Goals Conceded per Game Against 17-20'] = float((team_data[team]['24/25 Goals Conceded Against 17-20'] + team_data[team]['25/26 Goals Conceded Against 17-20'])/(team_data[team]['24/25 Games Against 17-20'] + team_data[team]['25/26 Games Against 17-20'])) if team_data[team]['24/25 Games Against 17-20'] + team_data[team]['25/26 Games Against 17-20'] != 0 else 0
+        team_data[team]['Goals per Game Against 1-5'] = float((team_data[team]['24/25 Goals Against 1-5'] + team_data[team]['25/26 Goals Against 1-5'])/(team_data[team]['24/25 Games Against 1-5'] + team_data[team]['25/26 Games Against 1-5'])) if team_data[team]['24/25 Games Against 1-5'] + team_data[team]['25/26 Games Against 1-5'] != 0 else 0
+        team_data[team]['Goals Conceded per Game Against 1-5'] = float((team_data[team]['24/25 Goals Conceded Against 1-5'] + team_data[team]['25/26 Goals Conceded Against 1-5'])/(team_data[team]['24/25 Games Against 1-5'] + team_data[team]['25/26 Games Against 1-5'])) if team_data[team]['24/25 Games Against 1-5'] + team_data[team]['25/26 Games Against 1-5'] != 0 else 0
+        team_data[team]['Goals per Game Against 6-10'] = float((team_data[team]['24/25 Goals Against 6-10'] + team_data[team]['25/26 Goals Against 6-10'])/(team_data[team]['24/25 Games Against 6-10'] + team_data[team]['25/26 Games Against 6-10'])) if team_data[team]['24/25 Games Against 6-10'] + team_data[team]['25/26 Games Against 6-10'] != 0 else 0
+        team_data[team]['Goals Conceded per Game Against 6-10'] = float((team_data[team]['24/25 Goals Conceded Against 6-10'] + team_data[team]['25/26 Goals Conceded Against 6-10'])/(team_data[team]['24/25 Games Against 6-10'] + team_data[team]['25/26 Games Against 6-10'])) if team_data[team]['24/25 Games Against 6-10'] + team_data[team]['25/26 Games Against 6-10'] != 0 else 0
+        team_data[team]['Goals per Game Against 11-15'] = float((team_data[team]['24/25 Goals Against 11-15'] + team_data[team]['25/26 Goals Against 11-15'])/(team_data[team]['24/25 Games Against 11-15'] + team_data[team]['25/26 Games Against 11-15'])) if team_data[team]['24/25 Games Against 11-15'] + team_data[team]['25/26 Games Against 11-15'] != 0 else 0
+        team_data[team]['Goals Conceded per Game Against 11-15'] = float((team_data[team]['24/25 Goals Conceded Against 11-15'] + team_data[team]['25/26 Goals Conceded Against 11-15'])/(team_data[team]['24/25 Games Against 11-15'] + team_data[team]['25/26 Games Against 11-15'])) if team_data[team]['24/25 Games Against 11-15'] + team_data[team]['25/26 Games Against 11-15'] != 0 else 0
+        team_data[team]['Goals per Game Against 16-20'] = float((team_data[team]['24/25 Goals Against 16-20'] + team_data[team]['25/26 Goals Against 16-20'])/(team_data[team]['24/25 Games Against 16-20'] + team_data[team]['25/26 Games Against 16-20'])) if team_data[team]['24/25 Games Against 16-20'] + team_data[team]['25/26 Games Against 16-20'] != 0 else 0
+        team_data[team]['Goals Conceded per Game Against 16-20'] = float((team_data[team]['24/25 Goals Conceded Against 16-20'] + team_data[team]['25/26 Goals Conceded Against 16-20'])/(team_data[team]['24/25 Games Against 16-20'] + team_data[team]['25/26 Games Against 16-20'])) if team_data[team]['24/25 Games Against 16-20'] + team_data[team]['25/26 Games Against 16-20'] != 0 else 0
         
     for player in player_data:
         team = player_data[player]['Team']
