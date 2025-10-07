@@ -294,6 +294,12 @@ def get_pos_range(position: int) -> str:
     else:
         return '16-20'
     
+def get_pos_range2(position: int) -> str:
+    if position <= 10:
+        return '1-10'
+    else:
+        return '11-20'
+    
 def get_team_template(pos_24_25: int, pos: int) -> dict:
     """
     Create a template dictionary for storing team statistics, initialized to default values.
@@ -1083,6 +1089,11 @@ def construct_team_and_player_data(
         team_data[team]['Goals Conceded per Game Against 11-15'] = float((team_data[team]['24/25 Goals Conceded Against 11-15'] + team_data[team]['25/26 Goals Conceded Against 11-15'])/(team_data[team]['24/25 Games Against 11-15'] + team_data[team]['25/26 Games Against 11-15'])) if team_data[team]['24/25 Games Against 11-15'] + team_data[team]['25/26 Games Against 11-15'] != 0 else 0
         team_data[team]['Goals per Game Against 16-20'] = float((team_data[team]['24/25 Goals Against 16-20'] + team_data[team]['25/26 Goals Against 16-20'])/(team_data[team]['24/25 Games Against 16-20'] + team_data[team]['25/26 Games Against 16-20'])) if team_data[team]['24/25 Games Against 16-20'] + team_data[team]['25/26 Games Against 16-20'] != 0 else 0
         team_data[team]['Goals Conceded per Game Against 16-20'] = float((team_data[team]['24/25 Goals Conceded Against 16-20'] + team_data[team]['25/26 Goals Conceded Against 16-20'])/(team_data[team]['24/25 Games Against 16-20'] + team_data[team]['25/26 Games Against 16-20'])) if team_data[team]['24/25 Games Against 16-20'] + team_data[team]['25/26 Games Against 16-20'] != 0 else 0
+
+        team_data[team]['Goals per Game Against 1-10'] = float((team_data[team]['24/25 Goals Against 1-5'] + team_data[team]['25/26 Goals Against 1-5'] + team_data[team]['24/25 Goals Against 6-10'] + team_data[team]['25/26 Goals Against 6-10'])/(team_data[team]['24/25 Games Against 1-5'] + team_data[team]['25/26 Games Against 1-5'] + team_data[team]['24/25 Games Against 6-10'] + team_data[team]['25/26 Games Against 6-10'])) if team_data[team]['24/25 Games Against 1-5'] + team_data[team]['25/26 Games Against 1-5'] + team_data[team]['24/25 Games Against 6-10'] + team_data[team]['25/26 Games Against 6-10'] != 0 else 0
+        team_data[team]['Goals Conceded per Game Against 1-10'] = float((team_data[team]['24/25 Goals Conceded Against 1-5'] + team_data[team]['25/26 Goals Conceded Against 1-5'] + team_data[team]['24/25 Goals Conceded Against 6-10'] + team_data[team]['25/26 Goals Conceded Against 6-10'])/(team_data[team]['24/25 Games Against 1-5'] + team_data[team]['25/26 Games Against 1-5'] + team_data[team]['24/25 Games Against 6-10'] + team_data[team]['25/26 Games Against 6-10'])) if team_data[team]['24/25 Games Against 1-5'] + team_data[team]['25/26 Games Against 1-5'] + team_data[team]['24/25 Games Against 6-10'] + team_data[team]['25/26 Games Against 6-10'] != 0 else 0
+        team_data[team]['Goals per Game Against 11-20'] = float((team_data[team]['24/25 Goals Against 11-15'] + team_data[team]['25/26 Goals Against 11-15'] + team_data[team]['24/25 Goals Against 16-20'] + team_data[team]['25/26 Goals Against 16-20'])/(team_data[team]['24/25 Games Against 11-15'] + team_data[team]['25/26 Games Against 11-15'] + team_data[team]['24/25 Games Against 16-20'] + team_data[team]['25/26 Games Against 16-20'])) if team_data[team]['24/25 Games Against 11-15'] + team_data[team]['25/26 Games Against 11-15'] + team_data[team]['24/25 Games Against 16-20'] + team_data[team]['25/26 Games Against 16-20'] != 0 else 0
+        team_data[team]['Goals Conceded per Game Against 11-20'] = float((team_data[team]['24/25 Goals Conceded Against 11-15'] + team_data[team]['25/26 Goals Conceded Against 11-15'] + team_data[team]['24/25 Goals Conceded Against 16-20'] + team_data[team]['25/26 Goals Conceded Against 16-20'])/(team_data[team]['24/25 Games Against 11-15'] + team_data[team]['25/26 Games Against 11-15'] + team_data[team]['24/25 Games Against 16-20'] + team_data[team]['25/26 Games Against 16-20'])) if team_data[team]['24/25 Games Against 11-15'] + team_data[team]['25/26 Games Against 11-15'] + team_data[team]['24/25 Games Against 16-20'] + team_data[team]['25/26 Games Against 16-20'] != 0 else 0
         
     for player in player_data:
         team = player_data[player]['Team']
@@ -1611,8 +1622,8 @@ def calc_team_xgs(
     promoted_gc_h_average = 2.00
     promoted_gc_a_average = 2.20
 
-    home_pos_range = get_pos_range(team_stats_dict[home_team]['Weighted Position'])
-    away_pos_range = get_pos_range(team_stats_dict[away_team]['Weighted Position'])
+    home_pos_range = get_pos_range2(team_stats_dict[home_team]['Weighted Position'])
+    away_pos_range = get_pos_range2(team_stats_dict[away_team]['Weighted Position'])
     home_goals_p90_24_25 = team_stats_dict[home_team]['24/25 Goals per Home Game']
     away_goals_p90_24_25 = team_stats_dict[away_team]['24/25 Goals per Away Game']
     home_goals_conceded_p90_24_25 = team_stats_dict[home_team]['24/25 Goals Conceded per Home Game']
