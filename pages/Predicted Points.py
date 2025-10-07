@@ -1420,8 +1420,8 @@ def calc_specific_probs(
         goal_share = odds.get("Share of Goals by Current Team", [0])[0]
         total_goals_historical = odds.get('Team xG by Historical Data', [])
 
-        xa_per_game = (odds.get("24/25 xA", [0])[0] + odds.get("25/26 xA", [0])[0]) / (odds.get("24/25 Games Played", [0])[0] + odds.get("25/26 Games Played", [0])[0]) if odds.get("24/25 Games Played", [0])[0] + odds.get("25/26 Games Played", [0])[0] > 5 else 0
-        xg_per_game = (odds.get("24/25 xG", [0])[0] + odds.get("25/26 xG", [0])[0]) / (odds.get("24/25 Games Played", [0])[0] + odds.get("25/26 Games Played", [0])[0]) if odds.get("24/25 Games Played", [0])[0] + odds.get("25/26 Games Played", [0])[0] > 5 else 0
+        xa_per_game = (odds.get("24/25 xA", [0])[0] + odds.get("25/26 xA", [0])[0]) / (odds.get("24/25 Games Played", [0])[0] + odds.get("25/26 Games Played", [0])[0]) if odds.get("24/25 Games Played", [0])[0] + odds.get("25/26 Games Played", [0])[0] > 0 else 0
+        xg_per_game = (odds.get("24/25 xG", [0])[0] + odds.get("25/26 xG", [0])[0]) / (odds.get("24/25 Games Played", [0])[0] + odds.get("25/26 Games Played", [0])[0]) if odds.get("24/25 Games Played", [0])[0] + odds.get("25/26 Games Played", [0])[0] > 0 else 0
 
         if position in ['DEF', 'MID', 'FWD', 'Unknown']:
             for p25, p15, p05 in zip_longest(assisting_over_25_prob, assisting_over_15_prob, assisting_over_05_prob, fillvalue=0):
