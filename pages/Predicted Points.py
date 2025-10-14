@@ -230,7 +230,7 @@ def player_dict_constructor(
 
         xg_25_26 = float(player["expected_goals"])  
         xa_25_26 = float(player["expected_assists"])
-        saves_25_26 = float(player.get("saves", 0))
+        saves_25_26 = int(player.get("saves", 0))
 
         games_played_for_current_team_24_25 = player_stats_dict[player_name]['24/25 Home Games Played for Current Team'] + player_stats_dict[player_name]['24/25 Away Games Played for Current Team']
 
@@ -246,7 +246,8 @@ def player_dict_constructor(
         player_dict[player_name]['25/26 Games Played'] = [player_stats_dict[player_name]['25/26 Games Played']]
         player_dict[player_name]['Minutes per Game'] = [player['minutes'] / player_stats_dict[player_name]['25/26 Games Played']] if player_stats_dict[player_name]['25/26 Games Played'] > 0 else [0]
         player_dict[player_name]['Chance of Playing'] = [player['chance_of_playing_next_round'] / 100] if player['chance_of_playing_next_round'] else [1] if player['status'] in ('a', 'd') else [0]
-        player_dict[player_name]['25/26 Defensive Contributions'] = [player["defensive_contribution"]] if player["defensive_contribution"] != 0 else [0]
+        player_dict[player_name]['25/26 Defensive Contributions'] = [player["defensive_contribution"]] if player["defensive_contribution"] else [0]
+        player_dict[player_name]['25/26 Defensive Contributions per Game'] = [player["defensive_contribution"] / player_stats_dict[player_name]['25/26 Games Played']] if player_stats_dict[player_name]['25/26 Games Played'] > 0 else [0]
         player_dict[player_name]['CBI per Game'] = [player["clearances_blocks_interceptions"] / player_stats_dict[player_name]['25/26 Games Played']] if player_stats_dict[player_name]['25/26 Games Played'] > 0 else [0]
         player_dict[player_name]['Recoveries per Game'] = [player["recoveries"] / player_stats_dict[player_name]['25/26 Games Played']] if player_stats_dict[player_name]['25/26 Games Played'] > 0 else [0]
         player_dict[player_name]['Tackles per Game'] = [player["tackles"] / player_stats_dict[player_name]['25/26 Games Played']] if player_stats_dict[player_name]['25/26 Games Played'] > 0 else [0]
@@ -254,12 +255,13 @@ def player_dict_constructor(
         player_dict[player_name]['25/26 xA'] = [xa_25_26]
 
         player_dict[player_name]['24/25 Defensive Contributions'] = [player_stats_dict[player_name]['24/25 Defensive Contributions']]
+        player_dict[player_name]['24/25 Defensive Contributions per Game'] = [player_stats_dict[player_name]['24/25 Defensive Contributions'] / player_stats_dict[player_name]['24/25 Games Played']] if player_stats_dict[player_name]['24/25 Games Played'] > 0 else [0]
 
         if element_types[player["element_type"]] == 'GKP':
             player_dict[player_name]['24/25 Saves'] = [player_stats_dict[player_name]['24/25 Saves']]
             player_dict[player_name]['25/26 Saves'] = [saves_25_26]
-            player_dict[player_name]['Saves per Home Game'] = [player_stats_dict[player_name]['Saves per Home Game']]
-            player_dict[player_name]['Saves per Away Game'] = [player_stats_dict[player_name]['Saves per Away Game']]
+            player_dict[player_name]['Saves per Home Game'] = [float(player_stats_dict[player_name]['Saves per Home Game'])]
+            player_dict[player_name]['Saves per Away Game'] = [float(player_stats_dict[player_name]['Saves per Away Game'])]
 
         player_dict[player_name]['Estimated BPS'] = []
         player_dict[player_name]['Estimated Bonus Points'] = []
@@ -1111,6 +1113,8 @@ def construct_team_and_player_data(
         full_90s_played_24_25 = math.floor(player_data[player].get('24/25 Minutes Played', 0) / 90)
         player_data[player]['24/25 Games Played'] = max(full_90s_played_24_25, games_for_team_24_25)
 
+        player_data[player]['24/25 Defensive Contributions per Game'] = player_data[player]['24/25 Defensive Contributions'] / max(full_90s_played_24_25, games_for_team_24_25) if max(full_90s_played_24_25, games_for_team_24_25) > 0 else 0
+
         goals_for_team_24_25 = player_data[player]['24/25 Home Goals for Current Team'] + player_data[player]['24/25 Away Goals for Current Team']
         goals_for_team_25_26 = player_data[player]['25/26 Home Goals for Current Team'] + player_data[player]['25/26 Away Goals for Current Team']
 
@@ -1437,8 +1441,8 @@ def calc_specific_probs(
 
             for t_gsa, opp in zip_longest(total_goals_historical, opponents, fillvalue=0):
                 # On average, the assists per goals scored ratio is rougly 0.70 in the Premier League 
-                ave_ass = (2 * (ass_share * 0.70 * t_gsa) + xa_per_game) / 3 if t_gsa != 0 else xa_per_game
-                ave_g = (2 * (goal_share * t_gsa) + xg_per_game) / 3 if t_gsa != 0 else xg_per_game
+                ave_ass = ((ass_share * 0.70 * t_gsa) + xa_per_game) / 2 if t_gsa != 0 else xa_per_game
+                ave_g = ((goal_share * t_gsa) + xg_per_game) / 2 if t_gsa != 0 else xg_per_game
                 player_dict[player]["xA by Historical Data"].append(ave_ass)
                 player_dict[player]["xG by Historical Data"].append(ave_g)
 
@@ -1712,7 +1716,7 @@ def calc_points(player_dict: dict, saves_button: bool) -> None:
 
             chance_of_playing = odds.get("Chance of Playing", [1])[0] if team != 'Unknown' else 1
 
-            def_contr_avg = (odds.get("25/26 Defensive Contributions", [0])[0] + odds.get("24/25 Defensive Contributions", [0])[0]) / (odds.get("25/26 Games Played", [0])[0] + odds.get("24/25 Games Played", [0])[0]) if odds.get("25/26 Games Played", [0])[0] + odds.get("24/25 Games Played", [0])[0] != 0 else 0
+            def_contr_avg = (2 * odds.get("25/26 Defensive Contributions per Game", [0])[0] + odds.get("24/25 Defensive Contributions per Game", [0])[0]) / 3 if odds.get("24/25 Games Played", [0])[0] > 0 and odds.get("25/26 Games Played", [0])[0] > 0 else odds.get("25/26 Defensive Contributions per Game", [0])[0] if odds.get("25/26 Games Played", [0])[0] > 0 else odds.get("24/25 Defensive Contributions per Game", [0])[0]
             threshold = 10 if position == 'DEF' else 12
             dc_points = max(float(2 * (norm.cdf(2 * def_contr_avg, loc=def_contr_avg, scale=def_contr_avg/2) - norm.cdf(threshold, loc=def_contr_avg, scale=def_contr_avg/2)) / (norm.cdf(2 * def_contr_avg, loc=def_contr_avg, scale=def_contr_avg/2) - norm.cdf(0, loc=def_contr_avg, scale=def_contr_avg/2))), 0.0) if def_contr_avg > 0 else 0
             player_dict[player]['Estimated DC points per Game'] = round(dc_points, 3)
