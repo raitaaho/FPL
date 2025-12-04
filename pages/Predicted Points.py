@@ -1717,7 +1717,7 @@ def calc_points(player_dict: dict, saves_button: bool) -> None:
             position = odds.get("Position", ["Unknown"])[0]
             saves_average_bookmaker = odds.get("xSaves by Bookmaker Odds", [])
             saves_average_historical = odds.get("Saves by Historical Data", [])
-            saves_average = []
+            saves_points = []
             team_saves_average = odds.get("Team Saves by Historical Data", [])
 
             goals_conceded_team_bookmaker = odds.get('Goals Conceded by Team on Average', [])
@@ -1727,8 +1727,8 @@ def calc_points(player_dict: dict, saves_button: bool) -> None:
             chance_of_playing = odds.get("Chance of Playing", [1])[0] if team != 'Unknown' else 1
 
             def_contr_avg = (2 * odds.get("25/26 Defensive Contributions per Game", [0])[0] + odds.get("24/25 Defensive Contributions per Game", [0])[0]) / 3 if odds.get("24/25 Games Played", [0])[0] > 0 and odds.get("25/26 Games Played", [0])[0] > 0 else odds.get("25/26 Defensive Contributions per Game", [0])[0] if odds.get("25/26 Games Played", [0])[0] > 0 else odds.get("24/25 Defensive Contributions per Game", [0])[0]
-            threshold = 10 if position == 'DEF' else 12
-            dc_points = max(float(2 * (norm.cdf(2 * def_contr_avg, loc=def_contr_avg, scale=def_contr_avg/2) - norm.cdf(threshold, loc=def_contr_avg, scale=def_contr_avg/2)) / (norm.cdf(2 * def_contr_avg, loc=def_contr_avg, scale=def_contr_avg/2) - norm.cdf(0, loc=def_contr_avg, scale=def_contr_avg/2))), 0.0) if def_contr_avg > 0 else 0
+            def_contr_threshold = 10 if position == 'DEF' else 12
+            dc_points = max(float(2 * (norm.cdf(2 * def_contr_avg, loc=def_contr_avg, scale=def_contr_avg/2) - norm.cdf(def_contr_threshold, loc=def_contr_avg, scale=def_contr_avg/2)) / (norm.cdf(2 * def_contr_avg, loc=def_contr_avg, scale=def_contr_avg/2) - norm.cdf(0, loc=def_contr_avg, scale=def_contr_avg/2))), 0.0) if def_contr_avg > 0 else 0
             player_dict[player]['Estimated DC points per Game'] = round(dc_points, 3)
 
             bonus_points = odds.get('Estimated Bonus Points', [])
@@ -1739,25 +1739,41 @@ def calc_points(player_dict: dict, saves_button: bool) -> None:
                 ass_average.append(a1 if a1 != -1 else max(a2, 0))
                 cs_odds.append(cs1 if cs1 != -1 else cs2 if cs2 != -1 else max(cs3, 0))
                 goals_conceded_team.append(ga1 if ga1 != -1 else max(ga2, 0))
+                saves_threshold = 3
 
                 if saves_button:
-                    saves_avg = (s2 + 2 * s3) / 3 if s2 != -1 and s3 != -1 else 0
+                    saves_avg = (2 * s2 + s3) / 3 if s2 != -1 and s3 != -1 else 0
+                    saves_points_historical = 0
+                    if saves_avg > 0:
+                        for k in [1, 2, 3]:
+                            saves_points_historical += max(float(norm.cdf((k + 1) * saves_threshold, loc=saves_avg, scale=saves_avg/2)), 0.0) - max(float(norm.cdf(k * saves_threshold, loc=saves_avg, scale=saves_avg/2)), 0.0)
                 else:
                     saves_avg = 0
+                    saves_points_historical = 0
+
+                if s1 != -1:
+                    saves_points_bookmaker = 0
+                    for k in [1, 2, 3]:
+                        saves_points_bookmaker += max(float(norm.cdf((k + 1) * saves_threshold, loc=saves_avg, scale=saves_avg/2)), 0.0) - max(float(norm.cdf(k * saves_threshold, loc=saves_avg, scale=saves_avg/2)), 0.0)
+                    saves_points.append(saves_points_bookmaker)
+                    xsavp = saves_points_bookmaker
+                else:
+                    saves_points.append(saves_points_historical)
+                    xsavp = saves_points_historical
+
                 player_dict[player]['Expected Saves by Historical Data'].append(saves_avg)
-                saves_average.append(s1 if s1 != -1 else saves_avg)
+                player_dict[player]['Expected Save Points by Historical Data'].append(saves_points_historical)
 
                 xg = g1 if g1 != -1 else max(g2, 0)
                 xa = a1 if a1 != -1 else max(a2, 0)
                 xcs = cs1 if cs1 != -1 else cs2 if cs2 != -1 else max(cs3, 0)
                 xgc = ga1 if ga1 != -1 else max(ga2, 0)
-                xsav = s1 if s1 != -1 else saves_avg
                 bp = bp1 if bp1 != -1 else 0
 
                 points = 0
 
                 if position in ('GKP'):
-                    points = chance_of_playing * (2 + xsav/3 +
+                    points = chance_of_playing * (2 + xsavp +
                     xcs * 4 - xgc/2 + bp + dc_points)
 
                 if position in ('DEF'):
