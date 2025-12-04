@@ -22,6 +22,7 @@ from datetime import datetime
 from datetime import date
 import scipy.stats as stats
 from scipy.stats import norm
+from scipy.stats import poisson
 import glob
 import streamlit as st
 import numpy as np
@@ -1685,6 +1686,22 @@ def calc_team_xgs(
                 player_dict[player]['Saves by Historical Data'].append(gkp_saves)
                 player_dict[player]['Team Saves by Historical Data'].append(away_team_saves)
 
+def expected_save_points(m: float, max_k: int = 12) -> float:
+    """
+    Estimate expected FPL save points using Poisson(m).
+    
+    Parameters:
+    - m: average saves per match
+    - max_k: maximum number of saves to consider in summation
+    
+    Returns:
+    - Expected save points (fractional expectation)
+    """
+    k_values = np.arange(0, max_k + 1)
+    pmf_values = poisson.pmf(k_values, mu=m)
+    expected_points = np.sum((k_values // 3) * pmf_values)
+    return expected_points
+
 def calc_points(player_dict: dict, saves_button: bool) -> None:
     """
     Calculate predicted FPL points for each player using all available probabilities and averages.
@@ -1739,27 +1756,23 @@ def calc_points(player_dict: dict, saves_button: bool) -> None:
                 ass_average.append(a1 if a1 != -1 else max(a2, 0))
                 cs_odds.append(cs1 if cs1 != -1 else cs2 if cs2 != -1 else max(cs3, 0))
                 goals_conceded_team.append(ga1 if ga1 != -1 else max(ga2, 0))
-                saves_threshold = 3
 
                 if saves_button:
                     saves_avg = (2 * s2 + s3) / 3 if s2 != -1 and s3 != -1 else 0
-                    saves_points_historical = 0
 
                     if saves_avg > 0:
-                        k_center = max(0, saves_avg / 3.0)
-                        k_max = int(math.ceil(k_center + 2))
-                        for k in range(1, k_max):
-                            saves_points_historical += (max(float(norm.cdf((k + 1) * saves_threshold, loc=saves_avg, scale=saves_avg)), 0.0) - max(float(norm.cdf(k * saves_threshold, loc=saves_avg, scale=saves_avg)), 0.0)) / (max(float(norm.cdf((k_max + 1) * saves_threshold, loc=saves_avg, scale=saves_avg)), 0.0) - max(float(norm.cdf(0, loc=saves_avg, scale=saves_avg)), 0.0))
+                        max_k = int(math.ceil(2 * saves_avg + 3))
+                        saves_points_historical = expected_save_points(saves_avg, max_k)
+                    else:
+                        saves_points_historical = 0
+                        
                 else:
                     saves_avg = 0
                     saves_points_historical = 0
 
                 if s1 != -1:
-                    saves_points_bookmaker = 0
-                    k_center = max(0, s1 / 3.0)
-                    k_max = int(math.ceil(k_center + 2))
-                    for k in range(1, k_max):
-                        saves_points_bookmaker += (max(float(norm.cdf((k + 1) * saves_threshold, loc=saves_avg, scale=saves_avg)), 0.0) - max(float(norm.cdf(k * saves_threshold, loc=saves_avg, scale=saves_avg)), 0.0)) / (max(float(norm.cdf((k_max + 1) * saves_threshold, loc=saves_avg, scale=saves_avg)), 0.0) - max(float(norm.cdf(0, loc=saves_avg, scale=saves_avg)), 0.0))
+                    max_k = int(math.ceil(2 * s1 + 3))
+                    saves_points_bookmaker = expected_save_points(s1, max_k)
                     saves_points.append(saves_points_bookmaker)
                     xsavp = saves_points_bookmaker
                 else:
@@ -1767,7 +1780,7 @@ def calc_points(player_dict: dict, saves_button: bool) -> None:
                     xsavp = saves_points_historical
 
                 player_dict[player]['Expected Saves by Historical Data'].append(saves_avg)
-                player_dict[player]['Expected Save Points by Historical Data'].append(saves_points_historical)
+                player_dict[player]['Expected Save Points'].append(xsavp)
 
                 xg = g1 if g1 != -1 else max(g2, 0)
                 xa = a1 if a1 != -1 else max(a2, 0)
