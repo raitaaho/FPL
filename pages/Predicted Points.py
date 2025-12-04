@@ -1718,7 +1718,7 @@ def expected_conceded_deductions(m: float, max_k: int = 8) -> float:
     expected_points_deducted = np.sum((k_values // 2) * pmf_values)
     return expected_points_deducted
 
-def expected_defensive_contributions_probability(m, threshold=12) -> float:
+def expected_defensive_contributions_probability(m, threshold) -> float:
     """
     Estimate probability that a player gets >= threshold defensive contributions in a match.
     
