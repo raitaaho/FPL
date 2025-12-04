@@ -1702,6 +1702,38 @@ def expected_save_points(m: float, max_k: int = 12) -> float:
     expected_points = np.sum((k_values // 3) * pmf_values)
     return expected_points
 
+def expected_conceded_deductions(m: float, max_k: int = 8) -> float:
+    """
+    Estimate expected lost points for goalkeepers and defenders due to goals conceded using Poisson(m).
+    
+    Parameters:
+    - m: Expected goals conceded
+    - max_k: maximum number of goals conceded to consider in summation
+    
+    Returns:
+    - Expected lost points due to goals conceded (fractional expectation)
+    """
+    k_values = np.arange(0, max_k + 1)
+    pmf_values = poisson.pmf(k_values, mu=m)
+    expected_points_deducted = np.sum((k_values // 2) * pmf_values)
+    return expected_points_deducted
+
+def expected_defensive_contributions_probability(m, threshold=12) -> float:
+    """
+    Estimate probability that a player gets >= threshold defensive contributions in a match.
+    
+    Parameters:
+    - m (float): average defensive contributions per game
+    - threshold (int): threshold number of defensive contributions to calculate probability for (10 for defenders, 12 for other positions)
+    
+    Returns:
+    float: probability of >= threshold contributions
+    """
+    # P(X >= threshold) = 1 - P(X <= threshold - 1)
+    prob_thresh_or_more = 1 - poisson.cdf(threshold-1, mu=m)
+    return prob_thresh_or_more
+
+
 def calc_points(player_dict: dict, saves_button: bool) -> None:
     """
     Calculate predicted FPL points for each player using all available probabilities and averages.
@@ -1745,7 +1777,7 @@ def calc_points(player_dict: dict, saves_button: bool) -> None:
 
             def_contr_avg = (2 * odds.get("25/26 Defensive Contributions per Game", [0])[0] + odds.get("24/25 Defensive Contributions per Game", [0])[0]) / 3 if odds.get("24/25 Games Played", [0])[0] > 0 and odds.get("25/26 Games Played", [0])[0] > 0 else odds.get("25/26 Defensive Contributions per Game", [0])[0] if odds.get("25/26 Games Played", [0])[0] > 0 else odds.get("24/25 Defensive Contributions per Game", [0])[0]
             def_contr_threshold = 10 if position == 'DEF' else 12
-            dc_points = max(float(2 * (norm.cdf(2 * def_contr_avg, loc=def_contr_avg, scale=def_contr_avg/2) - norm.cdf(def_contr_threshold, loc=def_contr_avg, scale=def_contr_avg/2)) / (norm.cdf(2 * def_contr_avg, loc=def_contr_avg, scale=def_contr_avg/2) - norm.cdf(0, loc=def_contr_avg, scale=def_contr_avg/2))), 0.0) if def_contr_avg > 0 else 0
+            dc_points = expected_defensive_contributions_probability(def_contr_avg, def_contr_threshold) * 2
             player_dict[player]['Estimated DC points per Game'] = round(dc_points, 3)
 
             bonus_points = odds.get('Estimated Bonus Points', [])
@@ -1792,13 +1824,13 @@ def calc_points(player_dict: dict, saves_button: bool) -> None:
 
                 if position in ('GKP'):
                     points = chance_of_playing * (2 + xsavp +
-                    xcs * 4 - xgc/2 + bp + dc_points)
+                    xcs * 4 - expected_conceded_deductions(xgc) + bp + dc_points)
 
                 if position in ('DEF'):
                     points = chance_of_playing * (
                     mins_played_points + xg * 6 + xa * 3 +
                     (min(mins_per_game/60, 1) * xcs) * 4
-                    - xgc/2 + bp + dc_points)
+                    - expected_conceded_deductions(xgc) + bp + dc_points)
 
                 if position in ('MID'):
                     points = chance_of_playing * (
