@@ -1527,7 +1527,7 @@ def calc_avg_bps(
                 xgc = ga1 if ga1 != -1 else max(ga2, 0)
 
                 if saves_button:
-                    saves_avg = (s2 + 2 * s3) / 3 if s2 != -1 and s3 != -1 else 0
+                    saves_avg = (2 * s2 + s3) / 3 if s2 != -1 and s3 != -1 else 0
                 else:
                     saves_avg = 0
                 xsav = s1 if s1 != -1 else saves_avg
@@ -1754,7 +1754,7 @@ def calc_points(player_dict: dict, saves_button: bool) -> None:
                 if s1 != -1:
                     saves_points_bookmaker = 0
                     for k in [1, 2, 3]:
-                        saves_points_bookmaker += max(float(norm.cdf((k + 1) * saves_threshold, loc=saves_avg, scale=saves_avg/2)), 0.0) - max(float(norm.cdf(k * saves_threshold, loc=saves_avg, scale=saves_avg/2)), 0.0)
+                        saves_points_bookmaker += max(float(norm.cdf((k + 1) * saves_threshold, loc=saves_avg, scale=saves_avg)), 0.0) - max(float(norm.cdf(k * saves_threshold, loc=saves_avg, scale=saves_avg)), 0.0)
                     saves_points.append(saves_points_bookmaker)
                     xsavp = saves_points_bookmaker
                 else:
