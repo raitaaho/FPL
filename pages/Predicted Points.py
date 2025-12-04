@@ -1744,17 +1744,22 @@ def calc_points(player_dict: dict, saves_button: bool) -> None:
                 if saves_button:
                     saves_avg = (2 * s2 + s3) / 3 if s2 != -1 and s3 != -1 else 0
                     saves_points_historical = 0
+
                     if saves_avg > 0:
-                        for k in [1, 2, 3]:
-                            saves_points_historical += max(float(norm.cdf((k + 1) * saves_threshold, loc=saves_avg, scale=saves_avg)), 0.0) - max(float(norm.cdf(k * saves_threshold, loc=saves_avg, scale=saves_avg/2)), 0.0)
+                        k_center = max(0, saves_avg / 3.0)
+                        k_max = int(math.ceil(k_center + 2))
+                        for k in range(1, k_max):
+                            saves_points_historical += (max(float(norm.cdf((k + 1) * saves_threshold, loc=saves_avg, scale=saves_avg)), 0.0) - max(float(norm.cdf(k * saves_threshold, loc=saves_avg, scale=saves_avg)), 0.0)) / (max(float(norm.cdf((k_max + 1) * saves_threshold, loc=saves_avg, scale=saves_avg)), 0.0) - max(float(norm.cdf(0, loc=saves_avg, scale=saves_avg)), 0.0))
                 else:
                     saves_avg = 0
                     saves_points_historical = 0
 
                 if s1 != -1:
                     saves_points_bookmaker = 0
-                    for k in [1, 2, 3]:
-                        saves_points_bookmaker += max(float(norm.cdf((k + 1) * saves_threshold, loc=saves_avg, scale=saves_avg)), 0.0) - max(float(norm.cdf(k * saves_threshold, loc=saves_avg, scale=saves_avg)), 0.0)
+                    k_center = max(0, s1 / 3.0)
+                    k_max = int(math.ceil(k_center + 2))
+                    for k in range(1, k_max):
+                        saves_points_bookmaker += (max(float(norm.cdf((k + 1) * saves_threshold, loc=saves_avg, scale=saves_avg)), 0.0) - max(float(norm.cdf(k * saves_threshold, loc=saves_avg, scale=saves_avg)), 0.0)) / (max(float(norm.cdf((k_max + 1) * saves_threshold, loc=saves_avg, scale=saves_avg)), 0.0) - max(float(norm.cdf(0, loc=saves_avg, scale=saves_avg)), 0.0))
                     saves_points.append(saves_points_bookmaker)
                     xsavp = saves_points_bookmaker
                 else:
