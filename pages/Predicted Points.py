@@ -1746,7 +1746,7 @@ def calc_points(player_dict: dict, saves_button: bool) -> None:
                     saves_points_historical = 0
                     if saves_avg > 0:
                         for k in [1, 2, 3]:
-                            saves_points_historical += max(float(norm.cdf((k + 1) * saves_threshold, loc=saves_avg, scale=saves_avg/2)), 0.0) - max(float(norm.cdf(k * saves_threshold, loc=saves_avg, scale=saves_avg/2)), 0.0)
+                            saves_points_historical += max(float(norm.cdf((k + 1) * saves_threshold, loc=saves_avg, scale=saves_avg)), 0.0) - max(float(norm.cdf(k * saves_threshold, loc=saves_avg, scale=saves_avg/2)), 0.0)
                 else:
                     saves_avg = 0
                     saves_points_historical = 0
