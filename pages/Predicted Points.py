@@ -1446,8 +1446,8 @@ def calc_specific_probs(
 
             for t_gsa, opp in zip_longest(total_goals_historical, opponents, fillvalue=0):
                 # On average, the assists per goal scored ratio is rougly 0.70 in the Premier League 
-                ave_ass = (2 * (ass_share * 0.70 * t_gsa) + 3 * xa_per_game) / 5 if t_gsa != 0 else xa_per_game
-                ave_g = (2 * (goal_share * t_gsa) + 3 * xg_per_game) / 5 if t_gsa != 0 else xg_per_game
+                ave_ass = (3 * (ass_share * 0.70 * t_gsa) + 2 * xa_per_game) / 5 if t_gsa != 0 else xa_per_game
+                ave_g = (3 * (goal_share * t_gsa) + 2 * xg_per_game) / 5 if t_gsa != 0 else xg_per_game
                 player_dict[player]["xA by Historical Data"].append(ave_ass)
                 player_dict[player]["xG by Historical Data"].append(ave_g)
 
@@ -1648,10 +1648,10 @@ def calc_team_xgs(
     home_scored_against_string = f"Goals per Game Against {away_pos_range}"
     away_scored_against_string = f"Goals per Game Against {home_pos_range}"
     
-    home_goals = (2 * home_weighted_goals_p90 + team_stats_dict[home_team][home_scored_against_string]) / 3 if home_goals_p90_24_25 != 0 else (2 * promoted_g_h_average + home_weighted_goals_p90) / 3
-    away_goals = (2 * away_weighted_goals_p90 + team_stats_dict[away_team][away_scored_against_string]) / 3 if away_goals_p90_24_25 != 0 else (2 * promoted_g_a_average + away_weighted_goals_p90) / 3
-    home_goals_conceded = (2 * home_weighted_goals_conceded_p90 + team_stats_dict[home_team][home_conceded_against_string]) / 3 if home_goals_conceded_p90_24_25 != 0 else (2 * promoted_gc_h_average + home_weighted_goals_conceded_p90) / 3
-    away_goals_conceded = (2 * away_weighted_goals_conceded_p90 + team_stats_dict[away_team][away_conceded_against_string]) / 3 if away_goals_conceded_p90_24_25 != 0 else (2 * promoted_gc_a_average + away_weighted_goals_conceded_p90) / 3
+    home_goals = (home_weighted_goals_p90 + team_stats_dict[home_team][home_scored_against_string]) / 2 if home_goals_p90_24_25 != 0 else (promoted_g_h_average + home_weighted_goals_p90) / 2
+    away_goals = (away_weighted_goals_p90 + team_stats_dict[away_team][away_scored_against_string]) / 2 if away_goals_p90_24_25 != 0 else (promoted_g_a_average + away_weighted_goals_p90) / 2
+    home_goals_conceded = (home_weighted_goals_conceded_p90 + team_stats_dict[home_team][home_conceded_against_string]) / 2 if home_goals_conceded_p90_24_25 != 0 else (promoted_gc_h_average + home_weighted_goals_conceded_p90) / 2
+    away_goals_conceded = (away_weighted_goals_conceded_p90 + team_stats_dict[away_team][away_conceded_against_string]) / 2 if away_goals_conceded_p90_24_25 != 0 else (promoted_gc_a_average + away_weighted_goals_conceded_p90) / 2
 
     home_xg = (home_goals + away_goals_conceded) / 2 
     away_xg = (away_goals + home_goals_conceded) / 2
