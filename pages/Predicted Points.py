@@ -1644,8 +1644,8 @@ def calc_team_xgs(
     promoted_gc_h_average = 2.00
     promoted_gc_a_average = 2.20
 
-    home_pos_range = get_pos_range2(team_stats_dict[home_team]['Weighted Position'])
-    away_pos_range = get_pos_range2(team_stats_dict[away_team]['Weighted Position'])
+    home_pos_range = get_pos_range(team_stats_dict[home_team]['Weighted Position'])
+    away_pos_range = get_pos_range(team_stats_dict[away_team]['Weighted Position'])
     home_goals_p90_24_25 = team_stats_dict[home_team]['24/25 Goals per Home Game']
     away_goals_p90_24_25 = team_stats_dict[away_team]['24/25 Goals per Away Game']
     home_goals_conceded_p90_24_25 = team_stats_dict[home_team]['24/25 Goals Conceded per Home Game']
