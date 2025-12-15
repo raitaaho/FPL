@@ -1457,8 +1457,8 @@ def calc_specific_probs(
 
             for t_gsa, opp in zip_longest(total_goals_historical, opponents, fillvalue=0):
                 # On average, the assists per goal scored ratio is rougly 0.70 in the Premier League 
-                ave_ass = (3 * (ass_share * 0.70 * t_gsa) + 2 * xa_per_game) / 5 if t_gsa != 0 else xa_per_game
-                ave_g = (3 * (goal_share * t_gsa) + 2 * xg_per_game) / 5 if t_gsa != 0 else xg_per_game
+                ave_ass = ((ass_share * 0.70 * t_gsa) + 2 * xa_per_game) / 3 if t_gsa != 0 else xa_per_game
+                ave_g = ((goal_share * t_gsa) + 2 * xg_per_game) / 3 if t_gsa != 0 else xg_per_game
                 player_dict[player]["xA by Historical Data"].append(ave_ass)
                 player_dict[player]["xG by Historical Data"].append(ave_g)
 
