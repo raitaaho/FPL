@@ -786,13 +786,13 @@ def construct_team_and_player_data(
             player_match = player_xgs.get(player_id, {})
             if player_match.get(gw, -1) != -1:
                 player_match_xg = player_match.get(gw, 0)
-                team_h_xg += player_match_xg
+                home_team_xg += player_match_xg
 
         for player_id in team_players[away_team_id]:
             player_match = player_xgs.get(player_id, {})
             if player_match.get(gw, -1) != -1:
                 player_match_xg = player_match.get(gw, 0)
-                team_a_xg += player_match_xg
+                away_team_xg += player_match_xg
 
         fixture["home_team_xg"] = home_team_xg
         fixture["away_team_xg"] = away_team_xg
