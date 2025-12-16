@@ -475,25 +475,6 @@ def construct_team_and_player_data(
 
     fixtures = [fixture for fixture in fixtures if (fixture['finished_provisional'] == True)]
 
-    for team_id, players in team_players.items():
-        for player_id in players:
-            player_xgs[player_id] = {}
-
-            time.sleep(random.uniform(0, 0.2)) 
-            response = requests.get(f"https://fantasy.premierleague.com/api/element-summary/{player_id}/")
-            if response.status_code != 200:
-                print("Error fetching data for player ID:", player_id)
-                raise Exception(f"Failed to fetch teams: {response.status_code}")
-                
-            history_data = response.json()
-            prev_fixtures_data = history_data.get('history', [])
-            
-            for match in prev_fixtures_data:
-                xg = float(match.get("expected_goals", 0))
-                gw = match.get("round", "0")
-                if gw != "0":
-                    player_xgs[player_id][gw] = xg
-
     # --- Error handling for CSV loading ---
     try:
         fixtures_24_25_df = pd.read_csv("https://raw.githubusercontent.com/vaastav/Fantasy-Premier-League/master/data/2024-25/fixtures.csv")
@@ -552,68 +533,67 @@ def construct_team_and_player_data(
         team_data[team_name] = defaultdict(float)
         team_data[team_name].update(get_team_template(pos_24_25, pos_current))
 
-    for p in elements:
-        for team_id, players in team_players.items():
-            if p in players:
-                name = " ".join(prepare_name(player_id_to_name[p['id']]))
-                team_name_key = p['team'] if p['team'] is not None else ""
-                team_name_lookup = team_id_to_name.get(team_name_key, "Unknown")
-                team_name = TEAM_NAMES_ODDSCHECKER.get(team_name_lookup, team_name_lookup)
-                if team_name is None:
-                    team_name = ""
+    for player in elements:
+        player_xgs[player['id']] = {}
 
-                player_xgs[p['id']] = {}
-                time.sleep(random.uniform(0, 0.1)) 
-                response = requests.get(f"https://fantasy.premierleague.com/api/element-summary/{player_id}/")
-                if response.status_code != 200:
-                    print("Error fetching data for player ID:", player_id)
-                    raise Exception(f"Failed to fetch teams: {response.status_code}")
-                
-                history_data = response.json()
-                prev_fixtures_data = history_data.get('history', [])
-                prev_seasons_data = history_data.get('history_past', [])
-                
-                for match in prev_fixtures_data:
-                    xg = float(match.get("expected_goals", 0))
-                    gw = match.get("round", "0")
-                    if gw != "0":
-                        player_xgs[p['id']][gw] = xg
+        time.sleep(random.uniform(0, 0.2)) 
+        response = requests.get(f"https://fantasy.premierleague.com/api/element-summary/{player_id}/")
+        if response.status_code != 200:
+            print("Error fetching data for player ID:", player_id)
+            raise Exception(f"Failed to fetch teams: {response.status_code}")
+            
+        history_data = response.json()
+        prev_fixtures_data = history_data.get('history', [])
+        prev_seasons_data = history_data.get('history_past', [])
+        
+        for match in prev_fixtures_data:
+            xg = float(match.get("expected_goals", 0))
+            gw = match.get("round", "0")
+            if gw != "0":
+                player_xgs[player['id']][gw] = xg
 
-                games_25_26 = 0
+        name = " ".join(prepare_name(player_id_to_name[player['id']]))
+        team_name_key = player['team'] if player['team'] is not None else ""
+        team_name_lookup = team_id_to_name.get(team_name_key, "Unknown")
+        team_name = TEAM_NAMES_ODDSCHECKER.get(team_name_lookup, team_name_lookup)
+        if team_name is None:
+            team_name = ""
 
-                minutes_24_25 = 0
-                games_24_25 = 0
-                def_contributions_24_25 = 0
-                goals_24_25 = 0
-                assists_24_25 = 0
-                xg_24_25 = 0
-                xa_24_25 = 0
-                saves_24_25 = 0
-                for fixture in prev_fixtures_data:
-                    if fixture.get('minutes', 0) > 0:
-                        games_25_26 += 1
+        games_25_26 = 0
 
-                for season in prev_seasons_data:
-                    if season['season_name'] != '2024/25':
-                        continue
-                    else:
-                        minutes_24_25 = int(season.get('minutes', 0))
-                        def_contributions_24_25 = int(season.get('defensive_contribution', 0))
-                        xg_24_25 = float(season.get('expected_goals', 0))
-                        xa_24_25 = float(season.get('expected_assists', 0))
-                        goals_24_25 = int(season.get('goals_scored', 0))
-                        assists_24_25 = int(season.get('assists', 0))
-                        saves_24_25 = int(season.get('saves', 0))
-                        break
-                player_data[name] = defaultdict(float)
-                player_data[name].update(get_player_template(team_name, games_25_26))
-                player_data[name]['24/25 Defensive Contributions'] = def_contributions_24_25
-                player_data[name]['24/25 xG'] = xg_24_25
-                player_data[name]['24/25 xA'] = xa_24_25
-                player_data[name]['24/25 Minutes Played'] = minutes_24_25
-                player_data[name]['24/25 Goals'] = goals_24_25
-                player_data[name]['24/25 Assists'] = assists_24_25
-                player_data[name]['24/25 Saves'] = saves_24_25
+        minutes_24_25 = 0
+        games_24_25 = 0
+        def_contributions_24_25 = 0
+        goals_24_25 = 0
+        assists_24_25 = 0
+        xg_24_25 = 0
+        xa_24_25 = 0
+        saves_24_25 = 0
+        for fixture in prev_fixtures_data:
+            if fixture.get('minutes', 0) > 0:
+                games_25_26 += 1
+
+        for season in prev_seasons_data:
+            if season['season_name'] != '2024/25':
+                continue
+            else:
+                minutes_24_25 = int(season.get('minutes', 0))
+                def_contributions_24_25 = int(season.get('defensive_contribution', 0))
+                xg_24_25 = float(season.get('expected_goals', 0))
+                xa_24_25 = float(season.get('expected_assists', 0))
+                goals_24_25 = int(season.get('goals_scored', 0))
+                assists_24_25 = int(season.get('assists', 0))
+                saves_24_25 = int(season.get('saves', 0))
+                break
+        player_data[name] = defaultdict(float)
+        player_data[name].update(get_player_template(team_name, games_25_26))
+        player_data[name]['24/25 Defensive Contributions'] = def_contributions_24_25
+        player_data[name]['24/25 xG'] = xg_24_25
+        player_data[name]['24/25 xA'] = xa_24_25
+        player_data[name]['24/25 Minutes Played'] = minutes_24_25
+        player_data[name]['24/25 Goals'] = goals_24_25
+        player_data[name]['24/25 Assists'] = assists_24_25
+        player_data[name]['24/25 Saves'] = saves_24_25
 
     k_factor = 20 # K-factor for ELO rating system
 
@@ -810,11 +790,11 @@ def construct_team_and_player_data(
                 player_match_xg = player_match.get(gw, 0)
                 team_a_xg += player_match_xg
 
-        fixture["home_team_xg"] = home_team_xg
-        fixture["away_team_xg"] = away_team_xg
+        fixture["home_team_xg"] = team_h_xg
+        fixture["away_team_xg"] = team_a_xg
 
-        team_data[home_team_name]['25/26 Home xG'] += home_team_xg
-        team_data[away_team_name]['25/26 Away xG'] += away_team_xg
+        team_data[home_team_name]['25/26 Home xG'] += team_h_xg
+        team_data[away_team_name]['25/26 Away xG'] += team_a_xg
 
         home_goals = fixture['team_h_score']
         away_goals = fixture['team_a_score']
@@ -1758,6 +1738,7 @@ def calc_team_xgs(
     home_xg_against_string = f"xG per Game Against {away_pos_range}"
     away_xg_against_string = f"xG per Game Against {home_pos_range}"
     
+
     home_goals = (home_weighted_goals_p90 + team_stats_dict[home_team][home_scored_against_string] + team_stats_dict[home_team][home_xg_against_string]) / 3
     away_goals = (away_weighted_goals_p90 + team_stats_dict[away_team][away_scored_against_string] + team_stats_dict[away_team][away_xg_against_string]) / 3
     home_goals_conceded = (home_weighted_goals_conceded_p90 + team_stats_dict[home_team][home_conceded_against_string] + team_stats_dict[home_team][home_xgc_against_string]) / 3
