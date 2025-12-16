@@ -797,8 +797,8 @@ def construct_team_and_player_data(
         fixture["home_team_xg"] = home_team_xg
         fixture["away_team_xg"] = away_team_xg
 
-        team_data[home_team_name]['25/26 Home xG'] += team_h_xg
-        team_data[away_team_name]['25/26 Away xG'] += team_a_xg
+        team_data[home_team_name]['25/26 Home xG'] += home_team_xg
+        team_data[away_team_name]['25/26 Away xG'] += away_team_xg
 
         home_goals = fixture['team_h_score']
         away_goals = fixture['team_a_score']
