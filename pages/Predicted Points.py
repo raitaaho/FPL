@@ -809,8 +809,8 @@ def construct_team_and_player_data(
                 player_match_xg = player_match.get(gw, 0)
                 team_a_xg += player_match_xg
 
-        fixture["home_team_xg"] = team_h_xg
-        fixture["away_team_xg"] = team_a_xg
+        fixture["home_team_xg"] = home_team_xg
+        fixture["away_team_xg"] = away_team_xg
 
         team_data[home_team_name]['25/26 Home xG'] += team_h_xg
         team_data[away_team_name]['25/26 Away xG'] += team_a_xg
