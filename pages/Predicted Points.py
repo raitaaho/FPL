@@ -471,7 +471,7 @@ def construct_team_and_player_data(
     player_xgs = {}
 
     for team in teams:
-        team_players[team['id']] = [player['id'] for player in player_data if player['team'] == team['id']]
+        team_players[team['id']] = [player['id'] for player in elements if player['team'] == team['id']]
 
     fixtures = [fixture for fixture in fixtures if (fixture['finished_provisional'] == True)]
 
