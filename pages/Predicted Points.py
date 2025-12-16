@@ -1238,6 +1238,7 @@ def construct_team_and_player_data(
         player_data[player]['Goals per Game Against 17-20'] = float((player_data[player]['24/25 Goals Against 17-20'] + player_data[player]['25/26 Goals Against 17-20'])/(player_data[player]['24/25 Games Against 17-20'] + player_data[player]['25/26 Games Against 17-20'])) if player_data[player]['24/25 Games Against 17-20'] + player_data[player]['25/26 Games Against 17-20'] != 0 else 0
         player_data[player]['Goals Conceded per Game Against 17-20'] = float((player_data[player]['24/25 Goals Conceded Against 17-20'] + player_data[player]['25/26 Goals Conceded Against 17-20'])/(player_data[player]['24/25 Games Against 17-20'] + player_data[player]['25/26 Games Against 17-20'])) if player_data[player]['24/25 Games Against 17-20'] + player_data[player]['25/26 Games Against 17-20'] != 0 else 0
 
+    st.write(team_data)
     return team_data, player_data
 
 def get_player_over_probs(
@@ -1748,8 +1749,8 @@ def calc_team_xgs(
     home_goals_conceded = (home_weighted_goals_conceded_p90 + 2 * team_stats_dict[home_team][home_conceded_against_string] + 2 * team_stats_dict[home_team][home_xgc_against_string]) / 5
     away_goals_conceded = (away_weighted_goals_conceded_p90 + 2 * team_stats_dict[away_team][away_conceded_against_string] + 2 *  team_stats_dict[away_team][away_xgc_against_string]) / 5
 
-    home_xg = (2 * home_goals + away_goals_conceded) / 3
-    away_xg = (2 * away_goals + home_goals_conceded) / 3
+    home_xg = (home_goals + away_goals_conceded) / 2
+    away_xg = (away_goals + home_goals_conceded) / 2
 
     home_team_saves_24_25 = team_stats_dict[home_team]['24/25 Goalkeeper Saves per Home Game']
     away_team_saves_24_25 = team_stats_dict[away_team]['24/25 Goalkeeper Saves per Away Game']
