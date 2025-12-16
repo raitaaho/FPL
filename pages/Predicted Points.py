@@ -800,6 +800,9 @@ def construct_team_and_player_data(
         team_data[home_team_name]['25/26 Home xG'] += home_team_xg
         team_data[away_team_name]['25/26 Away xG'] += away_team_xg
 
+        team_data[home_team_name]['25/26 Home xGC'] += away_team_xg
+        team_data[away_team_name]['25/26 Away xGC'] += home_team_xg
+
         home_goals = fixture['team_h_score']
         away_goals = fixture['team_a_score']
 
