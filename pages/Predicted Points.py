@@ -537,9 +537,9 @@ def construct_team_and_player_data(
         player_xgs[player['id']] = {}
 
         time.sleep(random.uniform(0, 0.2)) 
-        response = requests.get(f"https://fantasy.premierleague.com/api/element-summary/{player_id}/")
+        response = requests.get(f"https://fantasy.premierleague.com/api/element-summary/{player['id']}/")
         if response.status_code != 200:
-            print("Error fetching data for player ID:", player_id)
+            print("Error fetching data for player ID:", player['id'])
             raise Exception(f"Failed to fetch teams: {response.status_code}")
             
         history_data = response.json()
