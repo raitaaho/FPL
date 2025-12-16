@@ -560,10 +560,22 @@ def construct_team_and_player_data(
         if team_name is None:
             team_name = ""
 
-        response = requests.get(f"https://fantasy.premierleague.com/api/element-summary/{player['id']}/")
+        player_xgs[player_id] = {}
+        time.sleep(random.uniform(0, 0.1)) 
+        response = requests.get(f"https://fantasy.premierleague.com/api/element-summary/{player_id}/")
+        if response.status_code != 200:
+            print("Error fetching data for player ID:", player_id)
+            raise Exception(f"Failed to fetch teams: {response.status_code}")
+        
         history_data = response.json()
-        prev_seasons_data = history_data.get('history_past', [])
         prev_fixtures_data = history_data.get('history', [])
+        prev_seasons_data = history_data.get('history_past', [])
+        
+        for match in prev_fixtures_data:
+            xg = float(match.get("expected_goals", 0))
+            gw = match.get("round", "0")
+            if gw != "0":
+                player_xgs[player_id][gw] = xg
 
         games_25_26 = 0
 
