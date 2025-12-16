@@ -538,7 +538,7 @@ def construct_team_and_player_data(
             for player_id in players:
                 if player_id != player['id']:
                     continue
-        player_xgs[player['id']] = {}
+                player_xgs[player['id']] = {}
 
         time.sleep(random.uniform(0, 0.2)) 
         response = requests.get(f"https://fantasy.premierleague.com/api/element-summary/{player['id']}/")
