@@ -1533,8 +1533,8 @@ def calc_specific_probs(
 
             for t_gsa, opp in zip_longest(total_goals_historical, opponents, fillvalue=0):
                 # On average, the assists per goal scored ratio is rougly 0.70 in the Premier League 
-                ave_ass = ((ass_share * 0.70 * t_gsa) + 2 * xa_per_game) / 3 if t_gsa != 0 else xa_per_game
-                ave_g = ((goal_share * t_gsa) + 2 * xg_per_game) / 3 if t_gsa != 0 else xg_per_game
+                ave_ass = ((ass_share * 0.70 * t_gsa) + xa_per_game) / 2 if t_gsa != 0 else xa_per_game
+                ave_g = ((goal_share * t_gsa) + xg_per_game) / 2 if t_gsa != 0 else xg_per_game
                 player_dict[player]["xA by Historical Data"].append(ave_ass)
                 player_dict[player]["xG by Historical Data"].append(ave_g)
 
@@ -1743,13 +1743,13 @@ def calc_team_xgs(
     away_xg_against_string = f"xG per Game Against {home_pos_range}"
     
 
-    home_goals = (home_weighted_goals_p90 + team_stats_dict[home_team][home_scored_against_string] + team_stats_dict[home_team][home_xg_against_string]) / 3
-    away_goals = (away_weighted_goals_p90 + team_stats_dict[away_team][away_scored_against_string] + team_stats_dict[away_team][away_xg_against_string]) / 3
-    home_goals_conceded = (home_weighted_goals_conceded_p90 + team_stats_dict[home_team][home_conceded_against_string] + team_stats_dict[home_team][home_xgc_against_string]) / 3
-    away_goals_conceded = (away_weighted_goals_conceded_p90 + team_stats_dict[away_team][away_conceded_against_string] + team_stats_dict[away_team][away_xgc_against_string]) / 3
+    home_goals = (home_weighted_goals_p90 + 2 * team_stats_dict[home_team][home_scored_against_string] + 2 * team_stats_dict[home_team][home_xg_against_string]) / 5
+    away_goals = (away_weighted_goals_p90 + 2 * team_stats_dict[away_team][away_scored_against_string] + 2 * team_stats_dict[away_team][away_xg_against_string]) / 5
+    home_goals_conceded = (home_weighted_goals_conceded_p90 + 2 * team_stats_dict[home_team][home_conceded_against_string] + 2 * team_stats_dict[home_team][home_xgc_against_string]) / 5
+    away_goals_conceded = (away_weighted_goals_conceded_p90 + 2 * team_stats_dict[away_team][away_conceded_against_string] + 2 *  team_stats_dict[away_team][away_xgc_against_string]) / 5
 
-    home_xg = (home_goals + away_goals_conceded) / 2 
-    away_xg = (away_goals + home_goals_conceded) / 2
+    home_xg = (2 * home_goals + away_goals_conceded) / 3
+    away_xg = (2 * away_goals + home_goals_conceded) / 3
 
     home_team_saves_24_25 = team_stats_dict[home_team]['24/25 Goalkeeper Saves per Home Game']
     away_team_saves_24_25 = team_stats_dict[away_team]['24/25 Goalkeeper Saves per Away Game']
