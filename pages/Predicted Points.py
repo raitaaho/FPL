@@ -789,6 +789,9 @@ def construct_team_and_player_data(
         home_pos = team_data[home_team_name]['League Position']
         away_pos = team_data[away_team_name]['League Position']
 
+        home_goals = fixture['team_h_score']
+        away_goals = fixture['team_a_score']
+
         for player_id in team_players[home_team_id]:
             player_match = player_xgs.get(player_id, {})
             if player_match.get(gw, -1) != -1:
@@ -842,9 +845,6 @@ def construct_team_and_player_data(
         team_data[home_team_name][home_games_against_string] += 1
         team_data[home_team_name][home_goals_against_string] += home_goals
         team_data[home_team_name][home_goals_conceded_against_string] += away_goals
-
-        home_goals = fixture['team_h_score']
-        away_goals = fixture['team_a_score']
 
         team_data[home_team_name]['25/26 Home Goals'] += home_goals
         team_data[away_team_name]['25/26 Away Goals'] += away_goals
