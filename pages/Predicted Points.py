@@ -1616,10 +1616,10 @@ def calc_team_xgs(
     home_xg_against_string = f"xG per Game Against {away_pos_range}"
     away_xg_against_string = f"xG per Game Against {home_pos_range}"
 
-    home_goals = (home_weighted_goals_p90 + 2 * home_weighted_scored_against + 3 * team_stats_dict[home_team][home_xg_against_string]) / 6
-    away_goals = (away_weighted_goals_p90 + 2 * away_weighted_scored_against + 3 * team_stats_dict[away_team][away_xg_against_string]) / 6
-    home_goals_conceded = (home_weighted_goals_conceded_p90 + 2 * home_weighted_conceded_against + 3 * team_stats_dict[home_team][home_xgc_against_string]) / 6
-    away_goals_conceded = (away_weighted_goals_conceded_p90 + 2 * away_weighted_conceded_against + 3 * team_stats_dict[away_team][away_xgc_against_string]) / 6
+    home_goals = (2 * home_weighted_goals_p90 + home_weighted_scored_against + team_stats_dict[home_team][home_xg_against_string] + 2 * team_stats_dict[home_team]['xG per Home Game']) / 6
+    away_goals = (2 * away_weighted_goals_p90 + away_weighted_scored_against + team_stats_dict[away_team][away_xg_against_string] + 2 * team_stats_dict[away_team]['xG per Away Game']) / 6
+    home_goals_conceded = (2 * home_weighted_goals_conceded_p90 + home_weighted_conceded_against + team_stats_dict[home_team][home_xgc_against_string] + 2 * team_stats_dict[home_team]['xGC per Home Game']) / 6
+    away_goals_conceded = (2 * away_weighted_goals_conceded_p90 + away_weighted_conceded_against + team_stats_dict[away_team][away_xgc_against_string] + 2 * team_stats_dict[away_team]['xGC per Away Game']) / 6
 
     home_xg = (home_goals + away_goals_conceded) / 2
     away_xg = (away_goals + home_goals_conceded) / 2
