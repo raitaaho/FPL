@@ -1098,16 +1098,16 @@ def construct_team_and_player_data(
         player_data[player]['25/26 Saves per Home Game for Current Team'] = float(player_data[player]['25/26 Home Goalkeeper Saves for Current Team'] / player_data[player]['25/26 Home Games Played for Current Team']) if player_data[player]['25/26 Home Games Played for Current Team'] > 0 else 0
         player_data[player]['25/26 Saves per Away Game for Current Team'] = float(player_data[player]['25/26 Away Goalkeeper Saves for Current Team'] / player_data[player]['25/26 Away Games Played for Current Team']) if player_data[player]['25/26 Away Games Played for Current Team'] > 0 else 0
 
-        player_data[player]['Goals per Game Against 1-4'] = float((player_data[player]['24/25 Goals Against 1-4'] + player_data[player]['25/26 Goals Against 1-4'])/(player_data[player]['24/25 Games Against 1-4'] + player_data[player]['25/26 Games Against 1-4'])) if player_data[player]['24/25 Games Against 1-4'] + player_data[player]['25/26 Games Against 1-4'] != 0 else 0 
-        player_data[player]['Goals Conceded per Game Against 1-4'] = float((player_data[player]['24/25 Goals Conceded Against 1-4'] + player_data[player]['25/26 Goals Conceded Against 1-4'])/(player_data[player]['24/25 Games Against 1-4'] + player_data[player]['25/26 Games Against 1-4'])) if player_data[player]['24/25 Games Against 1-4'] + player_data[player]['25/26 Games Against 1-4'] != 0 else 0 
-        player_data[player]['Goals per Game Against 5-8'] = float((player_data[player]['24/25 Goals Against 5-8'] + player_data[player]['25/26 Goals Against 5-8'])/(player_data[player]['24/25 Games Against 5-8'] + player_data[player]['25/26 Games Against 5-8'])) if player_data[player]['24/25 Games Against 5-8'] + player_data[player]['25/26 Games Against 5-8'] != 0 else 0 
-        player_data[player]['Goals Conceded per Game Against 5-8'] = float((player_data[player]['24/25 Goals Conceded Against 5-8'] + player_data[player]['25/26 Goals Conceded Against 5-8'])/(player_data[player]['24/25 Games Against 5-8'] + player_data[player]['25/26 Games Against 5-8'])) if player_data[player]['24/25 Games Against 5-8'] + player_data[player]['25/26 Games Against 5-8'] != 0 else 0 
-        player_data[player]['Goals per Game Against 9-12'] = float((player_data[player]['24/25 Goals Against 9-12'] + player_data[player]['25/26 Goals Against 9-12'])/(player_data[player]['24/25 Games Against 9-12'] + player_data[player]['25/26 Games Against 9-12'])) if player_data[player]['24/25 Games Against 9-12'] + player_data[player]['25/26 Games Against 9-12'] != 0 else 0
-        player_data[player]['Goals Conceded per Game Against 9-12'] = float((player_data[player]['24/25 Goals Conceded Against 9-12'] + player_data[player]['25/26 Goals Conceded Against 9-12'])/(player_data[player]['24/25 Games Against 9-12'] + player_data[player]['25/26 Games Against 9-12'])) if player_data[player]['24/25 Games Against 9-12'] + player_data[player]['25/26 Games Against 9-12'] != 0 else 0
-        player_data[player]['Goals per Game Against 13-16'] = float((player_data[player]['24/25 Goals Against 13-16'] + player_data[player]['25/26 Goals Against 13-16'])/(player_data[player]['24/25 Games Against 13-16'] + player_data[player]['25/26 Games Against 13-16'])) if player_data[player]['24/25 Games Against 13-16'] + player_data[player]['25/26 Games Against 13-16'] != 0 else 0
-        player_data[player]['Goals Conceded per Game Against 13-16'] = float((player_data[player]['24/25 Goals Conceded Against 13-16'] + player_data[player]['25/26 Goals Conceded Against 13-16'])/(player_data[player]['24/25 Games Against 13-16'] + player_data[player]['25/26 Games Against 13-16'])) if player_data[player]['24/25 Games Against 13-16'] + player_data[player]['25/26 Games Against 13-16'] != 0 else 0
-        player_data[player]['Goals per Game Against 17-20'] = float((player_data[player]['24/25 Goals Against 17-20'] + player_data[player]['25/26 Goals Against 17-20'])/(player_data[player]['24/25 Games Against 17-20'] + player_data[player]['25/26 Games Against 17-20'])) if player_data[player]['24/25 Games Against 17-20'] + player_data[player]['25/26 Games Against 17-20'] != 0 else 0
-        player_data[player]['Goals Conceded per Game Against 17-20'] = float((player_data[player]['24/25 Goals Conceded Against 17-20'] + player_data[player]['25/26 Goals Conceded Against 17-20'])/(player_data[player]['24/25 Games Against 17-20'] + player_data[player]['25/26 Games Against 17-20'])) if player_data[player]['24/25 Games Against 17-20'] + player_data[player]['25/26 Games Against 17-20'] != 0 else 0
+        player_data[player]['Goals per Game Against 1-4'] = float((player_data[player]['24/25 Goals Against 1-4'] + player_data[player]['25/26 Goals Against 1-4'])/(player_data[player]['24/25 Games Against 1-4'] + player_data[player]['25/26 Games Against 1-4'])) if player_data[player]['24/25 Games Against 1-4'] + player_data[player]['25/26 Games Against 1-4'] != 0 else None
+        player_data[player]['Goals Conceded per Game Against 1-4'] = float((player_data[player]['24/25 Goals Conceded Against 1-4'] + player_data[player]['25/26 Goals Conceded Against 1-4'])/(player_data[player]['24/25 Games Against 1-4'] + player_data[player]['25/26 Games Against 1-4'])) if player_data[player]['24/25 Games Against 1-4'] + player_data[player]['25/26 Games Against 1-4'] != 0 else None
+        player_data[player]['Goals per Game Against 5-8'] = float((player_data[player]['24/25 Goals Against 5-8'] + player_data[player]['25/26 Goals Against 5-8'])/(player_data[player]['24/25 Games Against 5-8'] + player_data[player]['25/26 Games Against 5-8'])) if player_data[player]['24/25 Games Against 5-8'] + player_data[player]['25/26 Games Against 5-8'] != 0 else None
+        player_data[player]['Goals Conceded per Game Against 5-8'] = float((player_data[player]['24/25 Goals Conceded Against 5-8'] + player_data[player]['25/26 Goals Conceded Against 5-8'])/(player_data[player]['24/25 Games Against 5-8'] + player_data[player]['25/26 Games Against 5-8'])) if player_data[player]['24/25 Games Against 5-8'] + player_data[player]['25/26 Games Against 5-8'] != 0 else None
+        player_data[player]['Goals per Game Against 9-12'] = float((player_data[player]['24/25 Goals Against 9-12'] + player_data[player]['25/26 Goals Against 9-12'])/(player_data[player]['24/25 Games Against 9-12'] + player_data[player]['25/26 Games Against 9-12'])) if player_data[player]['24/25 Games Against 9-12'] + player_data[player]['25/26 Games Against 9-12'] != 0 else None
+        player_data[player]['Goals Conceded per Game Against 9-12'] = float((player_data[player]['24/25 Goals Conceded Against 9-12'] + player_data[player]['25/26 Goals Conceded Against 9-12'])/(player_data[player]['24/25 Games Against 9-12'] + player_data[player]['25/26 Games Against 9-12'])) if player_data[player]['24/25 Games Against 9-12'] + player_data[player]['25/26 Games Against 9-12'] != 0 else None
+        player_data[player]['Goals per Game Against 13-16'] = float((player_data[player]['24/25 Goals Against 13-16'] + player_data[player]['25/26 Goals Against 13-16'])/(player_data[player]['24/25 Games Against 13-16'] + player_data[player]['25/26 Games Against 13-16'])) if player_data[player]['24/25 Games Against 13-16'] + player_data[player]['25/26 Games Against 13-16'] != 0 else None
+        player_data[player]['Goals Conceded per Game Against 13-16'] = float((player_data[player]['24/25 Goals Conceded Against 13-16'] + player_data[player]['25/26 Goals Conceded Against 13-16'])/(player_data[player]['24/25 Games Against 13-16'] + player_data[player]['25/26 Games Against 13-16'])) if player_data[player]['24/25 Games Against 13-16'] + player_data[player]['25/26 Games Against 13-16'] != 0 else None
+        player_data[player]['Goals per Game Against 17-20'] = float((player_data[player]['24/25 Goals Against 17-20'] + player_data[player]['25/26 Goals Against 17-20'])/(player_data[player]['24/25 Games Against 17-20'] + player_data[player]['25/26 Games Against 17-20'])) if player_data[player]['24/25 Games Against 17-20'] + player_data[player]['25/26 Games Against 17-20'] != 0 else None
+        player_data[player]['Goals Conceded per Game Against 17-20'] = float((player_data[player]['24/25 Goals Conceded Against 17-20'] + player_data[player]['25/26 Goals Conceded Against 17-20'])/(player_data[player]['24/25 Games Against 17-20'] + player_data[player]['25/26 Games Against 17-20'])) if player_data[player]['24/25 Games Against 17-20'] + player_data[player]['25/26 Games Against 17-20'] != 0 else None
 
     return team_data, player_data
 
@@ -1358,7 +1358,9 @@ def add_probs_to_dict(
         print("Couldn't get probability for ", odd_type, " ", e)
 
 def calc_specific_probs(
-    player_dict: dict
+    player_dict: dict,
+    team_stats_dict: dict,
+    player_stats_dict: dict
 ) -> None:
     """
     Calculate average assists, goals, and saves for each player using bookmaker and historical data.
@@ -1404,9 +1406,12 @@ def calc_specific_probs(
                 player_dict[player]["xG by Bookmaker Odds"].append(expected_goals)
 
             for t_gsa, opp in zip_longest(total_goals_historical, opponents, fillvalue=0):
+                opp_pos = team_stats_dict[opp].get("League Position", 21)
+                opp_pos_range = get_pos_range(opp_pos)
+                goals_per_game_against_range = player_stats_dict[player].get(f"Goals per Game Against {opp_pos_range}", None)
                 # On average, the assists per goal scored ratio is rougly 0.70 in the Premier League 
                 ave_ass = ((ass_share * 0.70 * t_gsa) + xa_per_game) / 2 if t_gsa != 0 else xa_per_game
-                ave_g = ((((goal_share + xg_share) / 2) * t_gsa) + xg_per_game) / 2 if t_gsa != 0 and goal_share != 0 else (xg_share * t_gsa + xg_per_game) / 2 if t_gsa != 0 else xg_per_game
+                ave_g = ((((goal_share + xg_share) / 2) * t_gsa) + xg_per_game + goals_per_game_against_range) / 3 if t_gsa != 0 and goal_share != 0 and goals_per_game_against_range is not None else (xg_share * t_gsa + xg_per_game + goals_per_game_against_range) / 3 if t_gsa != 0 and goals_per_game_against_range is not None else (goals_per_game_against_range + xg_per_game) / 2 if goals_per_game_against_range is not None else xg_per_game
                 player_dict[player]["xA by Historical Data"].append(ave_ass)
                 player_dict[player]["xG by Historical Data"].append(ave_g)
 
@@ -1595,50 +1600,50 @@ def calc_team_xgs(
     home_pos_range = get_pos_range(team_stats_dict[home_team]['League Position'])
     away_pos_range = get_pos_range(team_stats_dict[away_team]['League Position'])
 
-    home_goals_p90_24_25 = team_stats_dict[home_team]['24/25 Goals per Home Game']
-    away_goals_p90_24_25 = team_stats_dict[away_team]['24/25 Goals per Away Game']
-    home_goals_conceded_p90_24_25 = team_stats_dict[home_team]['24/25 Goals Conceded per Home Game']
-    away_goals_conceded_p90_24_25 = team_stats_dict[away_team]['24/25 Goals Conceded per Away Game']
+    team_home_goals_p90_24_25 = team_stats_dict[home_team]['24/25 Goals per Home Game']
+    team_away_goals_p90_24_25 = team_stats_dict[away_team]['24/25 Goals per Away Game']
+    team_home_goals_conceded_p90_24_25 = team_stats_dict[home_team]['24/25 Goals Conceded per Home Game']
+    team_away_goals_conceded_p90_24_25 = team_stats_dict[away_team]['24/25 Goals Conceded per Away Game']
 
-    home_goals_p90_25_26 = team_stats_dict[home_team]['25/26 Goals per Home Game']
-    away_goals_p90_25_26 = team_stats_dict[away_team]['25/26 Goals per Away Game']
-    home_goals_conceded_p90_25_26 = team_stats_dict[home_team]['25/26 Goals Conceded per Home Game']
-    away_goals_conceded_p90_25_26 = team_stats_dict[away_team]['25/26 Goals Conceded per Away Game']
+    team_home_goals_p90_25_26 = team_stats_dict[home_team]['25/26 Goals per Home Game']
+    team_away_goals_p90_25_26 = team_stats_dict[away_team]['25/26 Goals per Away Game']
+    team_home_goals_conceded_p90_25_26 = team_stats_dict[home_team]['25/26 Goals Conceded per Home Game']
+    team_away_goals_conceded_p90_25_26 = team_stats_dict[away_team]['25/26 Goals Conceded per Away Game']
 
-    home_weighted_goals_p90 = (home_goals_p90_24_25 + 2 * home_goals_p90_25_26) / 3 if home_goals_p90_24_25 >= 0 else home_goals_p90_25_26
-    away_weighted_goals_p90 = (away_goals_p90_24_25 + 2 * away_goals_p90_25_26) / 3 if away_goals_p90_24_25 >= 0 else away_goals_p90_25_26
-    home_weighted_goals_conceded_p90 = (home_goals_conceded_p90_24_25 + 2 * home_goals_conceded_p90_25_26) / 3 if home_goals_conceded_p90_24_25 >= 0 else home_goals_conceded_p90_25_26
-    away_weighted_goals_conceded_p90 = (away_goals_conceded_p90_24_25 + 2 * away_goals_conceded_p90_25_26) / 3 if away_goals_conceded_p90_24_25 >= 0 else away_goals_conceded_p90_25_26
+    team_home_weighted_goals_p90 = (team_home_goals_p90_24_25 + 2 * team_home_goals_p90_25_26) / 3 if team_home_goals_p90_24_25 >= 0 else team_home_goals_p90_25_26
+    team_away_weighted_goals_p90 = (team_away_goals_p90_24_25 + 2 * team_away_goals_p90_25_26) / 3 if team_away_goals_p90_24_25 >= 0 else team_away_goals_p90_25_26
+    team_home_weighted_goals_conceded_p90 = (team_home_goals_conceded_p90_24_25 + 2 * team_home_goals_conceded_p90_25_26) / 3 if team_home_goals_conceded_p90_24_25 >= 0 else team_home_goals_conceded_p90_25_26
+    team_away_weighted_goals_conceded_p90 = (team_away_goals_conceded_p90_24_25 + 2 * team_away_goals_conceded_p90_25_26) / 3 if team_away_goals_conceded_p90_24_25 >= 0 else team_home_weighted_goals_conceded_p90
 
     home_conceded_against_string = f"Goals Conceded per Game Against {away_pos_range}"
     away_conceded_against_string = f"Goals Conceded per Game Against {home_pos_range}"
     home_scored_against_string = f"Goals per Game Against {away_pos_range}"
     away_scored_against_string = f"Goals per Game Against {home_pos_range}"
 
-    home_conceded_against_24_25 = team_stats_dict[home_team][f"24/25 {home_conceded_against_string}"]
-    away_conceded_against_24_25 = team_stats_dict[away_team][f"24/25 {away_conceded_against_string}"]
-    home_scored_against_24_25 = team_stats_dict[home_team][f"24/25 {home_scored_against_string}"]
-    away_scored_against_24_25 = team_stats_dict[away_team][f"24/25 {away_scored_against_string}"]
+    team_home_conceded_against_24_25 = team_stats_dict[home_team][f"24/25 {home_conceded_against_string}"]
+    team_away_conceded_against_24_25 = team_stats_dict[away_team][f"24/25 {away_conceded_against_string}"]
+    team_home_scored_against_24_25 = team_stats_dict[home_team][f"24/25 {home_scored_against_string}"]
+    team_away_scored_against_24_25 = team_stats_dict[away_team][f"24/25 {away_scored_against_string}"]
 
-    home_conceded_against_25_26 = team_stats_dict[home_team][f"25/26 {home_conceded_against_string}"]
-    away_conceded_against_25_26 = team_stats_dict[away_team][f"25/26 {away_conceded_against_string}"]
-    home_scored_against_25_26 = team_stats_dict[home_team][f"25/26 {home_scored_against_string}"]
-    away_scored_against_25_26 = team_stats_dict[away_team][f"25/26 {away_scored_against_string}"]
+    team_home_conceded_against_25_26 = team_stats_dict[home_team][f"25/26 {home_conceded_against_string}"]
+    team_away_conceded_against_25_26 = team_stats_dict[away_team][f"25/26 {away_conceded_against_string}"]
+    team_home_scored_against_25_26 = team_stats_dict[home_team][f"25/26 {home_scored_against_string}"]
+    team_away_scored_against_25_26 = team_stats_dict[away_team][f"25/26 {away_scored_against_string}"]
 
-    home_weighted_conceded_against = (home_conceded_against_24_25 + 3 * home_conceded_against_25_26) / 4 if home_conceded_against_24_25 >= 0 else home_conceded_against_25_26
-    away_weighted_conceded_against = (away_conceded_against_24_25 + 3 * away_conceded_against_25_26) / 4 if away_conceded_against_24_25 >= 0 else away_conceded_against_25_26
-    home_weighted_scored_against = (home_scored_against_24_25 + 3 * home_scored_against_25_26) / 4 if home_scored_against_24_25 >= 0 else home_scored_against_25_26
-    away_weighted_scored_against = (away_scored_against_24_25 + 3 * away_scored_against_25_26) / 4 if away_scored_against_24_25 >= 0 else away_scored_against_25_26
+    team_home_weighted_conceded_against = (team_home_conceded_against_24_25 + 3 * team_home_conceded_against_25_26) / 4 if team_home_conceded_against_24_25 >= 0 else team_home_conceded_against_25_26
+    team_away_weighted_conceded_against = (team_away_conceded_against_24_25 + 3 * team_away_conceded_against_25_26) / 4 if team_away_conceded_against_24_25 >= 0 else team_away_conceded_against_25_26
+    team_home_weighted_scored_against = (team_home_scored_against_24_25 + 3 * team_home_scored_against_25_26) / 4 if team_home_scored_against_24_25 >= 0 else team_home_scored_against_25_26
+    team_away_weighted_scored_against = (team_away_scored_against_24_25 + 3 * team_away_scored_against_25_26) / 4 if team_away_scored_against_24_25 >= 0 else team_away_scored_against_25_26
 
     home_xgc_against_string = f"xGC per Game Against {away_pos_range}"
     away_xgc_against_string = f"xGC per Game Against {home_pos_range}"
     home_xg_against_string = f"xG per Game Against {away_pos_range}"
     away_xg_against_string = f"xG per Game Against {home_pos_range}"
 
-    home_goals = (home_weighted_goals_p90 + 1.5 * home_weighted_scored_against + 1.5 * team_stats_dict[home_team][home_xg_against_string] + team_stats_dict[home_team]['xG per Home Game']) / 5
-    away_goals = (away_weighted_goals_p90 + 1.5 * away_weighted_scored_against + 1.5 * team_stats_dict[away_team][away_xg_against_string] + team_stats_dict[away_team]['xG per Away Game']) / 5
-    home_goals_conceded = (home_weighted_goals_conceded_p90 + 1.5 * home_weighted_conceded_against + 1.5 * team_stats_dict[home_team][home_xgc_against_string] + team_stats_dict[home_team]['xGC per Home Game']) / 5
-    away_goals_conceded = (away_weighted_goals_conceded_p90 + 1.5 * away_weighted_conceded_against + 1.5 * team_stats_dict[away_team][away_xgc_against_string] + team_stats_dict[away_team]['xGC per Away Game']) / 5
+    home_goals = (team_home_weighted_goals_p90 + 1.5 * team_home_weighted_scored_against + 1.5 * team_stats_dict[home_team][home_xg_against_string] + team_stats_dict[home_team]['xG per Home Game']) / 5
+    away_goals = (team_away_weighted_goals_p90 + 1.5 * team_away_weighted_scored_against + 1.5 * team_stats_dict[away_team][away_xg_against_string] + team_stats_dict[away_team]['xG per Away Game']) / 5
+    home_goals_conceded = (team_home_weighted_goals_conceded_p90 + 1.5 * team_home_weighted_conceded_against + 1.5 * team_stats_dict[home_team][home_xgc_against_string] + team_stats_dict[home_team]['xGC per Home Game']) / 5
+    away_goals_conceded = (team_away_weighted_goals_conceded_p90 + 1.5 * team_away_weighted_conceded_against + 1.5 * team_stats_dict[away_team][away_xgc_against_string] + team_stats_dict[away_team]['xGC per Away Game']) / 5
 
     home_xg = (home_goals + away_goals_conceded) / 2
     away_xg = (away_goals + home_goals_conceded) / 2
@@ -1984,7 +1989,7 @@ def initialize_predicted_points_df(all_odds_dict, fixtures, start_gw, saves_butt
                     if player_dict[player].get('Team', ['Unknown'])[0] == away_team:
                         player_dict[player]['Clean Sheet Probability by Stats Betting Market'].append(away_cs_prob / (1 + away_margin))
     
-    calc_specific_probs(player_dict)
+    calc_specific_probs(player_dict, team_stats_dict, player_stats_dict)
     if bps_button:
         with st.spinner("Calculating predicted bonus points..."):
             calc_avg_bps(player_dict, saves_button)
