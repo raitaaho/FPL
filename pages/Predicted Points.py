@@ -1726,7 +1726,7 @@ def calc_points(player_dict: dict, saves_button: bool) -> None:
             opponents = odds.get("Opponent", [])
             number_of_games = len(odds.get("Opponent", [])) if team != 'Unknown' else 1
             mins_per_game = odds.get("Minutes per Game", [90])[0]
-            mins_played_points = 1 + min(mins_per_game/70, 1) if mins_per_game >= 60 else 1 if mins_per_game > 0 else 0
+            mins_played_points = 1 + min(mins_per_game/70, 1) if mins_per_game >= 45 else 1 if mins_per_game > 0 else 0
             goals_average_bookmaker = odds.get("xG by Bookmaker Odds", [])
             goals_average_historical = odds.get("xG by Historical Data", [])
             goals_average = []
