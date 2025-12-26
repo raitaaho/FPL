@@ -796,7 +796,7 @@ def construct_team_and_player_data(
                 player_match_xg = player_match.get(gw, 0)
                 home_team_xg += player_match_xg
 
-                player = " ".join(prepare_name(player_id_to_name[pair['element']]))
+                player = " ".join(prepare_name(player_id_to_name[player_id]))
                 player_data[player]['xG for Current Team'] += player_match_xg
 
         for player_id in team_players[away_team_id]:
@@ -805,7 +805,7 @@ def construct_team_and_player_data(
                 player_match_xg = player_match.get(gw, 0)
                 away_team_xg += player_match_xg
 
-                player = " ".join(prepare_name(player_id_to_name[pair['element']]))
+                player = " ".join(prepare_name(player_id_to_name[player_id]))
                 player_data[player]['xG for Current Team'] += player_match_xg
 
         home_pos_range = get_pos_range(home_pos)
