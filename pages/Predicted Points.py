@@ -394,6 +394,7 @@ def get_player_template(team_name: str, games: int) -> dict:
     """
     player_template = {
         'Team': team_name,
+        'xg for Current Team': 0,
         '25/26 Games Played': games,
         '24/25 Home Games Played for Current Team': 0,
         '24/25 Away Games Played for Current Team': 0,
