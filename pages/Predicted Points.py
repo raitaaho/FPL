@@ -1610,10 +1610,10 @@ def calc_team_xgs(
     team_home_goals_conceded_p90_25_26 = team_stats_dict[home_team]['25/26 Goals Conceded per Home Game']
     team_away_goals_conceded_p90_25_26 = team_stats_dict[away_team]['25/26 Goals Conceded per Away Game']
 
-    team_home_weighted_goals_p90 = (team_home_goals_p90_24_25 + 2 * team_home_goals_p90_25_26) / 3 if team_home_goals_p90_24_25 >= 0 else team_home_goals_p90_25_26
-    team_away_weighted_goals_p90 = (team_away_goals_p90_24_25 + 2 * team_away_goals_p90_25_26) / 3 if team_away_goals_p90_24_25 >= 0 else team_away_goals_p90_25_26
-    team_home_weighted_goals_conceded_p90 = (team_home_goals_conceded_p90_24_25 + 2 * team_home_goals_conceded_p90_25_26) / 3 if team_home_goals_conceded_p90_24_25 >= 0 else team_home_goals_conceded_p90_25_26
-    team_away_weighted_goals_conceded_p90 = (team_away_goals_conceded_p90_24_25 + 2 * team_away_goals_conceded_p90_25_26) / 3 if team_away_goals_conceded_p90_24_25 >= 0 else team_home_weighted_goals_conceded_p90
+    team_home_weighted_goals_p90 = (team_home_goals_p90_24_25 + 3 * team_home_goals_p90_25_26) / 4 if team_home_goals_p90_24_25 >= 0 else team_home_goals_p90_25_26
+    team_away_weighted_goals_p90 = (team_away_goals_p90_24_25 + 3 * team_away_goals_p90_25_26) / 4 if team_away_goals_p90_24_25 >= 0 else team_away_goals_p90_25_26
+    team_home_weighted_goals_conceded_p90 = (team_home_goals_conceded_p90_24_25 + 3 * team_home_goals_conceded_p90_25_26) / 4 if team_home_goals_conceded_p90_24_25 >= 0 else team_home_goals_conceded_p90_25_26
+    team_away_weighted_goals_conceded_p90 = (team_away_goals_conceded_p90_24_25 + 3 * team_away_goals_conceded_p90_25_26) / 4 if team_away_goals_conceded_p90_24_25 >= 0 else team_away_goals_conceded_p90_25_26
 
     home_conceded_against_string = f"Goals Conceded per Game Against {away_pos_range}"
     away_conceded_against_string = f"Goals Conceded per Game Against {home_pos_range}"
