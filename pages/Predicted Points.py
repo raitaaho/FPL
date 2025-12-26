@@ -1073,7 +1073,7 @@ def construct_team_and_player_data(
         player_data[player]['Share of Goals by Current Team'] = float(share_of_team_goals)
         player_data[player]['Share of Assists by Current Team'] = float(share_of_team_assists)
 
-        share_of_team_xg = (player_data[player]['xG for Current Team'] * (1 + ((team_games_25_26 - games_for_team_25_26) / team_games_25_26))) / team_data[team]['25/26 Home xG'] + team_data[team]['25/26 Away xG'] if team_games_25_26 != 0 and (team_data[team]['25/26 Home xG'] + team_data[team]['25/26 Away xG']) != 0 else 0
+        share_of_team_xg = (player_data[player]['xG for Current Team'] * (1 + ((team_games_25_26 - games_for_team_25_26) / team_games_25_26))) / (team_data[team]['25/26 Home xG'] + team_data[team]['25/26 Away xG']) if team_games_25_26 != 0 and (team_data[team]['25/26 Home xG'] + team_data[team]['25/26 Away xG']) != 0 else 0
         player_data[player]['Share of xG by Current Team'] = float(share_of_team_xg)
 
         player_data[player]['Goals per Home Game'] = float(player_data[player]['Home Goals for Current Team']/player_data[player]['Home Games Played for Current Team']) if player_data[player]['Home Games Played for Current Team'] != 0 else 0
