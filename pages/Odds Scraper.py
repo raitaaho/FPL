@@ -173,7 +173,7 @@ def fetch_all_match_links(
         matches_button = wait.until(EC.element_to_be_clickable((By.XPATH, "//button[contains(text(), 'Matches')]")))
         matches_button.click()
     except Exception as e:  
-        print("Couldn't click Matches tab ", e)
+        st.write("Couldn't click Matches tab ", e)
         driver.save_screenshot('screenshot.png')
         st.image("screenshot.png", caption="Screen")
 
@@ -199,7 +199,7 @@ def fetch_all_match_links(
             match_link = driver.find_element(By.XPATH, f"//a[@title='{match_title}'][@href]")
             href = match_link.get_attribute("href")
         except NoSuchElementException:
-            print(f"Match link for {match_title} not found.")
+            st.write(f"Match link for {match_title} not found.")
             href = "Link not found"
         matches_details[match_title] = {}
         matches_details[match_title]['home_team'] = home_team
@@ -327,7 +327,7 @@ def fetch_odds(match_name: str, odd_type: str, driver: "webdriver.Chrome") -> ty
                     print("Couldn't get innerText-attribute for", odd_type, "outcome", e)                  
         except Exception as e:
             error = "Couldn't click Compare All Odds"
-            print("Couldn't click Compare All Odds on", odd_type, e)
+            st.write("Couldn't click Compare All Odds on", odd_type, e)
         try:
             if header.get_attribute("aria-expanded") == "true":
                 driver.execute_script('arguments[0].click()', header)
@@ -394,7 +394,7 @@ def scrape_all_matches(match_dict, driver):
             except TimeoutException:
                 print('Ad did not pop up')
         except Exception as e:
-            print("Couldn't open link ", link, " ", e)
+            st.write("Couldn't open link ", link, " ", e)
             match_progress_bar.progress(int((match_counter / total_matches) * 100))
             continue
 
