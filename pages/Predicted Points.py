@@ -2105,7 +2105,7 @@ if odds_json_files:
             st.warning(f"Could not open all odds file {latest_odds_path} found in Github repository.")
             all_odds_dict = {}
 else:
-    st.warning("Latest scraped odds file for next gameweek not found in Github repository, please upload odds file for the next gameweek.")
+    st.warning(f"Latest scraped odds file for next gameweek ({next_gw}) not found in Github repository, please upload odds file for the next gameweek.")
     uploaded_odds = st.file_uploader("Choose a file", type="json")
     if uploaded_odds:
         uploaded_odds_name = uploaded_odds.name
