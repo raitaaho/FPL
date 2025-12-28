@@ -2075,7 +2075,7 @@ if odds_json_files:
     latest_odds_path = max(odds_json_files)
     latest_odds_name = latest_odds_path.replace(fixtures_dir, '')
     git_parts = latest_odds_name.replace(".json", '').split('_')
-    git_timestamp = f"{git_parts[3][2:]}.{git_parts[3][:2]} {git_parts[4][:2]}:{git_parts[4][2:]}"
+    git_timestamp = f"{git_parts[3][2:4]}.{git_parts[3][:2]} {git_parts[3][4:6]}:{git_parts[3][6:8]}"
     st.info(f"Github repository's latest scraped odds file for next gameweek ({next_gw}) has a timestamp of {git_timestamp}")
     upload_new_odds_button = st.toggle("Upload more recent odds file for predicted points calculation",
     value=False)

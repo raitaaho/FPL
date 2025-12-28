@@ -587,7 +587,7 @@ def click_download():
 if st.session_state.scraping_done and st.session_state.scraped_data:
     json_data = json.dumps(st.session_state.scraped_data, indent=4)
     current_time = datetime.now()
-    filename = f"gw{next_gw}_all_odds_{current_time.strftime('%m')}{current_time.strftime('%d')}_{current_time.strftime('%H')}{current_time.strftime('%M')}.json"
+    filename = f"gw{next_gw}_all_odds_{current_time.strftime('%m')}{current_time.strftime('%d')}{current_time.strftime('%H')}{current_time.strftime('%M')}.json"
 
     container.success(f"✅ Scraping completed in **{st.session_state.scrape_time}** minutes.")
     container.download_button(
