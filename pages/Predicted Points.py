@@ -2085,7 +2085,7 @@ if odds_json_files:
             uploaded_odds_name = uploaded_odds.name
             parts = uploaded_odds_name.replace(".json", '').split('_')
             gw = parts[0].replace("gw", '')
-            timestamp = f"{parts[3][2:]}.{parts[3][:2]} {parts[4][:2]}:{parts[4][2:]}"
+            timestamp = f"{parts[3][2:4]}.{parts[3][:2]} {parts[3][4:6]}:{parts[3][6:8]}"
             if next_gw == int(gw):
                 try:
                     all_odds_dict = json.load(uploaded_odds)
@@ -2111,7 +2111,7 @@ else:
         uploaded_odds_name = uploaded_odds.name
         parts = uploaded_odds_name.replace(".json", '').split('_')
         gw = parts[0].replace("gw", '')
-        timestamp = f"{parts[3][2:]}.{parts[3][:2]} {parts[4][:2]}:{parts[4][2:]}"
+        timestamp = f"{parts[3][2:4]}.{parts[3][:2]} {parts[3][4:6]}:{parts[3][6:8]}"
         if next_gw == int(gw):
             try:
                 all_odds_dict = json.load(uploaded_odds)
