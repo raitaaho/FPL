@@ -790,6 +790,9 @@ def construct_team_and_player_data(
         home_goals = fixture['team_h_score']
         away_goals = fixture['team_a_score']
 
+        home_pos_range = get_pos_range(home_pos)
+        away_pos_range = get_pos_range(away_pos)
+
         for player_id in team_players[home_team_id]:
             player_match = player_xgs.get(player_id, {})
             if player_match.get(gw, -1) != -1:
@@ -811,9 +814,6 @@ def construct_team_and_player_data(
                     player = " ".join(prepare_name(player_id_to_name[player_id]))
                     if player in player_data:
                         player_data[player]['xG for Current Team'] += player_match_xg
-
-        home_pos_range = get_pos_range(home_pos)
-        away_pos_range = get_pos_range(away_pos)
 
         home_xg_against_string = f"25/26 xG Against {away_pos_range}"
         home_xgc_against_string = f"25/26 xGC Against {away_pos_range}"
@@ -2076,7 +2076,7 @@ if odds_json_files:
     latest_odds_name = latest_odds_path.replace(fixtures_dir, '')
     git_parts = latest_odds_name.replace(".json", '').split('_')
     git_timestamp = f"{git_parts[3][2:]}.{git_parts[3][:2]} {git_parts[4][:2]}:{git_parts[4][2:]}"
-    st.info(f"Github repository's latest scraped odds file for next gameweek has a timestamp of {git_timestamp}")
+    st.info(f"Github repository's latest scraped odds file for next gameweek ({next_gw}) has a timestamp of {git_timestamp}")
     upload_new_odds_button = st.toggle("Upload more recent odds file for predicted points calculation",
     value=False)
     if upload_new_odds_button:
