@@ -233,7 +233,7 @@ def player_dict_constructor(
         xa_25_26 = float(player["expected_assists"])
         saves_25_26 = int(player.get("saves", 0))
 
-        games_played_for_current_team_24_25 = player_stats_dict[player_name]['24/25 Home Games Played for Current Team'] + player_stats_dict[player_name]['24/25 Away Games Played for Current Team']
+        games_played_for_current_team_24_25 = player_stats_dict[player_name]['24/25 Games Played']
 
         share_of_goals_scored = player_stats_dict[player_name]['Share of Goals by Current Team']
         share_of_assists = player_stats_dict[player_name]['Share of Assists by Current Team']
@@ -1116,12 +1116,12 @@ def construct_team_and_player_data(
         games_for_team_24_25 = player_data[player]['24/25 Home Games Played for Current Team'] + player_data[player]['24/25 Away Games Played for Current Team'] 
         games_for_team_25_26 = player_data[player]['25/26 Home Games Played for Current Team'] + player_data[player]['25/26 Away Games Played for Current Team']
         full_90s_played_25_26_for_team = math.floor(player_data[player].get('25/26 Minutes Played for Current Team', 0) / 90)
-        player_data[player]['25/26 Games Played'] = full_90s_played_25_26_for_team
+        player_data[player]['25/26 Games Played'] = full_90s_played_25_26_for_team if player_data[player].get('25/26 Minutes Played for Current Team', 0) > 90 else games_for_team_25_26
 
         full_90s_played_24_25_for_team = math.floor(player_data[player].get('24/25 Minutes Played', 0) / 90)
-        player_data[player]['24/25 Games Played'] = full_90s_played_24_25_for_team
+        player_data[player]['24/25 Games Played'] = full_90s_played_24_25_for_team if player_data[player].get('24/25 Minutes Played', 0) > 90 else games_for_team_24_25
 
-        player_data[player]['24/25 Defensive Contributions per Game'] = player_data[player]['24/25 Defensive Contributions'] / full_90s_played_24_25_for_team if full_90s_played_24_25_for_team > 0 else 0
+        player_data[player]['24/25 Defensive Contributions per Game'] = player_data[player]['24/25 Defensive Contributions'] / max(full_90s_played_24_25_for_team, games_for_team_24_25) if max(full_90s_played_24_25_for_team, games_for_team_24_25) > 0 else 0
 
         goals_for_team_24_25 = player_data[player]['24/25 Home Goals for Current Team'] + player_data[player]['24/25 Away Goals for Current Team']
         goals_for_team_25_26 = player_data[player]['25/26 Home Goals for Current Team'] + player_data[player]['25/26 Away Goals for Current Team']
