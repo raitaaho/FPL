@@ -1116,10 +1116,10 @@ def construct_team_and_player_data(
         games_for_team_24_25 = player_data[player]['24/25 Home Games Played for Current Team'] + player_data[player]['24/25 Away Games Played for Current Team'] 
         games_for_team_25_26 = player_data[player]['25/26 Home Games Played for Current Team'] + player_data[player]['25/26 Away Games Played for Current Team']
         full_90s_played_25_26_for_team = math.floor(player_data[player].get('25/26 Minutes Played for Current Team', 0) / 90)
-        player_data[player]['25/26 Games Played'] = full_90s_played_25_26_for_team if player_data[player].get('25/26 Minutes Played for Current Team', 0) > 90 else games_for_team_25_26
+        player_data[player]['25/26 Games Played'] = full_90s_played_25_26_for_team if player_data[player].get('25/26 Minutes Played for Current Team', 0) > 300 else games_for_team_25_26
 
         full_90s_played_24_25_for_team = math.floor(player_data[player].get('24/25 Minutes Played', 0) / 90)
-        player_data[player]['24/25 Games Played'] = full_90s_played_24_25_for_team if player_data[player].get('24/25 Minutes Played', 0) > 90 else games_for_team_24_25
+        player_data[player]['24/25 Games Played'] = full_90s_played_24_25_for_team if player_data[player].get('24/25 Minutes Played', 0) > 300 else games_for_team_24_25
 
         player_data[player]['24/25 Defensive Contributions per Game'] = player_data[player]['24/25 Defensive Contributions'] / max(full_90s_played_24_25_for_team, games_for_team_24_25) if max(full_90s_played_24_25_for_team, games_for_team_24_25) > 0 else 0
 
