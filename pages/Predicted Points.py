@@ -545,6 +545,7 @@ def construct_team_and_player_data(
                 player_xgi[player['id']] = {}
                 player_xgi[player['id']]['xg'] = {}
                 player_xgi[player['id']]['xa'] = {}
+                player_xgi[player['id']]['minutes'] = {}
 
         time.sleep(random.uniform(0, 0.2)) 
         response = requests.get(f"https://fantasy.premierleague.com/api/element-summary/{player['id']}/")
@@ -559,10 +560,12 @@ def construct_team_and_player_data(
         for match in prev_fixtures_data:
             xg = float(match.get("expected_goals", 0))
             xa = float(match.get("expected_assists", 0))
+            minutes = int(match.get("minutes", 0))
             gw = match.get("round", "0")
             if gw != "0":
                 player_xgi[player['id']]['xg'][gw] = xg
                 player_xgi[player['id']]['xa'][gw] = xa
+                player_xgi[player['id']]['minutes'][gw] = minutes
 
         name = " ".join(prepare_name(player_id_to_name[player['id']]))
         team_name_key = player['team'] if player['team'] is not None else ""
@@ -572,6 +575,7 @@ def construct_team_and_player_data(
             team_name = ""
 
         games_25_26 = 0
+        minutes_25_26 = 0
 
         minutes_24_25 = 0
         games_24_25 = 0
@@ -583,6 +587,7 @@ def construct_team_and_player_data(
         saves_24_25 = 0
         for fixture in prev_fixtures_data:
             if fixture.get('minutes', 0) > 0:
+                minutes_25_26 += int(fixture.get('minutes', 0))
                 games_25_26 += 1
 
         for season in prev_seasons_data:
@@ -597,6 +602,7 @@ def construct_team_and_player_data(
                 assists_24_25 = int(season.get('assists', 0))
                 saves_24_25 = int(season.get('saves', 0))
                 break
+
         player_data[name] = defaultdict(float)
         player_data[name].update(get_player_template(team_name, games_25_26))
         player_data[name]['24/25 Defensive Contributions'] = def_contributions_24_25
@@ -807,7 +813,6 @@ def construct_team_and_player_data(
             if player_match['xg'].get(gw, -1) != -1:
                 player_match_xg = player_match['xg'].get(gw, 0)
                 home_team_xg += player_match_xg
-    
                 if player_id in player_id_to_name:
                     player = " ".join(prepare_name(player_id_to_name[player_id]))
                     if player in player_data:
@@ -821,12 +826,18 @@ def construct_team_and_player_data(
                     if player in player_data:
                         player_data[player]['xA for Current Team'] += player_match_xa
 
+            if player_match['minutes'].get(gw, -1) != -1:
+                player_match_minutes = player_match['minutes'].get(gw, 0)
+                if player_id in player_id_to_name:
+                    player = " ".join(prepare_name(player_id_to_name[player_id]))
+                    if player in player_data:
+                        player_data[player]['25/26Minutes Played for Current Team'] += player_match_minutes
+
         for player_id in team_players[away_team_id]:
             player_match = player_xgi.get(player_id, {})
             if player_match['xg'].get(gw, -1) != -1:
                 player_match_xg = player_match['xg'].get(gw, 0)
                 away_team_xg += player_match_xg
-
                 if player_id in player_id_to_name:
                     player = " ".join(prepare_name(player_id_to_name[player_id]))
                     if player in player_data:
@@ -839,6 +850,13 @@ def construct_team_and_player_data(
                     player = " ".join(prepare_name(player_id_to_name[player_id]))
                     if player in player_data:
                         player_data[player]['xA for Current Team'] += player_match_xa
+
+            if player_match['minutes'].get(gw, -1) != -1:
+                player_match_minutes = player_match['minutes'].get(gw, 0)
+                if player_id in player_id_to_name:
+                    player = " ".join(prepare_name(player_id_to_name[player_id]))
+                    if player in player_data:
+                        player_data[player]['25/26 Minutes Played for Current Team'] += player_match_minutes
 
         home_xg_against_string = f"25/26 xG Against {away_pos_range}"
         home_xa_against_string = f"25/26 xA Against {away_pos_range}"
@@ -1097,6 +1115,7 @@ def construct_team_and_player_data(
 
         games_for_team_24_25 = player_data[player]['24/25 Home Games Played for Current Team'] + player_data[player]['24/25 Away Games Played for Current Team'] 
         games_for_team_25_26 = player_data[player]['25/26 Home Games Played for Current Team'] + player_data[player]['25/26 Away Games Played for Current Team']
+        full_90s_played_25_26 = math.floor(player_data[player].get('25/26 Minutes Played for Current Team', 0) / 90)
 
         full_90s_played_24_25 = math.floor(player_data[player].get('24/25 Minutes Played', 0) / 90)
         player_data[player]['24/25 Games Played'] = max(full_90s_played_24_25, games_for_team_24_25)
