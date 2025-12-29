@@ -1115,12 +1115,13 @@ def construct_team_and_player_data(
 
         games_for_team_24_25 = player_data[player]['24/25 Home Games Played for Current Team'] + player_data[player]['24/25 Away Games Played for Current Team'] 
         games_for_team_25_26 = player_data[player]['25/26 Home Games Played for Current Team'] + player_data[player]['25/26 Away Games Played for Current Team']
-        full_90s_played_25_26 = math.floor(player_data[player].get('25/26 Minutes Played for Current Team', 0) / 90)
+        full_90s_played_25_26_for_team = math.floor(player_data[player].get('25/26 Minutes Played for Current Team', 0) / 90)
+        player_data[player]['25/26 Games Played'] = full_90s_played_25_26_for_team
 
-        full_90s_played_24_25 = math.floor(player_data[player].get('24/25 Minutes Played', 0) / 90)
-        player_data[player]['24/25 Games Played'] = max(full_90s_played_24_25, games_for_team_24_25)
+        full_90s_played_24_25_for_team = math.floor(player_data[player].get('24/25 Minutes Played', 0) / 90)
+        player_data[player]['24/25 Games Played'] = full_90s_played_24_25_for_team
 
-        player_data[player]['24/25 Defensive Contributions per Game'] = player_data[player]['24/25 Defensive Contributions'] / max(full_90s_played_24_25, games_for_team_24_25) if max(full_90s_played_24_25, games_for_team_24_25) > 0 else 0
+        player_data[player]['24/25 Defensive Contributions per Game'] = player_data[player]['24/25 Defensive Contributions'] / full_90s_played_24_25_for_team if full_90s_played_24_25_for_team > 0 else 0
 
         goals_for_team_24_25 = player_data[player]['24/25 Home Goals for Current Team'] + player_data[player]['24/25 Away Goals for Current Team']
         goals_for_team_25_26 = player_data[player]['25/26 Home Goals for Current Team'] + player_data[player]['25/26 Away Goals for Current Team']
@@ -1129,19 +1130,19 @@ def construct_team_and_player_data(
         assists_for_team_25_26 = player_data[player]['25/26 Home Assists for Current Team'] + player_data[player]['25/26 Away Assists for Current Team']
 
         if games_for_team_24_25 == 0:
-            share_of_team_goals = (goals_for_team_25_26 * (1 + ((team_games_25_26 - games_for_team_25_26) / team_games_25_26))) / team_goals_25_26 if team_games_25_26 != 0 and team_goals_25_26 != 0 else 0
-            share_of_team_assists = (assists_for_team_25_26 * (1 + ((team_games_25_26 - games_for_team_25_26) / team_games_25_26))) / team_assists_25_26 if team_games_25_26 != 0 and team_assists_25_26 != 0 else 0
+            share_of_team_goals = (goals_for_team_25_26 * (1 + ((team_games_25_26 - full_90s_played_25_26_for_team) / team_games_25_26))) / team_goals_25_26 if team_games_25_26 != 0 and team_goals_25_26 != 0 else 0
+            share_of_team_assists = (assists_for_team_25_26 * (1 + ((team_games_25_26 - full_90s_played_25_26_for_team) / team_games_25_26))) / team_assists_25_26 if team_games_25_26 != 0 and team_assists_25_26 != 0 else 0
         else:
-            share_of_team_goals = ((goals_for_team_24_25 + goals_for_team_25_26) * (1 + (((38 + team_games_25_26) - (games_for_team_24_25 + games_for_team_25_26)) / (38 + team_games_25_26)))) / (team_goals_24_25 + team_goals_25_26) if team_games_25_26 != 0 and team_goals_24_25 + team_goals_25_26 != 0 else 0
-            share_of_team_assists = ((assists_for_team_24_25 + assists_for_team_25_26) * (1 + (((38 + team_games_25_26) - (games_for_team_24_25 + games_for_team_25_26)) / (38 + team_games_25_26)))) / (team_assists_24_25 + team_assists_25_26) if team_games_25_26 != 0 and team_assists_24_25 + team_assists_25_26 != 0 else 0
+            share_of_team_goals = ((goals_for_team_24_25 + goals_for_team_25_26) * (1 + (((38 + team_games_25_26) - (full_90s_played_24_25_for_team + full_90s_played_25_26_for_team)) / (38 + team_games_25_26)))) / (team_goals_24_25 + team_goals_25_26) if team_games_25_26 != 0 and team_goals_24_25 + team_goals_25_26 != 0 else 0
+            share_of_team_assists = ((assists_for_team_24_25 + assists_for_team_25_26) * (1 + (((38 + team_games_25_26) - (full_90s_played_24_25_for_team + full_90s_played_25_26_for_team)) / (38 + team_games_25_26)))) / (team_assists_24_25 + team_assists_25_26) if team_games_25_26 != 0 and team_assists_24_25 + team_assists_25_26 != 0 else 0
             
         player_data[player]['Share of Goals by Current Team'] = float(share_of_team_goals)
         player_data[player]['Share of Assists by Current Team'] = float(share_of_team_assists)
 
-        share_of_team_xg = (player_data[player]['xG for Current Team'] * (1 + ((team_games_25_26 - games_for_team_25_26) / team_games_25_26))) / team_xg if team_games_25_26 != 0 and team_xg != 0 else 0
+        share_of_team_xg = (player_data[player]['xG for Current Team'] * (1 + ((team_games_25_26 - full_90s_played_25_26_for_team) / team_games_25_26))) / team_xg if team_games_25_26 != 0 and team_xg != 0 else 0
         player_data[player]['Share of xG by Current Team'] = float(share_of_team_xg)
 
-        share_of_team_xa = (player_data[player]['xA for Current Team'] * (1 + ((team_games_25_26 - games_for_team_25_26) / team_games_25_26))) / team_xa if team_games_25_26 != 0 and team_xa != 0 else 0
+        share_of_team_xa = (player_data[player]['xA for Current Team'] * (1 + ((team_games_25_26 - full_90s_played_25_26_for_team) / team_games_25_26))) / team_xa if team_games_25_26 != 0 and team_xa != 0 else 0
         player_data[player]['Share of xA by Current Team'] = float(share_of_team_xa)
 
         player_data[player]['Goals per Home Game'] = float(player_data[player]['Home Goals for Current Team']/player_data[player]['Home Games Played for Current Team']) if player_data[player]['Home Games Played for Current Team'] != 0 else 0
@@ -1434,6 +1435,7 @@ def calc_specific_probs(
     for player, odds in player_dict.items():
         position = odds.get("Position", ["Unknown"])[0]
         opponents = odds.get("Opponent", [])
+        venue = odds.get("Venue", [])[0]
         anytime_prob = odds.get("Anytime Goalscorer Probability", [])
         two_or_more_prob = odds.get("To Score 2 Or More Goals Probability", [])
         hattrick_prob = odds.get("To Score A Hat-Trick Probability", [])
@@ -1447,9 +1449,16 @@ def calc_specific_probs(
         xa_share = odds.get("Share of xA by Current Team", [0])[0]
         total_goals_historical = odds.get('Team xG by Historical Data', [])
 
+        goals_per_home_game = player_stats_dict[player].get("Goals per Home Game", 0)
+        goals_per_away_game = player_stats_dict[player].get("Goals per Away Game", 0)
+
+        assists_per_home_game = player_stats_dict[player].get("Assists per Home Game", 0)
+        assists_per_away_game = player_stats_dict[player].get("Assists per Away Game", 0)
+
         xa_per_game_24_25 = odds.get("24/25 xA", [0])[0] / odds.get("24/25 Games Played", [0])[0] if odds.get("24/25 Games Played", [0])[0] > 0 else 0
         xa_per_game_25_26 =  odds.get("25/26 xA", [0])[0] / odds.get("25/26 Games Played", [0])[0] if odds.get("25/26 Games Played", [0])[0] > 0 else 0
         xa_per_game = (3 * xa_per_game_25_26 + xa_per_game_24_25) / 4 if odds.get("24/25 Games Played", [0])[0] > 0 and odds.get("25/26 Games Played", [0])[0] > 0 else xa_per_game_25_26 if odds.get("25/26 Games Played", [0])[0] > 0 else xa_per_game_24_25
+        
         xg_per_game_24_25 = odds.get("24/25 xG", [0])[0] / odds.get("24/25 Games Played", [0])[0] if odds.get("24/25 Games Played", [0])[0] > 0 else 0
         xg_per_game_25_26 =  odds.get("25/26 xG", [0])[0] / odds.get("25/26 Games Played", [0])[0] if odds.get("25/26 Games Played", [0])[0] > 0 else 0
         xg_per_game = (3 * xg_per_game_25_26 + xg_per_game_24_25) / 4 if odds.get("24/25 Games Played", [0])[0] > 0 and odds.get("25/26 Games Played", [0])[0] > 0 else xg_per_game_25_26 if odds.get("25/26 Games Played", [0])[0] > 0 else xg_per_game_24_25
@@ -1469,14 +1478,20 @@ def calc_specific_probs(
                 expected_goals = three_goals_prob * 3 + two_goals_prob * 2 + one_goal_prob
                 player_dict[player]["xG by Bookmaker Odds"].append(expected_goals)
 
-            for t_gsa, opp in zip_longest(total_goals_historical, opponents, fillvalue=0):
+            for t_gsa, opp, ven in zip_longest(total_goals_historical, opponents, venue, fillvalue=0):
                 opp_pos = team_stats_dict[opp].get("League Position", 21)
                 opp_pos_range = get_pos_range(opp_pos)
+                if ven == "Home":
+                    goals_per_game = goals_per_home_game
+                    assists_per_game = assists_per_home_game
+                else:
+                    goals_per_game = goals_per_away_game
+                    assists_per_game = assists_per_away_game
                 goals_per_game_against_range = player_stats_dict[player].get(f"Goals per Game Against {opp_pos_range}", None)
                 assists_per_game_against_range = player_stats_dict[player].get(f"Assists per Game Against {opp_pos_range}", None)
                 # On average, the assists per goal scored ratio is rougly 0.70 in the Premier League 
-                ave_ass = (3 * ((0.3 * ass_share + 0.7 * xa_share) * 0.70 * t_gsa) + 2 * xa_per_game + assists_per_game_against_range) / 6 if t_gsa != 0 and ass_share != 0 and assists_per_game_against_range is not None else (3 * (xa_share * 0.70 * t_gsa) + 2 * xa_per_game + assists_per_game_against_range) / 6 if t_gsa != 0 and assists_per_game_against_range is not None else (assists_per_game_against_range + 2 * xa_per_game) / 3 if assists_per_game_against_range is not None else xa_per_game
-                ave_g = (3 * ((0.3 * goal_share + 0.7 * xg_share) * t_gsa) + 2 * xg_per_game + goals_per_game_against_range) / 6 if t_gsa != 0 and goal_share != 0 and goals_per_game_against_range is not None else (3 * (xg_share * t_gsa) + 2 * xg_per_game + goals_per_game_against_range) / 6 if t_gsa != 0 and goals_per_game_against_range is not None else (goals_per_game_against_range + 2 * xg_per_game) / 3 if goals_per_game_against_range is not None else xg_per_game
+                ave_ass = (3 * ((0.3 * ass_share + 0.7 * xa_share) * 0.70 * t_gsa) + 2 * xa_per_game + assists_per_game + assists_per_game_against_range) / 7 if t_gsa != 0 and ass_share != 0 and assists_per_game_against_range is not None else (3 * (xa_share * 0.70 * t_gsa) + 2 * xa_per_game + assists_per_game + assists_per_game_against_range) / 7 if t_gsa != 0 and assists_per_game_against_range is not None else (assists_per_game + assists_per_game_against_range + 2 * xa_per_game) / 4 if assists_per_game_against_range is not None else (assists_per_game + 2 * xa_per_game) / 3
+                ave_g = (3 * ((0.3 * goal_share + 0.7 * xg_share) * t_gsa) + 2 * xg_per_game + goals_per_game + goals_per_game_against_range) / 7 if t_gsa != 0 and goal_share != 0 and goals_per_game_against_range is not None else (3 * (xg_share * t_gsa) + 2 * xg_per_game + goals_per_game + goals_per_game_against_range) / 7 if t_gsa != 0 and goals_per_game_against_range is not None else (goals_per_game + goals_per_game_against_range + 2 * xg_per_game) / 4 if goals_per_game_against_range is not None else (goals_per_game + 2 * xg_per_game) / 3
                 player_dict[player]["xA by Historical Data"].append(ave_ass)
                 player_dict[player]["xG by Historical Data"].append(ave_g)
 
@@ -1521,7 +1536,6 @@ def calc_avg_bps(
         try:
             # Get probabilities
             team = odds.get("Team", ["Unknown"])[0]
-    
             opponents = odds.get("Opponent", [])
             number_of_games = len(odds.get("Opponent", [])) if team != 'Unknown' else 1
             goals_average_bookmaker = odds.get("xG by Bookmaker Odds", [])
@@ -1956,8 +1970,10 @@ def initialize_predicted_points_df(all_odds_dict, fixtures, start_gw, saves_butt
         for player in player_dict:
             if player_dict[player].get('Team', ['Unknown'])[0] == home_team:
                 player_dict[player]['Opponent'].append(away_team)
+                player_dict[player]['Venue'].append('Home')
             if player_dict[player].get('Team', ['Unknown'])[0] == away_team:
                 player_dict[player]['Opponent'].append(home_team)
+                player_dict[player]['Venue'].append('Away')
 
     for match, details in all_odds_dict.items():
         home_team_name = details.get('home_team', 'Unknown')
