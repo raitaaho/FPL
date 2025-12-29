@@ -831,7 +831,7 @@ def construct_team_and_player_data(
                 if player_id in player_id_to_name:
                     player = " ".join(prepare_name(player_id_to_name[player_id]))
                     if player in player_data:
-                        player_data[player]['25/26Minutes Played for Current Team'] += player_match_minutes
+                        player_data[player]['25/26 Minutes Played for Current Team'] += player_match_minutes
 
         for player_id in team_players[away_team_id]:
             player_match = player_xgi.get(player_id, {})
