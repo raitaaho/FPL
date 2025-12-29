@@ -1902,6 +1902,7 @@ def calc_points(player_dict: dict, saves_button: bool) -> None:
             st.write(f"[DEBUG] Error calculating points for player {player}: {e}")
 
 def initialize_predicted_points_df(all_odds_dict, fixtures, start_gw, saves_button: bool, bps_button: bool, gws: int):
+    start_gw = start_gw - 1 if all_odds_dict == {} else start_gw
     extra_gws_to_predict = [start_gw + i for i in range(1, gws)]
     extra_fixtures = [fixture for fixture in fixtures if (fixture['event'] in extra_gws_to_predict) and (fixture['started'] == False)]
 
@@ -2111,9 +2112,13 @@ st.write(
 fixtures = get_all_fixtures()
 next_gw = get_next_gw(fixtures)
 
+st.header("Step 1: Select starting gameweek and amount of gameweeks to use in predicted points calculations")
+starting_gw = st.slider("Select starting gameweek to calculate predicted points from", min_value=next_gw, max_value=38, value=next_gw)
+gws_to_predict = st.slider("Select amount of gameweeks to calculate predicted points for", min_value=1, max_value=38 - starting_gw + 1, value=1)
+
 cur_dir = os.getcwd()
 fixtures_dir = os.path.join(cur_dir, "data", "fixture_data")
-odds_filename = os.path.join(fixtures_dir, f"gw{next_gw}_all_odds_")
+odds_filename = os.path.join(fixtures_dir, f"gw{starting_gw}_all_odds_")
 
 odds_json_files = glob.glob(f"{odds_filename}*.json")
 
@@ -2122,7 +2127,7 @@ if odds_json_files:
     latest_odds_name = latest_odds_path.replace(fixtures_dir, '')
     git_parts = latest_odds_name.replace(".json", '').split('_')
     git_timestamp = f"{git_parts[3][2:4]}.{git_parts[3][:2]} {git_parts[3][4:6]}:{git_parts[3][6:8]}"
-    st.info(f"Github repository's latest scraped odds file for next gameweek ({next_gw}) has a timestamp of {git_timestamp}")
+    st.info(f"Github repository's latest scraped odds file for next gameweek ({starting_gw}) has a timestamp of {git_timestamp}")
     upload_new_odds_button = st.toggle("Upload more recent odds file for predicted points calculation",
     value=False)
     if upload_new_odds_button:
@@ -2132,7 +2137,7 @@ if odds_json_files:
             parts = uploaded_odds_name.replace(".json", '').split('_')
             gw = parts[0].replace("gw", '')
             timestamp = f"{parts[3][2:4]}.{parts[3][:2]} {parts[3][4:6]}:{parts[3][6:8]}"
-            if next_gw == int(gw):
+            if starting_gw == int(gw):
                 try:
                     all_odds_dict = json.load(uploaded_odds)
                     st.info(f"Using uploaded odds file with a timestamp of {timestamp} instead of Github repository odds file with timestamp of {git_timestamp}")
@@ -2140,7 +2145,7 @@ if odds_json_files:
                     st.warning(f"Could not load all odds file {uploaded_odds_name} into dictionary.")
                     all_odds_dict = {}
             else:
-                st.warning(f"Odds in uploaded file {uploaded_odds_name} are not for the next gameweek ({next_gw}).")
+                st.warning(f"Odds in uploaded file {uploaded_odds_name} are not for the selected gameweek ({starting_gw}).")
                 all_odds_dict = {}
     else:
         try:
@@ -2151,14 +2156,14 @@ if odds_json_files:
             st.warning(f"Could not open all odds file {latest_odds_path} found in Github repository.")
             all_odds_dict = {}
 else:
-    st.warning(f"Latest scraped odds file for next gameweek ({next_gw}) not found in Github repository, please upload odds file for the next gameweek.")
+    st.warning(f"Latest scraped odds file for selected gameweek ({starting_gw}) not found in Github repository, please upload odds file for the selected gameweek.")
     uploaded_odds = st.file_uploader("Choose a file", type="json")
     if uploaded_odds:
         uploaded_odds_name = uploaded_odds.name
         parts = uploaded_odds_name.replace(".json", '').split('_')
         gw = parts[0].replace("gw", '')
         timestamp = f"{parts[3][2:4]}.{parts[3][:2]} {parts[3][4:6]}:{parts[3][6:8]}"
-        if next_gw == int(gw):
+        if starting_gw == int(gw):
             try:
                 all_odds_dict = json.load(uploaded_odds)
                 st.info(f"Using uploaded odds file with timestamp of {timestamp}")
@@ -2166,12 +2171,12 @@ else:
                 st.warning(f"Could not load all odds file {uploaded_odds_name} into dictionary.")
                 all_odds_dict = {}
         else:
-            st.warning(f"Odds in uploaded file {uploaded_odds_name} are not for the next gameweek ({next_gw}).")
+            st.warning(f"Odds in uploaded file {uploaded_odds_name} are not for the selected gameweek ({starting_gw}).")
             all_odds_dict = {}
     else:
         all_odds_dict = {}
 
-st.header("Step 1: Select metrics to use in predicted points calculations")
+st.header("Step 2: Select metrics to use in predicted points calculations")
 saves_button = st.toggle(
     "Use Saves per Game in predicted points calculation for goalkeepers if odds for Goalkeeper Saves are not available",
     value=True
@@ -2181,8 +2186,6 @@ bps_button = st.toggle(
     value=False
 )
 
-starting_gw = st.slider("Select starting gameweek to calculate predicted points from", min_value=next_gw, max_value=38, value=next_gw)
-gws_to_predict = st.slider("Select amount of gameweeks to calculate predicted points for", min_value=1, max_value=38 - starting_gw + 1, value=1)
 current_time = datetime.now()
 
 if st.button("Fetch Latest Player and Team Statistics"):
