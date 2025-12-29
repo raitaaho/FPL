@@ -2168,6 +2168,8 @@ else:
         else:
             st.warning(f"Odds in uploaded file {uploaded_odds_name} are not for the next gameweek ({next_gw}).")
             all_odds_dict = {}
+    else:
+        all_odds_dict = {}
 
 st.header("Step 1: Select metrics to use in predicted points calculations")
 saves_button = st.toggle(
@@ -2178,8 +2180,9 @@ bps_button = st.toggle(
     "Include Estimated Bonus Points for predicted points calculation",
     value=False
 )
-    
-gws_to_predict = st.slider("Select amount of gameweeks to calculate predicted points for", min_value=1, max_value=38 - next_gw + 1, value=1)
+
+starting_gw = st.slider("Select starting gameweek to calculate predicted points from", min_value=next_gw, max_value=38, value=next_gw)
+gws_to_predict = st.slider("Select amount of gameweeks to calculate predicted points for", min_value=1, max_value=38 - starting_gw + 1, value=1)
 current_time = datetime.now()
 
 if st.button("Fetch Latest Player and Team Statistics"):
@@ -2194,7 +2197,7 @@ if st.button("Fetch Latest Player and Team Statistics"):
 if st.button("Calculate Predicted Points"):
     with st.spinner("Calculating Predicted Points...", show_time=True):
         st.session_state.df, st.session_state.player_stats_dict, st.session_state.team_stats_dict = initialize_predicted_points_df(
-            all_odds_dict, fixtures, next_gw, saves_button, bps_button, gws_to_predict
+            all_odds_dict, fixtures, starting_gw, saves_button, bps_button, gws_to_predict
         )
 
 if "player_stats_dict" in st.session_state:
@@ -2250,7 +2253,7 @@ if "df" in st.session_state:
         st.download_button(
             label="Download Predicted Points as CSV",
             data=df_csv,
-            file_name=f"gw{next_gw}_filtered_predicted_points.csv",
+            file_name=f"gw{starting_gw}_filtered_predicted_points.csv",
             mime="text/csv"
         )
         
