@@ -1157,11 +1157,11 @@ def construct_team_and_player_data(
             share_of_team_goals = ((goals_for_team_24_25 + goals_for_team_25_26) * (1 + (((38 + team_games_25_26) - (full_90s_played_24_25_for_team + full_90s_played_25_26_for_team)) / (38 + team_games_25_26)))) / (team_goals_24_25 + team_goals_25_26) if team_games_25_26 != 0 and team_goals_24_25 + team_goals_25_26 != 0 else 0
             share_of_team_assists = ((assists_for_team_24_25 + assists_for_team_25_26) * (1 + (((38 + team_games_25_26) - (full_90s_played_24_25_for_team + full_90s_played_25_26_for_team)) / (38 + team_games_25_26)))) / (team_assists_24_25 + team_assists_25_26) if team_games_25_26 != 0 and team_assists_24_25 + team_assists_25_26 != 0 else 0
             
-        player_data[player]['24/25 Share of Goals by Current Team'] = float(share_of_team_goals_24_25)
-        player_data[player]['24/25 Share of Assists by Current Team'] = float(share_of_team_assists_24_25)
+        player_data[player]['24/25 Share of Goals by Current Team'] = share_of_team_goals_24_25
+        player_data[player]['24/25 Share of Assists by Current Team'] = share_of_team_assists_24_25
 
-        player_data[player]['25/26 Share of Goals by Current Team'] = float(share_of_team_goals_25_26)
-        player_data[player]['25/26 Share of Assists by Current Team'] = float(share_of_team_assists_25_26)
+        player_data[player]['25/26 Share of Goals by Current Team'] = share_of_team_goals_25_26
+        player_data[player]['25/26 Share of Assists by Current Team'] = share_of_team_assists_25_26
 
         player_data[player]['Weighted Share of Goals by Current Team'] = float(weighted_share_of_team_goals)
         player_data[player]['Weighted Share of Assists by Current Team'] = float(weighted_share_of_team_assists)
