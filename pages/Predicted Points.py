@@ -1480,7 +1480,7 @@ def calc_specific_probs(
     for player, odds in player_dict.items():
         position = odds.get("Position", ["Unknown"])[0]
         opponents = odds.get("Opponent", [])
-        venue = odds.get("Venue", [])[0]
+        venue = odds.get("Venue", [])
         anytime_prob = odds.get("Anytime Goalscorer Probability", [])
         two_or_more_prob = odds.get("To Score 2 Or More Goals Probability", [])
         hattrick_prob = odds.get("To Score A Hat-Trick Probability", [])
@@ -2291,6 +2291,7 @@ if st.button("Fetch Latest Player and Team Statistics"):
         st.success("Player and Team Statistics Fetched Successfully!")
 
 if st.button("Calculate Predicted Points"):
+    st.write(all_ods_dict)
     with st.spinner("Calculating Predicted Points...", show_time=True):
         st.session_state.df, st.session_state.player_stats_dict, st.session_state.team_stats_dict = initialize_predicted_points_df(
             all_odds_dict, fixtures, starting_gw, saves_button, bps_button, gws_to_predict
