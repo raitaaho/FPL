@@ -1994,7 +1994,8 @@ def calc_points(player_dict: dict, saves_button: bool) -> None:
 
 def initialize_predicted_points_df(all_odds_dict, fixtures, start_gw, saves_button: bool, bps_button: bool, gws: int):
     start_gw = start_gw - 1 if all_odds_dict == {} else start_gw
-    extra_gws_to_predict = [start_gw + i for i in range(1, gws + 1)]
+    amount_of_gws = gws + 1 if gws > 1 else 1
+    extra_gws_to_predict = [start_gw + i for i in range(1, amount_of_gws)]
     extra_fixtures = [fixture for fixture in fixtures if (fixture['event'] in extra_gws_to_predict) and (fixture['started'] == False)]
 
     data, teams_data, players_data, team_id_to_name, player_id_to_name = fetch_fpl_data()
