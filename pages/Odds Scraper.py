@@ -100,7 +100,7 @@ def get_next_gws(fixtures: list) -> list:
         game_weeks[fixture["event"]].append(fixture)
     next_gameweek = None
     for event in sorted(game_weeks.keys()):
-        if all(not fixture['finished_provisional'] for fixture in game_weeks[event]):
+        if all(not fixture['started'] for fixture in game_weeks[event]):
             next_gameweek = event
             break
     if next_gameweek is None:
