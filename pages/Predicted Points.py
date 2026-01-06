@@ -1159,6 +1159,7 @@ def construct_team_and_player_data(
             if games_against > 0:
                 team_data[team][f"Goals per Game Against {i}"] = float(goals_against / games_against)
                 team_data[team][f"Goals Conceded per Game Against {i}"] = float(goals_conceded_against / games_against)
+            if team_data[team][f"25/26 Games Against {i}"] > 0:
                 team_data[team][f"xG per Game Against {i}"] = float(team_data[team][f"25/26 xG Against {i}"] / team_data[team][f"25/26 Games Against {i}"])
                 team_data[team][f"xA per Game Against {i}"] = float(team_data[team][f"25/26 xA Against {i}"] / team_data[team][f"25/26 Games Against {i}"])
                 team_data[team][f"xGC per Game Against {i}"] = float(team_data[team][f"25/26 xGC Against {i}"] / team_data[team][f"25/26 Games Against {i}"])
@@ -1271,12 +1272,12 @@ def construct_team_and_player_data(
         for i in range (1, 21):
             games_against = player_data[player][f"24/25 Games Against {i}"] + player_data[player][f"25/26 Games Against {i}"]
             goals_against = player_data[player][f"24/25 Goals Against {i}"] + player_data[player][f"25/26 Goals Against {i}"]
+            assists_against = player_data[player][f"24/25 Assists Against {i}"] + player_data[player][f"25/26 Assists Against {i}"]
 
             if games_against > 0:
-                xg_against_per_game = float(player_data[player][f"25/26 xG Against {i}"] / player_data[player][f"25/26 Games Against {i}"])
-                xa_against_per_game = float(player_data[player][f"25/26 xA Against {i}"] / player_data[player][f"25/26 Games Against {i}"])
-
                 player_data[player][f"Goals per Game Against {i}"] = float(goals_against / games_against)
+                player_data[player][f"Assists per Game Against {i}"] = float(assists_against / games_against)
+            if player_data[player][f"25/26 Games Against {i}"] > 0:
                 player_data[player][f"xG per Game Against {i}"] = float(player_data[player][f"25/26 xG Against {i}"] / player_data[player][f"25/26 Games Against {i}"])
                 player_data[player][f"xA per Game Against {i}"] = float(player_data[player][f"25/26 xA Against {i}"] / player_data[player][f"25/26 Games Against {i}"])
 
