@@ -1644,7 +1644,7 @@ def calc_specific_probs(
                 player_dict[player]["xG by Bookmaker Odds"].append(expected_goals)
 
             for t_gsa, opp, ven in zip_longest(total_goals_historical, opponents, venue, fillvalue=0):
-                opp_pos = team_stats_dict[opp].get("League Position", 21)
+                opp_pos = team_stats_dict[opp].get("League Position by xGC", 21)
                 opp_pos_range = get_pos_range(opp_pos)
                 if ven == "Home":
                     goals_per_game = goals_per_home_game
@@ -1848,8 +1848,8 @@ def calc_team_xgs(
     promoted_gc_h_average = 2.00
     promoted_gc_a_average = 2.20
 
-    home_pos_range = get_pos_range(team_stats_dict[home_team]['League Position'])
-    away_pos_range = get_pos_range(team_stats_dict[away_team]['League Position'])
+    home_pos_range = get_pos_range(team_stats_dict[home_team]['League Position by xGC'])
+    away_pos_range = get_pos_range(team_stats_dict[away_team]['League Position by xGC'])
 
     team_home_goals_p90_24_25 = team_stats_dict[home_team]['24/25 Goals per Home Game']
     team_away_goals_p90_24_25 = team_stats_dict[away_team]['24/25 Goals per Away Game']
