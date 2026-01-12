@@ -1185,11 +1185,11 @@ def construct_team_and_player_data(
         player_data[player]['Weighted Goals per Away Game for Current Team'] = (0.5 * away_goals_per_game_for_team_24_25 + 1.5 * away_goals_per_game_for_team_25_26) if away_goals_per_game_for_team_24_25 is not None and away_goals_per_game_for_team_25_26 is not None else away_goals_per_game_for_team_25_26 if away_goals_per_game_for_team_25_26 is not None else 0
         player_data[player]['Weighted Assists per Away Game for Current Team'] = (0.5 * away_assists_per_game_for_team_24_25 + 1.5 * away_assists_per_game_for_team_25_26) if away_assists_per_game_for_team_24_25 is not None and away_assists_per_game_for_team_25_26 is not None else away_assists_per_game_for_team_25_26 if away_assists_per_game_for_team_25_26 is not None else 0
 
-        player_data[player]['xG per Home Game for Current Team'] = float(player_data[player]['25/26 xG Home for Current Team'] / full_90s_played_home_25_26_for_team) if full_90s_played_home_25_26_for_team > 0 else 0
-        player_data[player]['xG per Away Game for Current Team'] = float(player_data[player]['25/26 xG Away for Current Team'] / full_90s_played_away_25_26_for_team) if full_90s_played_away_25_26_for_team > 0 else 0
+        player_data[player]['xG per Home Game for Current Team'] = float(player_data[player]['25/26 xG Home for Current Team'] / full_90s_played_home_25_26_for_team) if full_90s_played_home_25_26_for_team > 0 else None
+        player_data[player]['xG per Away Game for Current Team'] = float(player_data[player]['25/26 xG Away for Current Team'] / full_90s_played_away_25_26_for_team) if full_90s_played_away_25_26_for_team > 0 else None
 
-        player_data[player]['xA per Home Game for Current Team'] = float(player_data[player]['25/26 xA Home for Current Team'] / full_90s_played_home_25_26_for_team) if full_90s_played_home_25_26_for_team > 0 else 0
-        player_data[player]['xA per Away Game for Current Team'] = float(player_data[player]['25/26 xA Away for Current Team'] / full_90s_played_away_25_26_for_team) if full_90s_played_away_25_26_for_team > 0 else 0
+        player_data[player]['xA per Home Game for Current Team'] = float(player_data[player]['25/26 xA Home for Current Team'] / full_90s_played_home_25_26_for_team) if full_90s_played_home_25_26_for_team > 0 else None
+        player_data[player]['xA per Away Game for Current Team'] = float(player_data[player]['25/26 xA Away for Current Team'] / full_90s_played_away_25_26_for_team) if full_90s_played_away_25_26_for_team > 0 else None
 
         player_data[player]['24/25 Saves per Home Game for Current Team'] = float(player_data[player]['24/25 Home Goalkeeper Saves for Current Team'] / player_data[player]['24/25 Home Games Played for Current Team']) if player_data[player]['24/25 Home Games Played for Current Team'] > 0 else -1
         player_data[player]['24/25 Saves per Away Game for Current Team'] = float(player_data[player]['24/25 Away Goalkeeper Saves for Current Team'] / player_data[player]['24/25 Away Games Played for Current Team']) if player_data[player]['24/25 Away Games Played for Current Team'] > 0 else -1
@@ -1503,11 +1503,11 @@ def calc_specific_probs(
         assists_per_home_game = player_stats_dict[player].get("Weighted Assists per Home Game for Current Team", 0)
         assists_per_away_game = player_stats_dict[player].get("Weighted Assists per Away Game for Current Team", 0)
 
-        xg_per_home_game = player_stats_dict[player].get("xG per Home Game for Current Team", 0)
-        xg_per_away_game = player_stats_dict[player].get("xG per Away Game for Current Team", 0)
+        xg_per_home_game = player_stats_dict[player].get("xG per Home Game for Current Team", None)
+        xg_per_away_game = player_stats_dict[player].get("xG per Away Game for Current Team", None)
 
-        xa_per_home_game = player_stats_dict[player].get("xA per Home Game for Current Team", 0)
-        xa_per_away_game = player_stats_dict[player].get("xA per Away Game for Current Team", 0)
+        xa_per_home_game = player_stats_dict[player].get("xA per Home Game for Current Team", None)
+        xa_per_away_game = player_stats_dict[player].get("xA per Away Game for Current Team", None)
 
         xa_per_game_24_25 = odds.get("24/25 xA", [0])[0] / odds.get("24/25 Games Played", [0])[0] if odds.get("24/25 Games Played", [0])[0] > 0 else 0
         xa_per_game_25_26 =  odds.get("25/26 xA", [0])[0] / odds.get("25/26 Games Played", [0])[0] if odds.get("25/26 Games Played", [0])[0] > 0 else 0
@@ -1548,11 +1548,11 @@ def calc_specific_probs(
                     xg_per_venue = xg_per_away_game
                     xa_per_venue = xa_per_away_game
 
-                xg_per_game_against_range = player_stats_dict[player].get(f"Goals per Game Against {opp_pos_range}", None)
-                xa_per_game_against_range = player_stats_dict[player].get(f"Assists per Game Against {opp_pos_range}", None)
+                xg_per_game_against_range = player_stats_dict[player].get(f"xG per Game Against {opp_pos_range}", None)
+                xa_per_game_against_range = player_stats_dict[player].get(f"xA per Game Against {opp_pos_range}", None)
                 # On average, the assists per goal scored ratio is rougly 0.70 in the Premier League 
-                ave_ass = (2 * (xa_share * 0.70 * t_gsa) + xa_per_venue + xa_per_game_against_range) / 4 if t_gsa != 0 and xa_share != 0 and xa_per_game_against_range is not None else (3 * (xa_share * 0.70 * t_gsa) + 2 * xa_per_venue) / 5 if t_gsa != 0 and xa_share != 0 else xa_per_game_weighted
-                ave_g = (2 * (xg_share * t_gsa) + xg_per_venue + xg_per_game_against_range) / 4 if t_gsa != 0 and xg_share != 0 and xg_per_game_against_range is not None else (3 * (xg_share * t_gsa) + 2 * xg_per_venue) / 5 if t_gsa != 0 and xg_share != 0 else xg_per_game_weighted
+                ave_ass = (2 * (xa_share * 0.70 * t_gsa) + xa_per_venue + xa_per_game_against_range) / 4 if t_gsa != 0 and xa_share != 0 and xa_per_game_against_range is not None and xa_per_venue is not None else (3 * (xa_share * 0.70 * t_gsa) + 2 * xa_per_venue) / 5 if t_gsa != 0 and xa_share != 0 and xa_per_venue is not None else xa_per_game_weighted
+                ave_g = (2 * (xg_share * t_gsa) + xg_per_venue + xg_per_game_against_range) / 4 if t_gsa != 0 and xg_share != 0 and xg_per_game_against_range is not None and xg_per_venue is not None else (3 * (xg_share * t_gsa) + 2 * xg_per_venue) / 5 if t_gsa != 0 and xg_share != 0 and xg_per_venue is not None else xg_per_game_weighted
                 player_dict[player]["xA by Historical Data"].append(ave_ass)
                 player_dict[player]["xG by Historical Data"].append(ave_g)
 
