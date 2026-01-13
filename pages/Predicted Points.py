@@ -882,7 +882,6 @@ def construct_team_and_player_data(
     for team_id in rank_sequential:
         team_name = TEAM_NAMES_ODDSCHECKER.get(team_id_to_name[team_id], team_id_to_name[team_id])
         team_data[team_name]['League Position by xGC'] = rank_sequential[team_id]
-        st.write(f"Team: {team_name}, xGC per Game: {team_xgc_dict[team_id]['xgc_per_game']}, Position by xGC: {rank_sequential[team_id]}")
 
     # Process each gameweek
     for fixture in fixtures:
