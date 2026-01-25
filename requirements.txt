@@ -6,3 +6,4 @@ streamlit
 chardet
 scipy
 plotly
+altair<5
