@@ -575,8 +575,9 @@ if st.session_state.scraping_started and not st.session_state.scraping_done:
             st.session_state.scraped_data, st.session_state.scraping_done, st.session_state.scrape_time = scrape_all_matches(match_dict, driver)
 
     except Exception as e: 
-        st.write("Couldn't open Chrome")
+        st.write("Couldn't open Chrome due to exception: ", e)
         st.session_state.scraping_started = False
+        driver.quit()
 
 def click_download():
     st.session_state.scraping_started = False
