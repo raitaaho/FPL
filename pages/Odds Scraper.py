@@ -571,7 +571,7 @@ if st.session_state.scraping_started and not st.session_state.scraping_done:
         time.sleep(random.uniform(2, 3))
 
         match_dict = fetch_all_match_links(next_fixtures, team_id_to_name, teams_positions_map, driver)
-        with st.spinner(f"Scraping odds for a total of **{len(next_fixtures)}** matches..."):
+        with st.spinner(f"Scraping odds for a total of **{len(next_fixtures)}** matches...", show_time=True):
             st.session_state.scraped_data, st.session_state.scraping_done, st.session_state.scrape_time = scrape_all_matches(match_dict, driver)
 
     except Exception as e: 
