@@ -2,8 +2,7 @@ requests
 pandas
 beautifulsoup4
 selenium
-streamlit
+streamlit==1.53.1
 chardet
 scipy
 plotly
-altair<5
