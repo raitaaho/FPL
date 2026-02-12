@@ -106,7 +106,7 @@ def get_next_gws(fixtures: list) -> list:
     if game_weeks is None or game_weeks == {}:
         st.write("Game weeks data is empty or None.")
         raise Exception("Game weeks data is empty or None.")
-    elif None in game_weeks:
+    elif None in game_weeks.keys():
         st.write("Game weeks data contains None key.")
         raise Exception("Game weeks data contains None key.")
     
