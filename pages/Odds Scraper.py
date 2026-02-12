@@ -101,7 +101,9 @@ def get_next_gws(fixtures: list) -> list:
     
     game_weeks = defaultdict(list)
     for fixture in fixtures:
-        game_weeks[fixture["event"]].append(fixture)
+        if fixture["event"] is not None:
+            game_weeks[fixture["event"]].append(fixture)
+            
     next_gameweek = None
     if game_weeks is None or game_weeks == {}:
         st.write("Game weeks data is empty or None.")
