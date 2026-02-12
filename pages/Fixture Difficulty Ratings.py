@@ -271,18 +271,31 @@ def get_next_gw(fixtures: list) -> int:
     Returns:
         int: The next gameweek as a integer.
     """
+    if fixtures is None or fixtures == []:
+        st.write("Fixtures data is empty or None.")
+        raise Exception("Fixtures data is empty or None.")
+    
     game_weeks = defaultdict(list)
     for fixture in fixtures:
-        game_weeks[fixture["event"]].append(fixture)
+        if fixture["event"] is not None:
+            game_weeks[fixture["event"]].append(fixture)
+            
     next_gameweek = None
+    if game_weeks is None or game_weeks == {}:
+        st.write("Game weeks data is empty or None.")
+        raise Exception("Game weeks data is empty or None.")
+    elif None in game_weeks.keys():
+        st.write("Game weeks data contains None key.")
+        raise Exception("Game weeks data contains None key.")
+    
     for event in sorted(game_weeks.keys()):
-        if all(not fixture['finished_provisional'] for fixture in game_weeks[event]):
+        if all(not fixture['started'] for fixture in game_weeks[event]):
             next_gameweek = event
             break
     if next_gameweek is None:
         raise Exception("No upcoming gameweek found.")
-    else:
-        return next_gameweek
+    
+    return next_gameweek
 
 def fetch_data_from_fpl_api():
     # Fetch data from the FPL API

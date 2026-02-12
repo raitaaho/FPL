@@ -95,10 +95,23 @@ def get_next_gw(fixtures: list) -> int:
     Returns:
         list: A list containing the next gameweek(s) as integers.
     """
+    if fixtures is None or fixtures == []:
+        st.write("Fixtures data is empty or None.")
+        raise Exception("Fixtures data is empty or None.")
+    
     game_weeks = defaultdict(list)
     for fixture in fixtures:
-        game_weeks[fixture["event"]].append(fixture)
+        if fixture["event"] is not None:
+            game_weeks[fixture["event"]].append(fixture)
+            
     next_gameweek = None
+    if game_weeks is None or game_weeks == {}:
+        st.write("Game weeks data is empty or None.")
+        raise Exception("Game weeks data is empty or None.")
+    elif None in game_weeks.keys():
+        st.write("Game weeks data contains None key.")
+        raise Exception("Game weeks data contains None key.")
+    
     for event in sorted(game_weeks.keys()):
         if all(not fixture['started'] for fixture in game_weeks[event]):
             next_gameweek = event

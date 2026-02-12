@@ -103,14 +103,13 @@ def get_next_gws(fixtures: list) -> list:
     for fixture in fixtures:
         if fixture["event"] is not None:
             game_weeks[fixture["event"]].append(fixture)
-            
+
     next_gameweek = None
     if game_weeks is None or game_weeks == {}:
         st.write("Game weeks data is empty or None.")
         raise Exception("Game weeks data is empty or None.")
     elif None in game_weeks.keys():
         st.write("Game weeks data contains None key.")
-        st.write(f"Game weeks keys: {game_weeks.keys()}")
         raise Exception("Game weeks data contains None key.")
     
     for event in sorted(game_weeks.keys()):
