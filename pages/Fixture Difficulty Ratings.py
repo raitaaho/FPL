@@ -199,10 +199,10 @@ def load_previous_seasons_csv_data(teams_api_data, finished_fixtures, team_id_to
         gc_per_home_25 = h_gc_25 / h_games_25 if h_games_25 != 0 else 0
         gc_per_away_25 = a_gc_25 / a_games_25 if a_games_25 != 0 else 0
 
-        g_per_home = (g_per_home_24 + 2 * g_per_home_25) / 3 if h_games_24 != 0 else g_per_home_25
-        g_per_away = (g_per_away_24 + 2 * g_per_away_25) / 3 if a_games_24 != 0 else g_per_away_25
-        gc_per_home = (gc_per_home_24 + 2 * gc_per_home_25) / 3 if h_games_24 != 0 else gc_per_home_25
-        gc_per_away = (gc_per_away_24 + 2 * gc_per_away_25) / 3 if a_games_24 != 0 else gc_per_away_25
+        g_per_home = (g_per_home_24 + 3 * g_per_home_25) / 4 if h_games_24 != 0 else g_per_home_25
+        g_per_away = (g_per_away_24 + 3 * g_per_away_25) / 4 if a_games_24 != 0 else g_per_away_25
+        gc_per_home = (gc_per_home_24 + 3 * gc_per_home_25) / 4 if h_games_24 != 0 else gc_per_home_25
+        gc_per_away = (gc_per_away_24 + 3 * gc_per_away_25) / 4 if a_games_24 != 0 else gc_per_away_25
 
         teams_dict[team]['Goals per Home Game'] = float(g_per_home)
         teams_dict[team]['Goals per Away Game'] = float(g_per_away)
@@ -376,7 +376,7 @@ def calc_team_strengths(teams_data, fixtures_data, next_gw, team_id_to_name_25_2
     all_gws_fdr = {team_id: [] for team_id in team_id_to_short_name_25_26.keys()}
     for team_id in team_id_to_short_name_25_26.keys():
         team_fixtures = [f for f in fixtures_data if f['team_h'] == team_id or f['team_a'] == team_id]
-        #team_fixtures = sorted(team_fixtures, key=lambda x: x['event'])[next_gw - 1:]
+        team_fixtures = sorted(team_fixtures, key=lambda x: x['event'])[next_gw - 1:]
         
         for i, fixture in enumerate(team_fixtures):
             if fixture['team_h'] == team_id:
