@@ -376,7 +376,7 @@ def calc_team_strengths(teams_data, fixtures_data, next_gw, team_id_to_name_25_2
     all_gws_fdr = {team_id: [] for team_id in team_id_to_short_name_25_26.keys()}
     for team_id in team_id_to_short_name_25_26.keys():
         team_fixtures = [f for f in fixtures_data if f['team_h'] == team_id or f['team_a'] == team_id]
-        team_fixtures = sorted(team_fixtures, key=lambda x: x['event'])[next_gw - 1:]
+        #team_fixtures = sorted(team_fixtures, key=lambda x: x['event'])[next_gw - 1:]
         
         for i, fixture in enumerate(team_fixtures):
             if fixture['team_h'] == team_id:
