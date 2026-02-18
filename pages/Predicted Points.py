@@ -1751,7 +1751,7 @@ def calc_avg_bps(
             for g1, g2, a1, a2, cs1, cs2, cs3, ga1, ga2, s1, s2, s3, opp in zip_longest(goals_average_bookmaker, goals_average_historical, ass_average_bookmaker, ass_average_historical, cs_odds_bookmaker, cs_odds_statsbetting, cs_odds_historical, goals_conceded_team_bookmaker, goals_conceded_team_historical, saves_average_bookmaker, saves_average_historical, team_saves_average, opponents, fillvalue=-1):
                 xg = g1 if g1 != -1 else max(g2, 0)
                 xa = a1 if a1 != -1 else max(a2, 0)
-                xcs = cs1 if cs1 != -1 else cs2 if cs1 != -1 else max(cs3, 0)
+                xcs = cs1 if cs1 != -1 and cs1 != 0 and cs1 != 1 else cs2 if cs2 != -1 and cs2 != 0 and cs2 != 1 else max(cs3, 0)
                 xgc = ga1 if ga1 != -1 else max(ga2, 0)
 
                 if saves_button:
@@ -2047,7 +2047,7 @@ def calc_points(player_dict: dict, saves_button: bool, ignore_minutes_button: bo
             for g1, g2, a1, a2, cs1, cs2, cs3, ga1, ga2, s1, s2, s3, bp1, opp in zip_longest(goals_average_bookmaker, goals_average_historical, ass_average_bookmaker, ass_average_historical, cs_odds_bookmaker, cs_odds_statsbetting, cs_odds_historical, goals_conceded_team_bookmaker, goals_conceded_team_historical, saves_average_bookmaker, saves_average_historical, team_saves_average, bonus_points, opponents, fillvalue=-1):
                 goals_average.append(g1 if g1 != -1 else max(g2, 0))
                 ass_average.append(a1 if a1 != -1 else max(a2, 0))
-                cs_odds.append(cs1 if cs1 != -1 else cs2 if cs2 != -1 else max(cs3, 0))
+                cs_odds.append(cs1 if cs1 != -1 and cs1 != 0 and cs1 != 1 else cs2 if cs2 != -1 and cs2 != 0 and cs2 != 1 else max(cs3, 0))
                 goals_conceded_team.append(ga1 if ga1 != -1 else max(ga2, 0))
 
                 if saves_button:
