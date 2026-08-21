@@ -33,6 +33,8 @@ TEAM_NAMES_ODDSCHECKER = {
     "Nott'm Forest": "Nottingham Forest",
     "Wolves": "Wolverhampton",
     "Spurs": "Tottenham",
+    "Coventry City": "Coventry",
+    "Ipswich Town": "Ipswhich",
     }
 
 # Mapping of player names from Oddschecker to FPL API player names for consistency.
@@ -85,7 +87,7 @@ def get_all_fixtures() -> list:
     # Get all fixtures from FPL API
     return response.json()
 
-def get_next_gws(fixtures: list) -> list:
+def get_next_gws(fixtures: list) -> int:
     """
     Find the next gameweek(s) that have not yet started.
 
@@ -323,7 +325,6 @@ def fetch_odds(match_name: str, odd_type: str, driver: "webdriver.Chrome") -> ty
                         error = "Couldn't get odds"
                         print("Couldn't get odds for", odd_type, e)
                 except Exception as e:
-                    error = f"Couldn't get innerText-attribute for {outcome}"
                     print("Couldn't get innerText-attribute for", odd_type, "outcome", e)                  
         except Exception as e:
             error = "Couldn't click Compare All Odds"
@@ -335,12 +336,11 @@ def fetch_odds(match_name: str, odd_type: str, driver: "webdriver.Chrome") -> ty
         except Exception as e:
             print("Couldn't collapse", header)
     except Exception as e:
-        error = "Couldn't find or expand section"
         print("Couldn't find or expand section:", odd_type)
         #driver.save_screenshot('screenshot.png')
         #st.image("screenshot.png", caption="Screen")
 
-    return odds_dict, error
+    return odds_dict
 
 def scrape_all_matches(match_dict, driver):
     start0 = time.perf_counter()
@@ -417,13 +417,13 @@ def scrape_all_matches(match_dict, driver):
             total_odd_counter += 1
             odd_progress_text.markdown(f"Scraping odds for **{odd_type}**")
             
-            odds_dict, error = fetch_odds(match, odd_type, driver)
+            odds_dict = fetch_odds(match, odd_type, driver)
             if odds_dict:
                 scraped_odd_counter += 1
                 status_container.success(f'Scraped odds for **{odd_type}**', icon="✅")
                 match_dict[match][odd_type] = odds_dict
             else:
-                status_container.warning(f'Could not scrape odds for **{odd_type}**: {error}', icon="⚠️")
+                status_container.warning(f'Could not scrape odds for **{odd_type}**', icon="⚠️")
             
             odd_progress_bar.progress(int((total_odd_counter / total_odds) * 100))
 
@@ -436,13 +436,13 @@ def scrape_all_matches(match_dict, driver):
             driver.execute_script('arguments[0].click()', stats_betting_button)
             time.sleep(random.uniform(1, 2))
 
-            odds_dict, error = fetch_odds(match, "Clean Sheet", driver)
+            odds_dict = fetch_odds(match, "Clean Sheet", driver)
             if odds_dict:
                 scraped_odd_counter += 1
                 status_container.success(f'Scraped odds for **Clean Sheet**', icon="✅")
                 match_dict[match]["Clean Sheet"] = odds_dict
             else:
-                status_container.warning(f'Could not scrape odds for **Clean Sheet**: {error}', icon="⚠️")
+                status_container.warning(f'Could not scrape odds for **Clean Sheet**', icon="⚠️")
 
                 driver.save_screenshot('screenshot.png')
                 status_container.image("screenshot.png", caption="Screen")
@@ -472,7 +472,29 @@ def get_logpath() -> str:
     return os.path.join(os.getcwd(), 'selenium.log')
 
 def get_chromedriver_path() -> str:
-    return shutil.which('chromedriver')
+    chromedriver_path = shutil.which('chromedriver')
+    if chromedriver_path is None:
+        raise FileNotFoundError("chromedriver could not be found on PATH")
+    return chromedriver_path
+
+def get_chrome_binary_path() -> str:
+    configured_path = os.environ.get("CHROME_BINARY")
+    candidate_paths = [
+        configured_path,
+        shutil.which("chromium"),
+        shutil.which("chromium-browser"),
+        shutil.which("google-chrome"),
+        os.path.expandvars(r"%PROGRAMFILES%\Google\Chrome\Application\chrome.exe"),
+        os.path.expandvars(r"%PROGRAMFILES(X86)%\Google\Chrome\Application\chrome.exe"),
+        os.path.expandvars(r"%LOCALAPPDATA%\Google\Chrome\Application\chrome.exe"),
+    ]
+    for candidate_path in candidate_paths:
+        if candidate_path and os.path.isfile(candidate_path):
+            return candidate_path
+    raise FileNotFoundError(
+        "Chrome/Chromium could not be found. Install Chrome or Chromium, "
+        "or set the CHROME_BINARY environment variable to its executable path."
+    )
 
 def get_webdriver_service(logpath) -> Service:
     service = Service(
@@ -515,7 +537,7 @@ if json_files:
     latest_file_path = max(json_files)
     latest_file = latest_file_path.replace(fixtures_dir, '')
     parts = latest_file.replace(".json", '').split('_')
-    st.info(f"Github repository's latest scraped odds file for next gameweek (**GW{next_gw}**) has a timestamp of **{parts[3][2:]}.{parts[3][:2]} {parts[4][:2]}:{parts[4][2:]}**")
+    st.info(f"Github repository's latest scraped odds file for next gameweek (**GW{next_gw}**) has a timestamp of **{parts[4][2:]}.{parts[4][:2]}.{parts[3]} {parts[5][:2]}:{parts[5][2:]}**")
 else:
     st.info(f"Latest scraped odds file for next gameweek (**GW{next_gw}**) **not found** in Github repository")
 
@@ -533,7 +555,7 @@ if st.session_state.scraping_started and not st.session_state.scraping_done:
         logpath=get_logpath()
 
         options = Options()
-        options.binary_location = "/usr/bin/chromium"
+        options.binary_location = get_chrome_binary_path()
 
         user_agents = [
         "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36",
@@ -587,7 +609,7 @@ def click_download():
 if st.session_state.scraping_done and st.session_state.scraped_data:
     json_data = json.dumps(st.session_state.scraped_data, indent=4)
     current_time = datetime.now()
-    filename = f"gw{next_gw}_all_odds_{current_time.strftime('%m')}{current_time.strftime('%d')}_{current_time.strftime('%H')}{current_time.strftime('%M')}.json"
+    filename = f"gw{next_gw}_all_odds_{current_time.strftime('%Y')}_{current_time.strftime('%m')}{current_time.strftime('%d')}_{current_time.strftime('%H')}{current_time.strftime('%M')}.json"
 
     container.success(f"✅ Scraping completed in **{st.session_state.scrape_time}** minutes.")
     container.download_button(
