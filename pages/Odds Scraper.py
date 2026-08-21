@@ -35,6 +35,7 @@ TEAM_NAMES_ODDSCHECKER = {
     "Spurs": "Tottenham",
     "Coventry City": "Coventry",
     "Ipswich Town": "Ipswich",
+    "Hull City": "Hull",
     }
 
 # Mapping of player names from Oddschecker to FPL API player names for consistency.
