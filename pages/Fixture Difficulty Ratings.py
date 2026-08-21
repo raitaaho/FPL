@@ -189,10 +189,20 @@ def load_previous_seasons_csv_data(teams_api_data, finished_fixtures, team_id_to
         h_gc_25 = teams_dict[team]['25/26 Goals Conceded Home']
         a_gc_25 = teams_dict[team]['25/26 Goals Conceded Away']
 
-        g_per_home = (h_goals_24 + h_goals_25) / (h_games_24 + h_games_25) if h_games_24 != 0 else (((h_goals_25 + a_goals_25) / (h_games_25 + a_games_25)) + 3.6) / 5
-        g_per_away = (a_goals_24 + a_goals_25) / (a_games_24 + a_games_25) if a_games_24 != 0 else (((h_goals_25 + a_goals_25) / (h_games_25 + a_games_25)) + 3.2) / 5
-        gc_per_home = (h_gc_24 + h_gc_25) / (h_games_24 + h_games_25) if h_games_24 != 0 else (((h_gc_25 + a_gc_25) / (h_games_25 + a_games_25)) + 8) / 5
-        gc_per_away = (a_gc_24 + a_gc_25) / (a_games_24 + a_games_25) if a_games_24 != 0 else (((h_gc_25 + a_gc_25) / (h_games_25 + a_games_25)) + 8.8) / 5
+        g_per_home_24 = h_goals_24 / h_games_24 if h_games_24 != 0 else 0
+        g_per_away_24 = a_goals_24 / a_games_24 if a_games_24 != 0 else 0
+        gc_per_home_24 = h_gc_24 / h_games_24 if h_games_24 != 0 else 0
+        gc_per_away_24 = a_gc_24 / a_games_24 if a_games_24 != 0 else 0
+
+        g_per_home_25 = h_goals_25 / h_games_25 if h_games_25 != 0 else 0
+        g_per_away_25 = a_goals_25 / a_games_25 if a_games_25 != 0 else 0
+        gc_per_home_25 = h_gc_25 / h_games_25 if h_games_25 != 0 else 0
+        gc_per_away_25 = a_gc_25 / a_games_25 if a_games_25 != 0 else 0
+
+        g_per_home = (g_per_home_24 + 3 * g_per_home_25) / 4 if h_games_24 != 0 else g_per_home_25
+        g_per_away = (g_per_away_24 + 3 * g_per_away_25) / 4 if a_games_24 != 0 else g_per_away_25
+        gc_per_home = (gc_per_home_24 + 3 * gc_per_home_25) / 4 if h_games_24 != 0 else gc_per_home_25
+        gc_per_away = (gc_per_away_24 + 3 * gc_per_away_25) / 4 if a_games_24 != 0 else gc_per_away_25
 
         teams_dict[team]['Goals per Home Game'] = float(g_per_home)
         teams_dict[team]['Goals per Away Game'] = float(g_per_away)
@@ -261,18 +271,31 @@ def get_next_gw(fixtures: list) -> int:
     Returns:
         int: The next gameweek as a integer.
     """
+    if fixtures is None or fixtures == []:
+        st.write("Fixtures data is empty or None.")
+        raise Exception("Fixtures data is empty or None.")
+    
     game_weeks = defaultdict(list)
     for fixture in fixtures:
-        game_weeks[fixture["event"]].append(fixture)
+        if fixture["event"] is not None:
+            game_weeks[fixture["event"]].append(fixture)
+            
     next_gameweek = None
+    if game_weeks is None or game_weeks == {}:
+        st.write("Game weeks data is empty or None.")
+        raise Exception("Game weeks data is empty or None.")
+    elif None in game_weeks.keys():
+        st.write("Game weeks data contains None key.")
+        raise Exception("Game weeks data contains None key.")
+    
     for event in sorted(game_weeks.keys()):
-        if all(not fixture['finished_provisional'] for fixture in game_weeks[event]):
+        if all(not fixture['started'] for fixture in game_weeks[event]):
             next_gameweek = event
             break
     if next_gameweek is None:
         raise Exception("No upcoming gameweek found.")
-    else:
-        return next_gameweek
+    
+    return next_gameweek
 
 def fetch_data_from_fpl_api():
     # Fetch data from the FPL API
@@ -353,7 +376,7 @@ def calc_team_strengths(teams_data, fixtures_data, next_gw, team_id_to_name_25_2
     all_gws_fdr = {team_id: [] for team_id in team_id_to_short_name_25_26.keys()}
     for team_id in team_id_to_short_name_25_26.keys():
         team_fixtures = [f for f in fixtures_data if f['team_h'] == team_id or f['team_a'] == team_id]
-        team_fixtures = sorted(team_fixtures, key=lambda x: x['event'])[next_gw - 1:]
+        #team_fixtures = sorted(team_fixtures, key=lambda x: x['event'])[next_gw - 1:]
         
         for i, fixture in enumerate(team_fixtures):
             if fixture['team_h'] == team_id:

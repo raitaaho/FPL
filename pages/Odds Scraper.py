@@ -97,12 +97,25 @@ def get_next_gws(fixtures: list) -> int:
     Returns:
         next_gameweek (int): The next gameweek as integer.
     """
+    if fixtures is None or fixtures == []:
+        st.write("Fixtures data is empty or None.")
+        raise Exception("Fixtures data is empty or None.")
+    
     game_weeks = defaultdict(list)
     for fixture in fixtures:
-        game_weeks[fixture["event"]].append(fixture)
+        if fixture["event"] is not None:
+            game_weeks[fixture["event"]].append(fixture)
+
     next_gameweek = None
+    if game_weeks is None or game_weeks == {}:
+        st.write("Game weeks data is empty or None.")
+        raise Exception("Game weeks data is empty or None.")
+    elif None in game_weeks.keys():
+        st.write("Game weeks data contains None key.")
+        raise Exception("Game weeks data contains None key.")
+    
     for event in sorted(game_weeks.keys()):
-        if all(not fixture['finished_provisional'] for fixture in game_weeks[event]):
+        if all(not fixture['started'] for fixture in game_weeks[event]):
             next_gameweek = event
             break
     if next_gameweek is None:
@@ -175,7 +188,7 @@ def fetch_all_match_links(
         matches_button = wait.until(EC.element_to_be_clickable((By.XPATH, "//button[contains(text(), 'Matches')]")))
         matches_button.click()
     except Exception as e:  
-        print("Couldn't click Matches tab ", e)
+        st.write("Couldn't click Matches tab ", e)
         driver.save_screenshot('screenshot.png')
         st.image("screenshot.png", caption="Screen")
 
@@ -201,7 +214,7 @@ def fetch_all_match_links(
             match_link = driver.find_element(By.XPATH, f"//a[@title='{match_title}'][@href]")
             href = match_link.get_attribute("href")
         except NoSuchElementException:
-            print(f"Match link for {match_title} not found.")
+            st.write(f"Match link for {match_title} not found.")
             href = "Link not found"
         matches_details[match_title] = {}
         matches_details[match_title]['home_team'] = home_team
@@ -328,7 +341,7 @@ def fetch_odds(match_name: str, odd_type: str, driver: "webdriver.Chrome") -> ty
                     print("Couldn't get innerText-attribute for", odd_type, "outcome", e)                  
         except Exception as e:
             error = "Couldn't click Compare All Odds"
-            print("Couldn't click Compare All Odds on", odd_type, e)
+            st.write("Couldn't click Compare All Odds on", odd_type, e)
         try:
             if header.get_attribute("aria-expanded") == "true":
                 driver.execute_script('arguments[0].click()', header)
@@ -394,7 +407,7 @@ def scrape_all_matches(match_dict, driver):
             except TimeoutException:
                 print('Ad did not pop up')
         except Exception as e:
-            print("Couldn't open link ", link, " ", e)
+            st.write("Couldn't open link ", link, " ", e)
             match_progress_bar.progress(int((match_counter / total_matches) * 100))
             continue
 
@@ -597,8 +610,9 @@ if st.session_state.scraping_started and not st.session_state.scraping_done:
             st.session_state.scraped_data, st.session_state.scraping_done, st.session_state.scrape_time = scrape_all_matches(match_dict, driver)
 
     except Exception as e: 
-        st.write("Couldn't open Chrome")
+        st.write("Couldn't open Chrome due to exception: ", e)
         st.session_state.scraping_started = False
+        driver.quit()
 
 def click_download():
     st.session_state.scraping_started = False
