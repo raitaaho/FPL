@@ -115,7 +115,7 @@ def get_next_gws(fixtures: list) -> int:
         raise Exception("Game weeks data contains None key.")
     
     for event in sorted(game_weeks.keys()):
-        if all(not fixture['started'] for fixture in game_weeks[event]):
+        if all(not fixture['finished'] for fixture in game_weeks[event]):
             next_gameweek = event
             break
     if next_gameweek is None:
