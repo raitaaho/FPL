@@ -34,7 +34,7 @@ TEAM_NAMES_ODDSCHECKER = {
     "Wolves": "Wolverhampton",
     "Spurs": "Tottenham",
     "Coventry City": "Coventry",
-    "Ipswich Town": "Ipswhich",
+    "Ipswich Town": "Ipswich",
     }
 
 # Mapping of player names from Oddschecker to FPL API player names for consistency.
@@ -612,7 +612,7 @@ if st.session_state.scraping_started and not st.session_state.scraping_done:
     except Exception as e: 
         st.write("Couldn't open Chrome due to exception: ", e)
         st.session_state.scraping_started = False
-        driver.quit()
+
 
 def click_download():
     st.session_state.scraping_started = False
